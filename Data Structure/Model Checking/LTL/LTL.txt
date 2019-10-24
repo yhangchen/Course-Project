@@ -1,0 +1,13 @@
+free stop caution
+free
+red caution stop
+yellow free caution
+green stop free
+
+(free until caution)
+(always (eventually free))
+((free until caution) until stop)
+(always caution)
+always true
+eventually caution
+stop until caution

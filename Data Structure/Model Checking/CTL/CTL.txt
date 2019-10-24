@@ -1,0 +1,6 @@
+idle paid
+idle
+coin idle paid
+coffee paid idle
+
+exist(ture until paid)
