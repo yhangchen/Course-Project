@@ -1,0 +1,120 @@
+\appendices
+\section{Gaussian quadrature weights}
+\label{appendixA}
+Let $p_n$ be a nontrivial polynomial of degree $n$ such that
+\begin{equation}
+    \int_a^b \omega(x) \, x^k p_n(x) \, dx = 0, \quad \text{for all } k = 0, 1, \ldots, n - 1.
+\end{equation}
+
+The weights can be expressed as
+
+\begin{equation}
+    \label{eqnote1}
+    w_{i} = \frac{a_{n}}{a_{n-1}}\frac{\int_{a}^{b}\omega(x)p_{n-1}\left(x\right)^{2}dx}{p'_{n}(x_{i})p_{n-1}(x_{i})}
+\end{equation}
+
+where $a_{k}$ is the coefficient of $x^{k}$ in $p_{k}(x)$. To prove this, note that using Lagrange interpolation one can express $r(x)$ in terms of $r(x_{i})$ as
+
+\begin{equation}
+r(x) = \sum_{i=1}^{n}r(x_{i})\prod_{\begin{smallmatrix}1\leq j\leq n\\j\neq i\end{smallmatrix}}\frac{x-x_{j}}{x_{i}-x_{j}}
+\end{equation}
+
+because $r(x)$ has degree less than $n$ and is thus fixed by the values it attains at $n$ different points. Multiplying both sides by $r(x_i)$ and integrating from $a$ to $b$ yields
+\begin{equation}
+\int_{a}^{b}\omega(x)r(x)dx= \sum_{i=1}^{n}r(x_{i})\int_{a}^{b}\omega(x)\prod_{\begin{smallmatrix}1\leq j\leq n\\j\neq i\end{smallmatrix}}\frac{x-x_{j}}{x_{i}-x_{j}}dx
+\end{equation}
+
+The weights $w_i$ are thus given by
+
+\begin{equation}
+    \label{eqnote2}
+w_{i} = \int_{a}^{b}\omega(x)\prod_{\begin{smallmatrix}1\leq j\leq n\\j\neq i\end{smallmatrix}}\frac{x-x_{j}}{x_{i}-x_{j}}dx
+\end{equation}
+
+This integral expression for $w_{i}$ can be expressed in terms of the orthogonal polynomials $p_{n}(x)$ and $p_{n-1}(x)$ as follows.
+
+We can write
+
+\begin{equation}
+\prod_{\begin{smallmatrix}1\leq j\leq n\\j\neq i\end{smallmatrix}}\left(x-x_{j}\right) = \frac{\prod_{1\leq j\leq n} \left(x - x_{j}\right)}{x-x_{i}} = \frac{p_{n}(x)}{a_{n}\left(x-x_{i}\right)}
+\end{equation}
+
+where $a_{n}$ is the coefficient of $x^n$ in $p_{n}(x)$. Taking the limit of $x$ to $x_{i}$ yields using L'Hôpital's rule
+\begin{equation}
+\prod_{\begin{smallmatrix}1\leq j\leq n\\j\neq i\end{smallmatrix}}\left(x_{i}-x_{j}\right) = \frac{p'_{n}(x_{i})}{a_{n}}    
+\end{equation}
+
+
+ We can thus write the integral expression for the weights as
+
+ \begin{equation}
+     w_{i} = \frac{1}{p'_{n}(x_{i})}\int_{a}^{b}\omega(x)\frac{p_{n}(x)}{x-x_{i}}dx
+ \end{equation}
+
+ In the integrand, writing
+ \begin{equation}
+     \frac{1}{x-x_i} = \frac{1 - \left(\frac{x}{x_i}\right)^{k}}{x - x_i} + \left(\frac{x}{x_i}\right)^{k} \frac{1}{x - x_i}
+ \end{equation}
+ yields
+ \begin{equation}
+     \int_a^b\omega(x)\frac{x^kp_n(x)}{x-x_i}dx= x_i^k\int_{a}^{b}\omega(x)\frac{p_n(x)}{x-x_i}dx
+ \end{equation}
+ provided $k \leq n$, because $\frac{1-\left(\frac{x}{x_{i}}\right)^{k}}{x-x_{i}}$ is a polynomial of degree $k-1$ which is then orthogonal to $p_{n}(x)$. So, if $q(x)$ is a polynomial of at most $n$-th degree we have
+
+ \begin{equation}
+     \int_{a}^{b}\omega(x)\frac{p_{n}(x)}{x-x_{i}}dx=\frac{1}{q(x_{i})}\int_{a}^{b}\omega(x)\frac{q(x)p_{n}(x)}{x-x_{i}}dx 
+ \end{equation}
+   
+ We can evaluate the integral on the right hand side for $q(x) = p_{n-1}(x)$ as follows. Because $\frac{p_{n}(x)}{x-x_{i}}$ is a polynomial of degree $n-1$, we have
+ \begin{equation}
+     \frac{p_{n}(x)}{x-x_{i}} = a_{n}x^{n-1} + s(x)
+ \end{equation}
+
+ where $s(x)$ is a polynomial of degree $n - 2$. Since $s(x)$ is orthogonal to $p_{n-1}(x)$ we have
+\begin{equation}
+ \int_{a}^{b}\omega(x)\frac{p_{n}(x)}{x-x_{i}}dx=\frac{a_{n}}{p_{n-1}(x_{i})}\int_{a}^{b}\omega(x)p_{n-1}(x)x^{n-1}dx
+\end{equation}
+We can then write
+
+\begin{equation}
+    x^{n-1} = \left(x^{n-1} - \frac{p_{n-1}(x)}{a_{n-1}}\right) + \frac{p_{n-1}(x)}{a_{n-1}}
+\end{equation}
+
+The term in the brackets is a polynomial of degree $n-2$, which is therefore orthogonal to $p_{n-1}(x)$. The integral can thus be written as
+
+\begin{equation}
+    \int_{a}^{b}\omega(x)\frac{p_{n}(x)}{x-x_{i}}dx=\frac{a_{n}}{a_{n-1}p_{n-1}(x_{i})}\int_{a}^{b}\omega(x)p_{n-1}(x)^{2}dx 
+\end{equation}
+
+According to equation \ref{eqnote2}, the weights are obtained by dividing this by $p'_{n}(x_{i})$ and that yields the expression in equation \ref{eqnote1}.
+
+\section{The Golub-Welsch algorithm}
+\label{gwalg}
+Orthogonal polynomials with leading coefficient one satisfy the recurrence relation 
+\begin{equation}
+    \label{btrirecur}
+    p_{r+1}(x) = (x-a_r)p_r(x) -b_r p_{r-1}(x)
+\end{equation}
+Writing \ref{btrirecur} into matrix form, we have that $\mathbf{J}\tilde{P}=x\tilde{P}-p_n(x) \mathbf{e}_n$, where $\tilde{P}=[p_0(x),\cdots,p_{n-1}(x)]^\top, \mathbf{e}_n=[0,0,\cdots,1]^\top$, and 
+\begin{equation}
+    \mathbf{J}=\begin{pmatrix}
+        a_0 &      1 &      0 &  \ldots &  \ldots &  \ldots \\
+        b_1 &    a_1 &      1 &       0 &  \ldots &  \ldots \\
+          0 &    b_2 &    a_2 &       1 &       0 &  \ldots \\
+          0 & \ldots & \ldots &  \ldots &  \ldots &       0 \\
+     \ldots & \ldots &      0 & b_{n-2} & a_{n-2} &       1 \\
+     \ldots & \ldots & \ldots &       0 & b_{n-1} & a_{n-1}
+   \end{pmatrix}
+\end{equation}
+
+The zeros $x_j$ of the polynomials up to degree $n$, which are used as nodes for the Gaussian quadrature can be found by computing the eigenvalues of this tridiagonal matrix. However, for computing the weights and nodes, it is preferable to consider the symmetric tridiagonal matrix $\mathcal{J}$ defined as
+\begin{equation}
+    \mathcal{J}=\begin{pmatrix}
+        a_0 &      \sqrt{b_1} &      0 &  \ldots &  \ldots &  \ldots \\
+        \sqrt{b_1} &    a_1 &      \sqrt{b_2} &       0 &  \ldots &  \ldots \\
+          0 &    \sqrt{b_2} &    a_2 &  \sqrt{b_3} &       0 &  \ldots \\
+          0 & \ldots & \ldots &  \ldots &  \ldots &       0 \\
+     \ldots & \ldots &      0 & \sqrt{b_{n-2}} & a_{n-2} &       \sqrt{b_{n-1}} \\
+     \ldots & \ldots & \ldots &       0 & \sqrt{b_{n-1}} & a_{n-1}
+   \end{pmatrix}
+\end{equation}
