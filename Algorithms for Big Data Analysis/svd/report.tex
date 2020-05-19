@@ -1,0 +1,893 @@
+\documentclass[conference,onecolumn,12pt]{IEEEtran}
+\usepackage[english]{babel}
+\usepackage{graphicx}
+\usepackage{framed}
+\usepackage[normalem]{ulem}
+\usepackage{amsmath}
+\usepackage{listings}
+\usepackage{amsthm}
+\usepackage{subfigure}
+\usepackage{diagbox}
+\usepackage{amssymb}
+\usepackage{longtable}
+\usepackage{multicol}
+\usepackage{fancyhdr}
+\usepackage{palatino}
+\usepackage{multirow}
+\usepackage{bigstrut}
+\usepackage{bbm}
+\usepackage{bm}
+\usepackage{alg}
+\usepackage{booktabs}
+\usepackage{amsfonts}
+\usepackage[colorlinks,linkcolor=blue,anchorcolor=blue,citecolor=blue]{hyperref}
+\usepackage{enumerate}
+\usepackage[top=1in,bottom=1in, left=1in, right=1in]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage{pgfplots}
+\usepgfplotslibrary{groupplots,dateplot}
+\usetikzlibrary{patterns,shapes.arrows}
+\pgfplotsset{compat=newest}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\mtx}[1]{\bm{#1}}
+\newcommand{\mymathbf}[1]{\mbox{\boldmath$#1$}}
+\newcommand{\goto}{\rightarrow}
+\usepackage{setspace}
+\renewcommand{\baselinestretch}{1.5}
+
+\numberwithin{equation}{section}
+\numberwithin{figure}{section}
+\numberwithin{table}{section}
+\newcommand{\vct}[1]{\bm{#1}}
+
+\theoremstyle{definition}
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+\newtheorem{proposition}{Proposition}
+\newtheorem{example}{Example}
+\newtheorem{lemma}{Lemma}
+\newtheorem*{definition}{Definition}
+\newtheorem*{note}{Note}
+\newtheorem{exercise}{Exercise}
+\newcommand{\anum}[1]{{\footnotesize{#1}\quad}}
+
+\newcommand{\Disp}{\displaystyle}
+\newcommand{\qe}{\hfill\(\bigtriangledown\)}
+\setlength{\columnseprule}{1 pt}
+
+
+\begin{document}
+\title{Singular Value Decomposition\\
+{\footnotesize \textsuperscript{*}Project 3 on the Course ``Algorithms for Big Data Analysis".}
+}
+
+\author{\IEEEauthorblockN{1\textsuperscript{st} Chen Yihang}
+\textit{Peking University}\\
+1700010780}
+\date{}
+
+\maketitle
+\thispagestyle{fancy} % IEEE模板在\maketitle后会自动声明\thispagestyle{plain}，
+% 导致第一页什么都没有。所以得把plain更改为fancy
+\lhead{} % 页眉左，需要东西的话就在{}内添加
+\chead{} % 页眉中
+\rhead{} % 页眉右
+\lfoot{} % 页眉左
+\cfoot{} % 页眉中
+\cfoot{\thepage} %页眉右，\thepage 表示当前页码
+\renewcommand{\headrulewidth}{0pt} %改为0pt即可去掉页眉下面的横线
+\renewcommand{\footrulewidth}{1pt} %改为0pt即可去掉页脚上面的横线
+\pagestyle{fancy}
+\cfoot{\thepage}
+
+\begin{abstract}
+LinearTime SVD and Prototype for randomized SVD methods are implemented and tested on various datasets. Both method favors the singular vector decreases rapidly. Based on the idea of randomized SVD, SVT (Singular Value Thresholding) method is implemented and tested on a real-life image recovery problem. Satisfactory results are produced.
+\end{abstract}
+\tableofcontents
+
+\newpage
+\section{Randomized SVD techniques}
+\subsection{LinearTime SVD}
+The algorithm in \cite{drineas2006fast} can be summarized below, I implemented it in "lineartime.m".  The estimated $\mathbf{A}$  is $\mathbf{H}_k'\mathbf{H}_k\mathbf{A}$. According to Theorem 4 in Section 4 in \cite{drineas2006fast}, we set
+\begin{equation*}
+p_i = \frac{\|\mathbf{A}^{(i)}\|^2_2}{\|\mathbf{A}\|_F}, \quad c/k = const
+\end{equation*}
+\begin{figure}[htbp]
+    \begin{center}
+    \framebox{\begin{minipage}{.9\textwidth}
+    \begin{center}
+    \textsc{LinearTime SVD}
+    \end{center}
+    
+    
+    \textit{Given an $m\times n$ matrix $\mathbf{A}$, a target number $k$ of singular vectors, a integer $c$ such that $k\leq c\leq n$, a probability vector $\{p_i\}_{i=1}^n$, this procedure computes an approximate
+    rank-$k$ factorization $\mathbf{U\Sigma V}^\star$, where $\mathbf{U}$ and $\mathbf{V}$
+    are orthonormal, and $\mathbf{\Sigma}$ is nonnegative and diagonal.}
+    \begin{tabbing}
+
+
+    \hspace{5mm} \= \hspace{5mm} \= \hspace{5mm} \= \hspace{5mm} \= \kill
+    \anum{1} \>{\bf for} $t=1$ to $c$.\\
+    
+    \anum{2} \>\quad Pick $i_t\in 1,\dots,n$ with $\mathbb{P}(i_t=\alpha)=p_\alpha,\alpha=1,\dots,n.$\\
+    
+    \anum{3} \>\quad Set $\mathbf{C}^{(t)}=\mathbf{A}^{i_t}/\sqrt{cp_{i_t}} $\\
+	\anum{4} \>{\bf end}\\
+    \anum{5}    \>Compute the SVD of $\mathbf{C}^T \mathbf{C} = \sum_{t=1}^c \sigma_t^2(\mathbf{C})y_t y_t^T$.\\
+    
+    \anum{6}    \>Compute $h_t=\mathbf{C}y_t/\sigma_t(\mathbf{C})$, for $t=1,\dots,k$.\\
+    
+    \anum{7} \> Return $\mathbf{H}_k$, where $\mathbf{H}^{(t)}_k=h_t$, and $\sigma_t(\mathbf{C}), t=1,\dots,k$.\\
+    \end{tabbing}
+
+    \end{minipage}}
+    \end{center}
+    \end{figure}
+
+
+
+
+
+\subsection{Prototype for Randomized SVD}
+The algorithm in \cite{halko2011finding} can be summarized below, I implemented it in prototype.m. The estimated $\mathbf{A}$  is $\mathbf{Q}'\mathbf{Q}\mathbf{A}$.
+
+\begin{figure}[htbp]
+    \begin{center}
+    \framebox{\begin{minipage}{.9\textwidth}
+    \begin{center}
+    \textsc{Prototype for Randomized SVD}
+    \end{center}
+    
+
+    
+    \textit{Given an $m\times n$ matrix $\mathbf{A}$, a target number $k$ of singular vectors,
+    and an exponent $q$ (say $q=1$ or $q=2$), this procedure computes an approximate
+    rank-$2k$ factorization $\mathbf{U\Sigma V}^\star$, where $\mathbf{U}$ and $\mathbf{V}$
+    are orthonormal, and $\mathbf{\Sigma}$ is nonnegative and diagonal.}
+
+    {\bf Stage A1: Randomized Power Iteration}
+    
+    \begin{tabbing}
+    \hspace{5mm} \= \hspace{5mm} \= \hspace{5mm} \= \hspace{5mm} \= \kill
+    \anum{1} \>Generate an $n \times 2k$ Gaussian test matrix $\mathbf{\Omega}$.\\
+    
+    \anum{2} \>Form $\mathbf{Y} = (\mathbf{AA}^{\star})^q \mathbf{A\Omega}$ by multiplying alternately with $\mathbf{A}$ and $\mathbf{A}^\star$.\\
+    
+    \anum{3} \>Construct a matrix $\mathbf{Q}$ whose columns form an orthonormal basis for \\
+             \>the range of $\mathbf{Y}$.
+    \end{tabbing}
+    
+
+
+
+    {\bf Stage A2: Randomized Subspace Iteration}
+    
+    \begin{tabbing}
+    \hspace{5mm} \= \hspace{5mm} \= \hspace{5mm} \= \hspace{5mm} \= \kill
+    \anum{1} \>Generate an $n \times 2k$ Gaussian test matrix $\mathbf{\Omega}$.\\
+    
+    \anum{2} \>Form $\mathbf{Y_0} = \mathbf{A\Omega}$ and compute its QR factorization $\mathbf{Y_0}=\mathbf{Q_0}\mathbf{ R_0}$.\\
+    
+    \anum{3} \>{\bf for} $j=1,2,\dots,q$ \\
+    \anum{4}    \>\quad Form $\widetilde{\mathbf{Y_j}}= \mathbf{A}^{\star}\mathbf{Q}_{j-1}$ and compute its QR factorization $\widetilde{\mathbf{Y_j}}=\widetilde{\mathbf{Q_j}}\widetilde{\mathbf{R_j}}$.\\
+    
+    \anum{5}    \>\quad Form ${\mathbf{Y_j}}= \mathbf{A}\widetilde{\mathbf{Q}_{j-1}}$ and compute its QR factorization ${\mathbf{Y_j}}={\mathbf{Q_j}}{\mathbf{R_j}}$.\\
+    
+    \anum{6}    \>{\bf end}\\
+    \anum{7} \> $\mathbf{Q}=\mathbf{Q}_q$
+    \end{tabbing}
+    
+    
+    {\bf Stage B:}
+    
+    \begin{tabbing}
+    \hspace{5mm} \= \hspace{5mm} \= \hspace{5mm} \= \hspace{5mm} \= \kill
+    \anum{1}    \>Form $\mathbf{B} = \mathbf{Q}^{\star}\mathbf{A}$.\\
+    
+    \anum{2}    \>Compute an SVD of the small matrix: $\mathbf{B} = \widetilde{\mathbf{U}}\mathbf{\Sigma}\mathbf{V}^{\star}$.\\
+    
+    \anum{3}    \>Set $\mathbf{U} = \mathbf{Q}\widetilde{\mathbf{U}}$.
+    \end{tabbing}
+    
+
+    
+    {\bf Note:} The Stage A1 or A2 computes an $m\times 2k$ matrix $\mathbf{Q}$ whose range approximates the range of $\mathbf{A}$. The computation of $\mathbf{Y}$ in Step 2 in Stage A1 is vulnerable to round-off errors.
+    When high accuracy is required, we must incorporate an orthonormalization
+    step between each application of $\mathbf{A}$
+    and $\mathbf{A}^{\star}$; i.e. we adopt Stage A2.
+    \end{minipage}}
+    \end{center}
+    \end{figure}
+
+
+\section{Matrix Completion via SVD}
+We have an $n_1\times n_2$ matrix $\mtx{M}$ with observed entries indexed by the set $\Omega$. Following \cite{mazumder2010spectral} we denote the projection $\mathcal{P}_{\Omega}$ to be the be the $n_1\times n_2$ matrix with the observed elements of $\mtx{M}$ preserved, and the missing entries replaced
+with 0. Likewise $\mathcal{P}_\Omega^\perp$ projects onto the complement of the set $\Omega$. We want to solve
+\begin{equation}
+  \label{eqn:min}
+  \begin{array}{ll}
+    \textrm{minimize}   & \quad \|\mtx{X}\|_*\\
+    \textrm{subject to} & \quad X_{ij} = M_{ij}, \quad (i,j) \in \Omega,
+ \end{array}
+\end{equation}
+Hence, we are going to minimize
+\begin{equation}
+  \label{eqn:minnuc+fro}
+    \min_X \frac{1}{2}\|\mathcal{P}_\Omega(\mtx{M}-\mtx{X})\|_F^2 +\mu \|\mtx{X}\|_\star
+\end{equation}
+where the nuclear norm $ \|\mtx{X}\|_\star$ is the sum of the singular values of $\mtx{X}$ (a convex relaxation of the rank).
+
+\subsection{The singular value shrinkage operator}
+
+Consider the singular value decomposition (SVD) of a matrix $\mtx{X}
+\in \R^{n_1 \times n_2}$ of rank $r$
+\begin{equation}
+  \label{eq:svd}
+  \mtx{X} = \mtx{U}  \mtx{\Sigma}   \mtx{V}^*,
+\quad   \mtx{\Sigma}  = diag(\{\sigma_i\}_{1 \le i \le r}),
+\end{equation}
+where $\mtx{U}$ and $\mtx{V}$ are respectively $n_1 \times r$ and $n_2
+\times r$ matrices with orthonormal columns, and the singular values
+$\sigma_i$ are positive (unless specified otherwise, we will always
+assume that the SVD of a matrix is given in the reduced form
+above). For each $\mu \ge 0$, we introduce the soft-thresholding
+operator $\mathcal{D}_\mu$ defined as follows:
+\begin{equation}
+\label{eqn:DlamM2} \mathcal{D}_{\mu}(\mtx{X}):=  \mtx{U}
+\mathcal{D}_{\mu}(\mtx{\Sigma}) \mtx{V}^*, \quad
+\mathcal{D}_{\mu}(\mtx{\Sigma}) = diag(\{\sigma_i - \mu)_+\}),
+\end{equation}
+where $t_+$ is the positive part of $t$, namely, $t_+ = \max(0,t)$. In
+words, this operator simply applies a soft-thresholding rule to the
+singular values of $\mtx{X}$, effectively shrinking these towards
+zero. This is the reason why we will also refer to this transformation
+as the {\em singular value shrinkage} operator. Even though the SVD
+may not be unique, it is easy to see that the singular value shrinkage
+operator is well defined and we do not elaborate further on this
+issue.  In some sense, this shrinkage operator is a straightforward
+extension of the soft-thresholding rule for scalars and vectors. In
+particular, note that if many of the singular values of $\mtx{X}$ are
+below the threshold $\mu$, the rank of $\mathcal{D}_{\mu}(\mtx{X})$
+may be considerably lower than that of $\mtx{X}$, just like the
+soft-thresholding rule applied to vectors leads to sparser outputs
+whenever some entries of the input are below threshold.
+\begin{theorem}\label{thm:prox}
+    For each $\mu \ge 0$ and $\mtx{Y} \in \R^{n_1 \times n_2}$, the
+    singular value shrinkage operator $\eqref{eqn:DlamM2}$ obeys
+  \begin{equation}
+  \label{eqn:DlamM}
+  \mathcal{D}_{\mu}(\mtx{Y}) = \arg\min_{\mtx{X}} \left\{
+  \frac12\|\mtx{X}-\mtx{Y}\|_F^2 + \mu\|\mymathbf{X}\|_{*}
+  \right\}.
+  \end{equation}
+  \end{theorem}
+  \begin{proof} Since the function $h_0(\mtx{X}) := \mu \|\mtx{X}\|_* +
+    \frac{1}{2} \|\mtx{X}-\mtx{Y}\|_F^2$ is strictly convex, it is easy
+    to see that there exists a unique minimizer, and we thus need to
+    prove that it is equal to $\mathcal{D}_{\mu}(\mtx{Y})$.  To do
+    this, recall the definition of a subgradient of a convex function $f
+    : \R^{n_1 \times n_2} \goto \R$. We say that $\mtx{Z}$ is a
+    subgradient of $f$ at $\mtx{X}_0$, denoted $\mtx{Z} \in \partial
+    f(\mtx{X}_0)$, if
+  \begin{equation}
+    \label{eq:subgradient}
+    f(\mtx{X}) \ge f(\mtx{X}_0) + (\mtx{Z}, \mtx{X} - \mtx{X}_0)
+  \end{equation}
+  for all $\mtx{X}$.  Now $\hat{\mtx{X}}$ minimizes $h_0$ if and only if
+  $\mymathbf{0}$ is a subgradient of the functional $h_0$ at the point
+  $\hat{\mtx{X}}$, i.e.
+  \begin{equation}\label{eqn:subdiff}
+  \mymathbf{0} \in \hat{\mtx{X}}-\mtx{Y}+\mu\partial\|\hat{\mtx{X}}\|_*,
+  \end{equation}
+  where $\partial\|\hat{\mtx{X}}\|_*$ is the set of subgradients of the
+  nuclear norm. Let $\mtx{X} \in \R^{n_1 \times n_2}$ be an arbitrary
+  matrix and $\mtx{U} \mtx{\Sigma} \mtx{V}^*$ be its SVD.  It is known that
+  \begin{equation}\label{eqn:subdiffNorm}
+    \partial\|\mtx{X}\|_*=\left\{\mtx{U} \mtx{V}^* + \mtx{W} :
+      ~\mtx{W}\in\mathbb{R}^{n_1 \times n_2},~~
+      \mtx{U}^*\mtx{W}=0,~~
+      \mtx{W} \mtx{V} =0,~~
+      \|\mtx{W}\|_2\leq1\right\}.
+  \end{equation}
+  
+  Set $\hat{\mtx{X}} := {\cal D}_\mu(\mtx{Y})$ for short. In order to
+  show that $\hat{\mtx{X}}$ obeys \eqref{eqn:subdiff}, decompose the SVD
+  of $\mtx{Y}$ as
+  \[
+  \mtx{Y} = \mtx{U}_0 \mtx{\Sigma}_0 \mtx{V}_0^* + \mtx{U}_1 \mtx{\Sigma}_1 \mtx{V}_1^*,
+  \]
+  where $\mtx{U}_0$, $\mtx{V}_0$ (resp.~$\mtx{U}_1$, $\mtx{V}_1$) are
+  the singular vectors associated with singular values greater than
+  $\mu$ (resp.~smaller than or equal to $\mu$). With these notations, we
+  have
+  \[
+  \hat{\mtx{X}} = \mtx{U}_0 (\mtx{\Sigma}_0 - \mu \mtx{I})\mtx{V}_0^*
+  \]
+  and, therefore,
+  \[
+  \mtx{Y} - \hat{\mtx{X}} = \mu (\mtx{U}_0 \mtx{V}_0^* +
+  \mtx{W}), \quad \mtx{W} = \mu^{-1} \mtx{U}_1 \mtx{\Sigma}_1
+  \mtx{V}_1^*.
+  \]
+  By definition, $\mtx{U}_0^* \mtx{W} = 0$, $\mtx{W} \mtx{V}_0 = 0$ and
+  since the diagonal elements of $\mtx{\Sigma}_1$ have magnitudes
+  bounded by $\mu$, we also have $\|\mtx{W}\|_2 \le 1$. Hence $\mtx{Y} -
+  \hat{\mtx{X}} \in \mu \partial\|\hat{\mtx{X}}\|_*$, which concludes the
+  proof.
+  \end{proof}
+  \subsection{Shrinkage iterations}
+
+  We are now in the position to introduce the singular value
+  thresholding algorithm. Fix $\tau > 0$ and a sequence $\{\delta_k\}$
+  of positive step sizes. Starting with $\mtx{Y}_0$, inductively define
+  for $k = 1, 2, \ldots$,
+  \begin{equation}\label{eqn:iter}
+  \begin{cases}
+    \mtx{X}^{k}  = {\cal D}_\tau(\mtx{Y}^{k-1}),\cr
+    \mtx{Y}^{k}  = \mtx{Y}^{k-1} + \delta_{k}
+    \mathcal{P}_{\Omega}(\mtx{M}-\mtx{X}^k)
+  \end{cases}
+  \end{equation}
+    until a stopping criterion is reached. This
+  shrinkage iteration is very simple to implement. At each step, we only
+  need to compute an SVD and perform elementary matrix operations.
+  
+  \begin{itemize}
+  \item {\em Low-rank property.} A remarkable empirical fact is that the
+    matrices in the sequence $\{\mtx{X}^k\}$ have low rank  The reason for this
+    phenomenon is, however, simple: because we are interested in large
+    values of $\mu$, the thresholding step happens to `kill' most of
+    the small singular values and produces a low-rank output. In fact, our numerical results show that the rank of $\mtx{M}^{k}$
+    is nondecreasing with $k$, and the maximum rank is reached in the
+    last steps of the algorithm.
+  
+    Thus, when the rank of the solution is substantially smaller than
+    either dimension of the matrix, the storage requirement is low since
+    we could store each $\mtx{M^k}$ in its SVD form (note that we only
+    need to keep the current iterate and may discard earlier
+    values).
+  
+  \item {\em Sparsity.}  Another important property of the soft impute algorithm
+    is that the iteration matrix $\mtx{Y}^k$ is sparse. Since
+    $\mtx{Y}^0=\mtx{0}$, we have by induction that $\mtx{Y}^{k}$
+    vanishes outside of $\Omega$. The fewer entries available, the
+    sparser $\mtx{Y}^k$. Because the sparsity pattern $\Omega$ is fixed
+    throughout, one can then apply sparse matrix techniques to save
+    storage. Also, if $|\Omega| = m$, the computational cost of updating
+    $\mtx{Y}^k$ is of order $m$. Moreover, we can call
+    subroutines supporting sparse matrix computations, which can further
+    reduce computational costs.
+  
+    One such subroutine is the SVD. However, note that we do not need to
+    compute the entire SVD of $\mtx{Y}^k$ to apply the singular value
+    thresholding operator. Only the part corresponding to singular
+    values greater than $\mu$ is needed. Hence, a good strategy is to
+    apply the iterative Lanczos algorithm to compute the first few
+    singular values and singular vectors. Because $\mtx{Y}^k$ is sparse,
+    $\mtx{Y}^k$ can be applied to arbitrary vectors rapidly, and this
+    procedure offers a considerable speedup over naive methods.
+  \end{itemize}
+  % \begin{figure}[htbp]
+  %   \begin{center}
+  %   \framebox{\begin{minipage}{.9\textwidth}
+  %   \begin{center}
+  %   \textsc{Soft impute}
+  %   \end{center}
+    
+    
+  %   \textit{Given $m\times n$ matrix $X$ with observed entries indexed by the set $\Omega$, the algorithm minimize $H(M)$ to find a low rank approximation $M$ to $X$}
+  %   \begin{tabbing}
+
+
+  %   \hspace{5mm} \= \hspace{5mm} \= \hspace{5mm} \= \hspace{5mm} \= \kill
+  %   \anum{1} \>$\widehat{M} = 0$\\
+  %   \anum{2} \>{\bf while not converged}\\
+    
+  %   \anum{2} \>\quad $X\gets [P_\Omega(X)-P_\Omega(M)]+\widehat{M}$ \\
+    
+  %   \anum{3} \>\quad Compute $X = UDV^T$.\\
+  %   \anum{4} \>\quad $\widehat{M}\gets U\mathcal{S}_{\mu}(D)V^T$, where the soft-thresholding operator $\mathcal{S}_{\mu}$ operates \\ \>\quad element-wise on the diagonal matrix $D$, and replaces $D_{ii}$ with $(D_{ii}-\mu)_+$. \\
+	% \anum{4} \>{\bf end}\\
+  %   \end{tabbing}
+
+  %   \end{minipage}}
+  %   \end{center}
+  %   \end{figure}
+  \subsection{Interpretation as a Lagrange multiplier method}
+\label{sec:uzawa}
+
+In this section, we recast the SVT algorithm as a type of Lagrange
+multiplier algorithm known as Uzawa's algorithm. An important
+consequence is that this will allow us to extend the SVT algorithm to
+other problems involving the minimization of the nuclear norm under
+convex constraints.
+
+In what follows, we set $f_\tau(\mtx{X}) = \tau \|\mtx{X}\|_* +
+\frac{1}{2} \|\mtx{X}\|_F^2$ for some fixed $\tau > 0$ and recall that
+we wish to solve
+\[
+  \begin{array}{ll}
+    \textrm{minimize}   & \quad f_\tau(\mtx{X})\\
+    \textrm{subject to} & \quad \mathcal{P}_\Omega(\mtx{X}) = \mathcal{P}_\Omega(\mtx{M}).
+ \end{array}
+\]
+The Lagrangian for this problem is given by
+\[
+{\cal L}(\mtx{X},\mtx{Y}) = f_\tau(\mtx{X}) + (\mtx{Y}, {\cal
+  P}_\Omega(\mtx{M} - \mtx{X})),
+\]
+where $\mtx{Y} \in \R^{n_1 \times n_2}$.  Strong duality holds and
+$\mtx{X}^\star$ and $\mtx{Y}^\star$ are primal-dual optimal if
+$(\mtx{X}^\star, \mtx{Y}^\star)$ is a saddlepoint of the Lagrangian
+${\cal L}(\mtx{X},\mtx{Y})$, i.e.~a pair obeying
+\begin{equation}
+\label{eq:saddlepoint}
+\sup_{\mtx{Y}} \inf_{\mtx{X}} {\cal L}(\mtx{X}, \mtx{Y}) = {\cal L}(\mtx{X}^\star, \mtx{Y}^\star) = \inf_{\mtx{X}} \sup_{\mtx{Y}}
+{\cal L}(\mtx{X}, \mtx{Y}).
+\end{equation}
+(The function $g_0(\mtx{Y}) = \inf_{\mtx{X}} {\cal L}(\mtx{X},
+\mtx{Y})$ is called the dual function.) Uzawa's algorithm approaches the
+problem of finding a saddlepoint with an iterative procedure.  From
+$\mtx{Y}_0 = \mtx{0}$, say, inductively define
+\begin{equation}
+\label{eq:Lag1}
+\begin{cases}
+{\cal L}(\mtx{X}^{k}, \mtx{Y}^{k-1})
+ = \min_{\mtx{X}} {\cal L}(\mtx{X},\mtx{Y}^{k-1})\\  \mtx{Y}^k
+ = \mtx{Y}^{k-1} + \delta_k \mathcal{P}_\Omega(\mtx{M} -\mtx{X}^k),
+\end{cases}
+\end{equation}
+where $\{\delta_k\}_{k \ge 1}$ is a sequence of positive step
+sizes. Uzawa's algorithm is, in fact, a subgradient method applied to
+the dual problem, where each step moves the current iterate in the
+direction of the gradient or of a subgradient. Indeed, observe that
+\begin{equation}\label{eqn:partialg0}
+\partial_{\mtx{Y}} g_0(\mtx{Y}) = \partial_{\mtx{Y}} {\cal
+  L}(\tilde{\mtx{X}}, \mtx{Y}) =
+\mathcal{P}_\Omega(\mtx{M}-\tilde{\mtx{X}}),
+\end{equation}
+where $\tilde{\mtx{X}}$ is the minimizer of the Lagrangian for that
+value of $\mtx{Y}$ so that a gradient descent update for $\mtx{Y}$ is
+of the form
+\[
+\mtx{Y}^k = \mtx{Y}^{k-1} + \delta_k \partial_{\mtx{Y}}
+g_0(\mtx{Y}^{k-1}) = \mtx{Y}^{k-1} + \delta_k
+\mathcal{P}_\Omega(\mtx{M}-\mtx{X}^k).
+\]
+
+It remains to compute the minimizer of the Lagrangian \eqref{eq:Lag1},
+and note that
+\begin{equation}\label{eqn:argminequiv}
+\arg \min \, f_\tau(\mtx{X}) + (\mtx{Y}, {\cal P}_\Omega(\mtx{M} -
+\mtx{X})) = \arg \min \, \tau \|\mtx{X}\|_* + \frac{1}{2} \|\mtx{X} -
+\mathcal{P}_\Omega \mtx{Y}\|^2_F.
+\end{equation}
+However, we know that the minimizer is given by
+$\mathcal{D}_\tau(\mathcal{P}_\Omega(\mtx{Y}))$ and since $\mtx{Y}^{k}
+= \mathcal{P}_\Omega(\mtx{Y}^k)$ for all $k \ge 0$, Uzawa's algorithm
+takes the form
+\begin{align*}
+\begin{cases}
+  \mtx{X}^k   = {\cal D}_{\tau} (\mtx{Y}^{k-1})\cr
+  \mtx{Y}^k  = \mtx{Y}^{k-1} + \delta_k \mathcal{P}_\Omega(\mtx{M} - \mtx{X}^k),
+\end{cases}
+\end{align*}
+which is exactly the update \eqref{eqn:iter}. This point of view
+brings to bear many different mathematical tools for proving the
+convergence of the singular value thresholding iterations.
+\subsection{Numerical experiments}
+The settings are identical to the reference \cite{mazumder2010spectral}.
+\paragraph{Step sizes}
+In our experiments, we use
+\begin{equation}
+  \label{eq:heuristic}
+  \delta  = 1.2 \, \frac{n_1 n_2}{m},
+\end{equation}
+
+We adopt the weight decay as $\delta_k+1 = \delta/1.005$.
+i.e.~$1.2$ times the undersampling ratio. 
+
+\paragraph{Initial steps}
+
+The SVT algorithm starts with $\mtx{Y}^0=\mtx{0}$, and we want to
+choose a large $\tau$ to make sure that the solution of
+\eqref{eqn:minnuc+fro} is close enough to a solution of
+\eqref{eqn:min}. Define $k_0$ as that integer obeying
+\begin{equation}\label{eqn:k0}
+\frac{\tau}{\delta\|\mathcal{P}_{\Omega}(\mtx{M})\|_2} \in (k_0-1,
+k_0].
+\end{equation}
+
+Since $\mtx{Y}^0=\mtx{0}$, it is not difficult to see that
+\[
+\mtx{X}^k = \mtx{0}, \quad \mtx{Y}^k= k\delta\,
+\mathcal{P}_{\Omega}(\mtx{M}), \quad k = 1, \ldots, k_0.
+\]
+
+To save work, we may simply skip the computations of
+$\mtx{X}^1,\ldots,\mtx{X}^{k_0}$, and start the iteration by computing
+$\mtx{X}^{k_0+1}$ from $\mtx{Y}^{k_0}$.
+
+This strategy is a special case of a {\em kicking device}; the main idea of such a kicking scheme is that
+one can `jump over' a few steps whenever possible. Just like in the
+aforementioned reference, we can develop similar kicking strategies
+here as well.  Because in our numerical experiments the kicking is
+rarely triggered, we forgo the description of such strategies.
+
+
+  \paragraph{Stopping criteria}
+
+  Here, we discuss stopping criteria  motivated by the first-order optimality conditions or KKT
+  conditions tailored to the minimization problem
+  \eqref{eqn:minnuc+fro}. By \eqref{eqn:argminequiv} and letting
+  $\partial_{\mtx{Y}} g_0(\mtx{Y})=\mtx{0}$ in \eqref{eqn:partialg0}, we
+  see that the solution $\mtx{X}^\star_{\tau}$ to \eqref{eqn:minnuc+fro}
+  must also verify
+  \begin{equation}\label{eqn:KKT}
+  \begin{cases}
+  \mtx{X}=\mathcal{D}_{\tau}(\mtx{Y}),\cr
+  \mathcal{P}_{\Omega}(\mtx{X}-\mtx{M})=\mtx{0},
+  \end{cases}
+  \end{equation}
+  where $\mtx{Y}$ is a matrix vanishing outside of $\Omega^c$.
+  Therefore, to make sure that $\mtx{X}^k$ is close to
+  $\mtx{X}^{\star}_\tau$, it is sufficient to check how close
+  $(\mtx{X}^k,\mtx{Y}^{k-1})$ is to obeying \eqref{eqn:KKT}. By
+  definition, the first equation in \eqref{eqn:KKT} is always
+  true. Therefore, it is natural to stop \eqref{eqn:iter} when the error
+  in the second equation is below a specified tolerance. We suggest
+  stopping the algorithm when
+  \begin{equation}\label{eqn:stop0}
+  \frac{\|\mathcal{P}_{\Omega}(\mtx{X}^k-\mtx{M})\|_F}{\|\mathcal{P}_{\Omega}(\mtx{M})\|_F}\leq\epsilon,
+  \end{equation}
+  where $\epsilon$ is a fixed tolerance, e.g.~$10^{-4}$. We provide a
+  short heuristic argument justifying this choice below.
+
+  Consider a fixed matrix $\mtx{A} \in \R^{n_1 \times n_2}$.  Under the
+  assumption that the column and row spaces of $\mtx{A}$ are not well
+  aligned with the vectors taken from the canonical basis of $\R^{n_1}$
+  and $\R^{n_2}$ respectively---the {\em incoherence assumption} in
+  \cite{candes2009exact}---then with very large probability over the choices
+  of $\Omega$, we have
+  \begin{equation}
+    \label{eq:weakRIP}
+    (1-\epsilon)  p \,  \|\mtx{A}\|_F^2  \le  \|\mathcal{P}_\Omega(\mtx{A})\|_F^2 \le   (1+\epsilon)  p \,  \|\mtx{A}\|_F^2, \quad p := m/(n_1n_2),
+  \end{equation}
+  provided that the rank of $\mtx{A}$ is not too large.  The probability
+  model is that $\Omega$ is a set of sampled entries of cardinality $m$
+  sampled uniformly at random so that all the choices are equally
+  likely. In \eqref{eq:weakRIP}, we want to think of $\epsilon$ as a
+  small constant, e.g.~smaller than 1/2. In other words, the `energy' of
+  $\mtx{A}$ on $\Omega$ (the set of sampled entries) is just about
+  proportional to the size of $\Omega$. The near isometry
+  \eqref{eq:weakRIP} is a consequence of Theorem 4.1 in
+  \cite{candes2009exact}, and we omit the details.
+  
+  In the matrix completion problem, we know that under suitable
+  assumptions
+  \[
+  \|\mathcal{P}_\Omega(\mtx{M})\|_F^2 \asymp p \, \|\mtx{M}\|_F^2,
+  \]
+  which is just \eqref{eq:weakRIP} applied to the fixed matrix $\mtx{M}$
+  (the symbol $\asymp$ here means that there is a constant $\epsilon$ as
+  in \eqref{eq:weakRIP}). Suppose we could also apply \eqref{eq:weakRIP}
+  to the matrix $\mtx{X}^k - \mtx{M}$ (which we rigorously cannot since
+  $\mtx{X}^k$ depends on $\Omega$), then we would have
+  \begin{equation}\label{eq:xk-m}
+  \|\mathcal{P}_\Omega(\mtx{X}^k - \mtx{M})\|_F^2 \asymp p \,
+  \|\mtx{X}^k - \mtx{M}\|_F^2,
+  \end{equation}
+  and thus
+  \[
+  \frac{\|\mathcal{P}_{\Omega}(\mtx{X}^k-\mtx{M})\|_F}{\|\mathcal{P}_{\Omega}(\mtx{M})\|_F}\asymp
+  \frac{\|\mtx{X}^k - \mtx{M}\|_F}{\|\mtx{M}\|_F}.
+  \]
+  In words, one would control the relative reconstruction error by
+  controlling the relative error on the set of sampled locations.
+
+\begin{algorithm}[htb]
+\caption{Singular Value Thresholding (SVT) Algorithm}{}
+\label{alg:SVT} \centering \fbox{
+\begin{minipage}{.9\textwidth}
+  \vspace{4pt} \alginout{sampled set $\Omega$ and sampled entries
+    $\mathcal{P}_{\Omega}(\mtx{M})$, step size $\delta$, tolerance
+    $\epsilon$, parameter $\tau$, increment $\ell$, maximum
+    iteration count $k_{\max}$, elementwize lower bound of $\mtx{X}$ $ub$, elementwize upper bound of $\mtx{X}$ $lb$}  {$\mtx{X}^{\mathrm{opt}}$}
+  \algdescript{Recover a low-rank matrix $\mtx{M}$ from a subset of
+    sampled entries}  \vspace{12pt}%\hrule\vspace{6pt}
+
+\begin{algtab}
+  \quad \quad Set $\mtx{Y}^0 = k_0\delta \, \mathcal{P}_{\Omega}(\mtx{M})$ ($k_0$ is defined in \eqref{eqn:k0}) \\
+  \quad \quad  Set $r_0=0, \delta_0 = 0$\\
+  \quad \quad \algforto{$k=1$}{$k_{\max}$}
+  \quad \quad Set $s_k=r_{k-1}+1$\\
+  \quad \quad Set $\delta_k = \delta_{k-1}/1.001$\\
+  \quad \quad \algrepeat
+  \quad \quad Compute $[\mtx{U}^{k-1},\mtx{\Sigma}^{k-1},\mtx{V}^{k-1}]_{s_k}$\\
+ %\algwhile{$\sigma_{s_k}^{k-1}>\tau$}
+ \quad \quad Set $s_k = s_k + \ell$\\
+  %Compute $[\mtx{U}^{k-1},\mtx{\Sigma}^{k-1},\mtx{V}^{k-1}]_{s_k}$\\
+\quad {\bf until} {$\sigma_{s_k-\ell}^{k-1}\le\tau$}\\
+ %\algend {\bf end} {\em  while}\\
+ \quad Set $r_{k} = \max\{j : \sigma^{k-1}_j > \tau\}$\\
+ \quad Set $\mtx{X}^k = \sum_{j = 1}^{r_k}
+  (\sigma_j^{k-1}-\tau) \vct{u}_j^{k-1} \vct{v}^{k-1}_j$\\
+  \quad Set $\mtx{X}^k = \min(\max(\mtx{X}^k, lb), ub)$.\\
+  \quad \algifthen{$\|\mathcal{P}_{\Omega}(\mtx{X}^k-\mtx{M})\|_F/\|\mathcal{P}_{\Omega}\mtx{M}\|_F
+           \leq\epsilon$}{{\bf break}}
+\quad Set
+    $Y^{k}_{ij}=\begin{cases} 0&\mbox{if }(i,j)\not\in\Omega,\cr
+      Y^{k-1}_{ij}+\delta(M_{ij}-X_{ij}^k)&\mbox{if }(i,j)\in\Omega \end{cases}
+    $ \\
+     {\bf end} {\em  for $k$} \\
+ Set $\mtx{X}^{\mathrm{opt}}= \mtx{X}^k$\\
+ \algend
+\end{algtab}
+\end{minipage}}
+\end{algorithm}
+
+\newpage
+\section{Numerical Results}
+\subsection{Part 1}
+Compute $r \in \{5, 10, 15, 20\}$ largest singular values and their corresponding singular vectors on a random matrix $\mathbf{A}$ generated as "A=randn(2048,20)*rand(20,512)". The prototype SVD is tested in "test1.m" and the linear time SVD is tested in "test2.m". We plot the singular value and sigular vector below.
+
+Since the performance of LinearTime and Prototype differs significantly on this problem. We plot them separatedly. Clearly, Prototype outperforms LinearTime on this problem, and the singular value decreases slowly.
+
+\begin{figure}[htbp]
+  \centering
+  \resizebox{!}{0.4\textheight}{
+\input{test1.tex}}
+\caption{{\bf Red point}: Singular Values obtained by built-in matlab svd function. {\bf Blue point}: Singular Values obtained by prototype randomized SVD.}
+\label{fig: test1}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \resizebox{!}{0.4\textheight}{
+\input{test11.tex}}
+\caption{The vector corresponding to the largest singular value under different $r$. We sort the index of the vector according to the groundtruth vector. Besides, we do not differentiate vector $v$ and $-v$. {\bf Red point}: Singular Values obtained by built-in matlab svd function. {\bf Blue point}: Singular Values obtained by prototype randomized SVD.}
+\label{fig: test11}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \resizebox{!}{0.4\textheight}{
+\input{test12.tex}}
+\caption{The absolute value of correlation between computed singular vector and groundtruth singular vector.}
+\label{fig: test12}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics{test2.eps}
+\caption{{\bf Red point}: Singular Values obtained by built-in matlab svd function. {\bf Blue point}: Singular Values obtained by linear time SVD.}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics{test21.eps}
+\caption{The vector corresponding to the largest singular value under different $r$. We sort the index of the vector according to the groundtruth vector. Besides, we do not differentiate vector $v$ and $-v$. {\bf Red point}: Singular Values obtained by built-in matlab svd function. {\bf Blue point}: Singular Values obtained by linear time SVD.}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics{test22.eps}
+\caption{The absolute value of correlation between computed singular vector and groundtruth singular vector.}
+\end{figure}
+
+
+
+\clearpage
+\subsection{Part 2}
+Here, we use "PCAtestmatrix.m"\footnote{https://github.com/WenjianYu/rSVD-single-pass}to generate test matrix. We consider Case 1 in \cite{yu2017single}, which is implemeted in function "test3(m,n,k,choice)". Here we set $m=2048, n=512$. Four all 6 cases, we test $k=10,20,30,40$. 
+
+Clearly, both method performs well. 
+\begin{itemize}
+  \item Case 1. The first 20 singular vector (after logarithmic) decreases linearly. Hence, according to the correlation with the ground truth, only the first 20 singular vector can only be computed accurately.
+  \item Case 2/3. The singular values (after logarithmic) decrease sub-linearly. Both method cannot compute the singular vector except the first few ones. However, the singular vector can be computed accurately.
+  \item Case 4/5. The singular values (after logarithmic) decrease linearly. However, it decreases more slowly than Case 1. The first few singular vectors can be computed rather accurately. 
+  \item Case 6. The sigular values lies in different groups. And only those with large values can be approximated accurately.
+\end{itemize} 
+
+In summary, both methods favor the rapidly decreasing singular values, where the singular spaces can be separatedly easily.
+
+\begin{figure}[H]
+  \centering
+  \subfigure[$k=10$]{
+  \includegraphics[width=0.8\textwidth]{1_10.eps}}
+  \subfigure[$k=20$]{
+  \includegraphics[width=0.8\textwidth]{1_20.eps}}
+  \caption{PCA test, Case 1, Part 1}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \subfigure[$k=30$]{
+  \includegraphics[width=0.8\textwidth]{1_30.eps}}
+  \subfigure[$k=40$]{
+  \includegraphics[width=0.8\textwidth]{1_40.eps}}
+  \caption{PCA test, Case 1, Part 2}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \subfigure[$k=10$]{
+  \includegraphics[width=0.8\textwidth]{2_10.eps}}
+  \subfigure[$k=20$]{
+  \includegraphics[width=0.8\textwidth]{2_20.eps}}
+  \caption{PCA test, Case 2, Part 1}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \subfigure[$k=30$]{
+  \includegraphics[width=0.8\textwidth]{2_30.eps}}
+  \subfigure[$k=40$]{
+  \includegraphics[width=0.8\textwidth]{2_40.eps}}
+  \caption{PCA test, Case 2, Part 2}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \subfigure[$k=10$]{
+  \includegraphics[width=0.8\textwidth]{3_10.eps}}
+  \subfigure[$k=20$]{
+  \includegraphics[width=0.8\textwidth]{3_20.eps}}
+  \caption{PCA test, Case 3, Part 1}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \subfigure[$k=30$]{
+  \includegraphics[width=0.8\textwidth]{3_30.eps}}
+  \subfigure[$k=40$]{
+  \includegraphics[width=0.8\textwidth]{3_40.eps}}
+  \caption{PCA test, Case 3, Part 2}
+\end{figure}
+
+
+\begin{figure}[H]
+  \centering
+  \subfigure[$k=10$]{
+  \includegraphics[width=0.8\textwidth]{4_10.eps}}
+  \subfigure[$k=20$]{
+  \includegraphics[width=0.8\textwidth]{4_20.eps}}
+  \caption{PCA test, Case 4, Part 1}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \subfigure[$k=30$]{
+  \includegraphics[width=0.8\textwidth]{4_30.eps}}
+  \subfigure[$k=40$]{
+  \includegraphics[width=0.8\textwidth]{4_40.eps}}
+  \caption{PCA test, Case 4, Part 2}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \subfigure[$k=10$]{
+  \includegraphics[width=0.8\textwidth]{5_10.eps}}
+  \subfigure[$k=20$]{
+  \includegraphics[width=0.8\textwidth]{5_20.eps}}
+  \caption{PCA test, Case 5, Part 1}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \subfigure[$k=30$]{
+  \includegraphics[width=0.8\textwidth]{5_30.eps}}
+  \subfigure[$k=40$]{
+  \includegraphics[width=0.8\textwidth]{5_40.eps}}
+  \caption{PCA test, Case 5, Part 2}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \subfigure[$k=10$]{
+  \includegraphics[width=0.8\textwidth]{6_10.eps}}
+  \subfigure[$k=20$]{
+  \includegraphics[width=0.8\textwidth]{6_20.eps}}
+  \caption{PCA test, Case 6, Part 1}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \subfigure[$k=30$]{
+  \includegraphics[width=0.8\textwidth]{6_30.eps}}
+  \subfigure[$k=40$]{
+  \includegraphics[width=0.8\textwidth]{6_40.eps}}
+  \caption{PCA test, Case 6, Part 2}
+\end{figure}
+
+
+\clearpage
+\subsection{Part 3}
+An large matrix of size $10^4\times 10^4$ is constructed in ``genLargeMatrix.m'' and tested in ``test5.m''. We only conpare the performance of Prototype and matlab built-in function ``svds'', since from above we find Prototype outperforms LinearTime.
+
+We find that our code ``prototype'' is comparable to ``svds'' in terms of CPU time. Besides, the first few singular values and singular vectors can be effectively computed. The main gap between our prototype and ``svds'' is that given the same desired rank $k$, the last few singular vectors are highly inaccurate.
+\begin{figure}[H]
+  \centering
+  \subfigure[$k=10$]{
+  \includegraphics[width=0.8\textwidth]{large5.eps}}
+  \subfigure[$k=20$]{
+  \includegraphics[width=0.8\textwidth]{large10.eps}}
+  \caption{Large matrix test,  Part 1}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \subfigure[$k=30$]{
+  \includegraphics[width=0.8\textwidth]{large20.eps}}
+  \subfigure[$k=40$]{
+  \includegraphics[width=0.8\textwidth]{large40.eps}}
+  \caption{Large matrix test, Part 2}
+\end{figure}
+
+
+\subsection{Part 4}
+We use figures from Sophie Marceau from Douban \footnote{https://movie.douban.com/celebrity/1040543/photo/2583230256/} as original file. The figure can be seemed as a $2328\times 1908\times 3$ tensor, we transform it into a matrix of size $6984\times 1908$ and sample 20\% of the matrix as observations. Besides, we add Gaussian noise onto the observed data. We set different levels of tolerance (named "tol") in the programme.
+
+
+
+\begin{table}[htbp]
+  \centering
+  \begin{tabular}{ccccc}
+    \toprule
+    tolerance & SVT iter & error (SVT) &error (on real image) & rank\\
+    \midrule
+    0.4 & 11&0.3406&0.3434&3\\
+    0.2 & 35 & 0.2 & 0.2039 & 4\\
+    0.1 & 141 & 0.0983 & 0.1080 & 22\\
+    0.05 & 398 & 0.0496 & 0.0656 & 61\\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.8\textwidth]{curve.eps}
+  \caption{Tol$=0.05$}
+\end{figure}
+
+  \begin{figure}[H]
+    \centering
+    \subfigure[Original file]{
+      \label{fig: raw} 
+      \includegraphics[width=0.4\textwidth]{fig_raw.eps}}
+    \hspace{0.5in} % 两图片之间的距离
+    \subfigure[Noisy observation]{
+      \label{fig: noise}
+      \includegraphics[width=0.4\textwidth]{fig_noise.eps}}
+      \subfigure[$tol=0.4$]{
+        \label{fig: 0.4} 
+        \includegraphics[width=0.4\textwidth]{fig_0.4.eps}}
+      \hspace{0.5in}
+    \subfigure[$tol=0.2$]{
+      \label{fig: 0.2} 
+      \includegraphics[width=0.4\textwidth]{fig_0.2.pdf}}
+    \subfigure[$tol=0.1$]{
+      \label{fig: 0.1}
+      \includegraphics[width=0.4\textwidth]{fig_0.1.pdf}}
+    \hspace{0.5in}
+    \subfigure[$tol=0.05$]{
+      \label{fig: 0.05}
+      \includegraphics[width=0.4\textwidth]{fig_0.05.pdf}}
+    \caption{Figure reconstruction}
+    \label{fig:fig}
+  \end{figure}
+  
+
+
+
+  \bibliographystyle{apalike}
+  \bibliography{bib.bib}
+  
+
+
+\end{document}
+
