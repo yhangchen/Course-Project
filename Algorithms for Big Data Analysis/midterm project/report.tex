@@ -1,0 +1,1262 @@
+\documentclass[conference,onecolumn,12pt]{IEEEtran}
+\usepackage{graphicx,amsmath,amsfonts,amssymb,bm,hyperref,url,breakurl,epsfig,epsf,color,fullpage,MnSymbol,mathbbol,fmtcount,algorithmic,algorithm,semtrans,cite,caption,multirow,listings,bbm,booktabs}
+\usepackage{subfigure}
+\usepackage{mathtools}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+\usepackage{palatino}
+
+\usepackage{titlesec}
+
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usetikzlibrary{pgfplots.groupplots}
+
+% \setcounter{secnumdepth}{4}
+\usepackage{setspace}
+\renewcommand{\baselinestretch}{1.5}
+\titleformat{\paragraph}
+{\normalfont\normalsize\bfseries}{\theparagraph}{1em}{}
+\titlespacing*{\paragraph}
+{0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus .2ex}
+\usepackage{listings}
+\usepackage{movie15}
+\usepackage{chngcntr}
+\counterwithin{figure}{section}
+\counterwithin{table}{section}
+\usepackage{cite}
+\usepackage{caption}
+\usepackage[bottom,hang,flushmargin]{footmisc} 
+\usepackage{fancyhdr}
+
+\setlength{\captionmargin}{30pt}
+
+\usepackage{hyperref}
+\definecolor{darkred}{RGB}{150,0,0}
+\definecolor{darkgreen}{RGB}{0,150,0}
+\definecolor{darkblue}{RGB}{0,0,200}
+\hypersetup{colorlinks=true, linkcolor=blue, citecolor=blue, urlcolor=blue}
+
+%--------------
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{condition}[theorem]{Condition}
+\newtheorem{conjecture}[theorem]{Conjecture}
+
+\newtheorem{remark}[subsection]{Remark}
+\newtheorem{remarks}[subsection]{Remarks}
+\newtheorem{example}[subsection]{Example}
+
+%% TT's definitions
+\newcommand\tr{{{\operatorname{trace}}}}
+\newcommand{\eps}{\varepsilon}
+\lstset{
+    numbers=left, 
+    numberstyle= \tiny, 
+    keywordstyle= \color{ blue!70},
+    commentstyle= \color{red!50!green!50!blue!50}, 
+    frame=shadowbox,
+    rulesepcolor= \color{ red!20!green!20!blue!20},
+    xleftmargin=2em,xrightmargin=2em, aboveskip=1em,
+    framexleftmargin=2em
+} 
+
+%%YP's macros
+\newcommand{\yp}[1]{\textcolor{red}{ #1}}
+\newcommand{\zeronorm}[1]{\left\|#1 \right\|_0}
+\newcommand{\unorm}[1]{\left\|#1 \right\|_u}
+\newcommand{\ynorm}[1]{\left\|#1 \right\|_{\bar{y}}}
+\newcommand{\onetwonorm}[1]{\left\|#1\right\|_{1,2}}
+\newcommand{\opnorm}[1]{\left\|#1\right\|}
+\newcommand{\fronorm}[1]{\left\|#1\right\|_{F}}
+\newcommand{\onenorm}[1]{\left\|#1\right\|_{\ell_1}}
+\newcommand{\twonorm}[1]{\left\|#1\right\|}
+\newcommand{\Dnorm}[1]{\left\|#1\right\|_{D}}
+\newcommand{\oneinfnorm}[1]{\left\|#1\right\|_{1,\infty}}
+\newcommand{\infnorm}[1]{\left\|#1\right\|_{\ell_\infty}}
+\newcommand{\nucnorm}[1]{\left\|#1\right\|_*}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\avg}[1]{\left< #1 \right>}
+
+\renewcommand{\d}{\mathrm{d}}
+
+\newcommand{\cA}{\mathcal{A}}
+\newcommand{\x}{\vct{x}}
+\newcommand{\y}{\vct{y}}
+%--------------
+\newcommand{\BA}{\begin{array}}
+\newcommand{\EA}{\end{array}}
+
+
+% EJC's macros
+
+\definecolor{emmanuel}{RGB}{255,127,0}
+\newcommand{\ejc}[1]{\textcolor{emmanuel}{EJC: #1}}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\<}{\langle}
+\renewcommand{\>}{\rangle}
+\newcommand{\Var}{\textrm{Var}}
+\newcommand{\sgn}[1]{\textrm{sgn}(#1)}
+\renewcommand{\P}{\operatorname{\mathbb{P}}}
+\newcommand{\E}{\operatorname{\mathbb{E}}}
+\newcommand{\todo}[1]{{\bf TODO: #1}}
+\newcommand{\e}{\mathrm{e}}
+\renewcommand{\i}{\imath}
+
+\newcommand{\vct}[1]{\bm{#1}}
+
+% MS's macros
+
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\supp}[1]{\operatorname{supp}(#1)}
+\newcommand{\restrict}[1]{\big\vert_{#1}}
+\newcommand{\Id}{\text{\em I}}
+\newcommand{\OpId}{\mathcal{I}}
+
+\newcommand{\Real}{\operatorname{Re}}
+\newcommand{\Imag}{\operatorname{Im}}
+
+\newcommand{\piyp}{\pi'_1(\vct{y})}
+\newcommand{\piy}{\pi_1(\vct{y})}
+\newcommand{\piar}{\pi_1(\vct{a}_r)}
+\newcommand{\piarp}{\pi'_1(\vct{a}_r)}
+
+
+\newcommand{\MS}[1]{\textcolor{blue}{MS: #1}}
+\newcommand{\MST}[1]{\textcolor{red}{#1}}
+\newcommand{\XL}[1]{\textcolor{cyan}{XL: #1}}
+
+\numberwithin{equation}{section} 
+
+\def \endprf{\hfill {\vrule height6pt width6pt depth0pt}\medskip}
+\newenvironment{proof}{\noindent {\bf Proof} }{\endprf\par}
+
+
+\newcommand{\qed}{{\unskip\nobreak\hfil\penalty50\hskip2em\vadjust{}
+           \nobreak\hfil$\Box$\parfillskip=0pt\finalhyphendemerits=0\par}}
+
+
+\newcommand{\note}[1]{{\bf [{\em Note:} #1]}}
+
+\newcommand{\iprod}[2]{\left\langle #1 , #2 \right\rangle}
+
+\newcommand{\red}{\textcolor{red}}
+
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+\renewcommand{\algorithmicensure}{\textbf{Output:}}
+\IEEEoverridecommandlockouts
+
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+
+
+    \begin{document}
+
+    \title{$\ell_1-\ell_1$ Minimization \& Sparse Inverse\\
+    {\footnotesize \textsuperscript{*}Project 1 on the Course ``Algorithms for Big Data Analysis".}
+    }
+    
+    \author{\IEEEauthorblockN{1\textsuperscript{st} Chen Yihang}
+    \textit{Peking University}\\
+    1700010780}
+    
+    \maketitle
+    \thispagestyle{fancy} % IEEE模板在\maketitle后会自动声明\thispagestyle{plain}，
+    % 导致第一页什么都没有。所以得把plain更改为fancy
+    \lhead{} % 页眉左，需要东西的话就在{}内添加
+    \chead{} % 页眉中
+    \rhead{} % 页眉右
+    \lfoot{} % 页眉左
+    \cfoot{} % 页眉中
+    \cfoot{\thepage} %页眉右，\thepage 表示当前页码
+    \renewcommand{\headrulewidth}{0pt} %改为0pt即可去掉页眉下面的横线
+    \renewcommand{\footrulewidth}{1pt} %改为0pt即可去掉页脚上面的横线
+    \pagestyle{fancy}
+    \cfoot{\thepage}
+    \begin{abstract}
+        In this report, we discuss two topic, i.e. the $\ell_1-\ell_1$ minimization and sparse covariance estimation. For the first problem, we transform it into a Basis Pursuit problem, and propose the Bregman method with proximal gradient and its accelerated version, linearized Bregman method, and ADMM method based on the dual problem. We compare this method to the commercial software, i.e. CVX, MOSEK, GUROBI in terms of speed and accuracy. In summary, we find the error forgetting phenomenon \cite{yin2013error} of the Bregman iteration, and the dual ADMM is rather inefficient when higher accuracy is required.
+
+        For the second problem, CVX adopts second order method, SDPT3, to solve this problem. We find that first order method, is much more efficient. We adopt Graphic Lasso method to solve the penalized likelihood maximization. Besides, we find an ADMM method, originally designed for penalized D-trace problem \cite{zhang2014sparse}, is well suited to solve our penalized Frobenius norm minimization. In the end, we perform penalty parameter search by estimating the precison on a synthetic dataset, and discuss the relation between this two method. 
+    \end{abstract}
+    \tableofcontents
+\clearpage
+\section{Algorithms for $\ell_1-\ell_1$ minimization}
+
+Consider the problem
+\begin{equation}
+\min_x\quad \rho \|x\|_1+\|Ax-b\|_1
+\label{eq:main}
+\end{equation}
+where $A\in \mathbb{R}^{m\times n}$ and $b\in \mathbb{R}^m$ are given. Test data are as follows:
+\begin{lstlisting}
+    n = 1024;
+    m = 512;
+    A = randn(m,n);
+    u = sprandn(n,1,0.1);
+    b = A*u;
+    rho = 1e-2
+\end{lstlisting}
+
+For the numerical result $\tilde{x}$, we define its error to be $\|A\tilde{x}-b\|_1$, its relative error with respect to cvx mosek $x_{\rm cvx}$ to be $\|\tilde{x}-x_{\rm cvx}\|_1/(1+\|x_{\rm cvx}\|_1)$.
+
+\subsection{CVX/LP solver}
+
+We solve Equation \ref{eq:main} using CVX by calling different solvers mosek or gurobi. Besides, we transform Equation (\ref{eq:main}) into standard form and call mosek and gurobi directly. Specifically, assuming $x = x^{+} - x^{-}$, $y = Ax-b$ and $y = y^{+} - y^{-}$, where $x^{+} = \max(x,0)$, $x^{-} = \max(-x,0)$, we can formulate Equation (\ref{eq:main}) into the standard form:
+\begin{equation}\label{eq:standard}
+\begin{split}
+    \min_{x^{+},x^{-},y^{+},y^{-}}&\quad \rho \mathbbm{1}^{T}\left(\begin{matrix}
+        x^{+}&
+        x^{-}&
+        y^{+}&
+        y^{-}\\
+    \end{matrix}
+        \right)^\top \\
+    \mathrm{s.t.}&\quad \left( \begin{matrix} 
+        A &-A &-I&I\\
+    \end{matrix} \right) \left(\begin{matrix}
+        x^{+}\\
+        x^{-}\\
+        y^{+}\\
+        y^{-}\\
+    \end{matrix}
+        \right) = b\\
+        &\quad \left(\begin{matrix}
+            x^{+}&
+            x^{-}&
+            y^{+}&
+            y^{-}\\
+        \end{matrix}
+            \right)^\top  \geq 0
+    \\
+\end{split}
+\end{equation}
+
+To reproduce the results in Figure (\ref{fig:test1}), please execute ``test1.m'', which calls \\``l1l1\_cvx\_mosek.m'', ``l1l1\_cvx\_gurobi.m'', ``l1l1\_mosek.m'' and ``l1l1\_gurobi.m''.
+
+
+
+\subsection{Reformulation as Basis Pursuit}
+We give a reformulation of problem (\ref{eq:main}) in this part. Assume $u=b-Ax$, hence the problem (\ref{eq:main}) can be written as
+\begin{equation}
+    \label{eq:l1l1}
+    \begin{split}
+        \min\quad &\|u\|_1+\rho\|x\|_1\\
+        {\rm s.t.}\quad & Ax+u=b\\
+    \end{split}
+\end{equation}
+
+Denote
+\begin{equation}
+    \label{eq:substitution}
+    \hat{A} = \left(A\ \rho I\right)/\sqrt{1+\rho^2},\quad \hat{b}=\rho b/\sqrt{1+\rho^2},\quad \hat{x} = \left(\begin{matrix}
+        \rho x\\
+        u\\
+    \end{matrix}\right)
+\end{equation}
+then, (\ref{eq:l1l1}) can be rewritten as
+\begin{equation}
+    \label{eq:l1min}
+    \begin{split}
+        \min\quad &\|\hat{x}\|_1\\
+        {\rm s.t.}\quad &\hat{A}\hat{x}=\hat{b}\\
+    \end{split}
+\end{equation}
+
+For simplicity, we use $A$ to substitute $\hat{A}$ and so on. 
+\subsection{Bregman iteration}
+Bregman iterative regularization was introduced to solve
+\begin{equation}
+    \label{basicbreg}
+    \min_u \quad J(u)+H(u)
+\end{equation}
+
+The Bregman distance based on a convex functional $J(\cdot)$ between points $u$ and $v$ is defined as
+\begin{equation}
+    D_J^p(u,v) = J(u)-J(v)-\left<p,u-v\right>
+\end{equation}
+
+Instead solving \ref{basicbreg} directly, we choose to solve
+\begin{subequations}
+    \begin{align}
+        u^{k+1}&\gets \arg\min_u \quad D_J^{p^k}(u,u^k)+H(u)\\
+        p^{k+1}&\gets p^k-\nabla H(u^{k+1})\in\partial J(u^{k+1})
+    \end{align}
+\end{subequations}
+
+We can use Bregman iteration scheme to solve the problem
+\begin{equation}
+    \min_u \mu\|u\|_1+\|Au-b\|^2
+\end{equation}
+where we define $J(u)=\mu\|u\|_1, H(u)=\|Au-b\|^2$. 
+
+Thus, the iteration becomes
+\begin{subequations}
+    \begin{align}
+        u^{k+1}&\gets \arg\min_u \quad D_J^{p^k}(u,u^k)+\frac{1}{2}\|Au-b\|^2 \\
+        p^{k+1}&\gets p^k-A^\top(Au^{k+1}-b)
+    \end{align}
+\end{subequations}
+which is equivalent to a more simplified form
+\begin{subequations}
+\begin{align}
+    b^{k+1}&\gets b +(b^k-Au^k)\\
+    u^{k+1}&\gets \arg\min_u \quad J(u)+\frac{1}{2}\|Au-b^{k+1}\|^2\label{subbregman}
+\end{align}
+\end{subequations}
+where $b^0=0$, $u^0=0$. The subproblem \ref{subbregman} can be soolved by any Lasso solver. Here, we choose to use proximal gradient method with BB stepsizes and FISTA to cope with the problem
+\begin{equation}
+    \min_u \quad \mu \|x\|_1+\frac{1}{2}\|Ax-b\|^2
+\end{equation}
+In the following three subsubsections, we denote $f(x)=g(x)+\mu h(x)=\frac{1}{2}\|Ax-b\|^2+\mu \|x\|_1$, where we replae $u$ by $x$ to avoid confusion. 
+
+This algorithm is implemented in ``l1\_breg.m''. The input ``opts.method'' specify different method to solve the lasso problem, where ``0'' means proximal gradient method with BB stepsize, ``1'' means Nesterov acceleration. The default value is set to be zero. We set $\mu=0.01$ by default.
+ 
+\subsubsection{Proximal gradient method}
+Since $h(x)=\|x\|_1$, the proximal operator can be explicitly obtained. We adopt the continuation stategy from \cite{wen2010fast} and Barzila-Borwein step size. We set $\mu_{\max}=\max(\mu,\gamma_1 \|A^\top b\|_{\infty})$, where $\gamma_1$ is diminishing ratio for $\mu$'s each update. Then, we take $\mu_0=\mu_{\max}$, and update $\mu_i$ according to criterions that will be introduced later.
+
+In the first iteration, step size is set to be $\alpha_0$. otherwise, in the $(k+1)$-th iteration, BB step size is adopted
+\begin{equation}
+    \label{proxbb}
+    \alpha^{k+1}=\frac{(x^k-x^{k-1})^\top (x^k-x^{k-1})}{(x^k-x^{k-1})^\top(\nabla g(x^k)-\nabla g(x^{k-1}))}
+\end{equation}
+
+Thus, $x^{k+1}$ is updated by
+\begin{equation}
+    \label{proxxup}
+    x^{k+1}={\ \rm soft}(x^k-\alpha^k \nabla g(x^k),\alpha^k \mu_i)
+\end{equation}
+
+Define $f_i(x)=g(x)+\mu_i h(x)$, if $|\frac{f_i(x^k)-f_i(x^{k-1})}{f_i(x^{k-1})}|<\varepsilon_1$ and $\mu_i>\mu$, we update $\mu_i$ by
+\begin{equation}
+    \label{proxmuup}
+    \mu_{i+1}=\max(\mu,\gamma_1\min(\|\nabla g(x^k)\|_\infty,\mu_i))
+\end{equation}
+Once we update $\mu_i$, we set the index of $x^k$ to be zero, and adopt the inital stepsize $\alpha^0$. 
+
+When $\mu_i=\mu$, and $|\frac{f_i(x^k)-f_i(x^{k-1})}{f_i(x^{k-1})}|<\varepsilon_2$, we terminate the whole algorithm.
+
+This algorithm is implemented in ``l1\_proxgrad.m''.
+
+% \subsubsection{Accelerated proximal gradient method-FISTA}
+% We apply the same continuation strategy, FISTA \cite{beck2009a} is adopted to accelerate the iteration. The update rule of FISTA can be summerized as
+% \begin{subequations}
+%     \begin{align}
+%         y^1 &= x^{0}, t_1=1.\\
+%     x^{k}&={\ \rm soft}(y^{k}-\alpha \nabla g(y^{k}),{\alpha}{\mu}).\\
+%     t_{k+1} &= \frac{1+\sqrt{1+4t_k^2}}{2}\label{fistaupdatet}\\
+%     y^{k+1}&=x^{k}+\frac{t_k-1}{t_{k+1}}(x^{k}-x^{k-1})
+% \end{align}
+% \end{subequations}
+
+% According to \cite{beck2009a}, step size should be chosen to be $1/L$, where $L$ is the Lipschitz constant of $\nabla f$. In our problem, we set $\alpha=\frac{1}{\|A^\top A\|_2}$.
+
+% This algorithm is implemented in ``l1\_fprox\_fista.m''.
+
+\subsubsection{Accelerated proximal gradient method-Nesterov}
+\label{sec:Nes}
+We apply the same continuation strategy. The update rule of Nesterov can be summerized as
+\begin{subequations}
+    \begin{align}
+        y^k &= x^k+\frac{k-1}{k+2}(x^k-x^{k-1})\\
+        x^{k+1} &= {\rm soft}(y^k-\alpha\nabla g, \alpha)        
+    \end{align}
+\end{subequations}
+
+This algorithm is implemented in ``l1\_fprox\_nesterov.m''.
+
+
+
+\subsection{Linearized Bregman iteration}
+The linearized Bregman algorithms \cite{yuan2013linearized}\footnote{Since the performance of Bregman iteration is not satisfactory, I found an more efficient algorithm online and test its performace.} return the solution to \ref{eq:l1min} by solving
+\begin{equation}
+    \label{lbreg_p}
+    \min_x \|x\|_1+\frac{1}{2\alpha}\|x\|_2^2,\quad {\rm s.t.} Ax=b
+\end{equation}
+
+It has been shown that there exist $\alpha_0$, such that for any $\alpha>\alpha_0$, tbe solution to \ref{lbreg_p} is also the solution to \ref{eq:l1min}. In the experiments, $\alpha$ could be $1\sim 10\times \|u\|_0$, where $u$ is the original signal. In our implementation, we take $\alpha = 5\|u\|_0$. 
+
+The Lagrangian of problem \ref{lbreg_p} can be written as
+\begin{equation}
+    \label{lag_lbreg}
+    L(x,y) = \|x\|_1+\frac{1}{2\alpha}\|x\|^2+y^\top (b-Ax)
+\end{equation}
+
+Minimizing $L$ w.r.t $x$, we have $x = \alpha {\ \rm soft}(A^\top y,1)$, and $y$ can updated by gradient descent. Hence, the algorithm can be written as
+\begin{subequations}
+    \begin{align}
+        y^{k+1}&=y^k-s^k(Ax^k-b)\\
+        x^k &= \alpha {\ \rm soft}(A^\top y^{k},1)
+    \end{align}
+\end{subequations}
+where $s^k$ is the BB stepsize. 
+
+This algorithm is implemented in ``l1l1\_lbreg\_bb.m''. We find this algorithm is both efficient and easy for coding.
+
+% \subsection{Bregman iteration with FISTA}
+
+
+% By formula (\ref{eq:substitution}), we can recover original $x$. Hence, we have Lagrangian function
+% \begin{equation}
+%     \label{eq:l1lag}
+%     L(x,y) = \|x\|_1 + y^\top (Ax-b)
+% \end{equation}
+% then, we add the augmented term
+% \begin{equation}
+%     \label{eq:l1lagaug}
+%     L_{\mu}(x,y) = \|x\|_1 + y^\top (Ax-b) + \frac{1}{2\mu}\|Ax-b\|_2^2
+% \end{equation}
+
+% Now we minimize $L_{\mu}(x,y)$ by iterations
+% \begin{equation}
+%     \begin{split}
+%         x^{k+1} &= \mathop{\arg\min}_x L_\mu (x,y^k)\\
+%         y^{k+1} & = y^k + \frac{1}{\mu} (Ax-b)
+%     \end{split}
+% \end{equation}
+% In each step, we denote $g(x) = \mu y^\top (Ax-b)+\frac{1}{2}\|Ax-b\|_2^2$ and $f(x)=g(x)+{\mu}\|x\|_1$.
+
+% We use accelerated proximal method (FISTA) to mininmize $x$.
+
+% According to the definition, we update $x$ of the $k$-th iteration in the augmented Lagrangian minimization and the $m$-th iteration in the proximal gradient iteration as follows
+% \begin{equation}
+%     \label{eq:proxiter}
+%     x^{k,m+1} = \arg\min_x {\mu}\|x\|_1 + (\nabla g(x^{k,m}))^\top (x-x^{k,m})+\frac{1}{2\tau_m} \|x-x^{k,m}\|^2_2
+% \end{equation}
+
+% We can explicitly write the solution of (\ref{eq:proxiter}) in the following
+% \begin{equation}
+%     x^{k.m+1} = {\ \rm soft}(x^{k,m}-\tau_m \nabla g(x^{k,m}),{\tau_m}{\mu})
+% \end{equation}
+% where we can also get $\nabla g(x) = \mu A^\top  y+A^\top (Ax-b)$. 
+
+
+
+% % \subsection{Implementation details}
+% % \paragraph{Step size} We use Barzilai-Borwein step size. When $m=0$, we use initial step $\tau_0$, otherwise, we update step size $\tau_m$ by 
+% % \begin{equation}
+% %     \label{eq:proxbb}
+% %     \tau_m = \frac{(x^{k,m}-x^{k,m-1})^\top (x^{k,m}-x^{k,m-1})}{(x^{k,m}-x^{k,m-1})^\top (\nabla g(x^{k,m})-\nabla g(x^{k,m-1}))}
+% % \end{equation}
+% \paragraph{Stopping criterion}
+% For the inner loop to find $x^{k+1}$, we terminate the iteration if $$\frac{|L_\mu(x^{k,m+1},y^k)-L_\mu(x^{k,m},y^k)|}{\max(L_\mu(x^{k,m},y^k),1)}< tol_2$$
+% and terminate the outer loop if
+% $$\frac{|L_\mu(x^{k+1},y^{k+1})-L_\mu(x^k,y^k)|}{\max(L_\mu(x^k,y^k),1)}< tol_1$$
+% before the maximum number of iterations are arrived.
+
+% Empirically, we find that for small $k$, the convergence of inner loop is slow. Hence, for $k=0,1$, $tol_2$ is set to be $10^{-3}$. 
+
+
+
+
+
+\subsection{ADMM for the dual}
+We can derive the dual of \ref{eq:l1min} can be written as
+\begin{equation}
+    \begin{split}
+        \min&\quad -b^\top y\\
+        {\rm s.t.}&\quad z = A^\top y, \|z\|_\infty \leq 1
+    \end{split}
+\end{equation}
+which has an augmented Lagrangian problem of the form
+\begin{equation}
+    \label{bplg}
+    \min_{y,\|z\|_\infty\leq 1}\quad -b^\top y - x^\top(z-A^\top y)+\frac{\beta}{2}\|z-A^\top y\|^2
+\end{equation}
+
+Fixing $x^k$ and $y^k$, minimizing \ref{bplg} w.r.t. $z$ can be given explicitly by 
+\begin{equation}
+    \label{bpupz}
+    z^{k+1} = \mathcal{P}_{\mathbf{B}_1^\infty} \left(A^\top y+x/\beta\right)
+\end{equation}
+where $\mathbf{B}_1^\infty=\{x\in \mathbb{R}^n:\|x\|_\infty\leq 1\}$, and $\mathcal{P}$ is the orthogonal projection. Specifically,
+\begin{equation}
+    \mathcal{P}_{\mathbf{B}_1^\infty}(z)_i = \frac{z_i}{\max(1,|z_i|)}
+\end{equation}
+
+Second, fixing $x^k$ and $z^{k+1}$, minimizing w.r.t. $y$ is a least sqquares problem, and we can get
+\begin{equation}
+    \label{bpupy}
+    \beta AA^\top y = \beta A z^{k+1}-(Ax^k-b)
+\end{equation}
+
+The reference paper \cite{yang2011alternating} differentiates two cases $AA^\top=I$ and $AA^\top \neq I$. In the former case, \ref{bpupy} can be readily solved. However, in the second case, solving \ref{bpupy} explicitly is computationally hard. Hence, we take a steepest descent in the $y$ direction $y^{k+1}=y^k-\alpha^k g^k$, where $\alpha^k$ and $g^k$ is given by
+\begin{equation}
+    g^k = Ax^k-b +A(A^\top y^k-z^{k+1}),\quad \alpha^k = \frac{{g^k}^\top g^k}{{g^k}^\top\beta AA^\top g^k}
+\end{equation}
+
+Third, we update $x$ by 
+\begin{equation}
+    \label{bpupx}
+    x^{k+1} = x^k-\gamma \beta(z^{k+1}-A^\top y^{k+1})
+\end{equation}
+where hyperparameter $\gamma$ is adopted in \cite{yang2011alternating} and is suggested to be set within $(0,\frac{\sqrt{5}+1}{2})$. In our implementation, we simply set it to be $\frac{\sqrt{5}+1}{2}$.
+
+{\bf Stopping critertion}
+
+We define the primal residue $r_p^k=Ax^k-b$ and the dual residue $r_d^k = A^\top y^k-z^k$. Besides, the duality gap is $\delta^k = b^\top y^k-\|x^k\|_1$. 
+
+If either $\|x^{k+1}-x^k\|_2/\|x^k\| < tol/2$ or
+\begin{equation}
+    \label{admmstop}
+    \max\left(
+        \frac{\|r_p^k\|_2}{\|b\|_2}, \frac{\|r_p^k\|_2}{\|z^k\|_2}, \frac{|\delta^k|}{\|x^k\|_1}
+    \right)<tol
+\end{equation}
+we stop the iteration. To reduce the computational effort, we do not check the criterion \ref{admmstop} if $\|x^{k+1}-x^k\|_2/\|x^k\| > tol$. Besides, in order to avoid division by zero error, we replace each denominator in the algorithm with the maximum of itself and the machine precision ``eps=$2^{-52}$''. 
+
+This algorithm is implemented in ``l1l1\_dual\_ADMM.m''.
+
+
+\subsection{Numerical results}
+The the following, we define the relative error to cvx mosek solver is by defining $ \frac{\|x_k-x_{\rm mosek}\|_1}{1+\|x_{\rm mosek}\|+1}$. We find that Bregman iteration with Nesterov, with fixed stepsize, is competitive with BB step size. The Linearized Bregman method with BB stepsize is, on the contrary, significantly outperforms other methods. The Bregman method with BB stpesize is slightly inferior to cvx-mosek. As for the ADMM for dual problem, it converges relative fast in the first iterations, but slowes down when the residual approches $10^{-6}$. Corresponding codes are ``test1.m'' and ``test2.m''.
+We set ``rng(1234)'' to ensure reproductivity.
+\begin{figure*}[!htbp]
+    \centering
+    \includegraphics[width=0.9\textwidth]{test1.eps}
+    \caption{Numerical results by calling different solvers.}
+    \label{fig:test1}
+    \end{figure*}
+\begin{figure*}[!htbp]
+\centering
+\includegraphics[width=0.8\textwidth]{test2.eps}
+\caption{Numerical results by implementing different methods}
+\label{fig:test1}
+\end{figure*}
+
+        \begin{table}[!htbp]
+            \centering
+            \begin{tabular}{lrrrr}
+                \toprule
+                & \multicolumn{1}{l}{$\|Ax_k-b\|_1$} & \multicolumn{1}{l}{$\|x_k\|_1$} & \multicolumn{1}{l}{CPU time} & \multicolumn{1}{l}{err-to-cvx-mosek} \\
+                \midrule
+            cvx-call-mosek & 1.63e-09 & 7.40e+01 & 0.86 & 0 \\
+            call-mosek & 3.55e-09 & 7.40e+01 & 3.46 & 1.35e-10 \\
+            cvx-call-gurobi & 6.28e-05 & 7.40e+01 & 1.06 & 5.49e-09 \\
+            call-gurobi & 9.30e-10 & 7.40e+01 & 2.10 & 1.35e-10 \\
+            \bottomrule
+            \end{tabular}
+            \caption{Numerical results by different solvers.}
+        \end{table}
+
+        \begin{table}[!htbp]
+            \centering
+            % Table generated by Excel2LaTeX from sheet 'Sheet1'
+\begin{tabular}{lrrrr}
+    \toprule
+    & \multicolumn{1}{l}{$\|Ax_k-b\|_1$} & \multicolumn{1}{l}{$\|x_k\|_1$} & \multicolumn{1}{l}{CPU time} & \multicolumn{1}{l}{err-to-cvx-mosek} \\
+    \midrule
+cvx-call-mosek & 1.63e-09 &  7.40e+01 & 0.86 & 0.00e+00 \\
+Bregman-BB &1.10e-10 &  7.40e+01 & 4.41 & 1.35e-10 \\
+Bregman-Nesterov & 1.39e-12 &  7.40e+01 & 4.13 & 1.35e-10 \\
+LBregman-BB & 1.92e-09 &  7.40e+01 & 0.642 & 5.47e-11 \\
+ADMM-dual & 1.61e-06 &  7.40e+01 & 0.66 & 7.65e-10 \\
+\bottomrule
+\end{tabular}%
+\caption{Numerical results by different methods.}
+        \end{table}
+
+\subsection{Comparision of Bregman iteration and ADMM}
+    An intriguing observation would be that we can set the convergence criterion of the inner cycle to be low, and the iteration will still converge. This phenomenon is analyzed in \cite{yin2013error} which explains why solving Bregman subproblems at low accuracies ($10^{-6}$) gives a Bregman solution at near the machine precision ($10^{-15}$). In our implementation, we find that modifying tolerance in ``l1l1\_breg.m'' from $10^{-8}$, to $10^{-10}$, and to $10^{-12}$ does not affect the number of iterations a lot, even we set the tolerance in solving the Lasso subproblem to be $10^{-5}$ or $10^{-6}$.
+
+    However, we find that ADMM is stagnated in the region around $10^{-8}$ and is hard to achieve higher accuracy. Hence, semismooth Newton method was introduced to cope with this situation.
+
+    Setting ``opts.display\_err'' in ``l1l1\_breg.m'' and ``l1l1\_dual\_ADMM.m'' to be 1, we can verify this phenomenon of BB/Nesterov method. We plot numerical results in \ref{fig:ef}. The relative error is defined by $\frac{\|x_k-x_{\rm real}\|}{\|x_\real\|}$, where $x$ is the variable in Basis Pursuit problem.
+    \begin{figure*}[!htbp]
+        \subfigure[Bregman iteration by proximal gradient with BB stepsize/ Nesterov acceleration. Inner cycle: tol $10^{-5}$, outer cycle: tol $10^{-12}$.]{
+        \includegraphics[width=3.1in]{ef.eps}}
+        \subfigure[Dual ADMM, tol $10^{-10}$]{
+            \includegraphics[width=3.1in]{nef.eps}}
+            \caption{Error forgetting and Stagnation}
+            \label{fig:ef}
+    \end{figure*}
+\clearpage
+
+\section{Sparse Inverse Covariance Estimation, Part \uppercase\expandafter{\romannumeral1}}
+
+Let $\mathcal{S}^n = \{{X}\in \R^{n\times n}| {X}^\top  = {X}\}$. Let ${S}\in \mathcal{S}^n$ be a a given observation of covariance matrix. Consider the model
+\begin{equation}
+\label{eq:primal0}
+    \max_{{X}\succeq 0} \log \det {X} - \tr{{S}{X}} - \rho\|{X}\|_1
+\end{equation}
+where $\|{X}\|_1 = \sum_{ij} |{X}_{ij}|$.
+\subsection{Dual problem}
+
+We introduce variable ${U}$, such that
+\begin{equation}
+    \|{X}\|_1 = \max_{\|{U}\|_{\infty}\leq 1} \<{U},{X}\>.
+\end{equation}
+
+Hence, problem (\ref{eq:primal0}) can be transformed into
+\begin{equation}
+    \label{eq:primal}
+        \max_{{X}\succeq 0} \min_{\|{U}\|_{\infty}\leq \rho} \log \det {X} - \<{S},{X}\> - \<{U},{X}\>.
+\end{equation}
+
+Hence, the Lagrange of this problem is
+\begin{equation}
+\label{eq:lag}
+L({X},{U},{P}) = \log \det {X} - \<{S}+{U}-{P},{X}\>
+\end{equation}
+
+Since, the derivative of the function is $\nabla_{{X}} L = {X}^{-1}-({S}+{U}-{P})$, and we get the following dual to (\ref{eq:primal})
+\begin{equation}
+\begin{split}
+    \min_{{P}\succeq 0, \|{U}\|_\infty \leq \rho} -\log \det({S}+{U}-{P}) - n
+\end{split}
+\end{equation}
+
+The duality gap is
+\begin{equation}
+    \mathrm{dualgap} = n - \<{S},{X}\> - \rho\|{X}\|_1
+    \label{eq:dualgap}
+\end{equation}
+
+\subsection{CVX solution}
+
+We use CVX to solve the primal problem (\ref{eq:primal}), and use duality
+gap (\ref{eq:dualgap}) to check the optimality condition.
+\subsection{First-order algorithm: GLasso}
+
+The problem (\ref{eq:primal}) is a convex optimization problem: the $\ell_1$ penalty is convex, the linear term is convex, the
+negative log determinant function is convex, and the set of positive semidefinite matrices is also convex. In particular, (\ref{eq:primal}) is in the form of Semidefinite Programming (SDP) because the
+variable is constrained to be a PSD matrix. SDPs are known to be hard convex optimization problems. Although there exist algorithms for solving general SDPs, such as the interior point method, most of these algorithms/solvers usually become quite inefficient when the
+dimension of the variable matrix exceeds hundreds. Therefore, machine learning researchers have been focusing specifically on solving (\ref{eq:primal}), and as a result developed the Glasso algorithm. \cite{friedman2008sparse}
+
+The main idea of the Glasso algorithm consists of the following three ingredients:
+\begin{itemize}
+    \item Instead of the regularized maximum likelihood problem (\ref{eq:primal}), solve its dual problem.
+    \item Decompose the dual problem of (\ref{eq:primal}) into a series of sub-problems, and iteratively solve the sub-problems until convergence.
+    \item For each sub-problem, solve its dual via the Lasso algorithm.
+\end{itemize}
+
+Let $W$ be the estimate of $\Sigma$. We show that one can solve the problem by optimizing over each row and corresponding column of $W$ in a block coordinate descent fashion. Partitioning $W$ and $S$
+\begin{equation}
+    W = \left(\begin{matrix}
+        W_{11}&w_{12}\\
+        w_{12}^\top &w_{22}\\
+    \end{matrix}\right),\quad S = \left(\begin{matrix}
+        S_{11}&s_{12}\\
+        s_{12}^\top &s_{22}\\
+    \end{matrix}\right), \quad X = \left(\begin{matrix}
+        X_{11}&x_{12}\\
+        x_{12}^\top &x_{22}\\
+    \end{matrix}\right)
+    \label{eq:partition}
+\end{equation}
+where $W_{11}, S_{11}, X_{11}\in \R^{(n-1)\times (n-1)}$, $w_{12}, s_{12}, x_{12}\in \R^n$, $w_{22}, s_{22}, x_{22}\in \R^n$.
+
+If we only update the row and column $j$, according to the Schur complements, the solution $w_{12}$ satisfies
+\begin{equation}
+    w_{12} = \arg\min_{y} \left\{
+        y^\top W_{11}^{-1}y:\|y-s_{12}\|_{\infty} \leq \rho
+        \right\}
+\label{eq:glassodual}
+\end{equation}
+
+Using convex duality, we can show that solving (\ref{eq:glassodual})
+is equivalent to solving the dual problem
+\begin{equation}
+    \min_{\beta} \left\{\frac{1}{2}
+    \|W_{11}^{1/2}\beta-b\|^2_2 +\rho\|\beta\|_1
+    \right\}
+    \label{eq:primallasso}
+\end{equation}
+where $b=W_{11}^{-1/2}s_{12}$. If $\beta$ solves (\ref{eq:primallasso}), then $w_{12}=W_{11}\beta$ solves (\ref{eq:glassodual}). In addition, we can express
+(\ref{eq:primallasso}) resembles a lasso regression.
+
+    Expanding relation $WX=I$ gives an expression that will be useful below
+    \begin{equation}
+       \left(\begin{matrix}
+            S_{11}&s_{12}\\
+            s_{12}^\top &s_{22}\\
+        \end{matrix}\right) \left(\begin{matrix}
+            X_{11}&x_{12}\\
+            x_{12}^\top &x_{22}\\
+        \end{matrix}\right) = \left(\begin{matrix}
+            I&0\\
+            0^\top &1\\
+        \end{matrix}\right)
+    \end{equation}
+
+    Due to the sub-gradient equation for (\ref{eq:primal})
+    \begin{equation}
+        W-S-\rho \Gamma = 0
+    \label{eq:gradprimal}
+    \end{equation}
+    where $\Gamma_{ij} = \sgn{X_{ij}}$ if $X_{ij}\neq 0$, else $\Gamma_{ij} \in [-1,1]$ if $X_{ij} = 0$.
+
+    Since $X\succeq 0$, $x_{ii}>0$, according the (\ref{eq:gradprimal}), the solution of $W$ on its diagonal can be explicit written $w_{ii} = s_{ii}+\rho$. Hence, in our update, we keep the diagonal unchanged and update $w_{12}$. 
+
+    We can derive that
+    \begin{equation}
+        \begin{split}
+            W_{11}x_{12}+w_{12}x_{22}=0\\
+            w_{12}^\top  x_{12}+w_{22}x_{22} = 1\\
+        \end{split}
+    \end{equation}
+
+    Hence, $x_{12}=-x_{22}W_{11}^{-1}w_{12}=-x_{22}\beta$ and $1=w_{12}^\top x_{12}+w_{22}x_{22}=(-w_{12}^\top  \beta +w_{22})x_{22}$. This formula can used to update $X$ according to $W$ by each column.
+
+    Here is Glasso algorithm in detail
+    \begin{enumerate}
+        \item Start with $W = S +\rho I$. The diagonal of $W$ remains unchanged
+        in what follows.
+        \item For each $i, j = 1, 2,\cdots, n$, solve the lasso problem
+        (\ref{eq:primallasso}), which takes as input the inner products $W_{11}$ and $s_{12}$. This gives a $p- 1$ vector solution $\beta$. Fill in the corresponding row and column of $W$ using $w_{12}$ = $W_{11}\beta$
+        \item Continue until convergence, the criterion will be detailed later.
+        \item Construct $X$ column by column according to $x_{22}=1/(-w_{12}^\top  \beta +w_{22})$ and $x_{12}=-x_{22}\beta$.
+    \end{enumerate}
+
+    {\bf Stopping criterion}
+
+    Take the subgradient of (\ref{eq:primallasso}), we have
+    \begin{equation}
+        W_{11}\beta -s_{12}+\rho v = 0
+    \end{equation}
+    where $v\in \sgn{\beta}$ element-wise. Hence, the convergence of lasso is equivalent to the fact that
+    \begin{equation}
+        \begin{split}
+            |(W_{11}\beta)_i -(s_{12})_i|\leq \rho,\quad &\beta_i=0\\
+            |(W_{11}\beta)_i -(s_{12})_i+\rho\sgn{\beta_i}|\leq \epsilon_{\rm lasso},\quad &\beta_i\neq 0
+        \end{split}
+    \end{equation}
+
+    For the outer loop, we iterate the column from the leftest to the rightest, i.e. from column 1 to column $n$. After a full batch of iterations, when the absolute change in $W$ is less than
+    $\epsilon_{\rm out} \|S_{\rm -diag}\|$ where $S_{\rm -diag}$ are the off-diagonal elements of the empirical covariance matrix $S$.
+
+    {\bf FISTA for solving Lasso problem}
+
+    We are aimed to solve the Lasso subproblem
+    \begin{equation}
+        \min_\beta \frac{1}{2}\|y-X\beta\|_2^2+\lambda\|\beta\|_1
+    \end{equation}
+
+    However, we do not have direct access to $X,y$, instead, we have $X^\top X,X^\top y$ from the definition of equation \label{eq:primallasso}. 
+    
+    Still, one may wonder what whether $W_{11}$ is positive semidefinite. Since $W_{11}$ is the order principal minor determinant of a positive definite matrix, it should be positive definite. However, due to numerical instability, it might be indefinite during the process. Hence, we check if $W_{11}$ is positive definite. Otherwise, we decompose $X^\top X = W_{11}=VDV^\top$, and makes the following replacement
+    \begin{equation}
+        \widehat{X^\top X}_{11}=V\max(D,0)V^\top,\quad \widehat{X^\top y}=V\mathbbm{1}(D>0)V^\top (X^\top y)
+    \end{equation}
+
+
+    We use the fast proximal gradient with Nesterov in Section \ref{sec:Nes} to solve the Lasso problem. Since we do not explicitly have $X,y$ now. The stopping criterion can be simply set to be $\|x^k-x^{k-1}\|_1<\varepsilon$. Still, we set the inital step size to be $\frac{1}{\|X^\top X\|_2}$. We find the Glasso outperforms cvx significantly. Detailed default parameters can be found in ``l1\_fprox\_nesterov.m''
+\clearpage
+
+
+    \section{Sparse Inverse Covariance Estimation, Part \uppercase\expandafter{\romannumeral2}}
+
+    Let $\mathcal{S}^n = \{{X}\in \R^{n\times n}| {X}^\top  = {X}\}$. Let ${S}\in \mathcal{S}^n$ be a a given observation of covariance matrix. Consider the model
+    \begin{equation}
+    \label{eq:primal2}
+        \min_{{X}\succeq 0} \|{X}\|_1 + \frac{\sigma}{2}\|SX-I\|_F^2
+    \end{equation}
+    where $\|{X}\|_1 = \sum_{ij} |{X}_{ij}|$.
+    \subsection{Duality Gap}
+
+    We introduce variable ${U}$, such that
+    \begin{equation}
+        \|{X}\|_1 = \max_{\|{U}\|_{\infty}\leq 1} \<{U},{X}\>.
+    \end{equation}
+
+    Hence, problem (\ref{eq:primal2}) can be transformed into
+    \begin{equation}
+            \min_{{X}\succeq 0} \max_{\|{U}\|_{\infty}\leq 1} \<{U},{X}\>+ \frac{\sigma}{2}\|SX-I\|_F^2
+    \end{equation}
+    
+    Introducing $Y\succeq 0$, the Lagrange of this problem is
+    \begin{equation}
+    L({X},{U},Y) = \<{U},{X}\>+ \frac{\sigma}{2}\|SX-I\|_F^2 -\<Y,X\>
+    \end{equation}
+    
+    Since, the derivative of the function is $\nabla_{{X}} L = U-Y+\sigma \frac{S^2X+XS^2}{2}-S$, and we get the following dual to (\ref{eq:primal2})
+    \begin{equation}
+    \begin{split}
+        \max\quad &\<{U},{X}\>+ \frac{\sigma}{2}\|SX-I\|_F^2 -\<Y,X\>\\
+        {\rm s.t.}\quad & \sigma\frac{S^2X+XS^2-2S}{2} = Y-U,\quad Y\succeq 0,\quad \|U\|_\infty <= 1\\
+    \end{split}
+    \end{equation}
+
+    The duality gap is
+    \begin{equation}
+        \mathrm{dualgap} = \|X\|_1-\<U-Y,X\> = \|X\|_1+\sigma(\|SX\|_F^2-\tr{SX}).
+        \label{eq:dualgap2}
+    \end{equation}
+    
+    \subsection{CVX solution}
+    We use CVX to solve the primal problem (\ref{eq:primal2}), and use duality
+    gap (\ref{eq:dualgap2}) to check the optimality condition.
+    \subsection{Alternating linearization method}
+    Following the methods in \cite{yang2011alternating} to solve \ref{eq:primal0}, we can reformulate the problem \ref{eq:primal2} into
+    \begin{equation}
+        \begin{split}
+            \min_{X,Y\succeq 0}\quad f(X)+g(Y)\\
+            {\rm s.t.}\quad X = Y
+        \end{split}
+    \end{equation}
+where $f(X) = \frac{\sigma}{2}\|SX-I\|_F^2, g(Y) = \|Y\|_1$.
+
+The augmented Lagrange can be written as
+\begin{equation}
+    \label{spinv2alag}
+    L(x,y,\lambda)=f(X)+g(Y)-\left<\Lambda,X-Y\right>+\frac{1}{2\mu}||X-Y||_F^2
+\end{equation}
+
+An anlternating direction versison of the augmented Lagranagian can be written as
+\begin{equation}
+    \label{spinv2admm}
+    \begin{cases}
+        X^{k+1}&\gets\arg\min_X L(X,Y^k,\Lambda^k_Y)\\
+        \Lambda_X^{k+1}&\gets\Lambda_Y^k-(X^{k+1}-Y^k)/\mu\\
+        Y^{k+1}&\gets\arg\min_Y L(X^{k+1},y,\Lambda_X^{k+1})\\
+        \Lambda_Y^{k+1}&\gets\Lambda_X^{k+1}-(X^{k+1}-Y^{k+1})/\mu\\
+    \end{cases}
+\end{equation}
+
+We have $-\Lambda_Y^{k+1}\in \partial g(Y^{k+1}), \Lambda_X^{k+1}=\nabla f(X^{k+1})$ due to first-order optimality condition. Note that $g$ is not differentiable everywhere. Hence, we keep $\Lambda_Y^k$ in updating $X^k$ and $Y^k$. In proving the convergence \cite{yang2011alternating}, we need to keep $F(X^{k+1})\leq Q(X^{k+1},Y)$, where $F(X)=f(X)+g(X)$ and $Q(X,Y)=f(X)+g(Y)-\left<\Lambda^k,X-Y^k\right>+\frac{1}{2\mu}\|X-Y\|_F^2$. Otherwise, we set $X^{k+1}=Y^k$. 
+
+The algorithm can be summerized in \ref{alg:ALM-SICS-constraint}. We adopt a decreasing $\mu_k$. Specifically, $\mu_k=\mu_0$ initially, and for every $\mu_N$ iteration, we decrease $\mu_k$ to $\max(\mu_r\mu_k,\mu_{\min})$. In our implementation, we tune the hyperparameters to be $\mu_0=0.1,\mu_N=40,\mu_r=3/4,\mu_{\min}=10^{-6}$.
+    \begin{algorithm}[!htbp]\caption{Alternating linearization method (ALM)}\label{alg:ALM-SICS-constraint}
+        \begin{algorithmic}
+        \STATE {\bfseries Input:} $X^0=Y^0$, $\mu_0$.
+        \FOR{$k=0,1,\cdots$}
+        \STATE 0. Pick $\mu_{k+1}\leq \mu_{k}$.
+        \STATE 1. $ X^{k+1}\leq \arg\min_{X\succeq 0} f(X) + g (Y^k) - \langle\Lambda^k, X-Y^k\rangle + \frac{1}{2\mu_{k+1}}\|X-Y^k\|_F^2$;
+        \STATE 2.  If $  g(X^{k+1})> g (Y^k) - \langle\Lambda^k,X^{k+1}-Y^k\rangle + \frac{1}{2\mu_{k+1}}\|X^{k+1}-Y^k\|_F^2$, then  $X^{k+1}  := Y^k$.
+        \STATE 3. $ Y^{k+1}\gets \arg\min_{Y} f(X^{k+1}) + \langle\nabla f(X^{k+1}),Y-X^{k+1}\rangle + \frac{1}{2\mu_{k+1}}\|Y-X^{k+1}\|_F^2 + g(Y)$;
+        \STATE 4. $\Lambda^{k+1}\gets\nabla f(X^{k+1})- (X^{k+1}-Y^{k+1})/\mu_{k+1}$.
+        \ENDFOR
+        \end{algorithmic}
+        \end{algorithm}
+
+Note that in solving $X^{k+1}$, we are required to solve the linear system with the form $AX+XB=C$, where $A,B$ are positive definite. According to the property of such Sylvester equation, the solution uniquely exists. For simplicity, we use MATLAB built-in function ``sylvester'' to deal with the subproblem.
+
+The alternating linearization method is able to solve the problem \ref{eq:primal2}, yet requires finetuning hyperparameters and is hard to reduce gap below $10^{-6}$. However, we still implement such algorithm in the file ``spinv\_alm.m''. The stopping criterion will be detailed in the next subsection. Since the gap can only be reduced to around $\sim 10^{-2}$ by this algorithm, which inspires us to find a better way.
+
+\subsection{ADMM method}
+Since Algorithm \ref{alg:ALM-SICS-constraint} is not satisfactory, we find another variant of ADMM method to deal with the problem. The method is modified from \cite{wang2020efficient}, which solves the following problem:
+\begin{equation*}
+    \arg\min_\Omega \frac{1}{4}(\tr(\Omega^\top S\Omega+\Omega S\Omega^\top))-\tr(\Omega)+\lambda\|\Omega\|_1
+\end{equation*}
+which is closely related to our problem \ref{eq:primal2}. Hence, we anticipate adopting their method should have better performace. 
+
+We consider the augmented Lagrangian in the following form
+\begin{equation}
+    L(X,Y,\Lambda)=\frac{\sigma}{2}\|SX-I\|_F^2+\|Y\|_1+\frac{1}{2\mu}\|X-Y+\Lambda\|_F^2
+\end{equation}
+
+Hence, the ADMM algorithm should be
+\begin{equation}
+    \begin{cases}
+        X^{k+1}&\gets\arg\min_X L(X,Y^k,\Lambda^k)\\
+        Y^{k+1}&\gets\arg\min_Y L(X^{k+1},Y,\Lambda^k)\\
+        \Lambda^{k+1}&\gets\Lambda^k+X^{k+1}-Y^{k+1}
+    \end{cases}
+\end{equation}
+
+The second minimization can be obtained explicitly by
+\begin{equation*}
+    Y^{k+1}={\rm soft}(X^{k+1}+\Lambda^k,\mu)
+\end{equation*}
+whereas obtaining $X^{k+1}$ is slightly more complicated. By differentiate $L$ w.r.t. $X$, we have
+\begin{equation}
+    \label{eq:spinv2x}
+    X^{k+1} \frac{\mu\sigma S^2}{2}+(\frac{\mu\sigma S^2}{2}+I)X^{k+1}=\mu\sigma S+Y^k-\Lambda^k
+\end{equation}
+which is also a Sylvester equation, and the solution uniquely exists, since $S^2=S^\top S$ is positive definite. Since if $X$ is a solution to \ref{eq:spinv2x}, $X^\top$ is also a solution to \ref{eq:spinv2x}, we have $X$ is symmetric. Initially, we set $X^0=0,Y^0=\mathbbm{1}_{n\times n}$, which is respectively the sparsest and densest matrix, and then converge to the same matrix in the end.
+
+Here, we do not need to tune $\mu$ to get better performace. We set $\mu=\mu_0=0.1$. We find that such algorithm is significantly more efficient. Hence, in presenting the results, we use this algorithm instead of Algorithm \ref{alg:ALM-SICS-constraint}. The MATLAB file ``spinv\_admm.m'' implements the algorithm. 
+
+The major disadvantage of our algorithm is the loss of positive definiteness. From the perspective of optimization, it is ideal to find the solution over the convex cone of positive definite matrices.
+However, this could be costly, as we would need to guarantee the solution in each iteration to be positive definite. As suggested by\cite{cai2010optimal}, a practical proposal to avoid this would be to project the estimator to the space of positive-semidefinite matrices under the operator norm. More specifically, one may first diagonalize $X$ and then replace negative eigenvalues by 0. The resulting estimator is then positive-semidefinite. To reduce computational complexity, we use the following codes to implement this idea, since function ``chol'' is the most efficient way to check if positive definite, and ``eps'' is equal to $2^{-52}$.
+\begin{lstlisting}{language=Matlab}
+    try
+        chol(X+eps*eye(size(X)));
+    catch
+        [V,D] = eig(X);
+        d = diag(D); d = max(d,0);
+        X = (V*diag(d))*V';
+    end
+\end{lstlisting}
+
+Since the projection is quite computationally expensive, we will first updating $X^k,Y^k$ until convergence, and then check if $X^k$ is positive semidefinite. Otherwise, we resume the iteration with projection. Numerically, we find that strategy is quite efficient. 
+
+{\bf Stopping criterion}
+
+Define $F(X)=\frac{\sigma}{2}\|SX-I\|_F^2+\|X\|_1$, we have that if 
+\begin{equation}
+    \max\left\{
+        \frac{|F(X^k)-F(X^{k-1})|}{\max\{F(X^k),F(X^{k-1}),1\}},\frac{\|X^k-X^{k-1}\|_F}{\max\{\|X^k\|_F,\|X^{k-1}\|_F,1\}},\frac{\|Y^k-Y^{k-1}\|_F}{\max\{\|Y^k\|_F,\|Y^{k-1}\|_F,1\}}
+    \right\} < tol_{\rm rel}
+\end{equation}
+where $tol_{\rm rel}=10^{-12}$, or the duality gap w.r.t. $X^k$ and $Y^k$ is smaller than $tol_{\rm gap}=10^{-6}$.
+
+Finally, we calculate $$\frac{\|X^k-Y^k\|_F}{\max \{\|X^k\|_F,\|Y^k\|_F,1\}}$$ in order to check convergence. Numerically, we find out that in our algorithm, this value is about $\sim 10^{-8}$. Hence, the convergence of the algorithm is guaranteed.
+
+
+
+\clearpage
+
+\section{Summary of Sparse Inverse Covariance Estimation}
+\subsection{Simulation Models on Sparse Inverse Covariance Estimation}
+Suppose $S\in \mathbb{R}^{n\times n}$, we set $n=30$. The two models are excerpted from \cite{cai2011constrained}.
+\begin{itemize}
+    \item {\bf Model 1}: $S_{ij}=0.6^{|i-j|}$.
+    \item {\bf Model 2}: We let $S=B+\delta I$, where each off-diagonal entry in $B$ is generated independently and equals 0.5 with probability 0.1 or 0 with probability 0.9. $\delta$ is chosen such that the conditional number (the ratio of maximal and minimal
+    singular values of a matrix) is equal to $n$. Finally, the matrix is standardized to have unit diagonals.
+\end{itemize}
+
+Model 1 has a banded structure, and the values of the entries
+decay as they move away from the diagonal. Model 2 is an example
+of a sparse matrix without any special sparsity patterns. 
+
+In implementing model 2, there are one pitfall. We cannot directly use the code
+\begin{lstlisting}{language=matlab}
+    f = @(x)cond(B+x*eye(n)) - n;
+    [delta,~,flag] = fsolve(f, 1);
+\end{lstlisting}
+to find desired $\delta$. However, since $B$ is not positive definite. Starting search $x$ from 0 will leads to a solution that is positive indefinite. Since ``cond'' involves singular values instead of eigenvalues. Hence, we adopt the following strategy.
+\begin{lstlisting}{language=matlab}
+    f = @(x)cond(B+(x+5)*eye(n)) - n;
+    [delta,~,flag] = fsolve(f, 1);
+\end{lstlisting}
+and uses
+\begin{lstlisting}{language=matlab}
+    try
+        chol(W+eps*eye(n)); % check if positive definite
+    catch MSE
+        flag = 0;
+    end
+\end{lstlisting}
+wher ``flag = 0'' means an invalid solution. Since in most cases, ``$B+5I$'' is positive definite, such stategy works well empirically.
+
+Besides, it is still possible that ``fsolve'' cannot find a solution. According to the documentation of ``fsolve'', we use ``flag'' to encode whether a solution $\delta$ is found. In all, the output is valid if and only if ``flag=1''. Otherwise, we raise an error and suggest the user to try again. In our implementation, that has never happened.
+
+\subsection{Experiments Settings}
+In Part \uppercase\expandafter{\romannumeral1} of the covariance inverse estimation, we set $\rho=0.001,0.1,10$ for Model 1 and 2. To reproduce the results, first specify the model in ``test1.m'', then execute the scripts.
+
+\begin{figure*}[!htbp]
+    \centering
+    \subfigure[$\rho=0.001$]{
+    \includegraphics[height=1.2in,width=6.2in]{0.001_1.eps}}
+    \subfigure[$\rho=0.01$]{
+    \includegraphics[height=1.2in,width=6.2in]{0.01_1.eps}}
+    \subfigure[$\rho=0.1$]{
+    \includegraphics[height=1.2in,width=6.2in]{0.1_1.eps}}
+    \subfigure[$\rho=1$]{
+    \includegraphics[height=1.2in,width=6.2in]{1_1.eps}}
+    \subfigure[$\rho=10$]{
+    \includegraphics[height=1.2in,width=6.2in]{10_1.eps}}
+    \caption{Part 1, Model 1. {\bf Left}: accurate inverse. {\bf Middle:} solution by cvx. {\bf Right}: solution by the first order algorithm.}
+\end{figure*}
+\begin{table*}[!htbp]
+\centering
+% Table generated by Excel2LaTeX from sheet 'Sheet1'
+\resizebox{6.2in}{!}{
+\begin{tabular}{crrrrrr}
+    \toprule
+    \multicolumn{1}{l}{Algorithm} & \multicolumn{1}{l}{$\rho$} & \multicolumn{1}{l}{Objective Value} & \multicolumn{1}{l}{Duality Gap} & \multicolumn{1}{l}{Time} & \multicolumn{1}{l}{Iteration} & \multicolumn{1}{l}{Error to CVX SDPT3} \\
+    \midrule
+    \multirow{5}[0]{*}{CVX SDPT3} & 0.001 & -17.17430565 & 9.23e-05 & 6.9355317 & NaN & 0 \\
+          & 0.01  & -18.19217144 & 0.000102716 & 6.631535 & NaN & 0 \\
+          & 0.1   & -26.10807442 & 0.000208115 & 6.4952199 & NaN & 0 \\
+          & 1     & -50.79441552 & 0.00138182 & 5.4659974 & NaN & 0 \\
+          & 10    & -101.9368582 & 1.07e-05 & 8.2433067 & NaN & 0 \\
+          \midrule
+    \multirow{5}[0]{*}{Glasso} & 0.001 & -17.17430564 & 1.33e-06 & 0.7930596 & 36    & 3.29e-06 \\
+          & 0.01  & -18.19217143 & -2.54e-06 & 0.7233722 & 38    & 3.17e-06 \\
+          & 0.1   & -26.10807441 & -1.33e-06 & 0.2454903 & 25    & 6.91e-06 \\
+          & 1     & -50.79441542 & 0     & 0.0109431 & 2     & 4.61e-05 \\
+          & 10    & -101.9368582 & 0     & 0.012671 & 2     & 1.78e-07 \\
+          \bottomrule
+    \end{tabular}}
+    
+    \caption{Part 1, Model 1}
+    \label{tab:model1}
+\end{table*}
+\begin{figure*}[!htbp]
+    \centering
+    \subfigure[$\rho=0.001$]{
+    \includegraphics[height=1.2in,width=6.2in]{0.001_2.eps}}
+    \subfigure[$\rho=0.01$]{
+    \includegraphics[height=1.2in,width=6.2in]{0.01_2.eps}}
+    \subfigure[$\rho=0.1$]{
+    \includegraphics[height=1.2in,width=6.2in]{0.1_2.eps}}
+    \subfigure[$\rho=1$]{
+    \includegraphics[height=1.2in,width=6.2in]{1_2.eps}}
+    \subfigure[$\rho=10$]{
+    \includegraphics[height=1.2in,width=6.2in]{10_2.eps}}
+    \caption{Part 1, Model 2. {\bf Left}: accurate inverse. {\bf Middle:} solution by cvx. {\bf Right}: solution by the first order algorithm.}
+\end{figure*}
+
+
+\begin{table*}[!htbp]
+    \centering
+    \resizebox{6.2in}{!}{
+% Table generated by Excel2LaTeX from sheet 'Sheet1'
+\begin{tabular}{crrrrrr}
+    \toprule
+    \multicolumn{1}{l}{Algorithm} & \multicolumn{1}{l}{$\rho$} & \multicolumn{1}{l}{Objective Value} & \multicolumn{1}{l}{Duality Gap} & \multicolumn{1}{l}{Time} & \multicolumn{1}{l}{Iteration} & \multicolumn{1}{l}{Error to CVX SDPT3} \\
+    \midrule
+    \multirow{5}[0]{*}{CVX SDPT3} & 0.001 & -28.82568208 & 2.60e-04 & 8.3034009 & NaN & 0 \\
+          & 0.01  & -29.31224024 & 0.000269697 & 7.1003089 & NaN & 0 \\
+          & 0.1   & -32.74842041 & 0.000355329 & 6.0068386 & NaN & 0 \\
+          & 1     & -50.79441546 & 0.001381937 & 5.3271661 & NaN & 0 \\
+          & 10    & -101.9368582 & 1.07e-05 & 7.8253934 & NaN& 0 \\
+          \midrule
+    \multirow{5}[0]{*}{Glasso} & 0.001 & -28.82568207 & 1.18e-07 & 0.1719492 & 6     & 9.69e-06 \\
+          & 0.01  & -29.31224022 & -2.85e-08 & 0.0957352 & 7     & 8.98e-06 \\
+          & 0.1   & -32.74842041 & 4.40e-09 & 0.0430902 & 5     & 1.18e-05 \\
+          & 1     & -50.79441542 & 0     & 0.0142118 & 2     & 4.61e-05 \\
+          & 10    & -101.9368582 & 0     & 0.0114573 & 2     & 1.78e-07 \\
+          \bottomrule
+    \end{tabular}}
+
+    \caption{Part 1, Model 2}
+        \label{tab:model2_30}
+    \end{table*}
+    \clearpage
+
+    
+
+
+In Part \uppercase\expandafter{\romannumeral2}, the minima is zero matrix when $\sigma$ is small. Thus, we take $\sigma=0.1,1,10,100,1000$, and find out that when setting $\sigma=1$, the minimum attains around $X=0$. Hence, lower $\sigma$ is almost meaningless. To reproduce the results, first specify the model in ``test2.m'', then execute the scripts.
+
+
+\begin{figure*}[!htbp]
+    \centering
+    \subfigure[$\sigma=1000$]{
+    \includegraphics[height=1.2in,width=6.2in]{extra_0.001_1.eps}}
+    \subfigure[$\sigma=100$]{
+    \includegraphics[height=1.2in,width=6.2in]{extra_0.01_1.eps}}
+    \subfigure[$\sigma=10$]{
+    \includegraphics[height=1.2in,width=6.2in]{extra_0.1_1.eps}}
+    \subfigure[$\sigma=1$]{
+    \includegraphics[height=1.2in,width=6.2in]{extra_1_1.eps}}
+    \subfigure[$\sigma=0.1$]{
+    \includegraphics[height=1.2in,width=6.2in]{extra_10_1.eps}}
+    \caption{Part 2, Model 1. {\bf Left}: accurate inverse. {\bf Middle:} solution by cvx. {\bf Right}: solution by the first order algorithm.}
+\end{figure*}
+    \begin{table*}[!htbp]
+\centering
+\resizebox{6.2in}{!}{
+\begin{tabular}{crrrrrr}
+\toprule
+\multicolumn{1}{l}{Algorithm} & \multicolumn{1}{l}{$\sigma$} & \multicolumn{1}{l}{Objective Value} & \multicolumn{1}{l}{Duality Gap} & \multicolumn{1}{l}{Time} & \multicolumn{1}{l}{Iteration} & \multicolumn{1}{l}{Error to CVX SDPT3} \\
+\midrule
+\multirow{5}[0]{*}{CVX SDPT3} & 1000  & 116.6301638 & -7.38e-06 & 2.2758444 & 20   & 0 \\
+      & 100   & 113.3016374 & 0.00010081 & 1.6106223 & 16   & 0 \\
+      & 10    & 80.01637194 & -0.000127646 & 1.245693 & 15   & 0 \\
+      & 1     & 15.0 & 3.69e-08 & 1.5746467 & 25   & 0 \\
+      & 0.1   & 1.5 & 3.93e-09 & 1.3832566 & 17   & 0 \\
+      \midrule
+\multirow{5}[0]{*}{ADMM} & 1000  & 116.6302438 & 1.77e-03 & 1.3586509 & max   & 4.02e-07 \\
+      & 100   & 113.301638 & 9.95e-07 & 0.4821643 & 1489  & 3.76e-07 \\
+      & 10    & 80.01637378 & 9.90e-07 & 0.0400372 & 198   & 6.25e-06 \\
+      & 1     & 15.0 & 7.03e-07 & 0.0271157 & 79    & 1.02e-04 \\
+      & 0.1   & 1.5   & 1.08e-11 & 0.0125717 & 18    & 7.81e-10 \\
+      \bottomrule
+\end{tabular}}
+    \caption{Part 2, Model 1}
+    \label{tab:extra_model1}
+\end{table*}
+% \clearpage
+\begin{figure*}[!htbp]
+    \centering
+    \subfigure[$\sigma=1000$]{
+    \includegraphics[height=1.2in,width=6.2in]{extra_0.001_2.eps}}
+    \subfigure[$\sigma=100$]{
+    \includegraphics[height=1.2in,width=6.2in]{extra_0.01_2.eps}}
+    \subfigure[$\sigma=10$]{
+    \includegraphics[height=1.2in,width=6.2in]{extra_0.1_2.eps}}
+    \subfigure[$\sigma=1$]{
+    \includegraphics[height=1.2in,width=6.2in]{extra_1_2.eps}}
+    \subfigure[$\sigma=0.1$]{
+    \includegraphics[height=1.2in,width=6.2in]{extra_10_2.eps}}
+    \caption{Part 2, Model 1. {\bf Left}: accurate inverse. {\bf Middle:} solution by cvx. {\bf Right}: solution by the first order algorithm.}
+\end{figure*}
+
+\begin{table*}[!htbp]
+    \centering
+    \resizebox{6.2in}{!}{
+% Table generated by Excel2LaTeX from sheet 'Sheet1'
+\begin{tabular}{crrrrrr}
+\toprule
+\multicolumn{1}{l}{Algorithm} & \multicolumn{1}{l}{$\sigma$} & \multicolumn{1}{l}{Objective Value} & \multicolumn{1}{l}{Duality Gap} & \multicolumn{1}{l}{Time} & \multicolumn{1}{l}{Iteration} & \multicolumn{1}{l}{Error to CVX SDPT3} \\
+\midrule
+\multirow{5}[0]{*}{CVX SDPT3} & 1000  & 48.75919911 & -3.72e-04 & 2.1926627 & 18   & 0 \\
+      & 100   & 44.87945079 & 2.16e-05 & 1.4598811 & 18   & 0 \\
+      & 10    & 33.70038151 & -4.41e-06 & 1.2664943 & 18   & 0 \\
+      & 1     & 15    & 2.20e-08 & 1.6382531 & 25   & 0 \\
+      & 0.1   & 1.5   & 4.61e-09 & 1.3882479 & 17   & 0 \\
+      \midrule
+\multirow{5}[0]{*}{ADMM} & 1000  & 48.75920008 & 9.99e-07 & 0.3943388 & 1156  & 1.42e-07 \\
+      & 100   & 44.87945173 & 9.54e-07 & 0.0839815 & 187   & 2.04e-08 \\
+      & 10    & 33.70038211 & 7.67e-07 & 0.0135485 & 37    & 3.26e-08 \\
+      & 1     & 15    & 9.73e-07 & 0.0468608 & 125   & 1.07e-04 \\
+      & 0.1   & 1.5   & 1.31e-10 & 0.0152287 & 17    & 9.17e-10 \\
+      \bottomrule
+\end{tabular}%
+    }
+        \caption{Part 2, Model 2.}
+        \label{tab:extra_model2_30}
+    \end{table*}    
+
+
+
+We find that, generally, first order algorithm performs significantly better than CVX solver, which utilizes \href{http://www.math.cmu.edu/~reha/sdpt3.html}{SDPT3}\cite{toh1999sdpt3}. Glasso achieves 10x improvement on performace, and ADMM based method achieves 50x improvement in reasonable size $\sigma$. 
+
+\subsection{Penalty Parameter Estimation}
+\label{sec:penal}
+Since first order mehod is significantly better, we validate two approches \ref{eq:primal0} and \ref{eq:primal2} to deal with the sparse inverse problem. Given a covariance matrix $S$, we generate $m$ samples according to a multivariate distribution with mean 0 and covariance matrix $S$. Based on the $m$ samples $x_i$, we calculate the empirical covariance matrix as
+\begin{equation}
+    \widehat{S}_m = \frac{1}{m}\sum_{i=1}^m (x_i-\bar{x})(x_i-\bar{x})^\top
+\end{equation}
+
+Then we calculate the estimated precision matrix $\widehat{\Sigma}_m$ according to $\widehat{S}_m$. The performace of the estimation is defined by the likelihood loss
+\begin{equation}
+    L(\Sigma,S)=\left<\Sigma,S\right>-\log\det(\Sigma)
+\end{equation}
+which we try to minimize. The test set is generated independently from the same distribution that generates training set. We set the size of the test set to be 100.
+
+For criterion \ref{eq:primal0}, we perform grid search on $\rho$ to determine the optimal value. By setting $m=20,40,80,160$, and (1) $\rho=0.01i,1\leq i\leq 30$ for Model 1,  or (2) $\rho=0.01+0.05i,0\leq i\leq 20$ for Model 2. We are able to discover that the loss is in the form of ``V'', as Figure \ref{fig:rho_search1}, \ref{fig:rho_search2} shows. In general, as $m$ increases, the optimal $\rho$ seems to increase as well. Compare $m=20$ and $m=40$, we find that the fact that $m<n$ drastically impair the performace. Under Model 1, setting $\rho=0.05\sim 0.1$ seems to be the best choice. While for Model 2, we had better set $\rho=0.1\sim 0.2$ To reproduce the results, first specify the model in ``test3.m'', then execute the scripts.
+
+\clearpage
+\begin{figure*}
+    \centering
+    \includegraphics[width=6.2in]{rhos1.png}
+    \caption{Search for $\rho$ in range $[0.01,1]$ based on Model 1}
+    \label{fig:rho_search1}
+\end{figure*}
+
+\begin{figure*}
+    \centering
+    \includegraphics[width=6.2in]{rhos2.png}
+    \caption{Search for $\rho$ in range $[0.01,0.1]$ based on Model 2}
+    \label{fig:rho_search2}
+\end{figure*}
+
+
+For criterion \ref{eq:primal2}, we also conduct similar experiments in ``test4.m''. For Model 1, we set $m=20,30,40,80,160$, and $\sigma=0.01i,1\leq i\leq 30$. From Figure \ref{fig:sigma_search1}, the optimal choice seems to be $1/\sigma=0.1$. For Model 2, we set $m=20,30,40,80,160$, and $\sigma=0.01+0.05i,0\leq i\leq 19$. From Figure \ref{fig:sigma_search2}, the optimal choice still seems to be $1/\sigma=0.1$.
+\begin{figure*}[!htbp]
+    \centering
+    \includegraphics[width=6.2in]{sigma1.png}
+    \caption{Search for $1/\sigma$ based on Model 1}
+    \label{fig:sigma_search1}
+\end{figure*}
+\begin{figure*}[!htbp]
+    \centering
+    \includegraphics[width=6.2in]{sigma2.png}
+    \caption{Search for $1/\sigma$ in range based on Model 2}
+    \label{fig:sigma_search2}
+\end{figure*}
+
+In Summary, $\rho=0.1$ and $1/\sigma=0.05$ will be advantageous. Besides, we observe that by setting the penalty parameters properly, it is possible to estimte the precision matrix given $m<n$ with low likelihood error. For small $m<n$, usually a slightly larger $\rho$ or $1/\sigma$ is required, which could be twice of what in the normal setting.
+
+\subsection{Comparison between two criteria}
+From Section \ref{sec:penal}, the optimal choice of $\rho$ or $1/ \sigma $ is around 0.1. Hence, in this subsection, we set $m=100$, and compare the solution of two different method in ``test5.m''. From \ref{fig:compare1}, we find that only under small $1/sigma$, the criterion \ref{eq:primal2} will be advantageous. It is not suprising, since criterion \ref{eq:primal0} is the penalty form of likelihood. However, if we change the loss into
+\begin{equation}
+    L(\Sigma,S)=\|\Sigma S-I\|_F
+\end{equation}
+and we get the Figure \ref{fig:compare2}. We find that under most situations, \ref{eq:primal2} outperforms \ref{eq:primal0}. However, we still observe that \ref{eq:primal2} favors lower $1/\sigma$. 
+
+\begin{figure*}[!htbp]
+    \subfigure[Model 1]{
+        \includegraphics[width=3in]{compare1.png}
+    }
+    \subfigure[Model 2]{
+        \includegraphics[width=3in]{compare2.png}
+    }
+    \caption{Comparision by likelihood loss}
+    \label{fig:compare1}
+\end{figure*}
+
+\begin{figure*}[!htbp]
+    \subfigure[Model 1]{
+        \includegraphics[width=3in]{compare3.png}
+    }
+    \subfigure[Model 2]{
+        \includegraphics[width=3in]{compare4.png}
+    }
+    \caption{Comparision by F-norm loss}
+    \label{fig:compare2}
+\end{figure*}
+
+\clearpage
+\bibliographystyle{apalike}
+\bibliography{bib.bib}
+        
+\appendices
+
+
+
+
+
+
+\end{document}
+
+% We implement the first order algorithm in \cite{d2008first} to deal with the problem (\ref{eq:primal}).
+% \paragraph{Problem Setup} This paper consider the following estimation problem
+% \begin{equation}
+%     \BA{ll}
+% \mbox{maximize} & \log \det X - \langle \Sigma, X \rangle - \rho\|X\|_1\\
+% \mbox{subject to} & \alpha \mathbb{I}_n \preceq X \preceq \beta \mathbb{I}_n,
+% \EA
+% \label{eq:sparseml-relax}
+% \end{equation}
+
+% In our problem, $\alpha=0,\beta=+\infty$. However, the first-order optimality conditions impose $X(S + U)=\mathbb{I}_n$, hence we always have:
+% \begin{equation}
+%     X \succeq \alpha(n) \mathbb{I}_n \quad \mbox{with} \quad \alpha(n):=\frac{1}{\|\Sigma\|_2+n\|U\|_\infty},
+% \end{equation}
+% zero duality gap also means $\tr{SX}= n- \rho \|X\|_1$. Because $X$ and $S$ are both positive semidefinite, we get:
+% \[
+% \|X\|_2 \leq \|X\|_F \leq \|X\|_1 \leq \frac{n}{\rho},
+% \]
+% which, together with $\tr{SX} \geq \lambda_{\min} ({S}) \|X\|_2$, means $\|X\|_2 \leq n/\lambda_{\min} (S)$. Finally then, we must always have:
+% \[
+% X \preceq \beta(n) \mathbb{I}_n \quad \mbox{with} \quad \beta(n):=n \min\left(\frac{1}{\rho},\|S^{-1}\|_2\right).
+% \]
+% and $ 0< \alpha(n) \leq \lambda(X) \leq \beta(n) < + \infty$ at the optimum. Setting $\alpha=0$ and $\beta=+\infty$ in problem (\ref{eq:sparseml-relax}) is then equivalent to setting $\alpha=\alpha(n)$ and $\beta=\beta(n)$. Since the objective function of problem (\ref{eq:sparseml-relax}) is strictly convex when $0< \alpha(n) \leq \lambda(X) \leq \beta(n) < + \infty$, this shows that (\ref{eq:sparseml-relax}) always has a unique solution.
+
+
+
+
+% \paragraph{Nesterov's algorithm} Choose $\epsilon>0$ and set ${X}_0 =  \beta\mathbb{I}_n$, the algorithm then updates primal and dual iterates ${Y}_k$ and $\hat{{U}}_k$ using the following steps:
+% %\noindent {\bf For $k \geq 0$ do:}
+% \vskip 1ex
+% \begin{enumerate} \itemsep 0ex
+%     \item Compute $\nabla f_\epsilon({X}_k) = -{X}^{-1} + {S} + {U}^\star({X}_k)$, where ${U}^\star({X})=\max(\min( {X}/\epsilon,\rho),-\rho)$, which solves (\ref{eq:primal}).
+%     \item Find ${Y}_k = \arg \min_{{Y}  \succeq 0} \: \{\langle \nabla f_\epsilon({X}_k) , {Y}-{X}_k \rangle +
+% \frac{1}{2} L(\epsilon) \|{Y}-{X}_k\|_F^2\}$
+%     \item Find ${Z}_k = \arg \min_{{Z} \succeq 0} \left\{ \frac{L(\epsilon)d_1({Z})}{\sigma_1}  + \sum_{i=0}^k \frac{i+1}{2}
+% (f_\epsilon({X}_i)+    \langle \nabla f_\epsilon({X}_i),{Z}-{X}_i \rangle) \right\}$
+%     \item Update ${X}_k = \frac{2}{k+3} {Z}_k + \frac{k+1}{k+3} {Y}_k$ and $\hat{{U}}_k=\frac{k\hat{{U}}_{k-1} + 2U^\star({X}_k)}{k+2}$
+%     \item Repeat until the duality gap is less than the target precision:
+%     \[
+%     -\log \det {Y}_k + \langle {S}, {Y}_k \rangle + \rho \mathbbm{1}^\top |{Y}_k|\mathbbm{1} - \phi(\hat{{U}_k}) \leq \epsilon.
+%     \]
+% \end{enumerate}
+% where $L(\epsilon)$ is the Lipschitz constant of $\nabla f_\epsilon$, $\phi({U}):= \min_{{X} \succeq 0} - \log \det {X} + \langle {S} + {U}, {X} \rangle.$
+% \paragraph{Step 1} The first step requires computing the gradient of the function
+% \[
+% f_\epsilon(X) = \hat{f}(X) + \max_{u \in {\cal Q}_2} \: \langle X,U \rangle - (\epsilon/2D_2) d_2(U) .
+% \]
+% This function can be expressed in closed form as $f_\epsilon(X) = \hat{f}(X) + \sum_{i,j} \psi_\rho(X_{ij})$, where
+% \[
+% \psi_\epsilon (x) := \left\{ \begin{array}{ll} |x| - (\epsilon/4D_2) & \mbox{if } |x| \ge (\epsilon/2\rho D_2), \\
+% {D_2 x^2}/{\epsilon} & \mbox{otherwise,} \end{array} \right.
+% \]
+% which is simply the Moreau-Yosida regularization of the absolute value and the gradient of the function at $X$ is
+% \[
+% \nabla f_\rho(X) = -X^{-1} + \Sigma + U^\ast(X) ,
+% \]
+% with
+% \[
+% U^\ast(X) := \max(\min( X/\rho,\rho),-\rho),
+% \]
+% with min. and max. understood componentwise. The cost of this step is dominated by that of computing the inverse of $X$, which is $O(n^3)$.
