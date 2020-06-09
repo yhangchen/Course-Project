@@ -9,21 +9,8 @@ import numpy as np, matplotlib.pyplot as plt, glob, os
 import IPython.display as IPdisplay, matplotlib.font_manager as fm
 from mpl_toolkits.mplot3d.axes3d import Axes3D
 from PIL import Image
+from schemes_exp import RungeKutta
 
-
-def RungeKutta(f, t, y, h, T):
-    Y = [y]
-
-    while t < T:
-        K1 = f(t, y)
-        K2 = f(t + h / 2, y + (h / 2) * K1)
-        K3 = f(t + h / 2, y + (h / 2) * K2)
-        K4 = f(t + h, y + h * K3)
-        y = y + (h / 6) * (K1 + 2 * K2 + 2 * K3 + K4)
-        t += h
-        Y.append(y)
-
-    return Y
 
 def L(sigma, rho, beta):
     """
@@ -109,7 +96,6 @@ def test(case): # generate figures in the report.
         ax._gridOn
         ax.set_title('T=%d' % T,fontsize=12)
         ax.legend()
-        tikzplotlib.save("mytikz1.tex")
         plt.show()
     elif case == 2:
         f = L(sigma, rho, beta)
@@ -888,5 +874,6 @@ def test(case): # generate figures in the report.
 
 
 if __name__ == "__main__":
-    for i in range(1,8):
-        test(i)
+    # for i in range(1,8):
+    #     test(i)
+    test(1)
