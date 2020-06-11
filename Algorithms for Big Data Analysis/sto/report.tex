@@ -1,0 +1,858 @@
+\documentclass[conference,onecolumn,12pt]{IEEEtran}
+\usepackage[english]{babel}
+\usepackage{graphicx}
+\usepackage{framed}
+\usepackage[normalem]{ulem}
+\usepackage{amsmath}
+\usepackage{listings}
+\usepackage{amsthm}
+\usepackage{subfigure}
+\usepackage{mathrsfs}
+\usepackage{epstopdf}
+\usepackage{diagbox}
+\usepackage{amssymb}
+\usepackage{fancyhdr}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{palatino}
+\usepackage{multirow}
+\usepackage{bigstrut}
+\usepackage{bbm}
+\usepackage[linesnumbered,boxed,ruled,commentsnumbered]{algorithm2e}
+\usepackage{algpseudocode} 
+\usepackage{amsfonts}
+\usepackage[colorlinks,linkcolor=blue,anchorcolor=blue,citecolor=blue]{hyperref}
+\usepackage{enumerate}
+\usepackage[top=1in,bottom=1in, left=1in, right=1in]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage{pgfplots}
+\usepgfplotslibrary{groupplots,dateplot}
+\usetikzlibrary{patterns,shapes.arrows}
+\pgfplotsset{compat=newest}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Q}{\mathbb{Q}}
+\renewcommand{\(}{\left(}
+\renewcommand{\)}{\right)}
+\newcommand{\wTilde}{\Tilde{w}}
+
+\newcommand{\Z}{\mathbb{Z}}
+\numberwithin{equation}{section}
+\numberwithin{figure}{section}
+\numberwithin{table}{section}
+
+\theoremstyle{definition}
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+\newtheorem{proposition}{Proposition}
+\newtheorem{example}{Example}
+\newtheorem{lemma}{Lemma}
+\newtheorem*{definition}{Definition}
+\newtheorem*{note}{Note}
+\newtheorem{exercise}{Exercise}
+\usepackage{setspace}
+\renewcommand{\baselinestretch}{1.5}
+
+\newcommand{\Disp}{\displaystyle}
+\newcommand{\qe}{\hfill\(\bigtriangledown\)}
+\setlength{\columnseprule}{1 pt}
+\IEEEoverridecommandlockouts
+
+
+\begin{document}
+\title{Stochastic Gradient Descent\\
+{\footnotesize \textsuperscript{*}Project 2 on the Course ``Algorithms for Big Data Analysis".}
+}
+
+\author{\IEEEauthorblockN{1\textsuperscript{st} Chen Yihang}
+\textit{Peking University}\\
+1700010780}
+\date{}
+
+\maketitle
+\thispagestyle{fancy} % IEEE模板在\maketitle后会自动声明\thispagestyle{plain}，
+% 导致第一页什么都没有。所以得把plain更改为fancy
+\lhead{} % 页眉左，需要东西的话就在{}内添加
+\chead{} % 页眉中
+\rhead{} % 页眉右
+\lfoot{} % 页眉左
+\cfoot{} % 页眉中
+\cfoot{\thepage} %页眉右，\thepage 表示当前页码
+\renewcommand{\headrulewidth}{0pt} %改为0pt即可去掉页眉下面的横线
+\renewcommand{\footrulewidth}{1pt} %改为0pt即可去掉页脚上面的横线
+\pagestyle{fancy}
+\cfoot{\thepage}
+\begin{abstract}
+In this report, AdaGrad, ADAM, as well as SGD with BB stepsizes are implemented and tested on MNIST and Covertype (binary) datasets. We found that generally, among three optimization method, i.e. AdaGrad, ADAM, SGD-BB, ADAM is the best choice, and the test accuracy can be up to $90\%$ on MNIST and $75\%$ on Covertype (binary). AdaGrad cannot be on a par with ADAM and SGD-BB, and SGD-BB requires more gradient evaluations to achieve similar performance with ADAM as well as being less stable. 
+
+We plot the objective function value, infinity norm of gradient and training 0-1 loss on the training trajectory, and perform grid searches to find the optimal batch size and $\ell_1$ penalty parameter. As for the parameters for the optimization process, we directly use their default settings in Pytorch, or in the reference literature.
+\end{abstract}
+\tableofcontents
+\clearpage
+\section{Introduction}
+Broadly, this report focuses on the nonsmooth optimization problem
+\begin{equation} \label{l1prob}
+  \min_{w\in\R^{d}}\ R(w) := F(w) + \frac{\lambda}{d}\| w\|_1.
+\end{equation}
+where $F(w) = \frac{1}{n}\sum_{i=1}^n \log(1+\exp(-y^i w^T x^i))$ and $\lambda >0$. I use AdaGrad, ADAM and SGD with BB stepsize to solve the problem. Note that we replace $\lambda$ with $\lambda/d$, where $d$ is the dimension of each vector in the dataset. Such modification can reduce $\lambda$'s dependence on the datasets.
+
+
+
+\section{Optimization Algorithms}
+\subsection{Iterative Soft-Thresholding Algorithm (ISTA)}   \label{istasection}
+In the context of solving the $\ell_1$-norm regularized problem~\ref{l1prob}, the proximal gradient method is
+\begin{equation}\label{proxgrad1}
+  w_{k+1} \gets \arg\min_{w\in\mathbb{R}^{d}} \(F(w_k) + \nabla F(w_k)^T(w - w_k) + \frac{1}{2\alpha_k}\|w - w_k\|_2^2 +  \frac{\lambda}{n}\| w \|_1\).
+\end{equation}
+
+The optimization problem on the right-hand side of this expression is separable and can be solved in closed form.  The solution can be written component-wise as
+\begin{equation}\label{issta_separable}
+  [w_{k+1}]_i \gets \begin{cases}
+    [w_k - \alpha_k\nabla F(w_k)]_i + \alpha_k \frac{\lambda}{n} & \text{if $[w_k - \alpha_k\nabla F(w_k)]_i < -\alpha_k \frac{\lambda}{n}$} \\ 0 & \text{if $[w_k - \alpha_k\nabla F(w_k)]_i \in [-\alpha_k \frac{\lambda}{n},\alpha_k \frac{\lambda}{n}]$} \\ [w_k - \alpha_k\nabla F(w_k)]_i - \alpha_k \frac{\lambda}{n} & \text{if $[w_k - \alpha_k\nabla F(w_k)]_i > \alpha_k \frac{\lambda}{n}$}.
+  \end{cases}
+\end{equation}
+One also finds that this iteration can be written, with $(\cdot)_+ := \max\{\cdot,0\}$, as
+\begin{equation}\label{issta}
+  w_{k+1} \gets {\cal T}_{\alpha_k\lambda/n}(w_k - \alpha_k \nabla F(w_k)),\ \ \text{where}\ \ [{\cal T}_{\alpha_k\lambda/n}(\Tilde{w})]_i = (|\Tilde{w}_i| - \alpha_k\lambda/n)_+ \mathrm{sgn}(\Tilde{w}_i).
+\end{equation}
+In this form, ${\cal T}_{\alpha_k\lambda/n}$ is referred to as the soft-thresholding operator, which leads to the name \emph{iterative soft-thresholding algorithm} (ISTA) being used for (\ref{proxgrad1})--(\ref{issta_separable}).
+
+\subsection{ADAM}
+\begin{algorithm}
+  \label{adam_alg}
+  \caption{Adam}
+    \SetAlgoNoLine % 不要算法中的竖线
+    \SetKwInOut{Input}{\textbf{Paramters}}\SetKwInOut{Output}{\textbf{Return}} % 替换关键词
+    \Input{
+        \\
+        $f$: Stochastic objective function with parameters $\theta$\\
+        $\alpha$: stepsize.\\
+        $\beta_1, \beta_2\in [0,1]$:  exponential decay rates for the moment estimates.\\
+        $\theta_0$: : initial parameter vector\\}
+    \Output{
+        \\
+        $\theta_t$: resulting parameters\\}
+    \BlankLine
+    $m_0\gets 0$ (Initialize 1st moment vector)\;
+    $v_0\gets 0$ (Initialize 2nd moment vector)\;
+    $t\gets 0$ (Initialize timestep)\;
+    \While {not converged}{
+      $t\gets t+1$\;
+      $g_t\gets \nabla_\theta f_t(\theta_{t-1})$ (Get gradients w.r.t. stochastic objective at timestep $t$)\;
+      $m_t \gets \beta_1 m_{t-1}+(1-\beta_1)g_t$  (Update biased first moment estimate)\;
+      $v_t \gets \beta_2 v_{t-1}+(1-\beta_2)g_t^2$ (Update biased second raw moment estimate)\;
+      $\hat{m}_t \gets m_t/(1-\beta_1^t)$ (Compute bias-corrected first moment estimate)\;
+      $\hat{v}_t \gets v_t/(1-\beta_2^t)$ (Compute bias-corrected second raw moment estimate)\;
+      $\theta_t \gets \theta_{t-1}-\alpha \hat{m}_t/(\sqrt{\hat{v}_t}+\epsilon)$  (Update parameters)\;
+    }
+
+    \end{algorithm}
+\DecMargin{1em}
+ADAM was proposed in \cite{kingma2014adam} and I state it in Algorithm \ref{adam_alg}. Good default settings are $\alpha=0.001, \beta_1=0.9, \beta_2=0.999$ and $\epsilon = 10^{-8}$. The algorithm updates exponential moving averages of the gradient ($m_t$) and the squared gradient
+($v_t$) where the hyper-parameters $\beta_1, \beta_2\in [0,1)$ control the exponential decay rates of these moving
+averages. The moving averages themselves are estimates of the 1st moment (the mean) and the 2nd raw moment (the uncentered variance) of the gradient. 
+
+\subsection{AdaGrad}
+In essence, AdaGrad \cite{duchi2011adaptive} use $H_k = \frac{1}{\alpha} {\rm diag} (\sum_{i=1}^k g_i^2)^{1/2}$ to approximate Hessian matrix in Newton method, which leads to the update rule
+\begin{equation}\label{ess_grad}
+  x_{k+1} = x_k - H_k^{-1} g_k
+\end{equation}
+where we add a constant $\epsilon$ to prevent zero-division error.
+
+
+
+\begin{algorithm}
+  \label{adagrad_alg}
+  \caption{AdaGrad}
+    \SetAlgoNoLine % 不要算法中的竖线
+    \SetKwInOut{Input}{\textbf{Paramters}}\SetKwInOut{Output}{\textbf{Return}} % 替换关键词
+    \Input{
+$f$: Stochastic objective function with parameters $\theta$\\
+$\alpha$: stepsize.\\
+$\epsilon$:  small costant to prevent zero-division.\\
+$\theta_0$: : initial parameter vector\\}
+\Output{
+\\
+$\theta_t$: resulting parameters\\}
+\BlankLine
+$v_0\gets 0$ (Initialize diagnoal matrix)\;
+$t\gets 0$ (Initialize squared sum of gradient)\;
+\While {not converged}{
+$t\gets t+1$\;
+$g_t\gets \nabla_\theta f_t(\theta_{t-1})$ (Get gradients w.r.t. stochastic objective at timestep $t$)\;
+$v_t \gets v_{t-1} + g_t^2$  (Update squared sum of gradient)\;
+$\alpha_t = \alpha/(\sqrt{v_t}+\epsilon)$ (Update stepsize)\;
+$\theta_t = \theta_{t-1} - \alpha_t g_t)$  (Update parameters)\;
+}
+\end{algorithm}
+
+\subsection{SGD-BB}
+\begin{itemize}
+  \item Barzilai-Borwein stepsize
+  
+  The BB method, proposed by Barzilai and Borwein in \cite{barzilai1988two}, has been proved to be very successful in solving nonlinear optimization problems. The key idea behind the BB method is motivated by quasi-Newton methods. Suppose we want to solve the unconstrained minimization problem
+\begin{equation}\label{unconstrained}\min_x \ f(x),\end{equation}
+where $f$ is differentiable. A typical iteration of quasi-Newton methods for solving \eqref{unconstrained} takes the following form:
+\begin{equation}\label{eq:quasi-newton}
+    x_{t+1} = x_t - B_t^{-1}\nabla f(x_t),
+\end{equation}
+where $B_t$ is an approximation of the Hessian matrix of $f$ at the current iterate $x_t$. Different choices of $B_t$ give different quasi-Newton methods. The most important feature of $B_t$ is that it must satisfy the so-called secant equation:
+\begin{equation}\label{eq:secant_equation}
+    B_t s_t=y_t,
+\end{equation}
+where $s_t=x_t-x_{t-1}$ and $y_t=\nabla f(x_t)-\nabla f(x_{t-1})$ for $t\geq 1$.
+
+It is noted that in \eqref{eq:quasi-newton} one needs to solve a linear system, which may be time consuming when $B_t$ is large and dense.
+%Though quasi-Newton methods are robust and efficient for solving \eqref{unconstrained}, it is also noted that \eqref{eq:quasi-newton} requires solving a linear system, which can be costly when the problem is large and $B_t$ is dense.
+
+One way to alleviate this burden is to use the BB method, which replaces $B_t$ by a scalar matrix $\frac{1}{\eta_t} I$. However, one cannot choose a scalar $\eta_t$ such that the secant equation \eqref{eq:secant_equation} holds with $B_t=\frac{1}{\eta_t} I$. Instead, one can find $\eta_t$ such that the residual of the secant equation is minimized, i.e.,
+\[\min_{\eta_t} \left\| \frac{1}{\eta_t} s_t - y_t \right\|_2^2,\]
+which leads to the following choice of $\eta_t$:
+\begin{equation}\label{bb1-eta} \eta_t = \frac{\|s_t\|_2^2}{s_t^T y_t}. \end{equation}
+Therefore, a typical iteration of the BB method for solving \eqref{unconstrained} is
+\begin{equation}\label{bb-update} x_{t+1} = x_t - \eta_t\nabla f(x_t),\end{equation}
+where $\eta_t$ is computed by \eqref{bb1-eta}.
+
+\end{itemize}
+
+
+The BB method does not apply to SGD directly, because SGD never computes the full gradient $\nabla F(x)$. In SGD, $\nabla f_{i_t}(x_t)$ is an unbiased estimation for $\nabla F(x_t)$ when $i_t$ is uniformly sampled. Therefore, one may suggest to use $\nabla f_{i_{t+1}}(x_{t+1})-\nabla f_{i_t}(x_t)$ to estimate $\nabla F(x_{t+1})-\nabla F(x_t)$ when computing the BB step size using formula \eqref{bb1-eta}. However, this approach does not work well because of the variance of the stochastic gradient estimates. \cite{tan2016barzilai} proposes to incorporate the BB method to SGD in Algorithm \ref{bb_alg}
+\IncMargin{1em} % 使得行号不向外突出
+
+
+
+
+\begin{algorithm}
+  \label{bb_alg}
+  \caption{SGD with BB step size (SGD-BB)}
+    \SetAlgoNoLine % 不要算法中的竖线
+    \SetKwInOut{Input}{\textbf{Paramters}}\SetKwInOut{Output}{\textbf{Return}} % 替换关键词
+    \Input{
+        \\
+        $m$: update frequency.\\
+        $f$: Stochastic objective function with parameters $\theta$\\
+        $\Tilde{x}_0$: initial point.\\
+        $\eta_0$, $\eta_1$: initial step size (only used in the first epoch)\\
+        }
+    \Output{
+        \\
+        $x_k$: resulting parameters\\}
+    \BlankLine
+    \For {$k=0, 1,\cdots$}{
+      \If {$k>0$}{
+        $\eta_k=\frac{1}{m}\cdot\|\Tilde{x}_k-\Tilde{x}_{k-1}\|^2_2/|(\Tilde{x}_k-\Tilde{x}_{k-1})^T (\hat{g}_k-\hat{g}_{k-1})|$\;
+      }
+      $x_0 = \Tilde{x}_k$\;
+      $\hat{g}_{k+1}=0$\;
+      \For{$t=0,\cdots,m-1$}{
+      Randomly pick $i_t\in \{1,\dots,n\}$\;
+      $x_{t+1}=x_t- {\eta}_k \nabla f_{i_t}(x_t)$ \hfill $(*)$\;
+      $\hat{g}_{k+1}=\beta \nabla f_{i_t}(x_t) + (1-\beta) \hat{g}_{k+1}$\;}
+      $\Tilde{x}_{k+1}=x_{m}$
+    }
+      \end{algorithm}
+\DecMargin{1em}
+
+
+\section{Numerical Results}
+When implementing the stochastic gradient method, we regard ``training set size''/``batch size'' iterations as one epoch. Hence the computational budget of one epoch amounts to one full gradient. We are able to compare different method given the number of same gradient evaluations, which is usually larger than what is required to be converged. The output values on each epoch are averaged. We use 30 epoch in the training phase for MNIST and 20 for Covertype.
+
+The codes can be readily modified to set some stopping condition and terminate the training before the maximum number of iteration is achieved. However, since we want to compare their performace rather to train a classifier, we do not perform experiments on this subject.
+
+\subsection{Files description}
+\begin{enumerate}
+\item {\bf .$\backslash$AdaGrad.m}: implements one step of AdaGrad.
+\item {\bf .$\backslash$ADAM.m}: implements one step of ADAM.
+\item {\bf .$\backslash$SGD-BB.m}: implements the full process of SGD-BB.
+\item {\bf .$\backslash$objective.m}: implements the objective function.
+\item {\bf .$\backslash$mnist\_loader.m}: load the MNIST dataset.
+\item {\bf .$\backslash$mnist\_test.m}: test the three optimization methods on MNIST given the batchsize and $\lambda$.
+\item {\bf .$\backslash$covertype\_loader.m}: load the Covertype.binary dataset.
+\item {\bf .$\backslash$covertype\_test.m}: test the three optimization methods on Covertype.binary given the batchsize and $\lambda$.
+\item {\bf .$\backslash$test1.m}: generates figures and tables in Section \ref{sec:m}.
+\item {\bf .$\backslash$test2.m}: generates figures and tables in Section \ref{sec:c}.
+\item {\bf .$\backslash$data$\backslash$covertype}: Covertype.binary dataset.
+\item {\bf .$\backslash$data$\backslash$mnist}: MNIST dataset.
+\end{enumerate}
+\subsection{MNIST}\label{sec:m}
+The MNIST database \cite{lecun1998gradient} of handwritten digits, available from this page, has a training set of 60,000 examples, and a test set of 10,000 examples. It is a subset of a larger set available from NIST. The digits have been size-normalized and centered in a fixed-size image. 
+
+The data in MNIST are 28*28 images and labels are integers from 0 to 9. We modify the label to be -1 and 1 so that even numbers become 1 and odd become -1. The training set and test set have been divided. In the training set, we reshape the data into a $784\times 60000$ matrix, whose item is an integer ranging from 0 to 1. (Here we do resize the original item [0,255] into [0,1]).
+
+The MNIST dataset can be directly retrieved from \href{http://yann.lecun.com/exdb/mnist/}{The MNIST DATABASE of handwritten digits
+} by ``mnist\_loader.m''.
+
+We set the batchsize to be $200,1000,5000,10000$. For each step, we sample a different batch to evaluate the gradient. In the end, we use the output $w$ to calculate the 0-1 loss on the test data.
+
+
+\begin{table}[!htbp]
+\centering
+\begin{tabular}{rccccc}
+  \toprule
+batchsize&$\lambda$& 0.001&0.1&1&10\\
+\midrule
+\multirow{3}[0]{*}{200} 
+&AdaGrad &0.8620&0.8621&0.8515&0.8320 \\
+&Adam&0.8958&0.8949&0.8756&0.8362\\
+&SGD-BB&0.8872&0.8926&0.8728&0.8354\\
+
+\multirow{3}[0]{*}{1000} 
+&AdaGrad &0.8455&0.8445&0.8404&0.8414\\
+&Adam&0.8855&0.8856&0.8710&0.8342\\
+&SGD-BB&0.8862&0.8844&0.8693&0.8341\\
+
+\multirow{3}[0]{*}{5000} 
+&AdaGrad &0.8221&0.8216&0.8177&0.8217\\
+&Adam&0.8715&0.8717&0.8614&0.8337\\
+&SGD-BB&0.8750&0.8712&0.8678&0.8337\\
+
+\multirow{3}[0]{*}{10000} 
+&AdaGrad &0.8127&0.8132&0.8088&0.8122 \\
+&Adam&0.8590&0.8584&0.8528&0.8338\\
+&SGD-BB&0.8766&0.8711&0.8540&0.8327\\
+\bottomrule
+\end{tabular}
+
+\caption{Test accuracy on the MNIST model}
+\label{tab:acc}
+
+\end{table}
+
+We find that setting batch size to be 200, and $\lambda=0.01\sim 0.1$ seems to be
+the optimal choice. Generally, we find that SGD-BB and ADAM outperform AdaGrad. Besides, ADAM decreases more rapidly in the first few iterations than SGD-BB. Hence, ADAM is the best choice in analyzing MNIST datasets. 
+  \begin{figure}[!htbp]
+    \centering
+    \subfigure[$\lambda=0.001$]{
+      \includegraphics[width=0.4\textwidth]{mnist_0.001_200.eps}
+    }
+    \hspace{0.5in}
+    \subfigure[$\lambda=0.1$]{
+      \includegraphics[width=0.4\textwidth]{mnist_0.1_200.eps}
+    }
+    \vspace{0.5in}
+    \subfigure[$\lambda=1$]{
+      \includegraphics[width=0.4\textwidth]{mnist_1_200.eps}
+    }
+    \hspace{0.5in}
+    \subfigure[$\lambda=10$]{
+      \includegraphics[width=0.4\textwidth]{mnist_10_200.eps}
+    }
+    \caption{Surrogate Loss on the MNIST model, batch size = 200}
+    \end{figure}
+    
+    \begin{figure}[!htbp]
+      \centering
+      \subfigure[$\lambda=0.001$]{
+        \includegraphics[width=0.4\textwidth]{norm_mnist_0.001_200.eps}
+      }
+      \hspace{0.5in}
+      \subfigure[$\lambda=0.1$]{
+        \includegraphics[width=0.4\textwidth]{norm_mnist_0.1_200.eps}
+      }
+      \vspace{0.5in}
+      \subfigure[$\lambda=1$]{
+        \includegraphics[width=0.4\textwidth]{norm_mnist_1_200.eps}
+      }
+      \hspace{0.5in}
+      \subfigure[$\lambda=10$]{
+        \includegraphics[width=0.4\textwidth]{norm_mnist_10_200.eps}
+      }
+      \caption{Infinity norm of gradient on the MNIST model, batch size = 200}
+      \end{figure}
+
+    \begin{figure}[!htbp]
+      \centering
+      \subfigure[$\lambda=0.001$]{
+        \includegraphics[width=0.4\textwidth]{loss_mnist_0.001_200.eps}
+      }
+      \hspace{0.5in}
+      \subfigure[$\lambda=0.1$]{
+        \includegraphics[width=0.4\textwidth]{loss_mnist_0.1_200.eps}
+      }
+      \vspace{0.5in}
+      \subfigure[$\lambda=1$]{
+        \includegraphics[width=0.4\textwidth]{loss_mnist_1_200.eps}
+      }
+      \hspace{0.5in}
+      \subfigure[$\lambda=10$]{
+        \includegraphics[width=0.4\textwidth]{loss_mnist_10_200.eps}
+      }
+      \caption{0-1 Loss on the MNIST model, batch size = 200}
+      \end{figure}
+  
+      
+\begin{figure}[!htbp]
+  \centering
+  \subfigure[$\lambda=0.001$]{
+    \includegraphics[width=0.4\textwidth]{mnist_0.001_1000.eps}
+  }
+  \hspace{0.5in}
+  \subfigure[$\lambda=0.1$]{
+    \includegraphics[width=0.4\textwidth]{mnist_0.1_1000.eps}
+  }
+  \vspace{0.5in}
+  \subfigure[$\lambda=1$]{
+    \includegraphics[width=0.4\textwidth]{mnist_1_1000.eps}
+  }
+  \hspace{0.5in}
+  \subfigure[$\lambda=10$]{
+    \includegraphics[width=0.4\textwidth]{mnist_10_1000.eps}
+  }
+  \caption{Surrogate Loss on the MNIST model, batch size = 1000}
+  \end{figure}
+  
+  \begin{figure}[!htbp]
+    \centering
+    \subfigure[$\lambda=0.001$]{
+      \includegraphics[width=0.4\textwidth]{norm_mnist_0.001_1000.eps}
+    }
+    \hspace{0.5in}
+    \subfigure[$\lambda=0.1$]{
+      \includegraphics[width=0.4\textwidth]{norm_mnist_0.1_1000.eps}
+    }
+    \vspace{0.5in}
+    \subfigure[$\lambda=1$]{
+      \includegraphics[width=0.4\textwidth]{norm_mnist_1_1000.eps}
+    }
+    \hspace{0.5in}
+    \subfigure[$\lambda=10$]{
+      \includegraphics[width=0.4\textwidth]{norm_mnist_10_1000.eps}
+    }
+    \caption{Infinity norm of gradient on the MNIST model, batch size = 1000}
+    \end{figure}
+
+  \begin{figure}[!htbp]
+    \centering
+    \subfigure[$\lambda=0.001$]{
+      \includegraphics[width=0.4\textwidth]{loss_mnist_0.001_1000.eps}
+    }
+    \hspace{0.5in}
+    \subfigure[$\lambda=0.1$]{
+      \includegraphics[width=0.4\textwidth]{loss_mnist_0.1_1000.eps}
+    }
+    \vspace{0.5in}
+    \subfigure[$\lambda=1$]{
+      \includegraphics[width=0.4\textwidth]{loss_mnist_1_1000.eps}
+    }
+    \hspace{0.5in}
+    \subfigure[$\lambda=10$]{
+      \includegraphics[width=0.4\textwidth]{loss_mnist_10_1000.eps}
+    }
+    \caption{0-1 Loss on the MNIST model, batch size = 1000}
+    \end{figure}
+  
+    \begin{figure}[!htbp]
+      \centering
+      \subfigure[$\lambda=0.001$]{
+        \includegraphics[width=0.4\textwidth]{mnist_0.001_5000.eps}
+      }
+      \hspace{0.5in}
+      \subfigure[$\lambda=0.1$]{
+        \includegraphics[width=0.4\textwidth]{mnist_0.1_5000.eps}
+      }
+      \vspace{0.5in}
+      \subfigure[$\lambda=1$]{
+        \includegraphics[width=0.4\textwidth]{mnist_1_5000.eps}
+      }
+      \hspace{0.5in}
+      \subfigure[$\lambda=10$]{
+        \includegraphics[width=0.4\textwidth]{mnist_10_5000.eps}
+      }
+      \caption{Surrogate Loss on the MNIST model, batch size = 5000}
+      \end{figure}
+      \begin{figure}[!htbp]
+        \centering
+        \subfigure[$\lambda=0.001$]{
+          \includegraphics[width=0.4\textwidth]{norm_mnist_0.001_5000.eps}
+        }
+        \hspace{0.5in}
+        \subfigure[$\lambda=0.1$]{
+          \includegraphics[width=0.4\textwidth]{norm_mnist_0.1_5000.eps}
+        }
+        \vspace{0.5in}
+        \subfigure[$\lambda=1$]{
+          \includegraphics[width=0.4\textwidth]{norm_mnist_1_5000.eps}
+        }
+        \hspace{0.5in}
+        \subfigure[$\lambda=10$]{
+          \includegraphics[width=0.4\textwidth]{norm_mnist_10_5000.eps}
+        }
+        \caption{Infinity norm of gradient on the MNIST model, batch size = 5000}
+        \end{figure}
+      \begin{figure}[!htbp]
+        \centering
+        \subfigure[$\lambda=0.001$]{
+          \includegraphics[width=0.4\textwidth]{loss_mnist_0.001_5000.eps}
+        }
+        \hspace{0.5in}
+        \subfigure[$\lambda=0.1$]{
+          \includegraphics[width=0.4\textwidth]{loss_mnist_0.1_5000.eps}
+        }
+        \vspace{0.5in}
+        \subfigure[$\lambda=1$]{
+          \includegraphics[width=0.4\textwidth]{loss_mnist_1_5000.eps}
+        }
+        \hspace{0.5in}
+        \subfigure[$\lambda=10$]{
+          \includegraphics[width=0.4\textwidth]{loss_mnist_10_5000.eps}
+        }
+        \caption{0-1 Loss on the MNIST model, batch size = 5000}
+        \end{figure}
+  
+        \begin{figure}[!htbp]
+          \centering
+          \subfigure[$\lambda=0.001$]{
+            \includegraphics[width=0.4\textwidth]{norm_mnist_0.001_10000.eps}
+          }
+          \hspace{0.5in}
+          \subfigure[$\lambda=0.1$]{
+            \includegraphics[width=0.4\textwidth]{norm_mnist_0.1_10000.eps}
+          }
+          \vspace{0.5in}
+          \subfigure[$\lambda=1$]{
+            \includegraphics[width=0.4\textwidth]{norm_mnist_1_10000.eps}
+          }
+          \hspace{0.5in}
+          \subfigure[$\lambda=10$]{
+            \includegraphics[width=0.4\textwidth]{norm_mnist_10_10000.eps}
+          }
+          \caption{Infinity norm of gradient on the MNIST model, batch size = 10000}
+          \end{figure}
+
+    \begin{figure}[!htbp]
+      \centering
+      \subfigure[$\lambda=0.001$]{
+        \includegraphics[width=0.4\textwidth]{mnist_0.001_10000.eps}
+      }
+      \hspace{0.5in}
+      \subfigure[$\lambda=0.1$]{
+        \includegraphics[width=0.4\textwidth]{mnist_0.1_10000.eps}
+      }
+      \vspace{0.5in}
+      \subfigure[$\lambda=1$]{
+        \includegraphics[width=0.4\textwidth]{mnist_1_10000.eps}
+      }
+      \hspace{0.5in}
+      \subfigure[$\lambda=10$]{
+        \includegraphics[width=0.4\textwidth]{mnist_10_10000.eps}
+      }
+      \caption{Surrogate Loss on the MNIST model, batch size = 10000}
+      \end{figure}
+      
+      \begin{figure}[!htbp]
+        \centering
+        \subfigure[$\lambda=0.001$]{
+          \includegraphics[width=0.4\textwidth]{loss_mnist_0.001_10000.eps}
+        }
+        \hspace{0.5in}
+        \subfigure[$\lambda=0.1$]{
+          \includegraphics[width=0.4\textwidth]{loss_mnist_0.1_10000.eps}
+        }
+        \vspace{0.5in}
+        \subfigure[$\lambda=1$]{
+          \includegraphics[width=0.4\textwidth]{loss_mnist_1_10000.eps}
+        }
+        \hspace{0.5in}
+        \subfigure[$\lambda=10$]{
+          \includegraphics[width=0.4\textwidth]{loss_mnist_10_10000.eps}
+        }
+        \caption{0-1 Loss on the MNIST model, batch size = 10000}
+        \end{figure}
+    
+  
+
+\clearpage
+\subsection{Covertype}\label{sec:c}
+The actual forest cover type for a given observation (30 x 30 meter cell) was determined from US Forest Service (USFS) Region 2 Resource Information System (RIS) data. \cite{blackard2000comparison} Independent variables were derived from data originally obtained from US Geological Survey (USGS) and USFS data. Data is in raw form (not scaled) and contains binary (0 or 1) columns of data for qualitative independent variables (wilderness areas and soil types).\footnote{http://archive.ics.uci.edu/ml/datasets/covertype}
+  
+However, the original dataset does not contain binary data. We use \href{https://www.csie.ntu.edu.tw/~cjlin/libsvmtools/datasets/binary.html}{covertype.binary} instead. In the following, we detail how to install the LIBSVM package on Windows.
+
+We first download package from \href{https://www.csie.ntu.edu.tw/~cjlin/libsvm/#download}{LIBSVM}, then install \href{https://www.mathworks.com/matlabcentral/fileexchange/52848-matlab-support-for-mingw-w64-c-c-compiler}{MATLAB Support for MinGW-w64 C/C++ Compiler}. Before executing ``make.m'' on Windows 10, we are required to replace ``CFLAGS'' by ``COMPFLAGS'' (suggested by \href{https://github.com/cjlin1/libsvm/issues/55}{this link}) in it. After that, the LIBSVM can be readily installed. We use ``libsvmread'' to read load the covertype.binary datasets.
+
+The data in Covertype are 581012*54 matrix, with the label 1 or 2. We still modify the label to be -1 and 1. We choose 450000 observations as training set (around 80\%), and select 10000 data with label 1 as well as 10000 data with label -1 as test set. The training data can be resized as $45000\times 54$ matrix. Then, we reshuffle each the rows randomly so that we can retrieve the training dataset and test dataset uniformly.
+
+  We set the batchsize to be $500,1000,5000,10000$. For each step, we sample a different batch to evaluate the gradient. In the end, we use the output $w$ to calculate the 0-1 loss on the test data.
+
+We find that we cannot use SGD-BB to training on the raw data, which could be attributed to the zero division error. Hence, we try, for each column, resizing the items in it so that the largest one will be 1. However, we find that such preprocessing will be detrimental to performance. Hence, we decide not to adopt the SGD-BB method in our experiments.
+
+We find that despite the fact that ADAM and AdaGrad is able to achieve similar values of the objective function, their performance is drastically different, which could be attributed to the differences in their gradients. In general, we find that optimizing by ADAM, setting the batch size to be $500$ and $\lambda=0.001$ can achieve 75\% accuracy. 
+  \begin{table}[!htbp]
+    \centering
+    \begin{tabular}{rccccc}
+      \toprule
+    batchsize&$\lambda$& 0.0001&0.001&0.01&0.1\\
+    \midrule
+    \multirow{3}[0]{*}{500} 
+    &AdaGrad &0.6459&0.6512&0.6535&0.6526\\
+    &Adam&0.7183&0.7424&0.7295&0.7329\\
+
+    \multirow{3}[0]{*}{1000} 
+    &AdaGrad &0.6264&0.6437&0.6419&0.6416 \\
+    &Adam&0.6751&0.7345&0.7309&0.7349\\
+    
+    \multirow{3}[0]{*}{5000} 
+    &AdaGrad &0.6272&0.6113&0.4334&0.4491\\
+    &Adam&0.7128&0.7297&0.7298&0.7319\\
+    
+    \multirow{3}[0]{*}{10000} 
+    &AdaGrad &0.5555&0.5440&0.6089&0.6218\\
+    &Adam&0.6818&0.7090&0.6866&0.6953\\
+    
+    \bottomrule
+    \end{tabular}
+        \label{tab:acc}
+    \caption{Test accuracy on the Covertype model}
+    \end{table}
+  
+    \begin{figure}[!htbp]
+      \centering
+      \subfigure[$\lambda=0.0001$]{
+        \includegraphics[width=0.4\textwidth]{covertype_0.0001_500.eps}
+      }
+      \hspace{0.5in}
+      \subfigure[$\lambda=0.001$]{
+        \includegraphics[width=0.4\textwidth]{covertype_0.001_500.eps}
+      }
+      \vspace{0.5in}
+      \subfigure[$\lambda=1$]{
+        \includegraphics[width=0.4\textwidth]{covertype_0.01_500.eps}
+      }
+      \hspace{0.5in}
+      \subfigure[$\lambda=0.1$]{
+        \includegraphics[width=0.4\textwidth]{covertype_0.1_500.eps}
+      }
+      \caption{Surrogate Loss on the MNIST model, batch size = 500}
+      \end{figure}
+      
+      \begin{figure}[!htbp]
+        \centering
+        \subfigure[$\lambda=0.0001$]{
+          \includegraphics[width=0.4\textwidth]{norm_covertype_0.0001_500.eps}
+        }
+        \hspace{0.5in}
+        \subfigure[$\lambda=0.001$]{
+          \includegraphics[width=0.4\textwidth]{norm_covertype_0.001_500.eps}
+        }
+        \vspace{0.5in}
+        \subfigure[$\lambda=1$]{
+          \includegraphics[width=0.4\textwidth]{norm_covertype_0.01_500.eps}
+        }
+        \hspace{0.5in}
+        \subfigure[$\lambda=0.1$]{
+          \includegraphics[width=0.4\textwidth]{norm_covertype_0.1_500.eps}
+        }
+        \caption{Infinity norm of gradient on the MNIST model, batch size = 500}
+        \end{figure}
+  
+      \begin{figure}[!htbp]
+        \centering
+        \subfigure[$\lambda=0.0001$]{
+          \includegraphics[width=0.4\textwidth]{loss_covertype_0.0001_500.eps}
+        }
+        \hspace{0.5in}
+        \subfigure[$\lambda=0.001$]{
+          \includegraphics[width=0.4\textwidth]{loss_covertype_0.001_500.eps}
+        }
+        \vspace{0.5in}
+        \subfigure[$\lambda=1$]{
+          \includegraphics[width=0.4\textwidth]{loss_covertype_0.01_500.eps}
+        }
+        \hspace{0.5in}
+        \subfigure[$\lambda=0.1$]{
+          \includegraphics[width=0.4\textwidth]{loss_covertype_0.1_500.eps}
+        }
+        \caption{0-1 Loss on the MNIST model, batch size = 500}
+        \end{figure}
+    
+        
+  \begin{figure}[!htbp]
+    \centering
+    \subfigure[$\lambda=0.0001$]{
+      \includegraphics[width=0.4\textwidth]{covertype_0.0001_1000.eps}
+    }
+    \hspace{0.5in}
+    \subfigure[$\lambda=0.001$]{
+      \includegraphics[width=0.4\textwidth]{covertype_0.001_1000.eps}
+    }
+    \vspace{0.5in}
+    \subfigure[$\lambda=0.01$]{
+      \includegraphics[width=0.4\textwidth]{covertype_0.01_1000.eps}
+    }
+    \hspace{0.5in}
+    \subfigure[$\lambda=0.1$]{
+      \includegraphics[width=0.4\textwidth]{covertype_0.1_1000.eps}
+    }
+    \caption{Surrogate Loss on the MNIST model, batch size = 1000}
+    \end{figure}
+    
+    \begin{figure}[!htbp]
+      \centering
+      \subfigure[$\lambda=0.0001$]{
+        \includegraphics[width=0.4\textwidth]{norm_covertype_0.0001_1000.eps}
+      }
+      \hspace{0.5in}
+      \subfigure[$\lambda=0.001$]{
+        \includegraphics[width=0.4\textwidth]{norm_covertype_0.001_1000.eps}
+      }
+      \vspace{0.5in}
+      \subfigure[$\lambda=0.01$]{
+        \includegraphics[width=0.4\textwidth]{norm_covertype_0.01_1000.eps}
+      }
+      \hspace{0.5in}
+      \subfigure[$\lambda=0.1$]{
+        \includegraphics[width=0.4\textwidth]{norm_covertype_0.1_1000.eps}
+      }
+      \caption{Infinity norm of gradient on the MNIST model, batch size = 1000}
+      \end{figure}
+  
+    \begin{figure}[!htbp]
+      \centering
+      \subfigure[$\lambda=0.0001$]{
+        \includegraphics[width=0.4\textwidth]{loss_covertype_0.0001_1000.eps}
+      }
+      \hspace{0.5in}
+      \subfigure[$\lambda=0.001$]{
+        \includegraphics[width=0.4\textwidth]{loss_covertype_0.001_1000.eps}
+      }
+      \vspace{0.5in}
+      \subfigure[$\lambda=0.01$]{
+        \includegraphics[width=0.4\textwidth]{loss_covertype_0.01_1000.eps}
+      }
+      \hspace{0.5in}
+      \subfigure[$\lambda=0.1$]{
+        \includegraphics[width=0.4\textwidth]{loss_covertype_0.1_1000.eps}
+      }
+      \caption{0-1 Loss on the MNIST model, batch size = 1000}
+      \end{figure}
+    
+      \begin{figure}[!htbp]
+        \centering
+        \subfigure[$\lambda=0.0001$]{
+          \includegraphics[width=0.4\textwidth]{covertype_0.0001_5000.eps}
+        }
+        \hspace{0.5in}
+        \subfigure[$\lambda=0.001$]{
+          \includegraphics[width=0.4\textwidth]{covertype_0.001_5000.eps}
+        }
+        \vspace{0.5in}
+        \subfigure[$\lambda=0.01$]{
+          \includegraphics[width=0.4\textwidth]{covertype_0.01_5000.eps}
+        }
+        \hspace{0.5in}
+        \subfigure[$\lambda=0.1$]{
+          \includegraphics[width=0.4\textwidth]{covertype_0.1_5000.eps}
+        }
+        \caption{Surrogate Loss on the MNIST model, batch size = 5000}
+        \end{figure}
+        \begin{figure}[!htbp]
+          \centering
+          \subfigure[$\lambda=0.0001$]{
+            \includegraphics[width=0.4\textwidth]{norm_covertype_0.0001_5000.eps}
+          }
+          \hspace{0.5in}
+          \subfigure[$\lambda=0.001$]{
+            \includegraphics[width=0.4\textwidth]{norm_covertype_0.001_5000.eps}
+          }
+          \vspace{0.5in}
+          \subfigure[$\lambda=0.01$]{
+            \includegraphics[width=0.4\textwidth]{norm_covertype_0.01_5000.eps}
+          }
+          \hspace{0.5in}
+          \subfigure[$\lambda=0.1$]{
+            \includegraphics[width=0.4\textwidth]{norm_covertype_0.1_5000.eps}
+          }
+          \caption{Infinity norm of gradient on the MNIST model, batch size = 5000}
+          \end{figure}
+        \begin{figure}[!htbp]
+          \centering
+          \subfigure[$\lambda=0.0001$]{
+            \includegraphics[width=0.4\textwidth]{loss_covertype_0.0001_5000.eps}
+          }
+          \hspace{0.5in}
+          \subfigure[$\lambda=0.001$]{
+            \includegraphics[width=0.4\textwidth]{loss_covertype_0.001_5000.eps}
+          }
+          \vspace{0.5in}
+          \subfigure[$\lambda=0.01$]{
+            \includegraphics[width=0.4\textwidth]{loss_covertype_0.01_5000.eps}
+          }
+          \hspace{0.5in}
+          \subfigure[$\lambda=0.1$]{
+            \includegraphics[width=0.4\textwidth]{loss_covertype_0.1_5000.eps}
+          }
+          \caption{0-1 Loss on the MNIST model, batch size = 5000}
+          \end{figure}
+    
+          \begin{figure}[!htbp]
+            \centering
+            \subfigure[$\lambda=0.0001$]{
+              \includegraphics[width=0.4\textwidth]{norm_covertype_0.0001_10000.eps}
+            }
+            \hspace{0.5in}
+            \subfigure[$\lambda=0.001$]{
+              \includegraphics[width=0.4\textwidth]{norm_covertype_0.001_10000.eps}
+            }
+            \vspace{0.5in}
+            \subfigure[$\lambda=0.01$]{
+              \includegraphics[width=0.4\textwidth]{norm_covertype_0.01_10000.eps}
+            }
+            \hspace{0.5in}
+            \subfigure[$\lambda=0.1$]{
+              \includegraphics[width=0.4\textwidth]{norm_covertype_0.1_10000.eps}
+            }
+            \caption{Infinity norm of gradient on the MNIST model, batch size = 10000}
+            \end{figure}
+  
+      \begin{figure}[!htbp]
+        \centering
+        \subfigure[$\lambda=0.0001$]{
+          \includegraphics[width=0.4\textwidth]{covertype_0.0001_10000.eps}
+        }
+        \hspace{0.5in}
+        \subfigure[$\lambda=0.001$]{
+          \includegraphics[width=0.4\textwidth]{covertype_0.001_10000.eps}
+        }
+        \vspace{0.5in}
+        \subfigure[$\lambda=0.01$]{
+          \includegraphics[width=0.4\textwidth]{covertype_0.01_10000.eps}
+        }
+        \hspace{0.5in}
+        \subfigure[$\lambda=0.1$]{
+          \includegraphics[width=0.4\textwidth]{covertype_0.1_10000.eps}
+        }
+        \caption{Surrogate Loss on the MNIST model, batch size = 10000}
+        \end{figure}
+        
+        \begin{figure}[!htbp]
+          \centering
+          \subfigure[$\lambda=0.0001$]{
+            \includegraphics[width=0.4\textwidth]{loss_covertype_0.0001_10000.eps}
+          }
+          \hspace{0.5in}
+          \subfigure[$\lambda=0.001$]{
+            \includegraphics[width=0.4\textwidth]{loss_covertype_0.001_10000.eps}
+          }
+          \vspace{0.5in}
+          \subfigure[$\lambda=0.01$]{
+            \includegraphics[width=0.4\textwidth]{loss_covertype_0.01_10000.eps}
+          }
+          \hspace{0.5in}
+          \subfigure[$\lambda=0.1$]{
+            \includegraphics[width=0.4\textwidth]{loss_covertype_0.1_10000.eps}
+          }
+          \caption{0-1 Loss on the MNIST model, batch size = 10000}
+          \end{figure}
+  
+\clearpage
+\bibliographystyle{apalike}
+\bibliography{bib.bib}
+
+
+
+
+
+
+
+
+
+\end{document}

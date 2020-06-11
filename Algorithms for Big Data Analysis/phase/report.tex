@@ -1,0 +1,555 @@
+\documentclass[conference,onecolumn,12pt]{IEEEtran}
+\usepackage{graphicx,amsmath,amsfonts,amssymb,bm,hyperref,url,breakurl,epsfig,epsf,color,fullpage,MnSymbol,mathbbol,fmtcount,algorithmic,algorithm,semtrans,cite,multirow}
+\usepackage{subfigure}
+\usepackage{mathtools}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+\usepackage{palatino}
+\usepackage{booktabs}
+
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usetikzlibrary{pgfplots.groupplots}
+\usepackage{setspace}
+\renewcommand{\baselinestretch}{1.5}
+\usepackage{fancyhdr}
+
+% \setcounter{secnumdepth}{4}
+
+\usepackage{cite}
+\usepackage{caption}
+\usepackage[bottom,hang,flushmargin]{footmisc} 
+
+\setlength{\captionmargin}{30pt}
+
+\usepackage{hyperref}
+\definecolor{darkred}{RGB}{150,0,0}
+\definecolor{darkgreen}{RGB}{0,150,0}
+\definecolor{darkblue}{RGB}{0,0,200}
+\hypersetup{colorlinks=true, linkcolor=blue, citecolor=blue, urlcolor=blue}
+
+%--------------
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{condition}[theorem]{Condition}
+\newtheorem{conjecture}[theorem]{Conjecture}
+
+\newtheorem{remark}[subsection]{Remark}
+\newtheorem{remarks}[subsection]{Remarks}
+\newtheorem{example}[subsection]{Example}
+
+%% TT's definitions
+\newcommand\tr{{{\operatorname{trace}}}}
+\newcommand{\eps}{\varepsilon}
+
+
+%%YP's macros
+\newcommand{\yp}[1]{\textcolor{red}{ #1}}
+\newcommand{\zeronorm}[1]{\left\|#1 \right\|_0}
+\newcommand{\unorm}[1]{\left\|#1 \right\|_u}
+\newcommand{\ynorm}[1]{\left\|#1 \right\|_{\bar{y}}}
+\newcommand{\onetwonorm}[1]{\left\|#1\right\|_{1,2}}
+\newcommand{\opnorm}[1]{\left\|#1\right\|}
+\newcommand{\fronorm}[1]{\left\|#1\right\|_{F}}
+\newcommand{\onenorm}[1]{\left\|#1\right\|_{\ell_1}}
+\newcommand{\twonorm}[1]{\left\|#1\right\|}
+\newcommand{\Dnorm}[1]{\left\|#1\right\|_{D}}
+\newcommand{\oneinfnorm}[1]{\left\|#1\right\|_{1,\infty}}
+\newcommand{\infnorm}[1]{\left\|#1\right\|_{\ell_\infty}}
+\newcommand{\nucnorm}[1]{\left\|#1\right\|_*}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\avg}[1]{\left< #1 \right>}
+
+\renewcommand{\d}{\mathrm{d}}
+
+\newcommand{\cA}{\mathcal{A}}
+\newcommand{\x}{\vct{x}}
+\newcommand{\y}{\vct{y}}
+\newcommand{\W}{\mtx{W}}
+%--------------
+\newcommand{\mapA}{\mathbb{A}}
+
+% EJC's macros
+
+\definecolor{emmanuel}{RGB}{255,127,0}
+\newcommand{\ejc}[1]{\textcolor{emmanuel}{EJC: #1}}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\<}{\langle}
+\renewcommand{\>}{\rangle}
+\newcommand{\Var}{\textrm{Var}}
+\newcommand{\sgn}[1]{\textrm{sgn}(#1)}
+\renewcommand{\P}{\operatorname{\mathbb{P}}}
+\newcommand{\E}{\operatorname{\mathbb{E}}}
+\newcommand{\todo}[1]{{\bf TODO: #1}}
+\newcommand{\e}{\mathrm{e}}
+\renewcommand{\i}{\imath}
+
+\newcommand{\vct}[1]{\bm{#1}}
+\newcommand{\mtx}[1]{\bm{#1}}
+
+% MS's macros
+\newcommand{\trace}{\operatorname{Tr}}
+
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\supp}[1]{\operatorname{supp}(#1)}
+\newcommand{\restrict}[1]{\big\vert_{#1}}
+\newcommand{\Id}{\text{\em I}}
+\newcommand{\OpId}{\mathcal{I}}
+
+\newcommand{\Real}{\operatorname{Re}}
+\newcommand{\Imag}{\operatorname{Im}}
+
+\newcommand{\piyp}{\pi'_1(\vct{y})}
+\newcommand{\piy}{\pi_1(\vct{y})}
+\newcommand{\piar}{\pi_1(\vct{a}_r)}
+\newcommand{\piarp}{\pi'_1(\vct{a}_r)}
+
+
+\newcommand{\MS}[1]{\textcolor{blue}{MS: #1}}
+\newcommand{\MST}[1]{\textcolor{red}{#1}}
+\newcommand{\XL}[1]{\textcolor{cyan}{XL: #1}}
+
+
+\numberwithin{equation}{section} 
+
+\def \endprf{\hfill {\vrule height6pt width6pt depth0pt}\medskip}
+\newenvironment{proof}{\noindent {\bf Proof} }{\endprf\par}
+
+
+\newcommand{\qed}{{\unskip\nobreak\hfil\penalty50\hskip2em\vadjust{}
+           \nobreak\hfil$\Box$\parfillskip=0pt\finalhyphendemerits=0\par}}
+
+
+\newcommand{\note}[1]{{\bf [{\em Note:} #1]}}
+
+\newcommand{\iprod}[2]{\left\langle #1 , #2 \right\rangle}
+
+\newcommand{\red}{\textcolor{red}}
+
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+\renewcommand{\algorithmicensure}{\textbf{Output:}}
+
+\begin{document}
+\title{Phase Retrieval\\
+{\footnotesize \textsuperscript{*}Project 4 on the Course ``Algorithms for Big Data Analysis".}
+}
+
+\author{\IEEEauthorblockN{1\textsuperscript{st} Chen Yihang}
+\textit{Peking University}\\
+1700010780}
+\date{}
+
+\maketitle
+\thispagestyle{fancy} % IEEE模板在\maketitle后会自动声明\thispagestyle{plain}，
+% 导致第一页什么都没有。所以得把plain更改为fancy
+\lhead{} % 页眉左，需要东西的话就在{}内添加
+\chead{} % 页眉中
+\rhead{} % 页眉右
+\lfoot{} % 页眉左
+\cfoot{} % 页眉中
+\cfoot{\thepage} %页眉右，\thepage 表示当前页码
+\renewcommand{\headrulewidth}{0pt} %改为0pt即可去掉页眉下面的横线
+\renewcommand{\footrulewidth}{1pt} %改为0pt即可去掉页脚上面的横线
+\pagestyle{fancy}
+\cfoot{\thepage}
+
+
+\begin{abstract}
+  In this report, I implemented the PhaseLift \cite{candes2013phase} and Wirtinger flow \cite{candes2015phase} to solve the phase retrieval problem. We test the two algorithms on the coded diffraction model, and find out that Wirtinger flow is much more efficient. Besides, we also discuss the ``probability of successful retrieval'' on different $m/n$.
+\end{abstract}
+
+
+\tableofcontents
+\newpage
+\section{Problem setting}
+One popular formulation of the phase retrieval problem is solving a system of quadratic equations in the form
+\begin{align}
+\label{quadeq}
+y_r=\abs{\<\vct{a}_r, \vct{z}\>}^2,\quad r=1,2,\ldots,m,
+\end{align}
+where $z\in \mathbb{C}^n$ is the decision variable, $a_r\in \mathbb{C}^n$ are known sampling vectors, $<a_r,z>$ is the inner product between $a_r$ and $z$ in $\mathbb{C}^n$, $|a|$ is the magnitude of $a\in \mathbb{C}$, and $y\in \mathbb{R}$ are the observed measurements. This problem is a general instance of a nonconvex quadratic program (QP). In this report, I implemented the gradient method of Wirtinger flow \cite{candes2015phase} and PhaseLift \cite{candes2013phase}. In the following, I give a brief introduction to both of the algorithms.
+
+\section{Wirtinger flow}
+The Wirtinger flow includes two steps: (1) a careful initialization obtained by means of a spectral method, and (2) a series of updates refining this initial estimate by iteratively applying a novel update rule, much like in a gradient descent scheme. 
+\subsection{Minimization of a non-convex objective}
+
+Let $\ell(x,y)$ be a loss function measuring the misfit between both
+its scalar arguments. If the loss function is non-negative and
+vanishes only when $x = y$, then a solution to the generalized phase
+retrieval problem \eqref{quadeq} is any solution to
+\begin{equation}
+\label{noncvx}
+\text{minimize} \quad f(\vct{z}):=\frac{1}{2m}\sum_{r=1}^m
+\ell\bigl(y_r, \abs{\vct{a}_r^*\vct{z}}^2\bigr), \quad \vct{z} \in \C^n.  
+\end{equation}
+Although one could study many loss functions, we shall focus in this
+paper on the simple quadratic loss $\ell(x,y)=(x-y)^2$. Admittedly,
+the formulation \eqref{noncvx} does not make the problem any easier
+since the function $f$ is not convex. Minimizing non-convex
+objectives, which may have very many stationary points, is known to be
+NP-hard in general.  In fact, even establishing convergence to a local
+minimum or stationary point can be quite challenging.
+
+Our approach to \eqref{noncvx} is simply stated: start with an
+initialization $\vct{z}_0$, and for $\tau = 0, 1, 2, \ldots$,
+inductively define
+\begin{equation}
+\label{graddescent}
+\vct{z}_{\tau+1}=\vct{z}_\tau-\frac{\mu_{\tau+1}}{\twonorm{\vct{z}_0}^2}\left(\frac{1}{m}\sum_{r=1}^m\left(\abs{\vct{a}_r^*\vct{z}}^2-y_r\right)(\vct{a}_r\vct{a}_r^*)\vct{z}\right):=\vct{z}_\tau-\frac{\mu_{\tau+1}}{\twonorm{\vct{z}_0}^2}\nabla
+f(\vct{z}_\tau). 
+\end{equation}
+If the decision variable $\vct{z}$ and the sampling vectors were all
+real valued, the term between parentheses would be the gradient of
+$f$ divided by two, as our notation suggests. However, since $f(\vct{z})$ is a
+mapping from $\C^n$ to $\R$, it is not holomorphic and hence not
+complex-differentiable. However, this term can still be viewed as a
+gradient based on Wirtinger derivatives. Hence, \eqref{graddescent} is a form of steepest descent and the parameter $\mu_{\tau+1}$ can be interpreted as a step size (note nonetheless that the effective step size is also inversely proportional to the magnitude of the initial guess).
+
+\subsection{Initialization via a spectral method}
+\label{Initschemes}
+
+Our main result states that for a certain random model, if the
+initialization $\vct{z}_0$ is sufficiently accurate, then the sequence
+$\{\vct{z}_{\tau}\}$ will converge toward a solution to the
+generalized phase problem \eqref{quadeq}.  In this paper, we propose
+computing the initial guess $\vct{z}_0$ via a spectral method,
+detailed in Algorithm \ref{QIINIT}. In words, $\vct{z}_0$ is the
+leading eigenvector of the positive semidefinite Hermitian matrix
+$\sum_r y_r \vct{a}_r \vct{a}_r^*$ constructed from the knowledge of
+the sampling vectors and observations. (As usual, $\vct{a}_r^*$ is the
+adjoint of $\vct{a}_r$.) Letting $\mtx{A}$ be the $m \times n$ matrix
+whose $r$th row is $\vct{a}_r^*$ so that with obvious notation
+$\vct{y} = |\mtx{A} \vct{x}|^2$, $\vct{z}_0$ is the leading
+eigenvector of $\mtx{A}^* \, \operatorname{diag}\{\vct{y}\}\, \mtx{A}$
+and can be computed via the power method by repeatedly applying
+$\mtx{A}$, entrywise multiplication by $\vct{y}$ and $\mtx{A}^*$.
+\begin{algorithm}[h]
+  \caption{Wirtinger Flow: Initialization} 
+\begin{algorithmic}
+  \REQUIRE{Observations $\{y_r\} \in \R^m$.}
+%
+  \STATE Set 
+\[ 
+\lambda^2 = n \, \frac{\sum_{r}
+    y_r}{\sum_r \twonorm{\vct{a}_r}^2}.
+\]
+% Issue of normalization
+\STATE Set $\vct{z}_0$, normalized to $\|\vct{z}_0\| = \lambda$, to be
+the eigenvector corresponding to the largest eigenvalue of
+  \begin{align*}
+  \mtx{Y}=\frac{1}{m}\sum_{r=1}^my_r\vct{a}_r\vct{a}_r^*.
+  \end{align*}
+  \ENSURE{Initial guess $\vct{z}_0$.}
+\end{algorithmic}
+\label{QIINIT}
+\end{algorithm}
+
+We consider a simple model where everything is
+real valued, and in which the vectors $a_r$ are
+i.i.d.~$\mathcal{N}(\vct{0},\mtx{I})$. Also without any loss in generality and to simplify exposition in this section we shall assume $\twonorm{\vct{x}}=1$.
+
+    Let $\vct{x}$ be a solution to \eqref{quadeq} so that $y_r = |\<
+\vct{a}_r, \vct{x}\>|^2$, and consider the initialization step first.
+In the Gaussian model, a simple moment calculation gives
+\[
+\E \left[\frac{1}{m}\sum_{r=1}^my_r\vct{a}_r\vct{a}_r^*\right] =
+\mtx{I} + 2 \vct{x}\vct{x}^*. 
+\]
+By the strong law of large numbers, the matrix $\mtx{Y}$ in Algorithm
+\ref{QIINIT} is equal to the right-hand side in the limit of large
+samples. Since any leading eigenvector of $\mtx{I} + 2
+\vct{x}\vct{x}^*$ is of the form $\lambda \vct{x}$ for some scalar
+$\lambda \in \R$, we see that the intialization step would recover
+$\vct{x}$ perfectly, up to a global sign or phase factor, had we
+infinitely many samples. Indeed, the chosen normalization would
+guarantee that the recovered signal is of the form $\pm \vct{x}$.  As
+an aside, we would like to note that the top two eigenvalues of
+$\mtx{I} + 2 \vct{x}\vct{x}^*$ are well separated unless $\|\vct{x}\|$
+is very small, and that their ratio is equal to $1 + 2
+\|\vct{x}\|^2$.  Now with a finite amount of data, the leading
+eigenvector of $\mtx{Y}$ will of course not be perfectly correlated
+with $\vct{x}$ but we hope that it is sufficiently correlated to point
+us in the right direction.
+
+
+
+\section{PhaseLift Algorithm}
+\subsection{Lifting}
+Suppose we have $x_0 \in \C^n$ or $\C^{n_1 \times n_2}$ (or some
+higher-dimensional version) about which we have quadratic measurements
+of the form
+\begin{equation}
+  \mapA(x_0) = \{|\<a_k, x_0\>|^2 : k = 1, 2, \ldots, m\}.
+\label{nonlinearmap}
+\end{equation}
+
+Phase retrieval is then the feasibility problem
+\begin{equation}
+\label{eq:retrieval}
+  \begin{array}{ll}
+    \text{find}   & \quad x\\ 
+\text{obeying} & \quad  \mapA(x) = \mapA(x_0) := b.
+  \end{array}
+\end{equation}
+
+As is well known, quadratic measurements can be lifted up and
+interpreted as linear measurements about the rank-one matrix $X = x
+x^*$. Indeed,
+\[
+|\<a_k, x\>|^2 = \trace(x^* a_k a_k^* x) = \trace(a_k a_k^* x x^*) :=
+\trace(A_k X),
+\]
+where $A_k$ is the rank-one matrix $a_k a_k^*$. % For later reference
+% it will be useful to denote 
+% \begin{equation}
+% A: = [a_1, a_2, \dots , a_m]^\ast.
+% \label{framematrix}
+% \end{equation}
+In what follows, we
+will let $\cA$ be the linear operator mapping positive semidefinite
+matrices into $\{\trace(A_k X) : k = 1,\ldots, m\}$.  Hence, the phase
+retrieval problem is equivalent to
+\begin{equation}
+\label{eq:rankmin}
+  \begin{array}{ll}
+    \text{find}   & \quad X\\ 
+    \text{subject to} & \quad  \cA(X) = b\\
+& \quad X \succeq 0\\
+& \quad \rank(X) = 1
+\end{array} 
+\qquad \Leftrightarrow \qquad 
+  \begin{array}{ll}
+    \text{minimize}   & \quad \rank(X)\\ 
+    \text{subject to} & \quad  \cA(X) = b\\
+& \quad X \succeq 0. 
+\end{array}
+\end{equation}
+Upon solving the left-hand side of \eqref{eq:rankmin}, we would
+factorize the rank-one solution $X$ as $x x^*$, hence finding
+solutions to the phase-retrieval problem. Note that the equivalence
+between the left- and right-hand side of \eqref{eq:rankmin} is
+straightforward since by definition, there exists a rank-one solution.
+Therefore, our problem is a rank minimization problem over an affine
+slice of the positive semidefinite cone. As such, it falls in the
+realm of low-rank {\em matrix completion} or {\em matrix recovery}, a
+class of optimization problems that has gained tremendous attention in
+recent years. Just as in matrix
+completion, the linear system $\cA(X) = b$, with unknown in the
+positive semidefinite cone, is highly underdetermined. For instance
+suppose our signal $x_0$ has $n$ complex unknowns. Then we may imagine
+collecting six diffraction patterns with $n$ measurements for each (no
+oversampling). Thus $m = 6n$ whereas the dimension of the space of $n
+\times n$ Hermitian matrices over the reals is $n^2$, which is
+obviously much larger.
+
+
+\subsection{Recovery via convex programming}
+The rank minimization problem \eqref{eq:rankmin} is NP hard. 
+We propose using the trace norm as a convex surrogate
+for the rank functional, giving the familiar
+SDP (and a crucial component of PhaseLift),
+\begin{equation}
+\label{eq:tracemin}
+ \begin{array}{ll}
+    \text{minimize}   & \quad \text{trace}(X)\\ 
+    \text{subject to} & \quad  \cA(X) = b\\
+& \quad X \succeq 0. 
+\end{array}
+\end{equation}
+
+In our implementation, we propose to solve the following convex optimization problem in CVX. Here, $\lambda$ can be set to zero.
+
+\begin{equation}
+  \label{eq:tracemin}
+   \begin{array}{ll}
+      \text{minimize}   & \quad \| \cA(X) - b\|+\lambda \|X\|_1\\ 
+  & \quad X \succeq 0. 
+  \end{array}
+  \end{equation}
+
+
+\section{Numerical Experiments}
+\label{numsec}
+
+We present some numerical experiments to assess the empirical
+performance of the Wirtinger flow algorithm. Here, we mostly consider a model of
+coded diffraction patterns reviewed below.
+
+
+\subsection{The coded diffraction model}
+\label{defCDP}
+
+We consider an acquisition model, where we collect data of the form  
+\begin{equation}
+\label{mainCDPmodel}
+  y_r = \left| \sum_{t = 0}^{n-1} x[t] \bar{d}_\ell(t) e^{-i2\pi k t/n}
+  \right|^2, \quad r = (\ell, k), \quad \begin{array}{l} 0 \le k \le n-1\\
+    1 \le \ell \le L
+  \end{array};
+  \end{equation}
+  thus for a fixed $\ell$, we collect the magnitude of the diffraction
+  pattern of the signal $\{x(t)\}$ modulated by the waveform/code
+  $\{d_\ell(t)\}$. By varying $\ell$ and changing the modulation
+  pattern $d_\ell$, we generate several views thereby creating a
+  series of \emph{coded diffraction patterns} (CDPs).
+
+  In this report, we are mostly interested in the situation where the
+  modulation patterns are random; in particular, we study a model in
+  which the $d_\ell$'s are i.i.d.~distributed, each having
+  i.i.d.~entries sampled from a distribution $d$.
+\begin{align}
+\label{momentcond}
+\E d = 0, \quad \E d^2 = 0,\quad \E \abs{d}^4 =2{(\E \abs{d}^2)}^2.
+\end{align}
+A random variable obeying these assumptions is said to be {\em
+  admissible}.  Since $d$ is complex valued we can have $\E d^2 = 0$
+while $d \neq 0$. An example of an admissible random variable is $d =
+b_1 b_2$, where $b_1$ and $b_2$ are independent and distributed as
+\begin{align}
+\label{eq:octanary}
+b_1=\begin{cases}
+ +1&\text{with prob.~} {1}/{4}\\
+-1&\text{with prob.~} {1}/{4}\\
+-i&\text{with prob.~} {1}/{4}\\
++i&\text{with prob.~} {1}/{4}
+\end{cases}
+\quad \text{and} \quad b_2=\begin{cases}
+  \sqrt{2}/2 & \text{with prob.~}  {4}/{5}\\
+\sqrt{3} & \text{with prob.~}  {1}/{5}
+\end{cases}.
+\end{align}
+We shall refer to this distribution as an {\em octanary} pattern since
+$d$ can take on eight distinct values.  The condition $\E[d^2]=0$ is
+here to avoid unnecessarily complicated calculations in our
+theoretical analysis.  In particular, we can also work with a {\em
+  ternary} pattern in which $d$ is distributed as
+\begin{equation}
+\label{eq:ternary}
+d=\begin{cases}
++1 &\quad\text{with prob.~} {1}/{4}\\
+0  &\quad\text{with prob.~} {1}/{2}\\
+-1 &\quad\text{with prob.~} {1}/{4}
+\end{cases}. 
+\end{equation}
+
+
+
+
+\subsection{The Gaussian and coded diffraction models}
+
+We begin by examining the performance of the Wirtinger flow algorithm for
+recovering random signals $\vct{x}\in\C^n$ under the Gaussian and
+coded diffraction models. We are interested in signals of two
+different types:
+\begin{itemize}
+\item \emph{Random low-pass signals.} Here, $\x$ is given by 
+  \begin{align*} {x}[t]=\sum_{k=-(M/2-1)}^{M/2} (X_k+iY_k) e^{2\pi i
+      (k-1)(t-1)/n},
+\end{align*}
+with $M = n/8$ and $X_k$ and $Y_k$ are i.i.d.~$\mathcal{N}(0,1)$.
+\item \emph{Random Gaussian signals.} In this model, $\x \in \C^n$ is
+  a random complex Gaussian vector with i.i.d.~entries of the form
+  $x[t] = X+iY$ with $X$ and $Y$ distributed as $\mathcal{N}(0,1)$;
+  this can be expressed as
+  \begin{align*} {x}[t]=\sum_{k=-(n/2-1)}^{n/2} (X_k+iY_k) e^{2\pi i
+      (k-1)(t-1)/n},
+\end{align*}
+where $X_k$ and $Y_k$ are are i.i.d.~$\mathcal{N}(0,1/8)$ so that the
+low-pass model is a `bandlimited' version of this high-pass random
+model (variances are adjusted so that the expected signal power is the
+same).
+\end{itemize}
+Below, we set $n=128$, and generate one signal of each type which will
+be used in all the experiments.
+
+The initialization step of the Wirtinger flow algorithm is run by applying $50$
+iterations of the power method. In the iteration \eqref{graddescent}, we use the
+parameter value $\mu_\tau=\min(1-\exp(-\tau/\tau_0),0.2)$ where
+$\tau_0 \approx 330$. We stop after $2,500$ iterations, and report the
+empirical probability of success for the two different signal
+models. The empirical probability of succcess is an average over $100$
+trials, where in each instance, we generate new random sampling
+vectors according to the Gaussian or CDP models. We declare a trial
+successful if the relative error of the reconstruction
+$\operatorname{dist}(\hat{\vct{x}},\vct{x})/\twonorm{\vct{x}}$ falls
+below $10^{-5}$, where we define $\emph{dist}(\vct{z},\vct{x}) = \min_{\phi\in[0,2\pi]}
+\,\,\, \twonorm{\vct{z}-e^{i\phi}\vct{x}}$.
+
+\subsection{Results presentation}
+{\bf Wirtinger Flow}
+
+In this part of the experiments, we set $n=32, 64, 128, 256$. 
+
+In order to investigte the best choice of $L = m/n$, we perform a grid search, and evaluate 100 times to estimate the probability of success. A retrieval is called successful if $\|y-|Az_k|^2\|_2/\|y\| < 10^{-5}$, where $z_k$ is the retrieval vector. We use MATLAB file "test\_L.m" to generate the Figure \ref{fig: L32}, \ref{fig: L64}, \ref{fig: L128}, and \ref{fig: L256}. We find that for different $n$, similar $L$s are reuqired to guarantee reconstruction.
+
+Then, we set $n=128$. In the Gaussian model, we use $L=4.5$ and in the coded diffusion model, we use $L=6$, which is presented in Figure \ref{fig: err}.
+
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.8\textwidth]{32.png}
+  \caption{Probability of success under different $L$, $n=32$}
+  \label{fig: L32}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.8\textwidth]{64.png}
+    \caption{Probability of success under different $L$, $n=64$}
+    \label{fig: L64}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.8\textwidth]{128.png}
+  \caption{Probability of success under different $L$, $n=128$}
+  \label{fig: L128}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.8\textwidth]{256.png}
+  \caption{Probability of success under different $L$, $n=256$}
+  \label{fig: L256}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \subfigure[Gaussian model]{
+        \resizebox{!}{0.35\textwidth}{
+        \input{test2.tex}}}
+    \subfigure[Coded diffusion models]{
+        \resizebox{!}{0.35\textwidth}{
+        \input{test3.tex}}}
+    \caption{Relative error-iteration}
+    \label{fig: err}
+\end{figure}
+
+
+{\bf PhaseLift}
+
+We find that CVX-based PhaseLift cannot solve large-scale problem when $n=128$. Hence, we only test its performance on small scale problems. However, Wirtinger flow still significantly outperforms the CVX-based PhaseLift. 
+
+We take $n=20$ for example, and $L$ is set to be $6$ in the CDF case. The results can be summarized below, the error is defined by $\operatorname{dist}(\hat{\vct{x}},\vct{x})/\twonorm{\vct{x}}$
+\begin{table}
+  \centering
+  \begin{tabular}{ccc}
+    \toprule
+    algorithm & time & error\\
+    \midrule
+    Wirtinger flow & 0.1276 & 2.7944e-16\\
+CVX-based PhaseLift & 0.9412 &  1.7403e-11\\
+    \toprule
+  \end{tabular}
+\end{table}
+
+
+
+\bibliographystyle{apalike}
+\bibliography{bib.bib}
+\end{document}
