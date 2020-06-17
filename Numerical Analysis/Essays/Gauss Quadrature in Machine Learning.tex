@@ -1,0 +1,344 @@
+\documentclass[conference]{IEEEtran}
+\IEEEoverridecommandlockouts
+\usepackage[english]{babel}
+\usepackage{graphicx}
+\usepackage{framed}
+\usepackage{cite}
+\usepackage[normalem]{ulem}
+\usepackage{amsmath}
+\usepackage{listings}
+\usepackage{amsthm}
+\usepackage{subfigure}
+\usepackage{diagbox}
+\usepackage{amssymb}
+\usepackage{longtable}
+\usepackage{bookmark}
+\usepackage{multirow}
+\usepackage{palatino}
+\usepackage{bigstrut}
+\usepackage{mathdots}
+\usepackage{bbm}
+\usepackage{algorithm}
+\usepackage{booktabs}
+\usepackage{algpseudocode} 
+\usepackage{amsfonts}
+\usepackage{enumerate}
+\usepackage{xcolor}
+\usepackage[utf8]{inputenc}
+\usepackage{pgfplots}
+\usepackage{tikz}
+
+\DeclareUnicodeCharacter{2212}{−}
+\usepgfplotslibrary{groupplots,dateplot}
+\usetikzlibrary{patterns,shapes.arrows}
+\pgfplotsset{compat=newest}
+\usetikzlibrary{shapes,backgrounds}
+\usetikzlibrary{arrows.meta}
+
+
+\newcommand{\tr}[1]{\mathrm{tr} \left(#1\right)}
+\newcommand{\expn}[1]{\mathrm{exp}\left(#1\right)}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\phis}{\phi_{\sigma}}
+\newcommand{\phisv}{\phis^{(v)}}
+\newcommand{\loss}{\mathcal{L}}
+\newcommand{\phip}{\widehat{\phi}_{poly}}
+\newcommand{\norm}[1]{\left\|#1\right\|}
+\newcommand{\normaldist}[2]{\mathcal{N}(#1, #2)}
+\newcommand{\abs}[1]{\left| #1 \right| }
+\newcommand{\Ec}[2]{\mathbf{E}\left[ #1 \middle | \hiderel{#2} \right]}
+\DeclareMathOperator{\1}{\mathbf{1}}
+
+\newcommand{\bx}{\mathbf{x}}
+\newcommand{\by}{\mathbf{y}}
+
+\newcommand{\Noise}{\mathcal{S}}
+\newcommand{\E}[1]{\mathbb{E}\left[#1\right]}
+\newcommand{\hess}{\nabla^2 \loss}
+
+\theoremstyle{definition}
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+\newtheorem{proposition}{Proposition}
+\newtheorem{example}{Example}
+\newtheorem{lemma}{Lemma}
+\newtheorem*{definition}{Definition}
+\newtheorem*{note}{Note}
+\newtheorem{exercise}{Exercise}
+\counterwithin{figure}{subsection}
+\counterwithin{table}{subsection}
+\counterwithin{equation}{subsection}
+
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+\begin{document}
+
+\title{Gauss Quadrature in Machine Learning\\
+}
+
+\author{\IEEEauthorblockN{1\textsuperscript{st} Chen Yihang}
+\textit{Peking University}\\
+1700010780}
+
+\maketitle
+\begin{abstract}
+    In this report, we discuss the potential applications of Gauss quadrature in modern machine learning. In the begining, we combine the quadrature rule with Lanczos algorithm to efficiently calculate bilinear form $v^\top f(A)v$. In sequel, we use the idea to estimate the Hessian eigenvalue distribution in large-scale networks. In another regime, we discuss the relation between kernel approximation and numerical quadrature.
+\end{abstract}
+
+\section{Bilinear Forms with Matrix Functions}
+\subsection{Settings}
+We want to develop methods for approximating expressions of the form
+\begin{equation}
+    u^\top f(A) v
+\end{equation}
+where $u, v\in \R^n$ and $A\in S_{++}^n$. It suffices to consider $u=v$ thanks to the identity
+\begin{equation*}
+    u^\top f(A) v = \frac{1}{4} (u+v)f(A)(u+v)-\frac{1}{4}(u-v)^\top f(A)(u-v)
+\end{equation*}
+\subsection{Gauss Quadrature}
+Since $A$ is positive definite, assuming $\lambda_1\geq\cdots\geq\lambda_n$ is the eigenvalue, we can decompose $A$ into
+$A = \sum_{j=1}^n \lambda_j q_j q_j^\top$
+
+It follows that we can write this bilinear form as a Riemann-Stieltjes integral
+\begin{equation}
+    v^\top f(A) v = \int_{\lambda_n}^{\lambda_1} f(\lambda) {\rm d}\alpha(\lambda)
+\end{equation}
+where
+\begin{equation}
+    \label{eqn:distribute}
+    \alpha(\lambda) = \begin{cases}
+        0 &\lambda<\lambda_n\\
+        \sum_{j=1}^k (q_j^\top v)^2,\ &\lambda_k\leq \lambda < \lambda_{k+1}\\
+        \sum_{j=1}^n (q_j^\top v)^2,\ &\lambda \geq \lambda_{1}\\    
+    \end{cases}
+\end{equation}
+We wish to compute nodes $t_j$ and weights $w_j, j = 1,\cdots,n$, such that
+\begin{equation}
+    v^\top f(A) v=\int_{\lambda_n}^{\lambda_1} f(\lambda) {\rm d}\alpha(\lambda) \approx \sum_{j=1}^n f(t_j) w_j
+\end{equation}
+\subsection{Orthogonal Polynomials}
+Define $\left< f, g\right>=\int_{\lambda_n}^{\lambda_1} f(\lambda)g(\lambda) {\rm d} \alpha(\lambda)=v^\top f(A)g(A)v$, we want to obtain polynomial $q_j$ of degree $j$, such that $\left<q_i,q_j\right>=\delta_{ij}$. 
+
+We define $n$-vector $Q_n(x)$ by
+\begin{equation}
+    Q_n(x) = \left(q_0(x),q_1(x),\cdots,q_{n-1}(x)\right)^\top
+\end{equation}
+
+By Gram-Schmidt orthogonalization, we have
+\begin{equation}
+    \label{eqn:trilation}
+    p_j(x) = (x-\alpha_j)q_{j-1}(x)-\beta_{j-1}q_{j-2}(x)
+\end{equation}
+where $\alpha_j=\left<xq_{j-1},q_{j-1}\right>, \beta_j = \left<xq_{j-1},q_j\right>, j\geq 1$. Then we normalize $p_j$ and get $q_j$. By a simple calculation, $\beta_j=\sqrt{\left<p_j,p_j\right>}$. The iteration start with $p_0(x)=1$.
+
+Hence
+\begin{equation}
+    xq_{k-1}(x)=\beta_k(x)q_k(x)+\alpha_k q_{k-1}(x) +\beta_{k-1}q_{k-2}(x)    
+\end{equation}
+we get that if $t_j$ is a root of $q_n(x)$, then $t_j Q_n(t_j)=J_nQ_n(t_j)$, where
+\begin{equation}
+    J_n=\left(\begin{matrix}
+    \alpha_1 & \beta_1 &&\\
+    \beta_1 &\alpha_2&\ddots&\\
+    &\ddots&\ddots&\beta_{n-1}\\
+    &&\beta_{n-1}&\alpha_n\\
+    \end{matrix}\right)
+\end{equation}
+
+Hence, $t_j$ is an eigenvalue $J_n$. We can prove that they are in $[\lambda_n,\lambda_1]$. They are guaranteed to be well-conditioned, and they can be computed
+quite efficiently using the symmetric QR algorithm. 
+
+If we define $x_j=q_{j-1}(A)v, r_j=p_j(A)v, j\geq 1$. Then $\alpha_j=x_j^\top A x_j$, $\beta_j = \|r_j\|_2$. Acording to relation \ref{eqn:trilation}, we can write Lanczos algorithms in Algorithm \ref{alg:lanczos}. For more detailed analysis, please refer to \cite{10.5555/3045390.3045577}.
+
+\begin{algorithm}[H]
+    \caption{Lanczos algorithm, update $J_n$.}
+    \begin{algorithmic}[1]
+        \State $r_0\gets v, x_0\gets 0$
+        \For {$j=1,2,\cdots,n$}
+        \State $\beta_{j-1}=\|r_{j-1}\|_2$
+        \State $x_j=r_{j-1}/\beta_{j-1}$
+        \State $\alpha_j=x_j^\top A x_j$
+        \State $r_j = (A-\alpha_j I)x_j-\beta_{j-1}x_{j-1}$
+        \EndFor
+    \end{algorithmic}
+    \label{alg:lanczos}
+\end{algorithm}
+
+\section{Hessian eigenvalues estimation}
+Empirical analysis of the Hessian has been of significance interest in the deep learning community.
+Due to computational costs of computing the exact eigenvalues ($\mathcal{O}(n^3)$ for an explicit $n\times n$ matrix),
+most of the papers in this line of research either focus on smaller models or on low-dimensional
+projections of the loss surface. Ghorban et al. \cite{pmlr-v97-ghorbani19b} provides an accurate and scalable estimation of Hessian eigenvalue densities.
+
+The Hessian, $\nabla^2 \loss(\theta) \in \R^{n \times n}$ is a symmetric matrix such that 
+$\hess(\theta)_{i, j} = \frac{\partial^2}{\partial_{\theta_i}\partial_{\theta_j}} \loss(\theta)$.
+Note that our Hessians are all ``full-batch'' Hessians (i.e., they are computed using the entire dataset). We represent $\nabla^2 \loss(\hat{\theta}_t)$ with $H\in \R^{n\times n}$. Throughout the paper, $H$ has the spectral decomposition $Q \Lambda Q^T$ where $\Lambda = diag(\lambda_1,\dots, \lambda_n)$, $Q=[q_1, \dots, q_n]$ and $\lambda_1 \geq \lambda_2 \cdots \geq \lambda_n$. 
+
+To understand the Hessian, we would like to compute the eigenvalue (or spectral) density, defined as $\phi(t) = \frac{1}{n} \sum_{i=1}^n \delta(t - \lambda_i)$ where $\delta$ is the Dirac delta operator. The naive approach requires calculating $\lambda_i$; however, when the number of parameters, $n$, is large this is not tractable. We relax the problem by convolving with a Gaussian density of variance $\sigma^2$ to obtain:
+\begin{align}\label{eqn:smoothed_density}
+  \phi_\sigma(t) = \frac{1}{n} \sum_{i=1}^n f(\lambda_i; t, \sigma^2)
+\end{align}
+where $f(\lambda; t, \sigma^2) =\frac{1}{\sigma \sqrt{2 \pi}} \exp{- \frac{(t - \lambda)^2}{2 \sigma^2}}.$ 
+For small enough $\sigma^2$, $\phi_\sigma(t)$ provides all practically relevant information regarding the eigenvalues of $H$. Explicit representation of the Hessian matrix is infeasible when $n$ is large, but using Pearlmutter's trick \cite{pearlmutter1994fast} we are able to compute Hessian-vector products for any chosen vector. Thus, we can efficiently implement Lanczos algorithm.
+
+\subsection{Stochastic Lanczos Quadrature}
+Since $H$ is diagonalizable and $f$ is analytic, we can define $f(H) = Q f(\Lambda) Q^T$ where $f(\cdot)$ acts point-wise on the diagonal of $\Lambda$. Now observe that if $v \sim N(0, \frac{1}{n} I_{n \times n})$, we have
+\begin{equation}
+\phis(t) = \frac{1}{n} \tr{f(H, t, \sigma^2)} = \E{v^T f(H, t, \sigma^2) v} \label{eqn:smoothed}
+\end{equation}
+Thus, as long as $\phisv(t) \equiv v^T f(H, t, \sigma^2) v$ concentrates fast enough, to estimate $\phis(t)$, it suffices to sample a small number of random $v$'s and average $\phisv(t)$.
+
+By definition, we can write
+\begin{equation} 
+    \begin{split}
+        \phisv(t) = v^T Q f(\Lambda; t, \sigma^2) Q^T v =\sum_{i=1}^n \beta_i^2 f(\lambda_i; t, \sigma^2)
+    \end{split}
+\label{eqn:beta_sum}
+\end{equation}
+where $\beta_i := (v^T q_i)$. Instead of summing over the discrete index variable $i$, we can rewrite this as a Riemann-Stieltjes integral over a continuous variable $\lambda$ weighted by $\mu$ (as \ref{eqn:distribute}):
+\begin{equation} 
+\phisv(t) = \int_{\lambda_n}^{\lambda_1} f(\lambda; t, \sigma^2) d\mu(\lambda)\label{eqn:integral}
+\end{equation}
+To evaluate this integral, we apply a quadrature rule. In particular, we want to pick a set of weights $\omega_i$ and a set of nodes $l_i$ so that
+\begin{equation}\label{eqn:approx_form}
+  \phisv(t) \approx \sum_{i=1}^m \omega_i f(\ell_i; t, \sigma^2) \equiv \widehat{\phi}^{(v)}(t)
+\end{equation}
+
+The hope is that there exists a good choice of $(\omega_i, \ell_i)_{i=1}^m$ where $m \ll n$ such that $\phisv(t)$ and $\widehat{\phi}^{(v)}(t)$ are close for all $t$, and that we can find the nodes and weights efficiently for our particular integrand $f$ and the CDF $\mu$. 
+
+% \begin{theorem}[\cite{golub1967calculation}] \label{thm:naive_computation}
+%     Let $V = [v, Hv, \cdots, H^{m-1}v] \in \R^{n \times m}$ and $\tilde{V}$ be the incomplete basis resulting from applying QR factorization on $V$. Let $T \equiv \tilde{V}^TH\tilde{V} \in \R^{m \times m}$ and $ULU^T$ be the spectral decomposition of $T$. Then the Gaussian quadrature nodes $\ell_i$ are given by $(L_{i, i})_{i=1}^m$, and the Gaussian quadrature weights $\omega_i$ are given by $(U_{1, i}^2)_{i=1}^m$.
+%     \end{theorem}
+
+%     Theorem \ref{thm:naive_computation} presents a theoretical way to compute the Gaussian quadrature rule (i.e., apply the $H$ matrix repeatedly and orthogonalize the resulting vectors). There are well-known algorithms that circumvent calculating the  numerically unstable $V$, and compute $T$ and $\tilde{V}$ directly.
+     We use Lanczos algorithm (with full re-orthogonalization) to perform this computation in a numerically stable manner. We summerize our algorithm in Algorithm \ref{meta_alg}.
+
+    \begin{algorithm}[H] 
+        Draw $k$ i.i.d realizations of $v$, $\{v_1 , \dots, v_k\}$.\;
+        \begin{itemize}
+        \item[I.]  Estimate $\phis^{(v_i)}(t)$ by a quantity $\widehat{\phi}^{(v_i)}(t)$:
+        \begin{itemize}
+            \item Run the Lanczos algorithm for $m$ steps on matrix $H$ starting from $v_i$ to obtain tridiagonal matrix $T$.
+            \item Compute eigenvalue decomposition $T = ULU^T$.
+            \item Set the nodes $\ell_i = (L_{ii})_{i=1}^m$ and weights $\omega_i = (U^2_{1,i})_{i=1}^m$.
+            \item Output $\widehat{\phi}^{(v_i)}(t) = \sum_{i=1}^m \omega_i f(\ell_i; t, \sigma^2)$.
+        \end{itemize}
+        \item[II.] Set $\widehat{\phi}_{\sigma}(t) = \frac{1}{k}\sum_{i=1}^k \widehat{\phi}^{(v_i)}(t)$.
+        \end{itemize}
+        \caption{Two Stage Estimation of $\phis(t)$} \label{meta_alg}
+        \end{algorithm}
+        \begin{figure}[h]
+            \includegraphics[width=0.5\textwidth]{verification.png}
+            %\includegraphics[width=0.5\textwidth]{New_Figures/verification.png}
+            \vspace{-0.5cm}
+            \caption{Comparison of the estimated smoothed density (dashed) and the exact smoothed density (solid) in the interval $[-0.2, 0.4]$. We use $\sigma^2 = 10^{-5}, k=10$ and degree $90$ quadrature. For completeness, the histogram of the exact eigenvalues is also plotted. \label{fig:verification}}
+            \end{figure}
+            
+
+        \subsection{Concentration Inequality}
+        \begin{theorem}\label{cor:phi_concentrate}
+            Let $t$ be a fixed evaluation point and $k$ be the number of realizations of $v$ in step II. Let $a = \Vert f(H; t, \sigma^2) \Vert_F$ and $b = \Vert f(H; t, \sigma^2) \Vert_2$. Then for any $x>0$, 
+            \begin{align*} 
+            P\bigg(|\phis(t) - \widehat{\phi}_{\sigma}(t)| > \frac{2a}{n\sqrt{k}} \sqrt{x} +  \frac{2b}{k n} x \bigg) \leq 2\exp(-x).
+            \end{align*}
+            
+            Alternatively, since $f(\cdot)$ is a Gaussian density, we can give norm independent bounds:  $\forall x > 0$, 
+            \begin{align} \label{eq:worst_case}
+            P\bigg(|\phis(t) - \widehat{\phi}_{\sigma}
+            (t)| > \epsilon(x) \bigg) \leq 2\exp(-x).
+            \end{align}
+            where $\epsilon(x) \equiv \sqrt{\frac{2}{\pi \sigma^2}} (\sqrt{\frac{x}{nk}} + \frac{x}{nk})$.
+        \end{theorem}
+
+        
+\section{Gauss Quadrature for Kernel Features}
+A kernel
+machine is one that handles input $x_1,\cdots,x_n$, represented as vectors in $\R^d$, only in terms of some
+kernel function $k:\R^d\times \R^d \to \R$ of pairs of data points $k(x_i, x_j)$. One well-known downside of kernel machines is the fact that they scale poorly to large datasets. We instead construct a feature map $z:\R^d\to \R^D$ such that $k(x,y) \approx \left<z(x); z(y)\right>$.
+This approximation enables kernel machines to use scalable linear methods for solving classification.
+
+\subsection{Shift-invariant kernels}
+In the case of shift-invariant kernels, one technique that was proposed for constructing the function $z$ is random Fourier features. 
+
+Based on Bochner's theorem, we can write $k$ in terms of its Fourier transform $\Lambda$ 
+\begin{equation}    \label{eq:bochner}
+    \begin{split}
+        &k(x,y)=k(x-y)=\int_{\R^d} \Lambda(\omega) \exp(i\omega\top (x-y)) {\rm d}\omega\\
+    &=\mathbb{E}_{\omega\sim \Lambda} \left<\exp(i\omega^\top x),\exp(i\omega^\top y)\right>
+    \end{split}
+\end{equation}
+
+Our objective is to choose $\omega_j$ and $a_j$ to approximate \ref{eq:bochner} by $\tilde{k}(x-y)=\sum_{j=1}^D a_j \exp(i\omega_j\top (x-y))$. The feature map $z$ can be readily constructed by $z(x)=(\sqrt{a_j}\exp(i\omega_j^\top x))_{j=1}^D$. 
+
+This data-independent method approximates the Fourier transform integral of the kernel by averaging Monte-Carlo samples, which allows for arbitrarily-good estimates of the kernel function $k$.
+However, Dao et al.\cite{GQKF} propose a deterministic method to approximate the kernel’s Fourier transform integral \ref{eq:bochner} with a discrete sum.
+
+\subsubsection{Dense grid quadrature}
+The simplest way to do this is to factor the integral \ref{eq:bochner} into $\prod_{j=1}^d \left(\int_{-\infty}^{+\infty}\Lambda_j(\omega) \exp(i\omega e_j^\top (x-y)) {\rm d}\omega\right)$. We can then approximate them all with a one-dimensional quadrature rule. Unfortunately, this scheme suffers heavily from the curse of dimensionality, thus being futile in real problems.
+
+
+\subsubsection{Sparse grid quadrature}
+We start by letting let $G_j^L(u_j)$ be the approximation of $k_j(u_j)$ that results
+from applying the one-dimensional Gaussian quadrature rule with $L$ points: for
+the appropriate sample points and weights,
+\[
+  G_j^L(u_j) = \sum_{l=1}^L a_l \exp(i u_j \omega_l).
+\]
+One of the properties of Gaussian quadrature is that it is exact in the limit of
+large $L$.
+In particular, this limit means that we can decompose $k_j(u_j)$ as the infinite
+sum
+\begin{equation*}
+    k_j(u_j) = G_j^1(u_j) + \sum_{m=1}^{\infty} \left(G_j^{2^m}(u_j) - G_j^{2^{m-1}}(u_j) \right) =
+    \sum_{m=0}^{\infty} \Delta_{i,m}(u_j),
+  \end{equation*}
+where $\Delta_{j,m}(u_j) = G_j^{2^m}(u_j) - G_j^{2^{m-1}}(u_j)$.
+To represent $k(u)$, it suffices to use the product
+\[
+  k(u) = \sum_{\mathbf{m} \in \N^d} \prod_{j=1}^d \Delta_{j,m_j}(u_j) = \sum_{\mathbf{m} \in \N^d}
+  \Delta_{\mathbf{m}}(u)
+\]
+where $\Delta_{\mathbf{m}}(u) = \prod_{j=1}^d \Delta_{j, m_j}(u_j)$.  We can think of these
+$\Delta_{\mathbf{m}}$ forming a ``grid'' of terms in $\N^d$.  
+
+Smolyak's sparse grid approximation
+approximates this sum by using only those $\Delta_{\mathbf{m}}$ that can
+be computed with a ``small'' number of samples.  Specifically, the sparse
+grid up to level $A$ is defined as,
+\[
+  \tilde{k}(u) = \sum_{\mathbf{m} \in \N^d, \, \mathbf{1}^\top \mathbf{m} \le A} \Delta_{\mathbf{m}}(u).
+\]
+
+Now, for any $u$, each $\Delta_{\mathbf{m}}(u)$, the number of samples
+required is no greater than $3^{\mathbf{1}^\top \mathbf{m}}$.
+Combining this with the previous equation gives us a rough upper bound on the
+sample count of the sparse grid construction
+\[
+  D \le \sum_{\mathbf{m} \in \N^d, \, \mathbf{1}^\top \mathbf{m} \le A} 3^{\mathbf{1}^\top
+    \mathbf{m}} \le 3^A {d + A \choose A}.
+\]
+Hence the simplex of terms used by the sparse grid contains exponentially (in $d$)
+fewer quadrature points than the hypercube of terms used by a dense grid.
+
+
+
+\subsubsection{Reweighted grid quadrature}
+A data-dependent method is proposed based on the dense grid quadrature. Since $k$ is real-valued, $\tilde{k}(x-y)=\sum_{j=1}^D a_j \cos(\omega_j\top (x-y))$. We first choose the set of potential grid points $w_j$ by sampling from a dense grid of Gaussian quadrature points. To solve for the weights $a_j$, we
+independently sample $n$ pairs $(x_k, y_k)$ from the dataset, then minimize the empirical mean squared error. In order to make solution sparse, we add an $\ell_1$-penalty term. 
+\begin{subequations}
+    \label{eq:rewight}
+    \begin{align}
+        &\text{min}\quad \frac{1}{n}\sum_{k=1}^n (k-\tilde{k})^2(x_k,y_k)+\lambda \|a\|_1\\
+&\text{s.t.}\quad a_j \geq 0,\ i = 1,\cdots, D
+    \end{align}
+\end{subequations}
+
+Solving \ref{eq:rewight} amounts to solve a nonlinear least-squares problem with $\ell_1$ penalty. 
+\bibliographystyle{IEEEtran}
+\bibliography{bib.bib}
+
+\end{document}
+
