@@ -1,0 +1,168 @@
+\documentclass[conference]{IEEEtran}
+\IEEEoverridecommandlockouts
+% The preceding line is only needed to identify funding in the first footnote. If that is unneeded, please comment it out.
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithm}
+\usepackage{algorithmicx}
+\usepackage{algpseudocode}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+\begin{document}
+
+\title{Newton-type methods\\
+{\footnotesize \textsuperscript{*}Report 1 on the course ``Numerical Optimization".}
+}
+
+\author{\IEEEauthorblockN{1\textsuperscript{st} Chen Yihang}
+\textit{Peking University}\\
+1700010780}
+
+\maketitle
+
+\begin{abstract}
+    In this report, we use vanilla Newton, damped Newton, mixed Newton, Newton-LM method, and Broyden class method to solve the unconstrained nonlinear optimization problem. Besides, various type of line search algorithms are also included, such as exact line search by the 0.618 method, inexact line search with strong Wolfe condition by the polynomial interpolation.
+\end{abstract}
+\section{Newton-type methods}
+Given a smooth function $f\in \mathbf{R}^n\to\mathbf{R}$, we use a series of Newton-type methods to solve the
+unconstrained optimization problem
+\begin{equation}
+    \min_x f(x)
+\end{equation}
+\subsection{Newton methods}
+We summarize vanilla Newton, damped Newton, mixed Newton, Newton-LM method below, which are implemented in respective MATLAB scripts.
+
+We use built-in method ``cond'' (condition number) instead of ``det'' (determinant) to find out whether a matrix is singular, since ``det'' is not scale-invariant. Besides, we also use built-in method ``chol'' (Cholesky decomposition) to find out whether a matrix is positive definite, since its input can only be positive definite matrices. 
+
+Since the scale of our problem is not formidable, we do not use Hessian-free method to solve linear program $Gd = g$. Instead, we directly call built-in linear equation solver.
+
+Some auxiliary quantities, such as number of iterations, number of function evaluations (w.r.t. $f,\nabla f,\nabla^2 f$) is updated in the process. We also record $f(x^\star)$ and $\|\nabla f(x^\star)\|$, where $x^\star$ is the output of the algorithm.
+\begin{algorithm}
+    \caption{Newton method: minimize $f$, initial point $x_0$.}\label{newton}
+    \begin{algorithmic}[1]
+        \Require $\nabla^2 f$ is positive definite along the trajectory.
+    \Procedure{Newton\_vanilla}{$f,x_0$}
+    \State $x\gets x_0$
+    \While{not converged}
+    \State $G\gets \nabla^2 f(x)$
+    \State $g\gets \nabla f(x)$
+    \State $d\gets -G^{-1}g$
+    \State $x\gets x+d$
+    \EndWhile
+    \State \textbf{return} $x$
+    \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}
+    \caption{Damped Newton method: minimize $f$, initial point $x_0$.}\label{damped}
+    \begin{algorithmic}[1]
+        \Require $\nabla^2 f$ is positive definite along the trajectory.
+    \Procedure{Newton\_damped}{$f,x_0$}
+    \State $x\gets x_0$
+    \While{not converged}
+    \State $G\gets \nabla^2 f(x)$
+    \State $g\gets \nabla f(x)$
+    \State $d\gets -G^{-1}g$
+    \State $\alpha \gets {\textsc{linesearch}}(f, x, d)$
+    \State $x\gets x+\alpha d$
+    \EndWhile
+    \State \textbf{return} $x$
+    \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}
+    \caption{Mixed Newton method: minimize $f$, initial point $x_0$.}\label{mixed}
+    \begin{algorithmic}[1]
+    \Procedure{Newton\_mixed}{$f,x_0$}
+    \State $x\gets x_0$
+    \While{not converged}
+    \State $G\gets \nabla^2 f(x)$
+    \State $g\gets \nabla f(x)$
+    \If {$G$ is not singular}
+    \State $d \gets -G^{-1}g$
+    \If {$g^\top d>\epsilon_1 \|g\|\|d\|$}\Comment{non-decreasing}
+    \State $d\gets-d$
+    \EndIf
+    \If {$|g^\top d|\leq\epsilon_2 \|g\|\|d\|$}\Comment{orthogonality}
+    \State $d\gets-g$
+    \EndIf
+    \Else 
+    \State $d \gets -g$
+    \EndIf
+    \State $\alpha \gets {\textsc{linesearch}}(f, x, d)$
+    \State $x\gets x+\alpha d$
+    \EndWhile
+    \State \textbf{return} $x$
+    \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}
+    \caption{Newton-LM method: minimize $f$, initial point $x_0$.}\label{lm}
+    \begin{algorithmic}[1]
+    \Procedure{Newton\_LM}{$f,x_0$}
+    \State $x\gets x_0$
+    \While{not converged}
+    \State $G\gets \nabla^2 f(x)$
+    \State $g\gets \nabla f(x)$
+    \State $v \gets 0$
+    \While{$G+vI$ is singular}
+    \If {$v=0$}
+    \State $v \gets \|G\|_2/2$
+    \Else
+    \State $v \gets 2v$
+    \EndIf
+    \EndWhile
+    \State $d = -(G+vI)^{-1}g$
+    \State $\alpha \gets {\textsc{linesearch}}(f, x, d)$
+    \State $x\gets x+\alpha d$
+    \EndWhile
+    \State \textbf{return} $x$
+    \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
+\newpage
+\subsection{Broyden class method}
+We first gives an overview of the quasi-Newton method
+\begin{algorithm}
+    \caption{Quasi-Newton method: minimize $f$, initial point $x_0$, positive definite matrix $H$}\label{newton}
+    \begin{algorithmic}[1]
+    \Procedure{Newton\_vanilla}{$f,x_0$}
+    \State $x\gets x_0$
+    \While{not converged}
+    \State $G\gets \nabla^2 f(x)$
+    \State $g\gets \nabla f(x)$
+    \State $d\gets -Hg$
+    \State $\alpha \gets {\textsc{linesearch}}(f, x, d)$
+    \State $x\gets x+\alpha d$, and modify $H$.
+    \EndWhile
+    \State \textbf{return} $x$
+    \EndProcedure
+    \end{algorithmic}
+\end{algorithm}
+
+If we denote the trajectory as $x_k, \ k\geq 0$. For $k\geq 0$, we define $g_k=\nabla f(x_k), s_k=x_{k+1}-x_k, y_k=g_{k+1}-g_k$, $H_k$ is the approximate inverse of $\nabla^2 f(x_k)$. Then, we must have $H_{k+1}y_k=s_k$.
+
+The Broyden class formula provides us with the following modification
+\begin{equation}
+    H_{k+1}^{\varphi} = H^{\rm DFP}_{k+1}+\varphi v_k v_k^\top
+\end{equation}
+where
+\begin{subequations}
+    \begin{align}
+        H_{k+1}^{\rm DFP}=H_k+\frac{s_k s_k^\top}{s_k^\top y_k}-\frac{H_k s_k s_k^\top H_k}{y_k^\top H_k y_k}\\
+        v_k = \sqrt{y_k^\top H_k y_k}\left(\frac{s_k}{s_k^\top y_k}-\frac{H_k y_k}{y_k^\top H_k y_k}\right)
+    \end{align}
+\end{subequations}
+
+The selection of $\varphi$ is subtile. 
+
+
+\section{Line search algorithms}
+Given $x_k$ and a descent direction $d_k$, the the line search algorithm aims to find an appropriate step length $\alpha_k$, such that $f(x_k+\alpha_k d_k)$ has a sufficient decrease compared to $f(x_k)$.
+\end{document}
