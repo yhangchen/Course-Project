@@ -1,0 +1,535 @@
+\documentclass[conference,onecolumn,12pt]{IEEEtran}
+\IEEEoverridecommandlockouts
+
+\usepackage[english]{babel}
+\usepackage{graphicx}
+\usepackage{framed}
+\usepackage[normalem]{ulem}
+\usepackage{amsmath}
+\usepackage{listings}
+\usepackage{amsthm}
+\usepackage{subfigure}
+\usepackage{diagbox}
+\usepackage{amssymb}
+\usepackage{longtable}
+\usepackage{multirow}
+\usepackage{palatino}
+\usepackage{bigstrut}
+\usepackage{bbm}
+\usepackage{algorithm}
+\usepackage{booktabs}
+\usepackage{algpseudocode} 
+\usepackage{amsfonts}
+\usepackage[colorlinks,linkcolor=blue,anchorcolor=blue,citecolor=blue]{hyperref}
+\usepackage{enumerate}
+\usepackage{xcolor}
+\usepackage[utf8]{inputenc}
+\usepackage{pgfplots}
+\DeclareUnicodeCharacter{2212}{−}
+\usepgfplotslibrary{groupplots,dateplot}
+\usetikzlibrary{patterns,shapes.arrows}
+\pgfplotsset{compat=newest}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\Z}{\mathbb{Z}}
+\theoremstyle{definition}
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+\newtheorem{proposition}{Proposition}
+\newtheorem{example}{Example}
+\newtheorem{lemma}{Lemma}
+\newtheorem*{definition}{Definition}
+\newtheorem*{note}{Note}
+\newtheorem{exercise}{Exercise}
+\counterwithin{figure}{section}
+\counterwithin{table}{section}
+\counterwithin{equation}{section}
+
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+\begin{document}
+
+\title{{Numerical Plank integration}\\
+{\footnotesize \textsuperscript{*}Report 2 on the course ``Numerical Analysis".}
+}
+
+\author{\IEEEauthorblockN{1\textsuperscript{st} Chen Yihang}
+\textit{Peking University}\\
+1700010780}
+
+\maketitle
+\begin{abstract}
+    In this report, we use Gauss-Laguerre quadrature to calculate Plank integral on the interval $(0,+\infty)$. In addition, we truncate the interval into a finite one $(0,L)$, and use composite (midpoint, trapezoidal, Simpson) quadrature and Romberg quadrature to calculate the integral on the finite interval.
+
+    In the Gauss quadrature, despite the fact that we introduce the Golub-Welsch algorithm in Appendix \ref{gwalg}, we do not adopt the algorithm to compute nodes in the programmes. However, we derive the applicable representations of weights in Appendix \ref{appendixA} and use it in our programmes. 
+\end{abstract}
+\tableofcontents
+\section{Problem Statement}
+In this report, we are going to numerically calculate
+\begin{equation}
+    \label{int}
+    \int_0^{+\infty} \frac{x^3}{e^x-1} {\rm d} x
+\end{equation}
+
+As a matter of fact,
+\begin{equation}
+    \begin{split}
+        &\int_0^{+\infty} \frac{x^3}{e^x-1} {\rm d} x =     \int_0^{+\infty} \frac{x^3 e^{-x}}{1-e^{-x}} {\rm d} x = \int_0^{+\infty} \sum_{n=1}^{\infty} x^3e^{-nx} {\rm d} x\\
+        & = \sum_{n=1}^{\infty} \int_0^{+\infty} x^3e^{-nx} {\rm d} x = \sum_{n=1}^{\infty} \frac{6}{n^4} = 6\zeta(4) = \frac{\pi^4}{15}
+    \end{split}
+\end{equation}
+
+\section{Numerical Integration}
+\subsection{Infinite interval}
+\subsubsection{Gauss-Laguerre integration}
+Since 
+\begin{equation}
+    \int_0^{+\infty} \frac{x^3}{e^x-1} {\rm d} x =     \int_0^{+\infty} \frac{x^3 e^{-x}}{1-e^{-x}} {\rm d} x =  \int_0^{+\infty} e^{-x} g(x) {\rm d} x
+\end{equation}
+where $g(x) = \frac{x^3}{1-e^{-x}}$. It is most natural to adopt Gauss-Laguerre formula.
+\begin{equation}
+    \int_0^{+\infty} e^{-x} g(x) {\rm d} x \approx \sum_{j=1}^n A_j g(x_j)
+\end{equation}
+where $x_j\ (j=1,2,\cdots,n)$ is the root of the $n$-th Laguerre polynomial. Besides, if we denote $l_j(x)$ as the basis of Lagrange interpolation, $A_j$ can be represented As
+\begin{equation}
+    A_j = \int_0^{\infty} l_j(x) e^{-x} {\rm d} x
+\end{equation}
+The Laguerre polynomials are given by the sum
+\begin{subequations}
+    \begin{align}
+        &L_n(x) = \sum_{k=0}^n \frac{(-1)^k}{k!}\binom{n}{k} x^k.\\
+        &L'_n(x) = \sum_{k=0}^{n-1} \frac{(-1)^{k+1}}{k!}\binom{n}{k+1} x^k
+    \end{align}
+\end{subequations}
+In practice, we can recursively calculate the results by
+\begin{equation}
+    \begin{split}
+        (n+1)L_{n+1}(x) &= (2n+1-x)L_n(x)-nL_{n-1}(x)\\
+        xL'_n(x)&=n(L_n(x)-L_{n-1}(x))
+    \end{split}
+\end{equation}
+Hence, 
+\begin{equation}
+    \label{2rela}
+    \begin{split}
+        x_jL'_n(x_j) = (n+1)L_{n+1}(x_j)\\
+        (n+1) L_{n+1}(x_j) = -nL_{n-1}(x_j)\\     
+    \end{split}
+\end{equation}
+
+A standard result shows that the error can be bound by
+\begin{equation}
+    \label{gl_err}
+    E(f) = \frac{(n!)^2}{(2n)!}f^{(2n)}(\xi)
+\end{equation}
+
+
+Combined \ref{2rela} with \ref{eqnote1} we have 
+\begin{equation}
+    A_j = \frac{x_j}{(n+1)^2(L_{n+1}(x_j))^2}
+\end{equation}
+\subsection{Finite interval}
+We truncate the interval $(0,\infty)$ into $(0,L)$. In this subsection,  $f(x)=\frac{x^3 e^{-x}}{1-e^{-x}}$. By the L'Hospital's rule, we can naturally define $f(0)=0$. Then, we perform the numerical integration on the interval $[0,L]$. The grid point of the quadrature is $0=x_0<x_1<\cdots< x_n=L$. In the following, we define $M_k = \max |f^{(k)}|$.
+
+\subsubsection{Newton-Cotes quadrature}
+The estimate of the integral will be given by
+\begin{equation}
+    \int_0^Lf(x)dx={L}\sum_{i=0}^n w_i f(x_i)
+\end{equation}
+Assume $V$ is the Vandermonde matrix, whose entry is $V_{ij}=x_{i-1}^{j-1}$. Then by setting $f=x^i,1\leq i\leq n$, we have
+\begin{equation}
+    w = (M^\top)^{-1}b
+\end{equation}
+where $b_i=\frac{n^{i}}{i+1}$.
+
+In implement the algorithm, scipy package uses the Newton-Raphson iteration since the Vandermonde matrix is ill-conditioned. The following codes are excerpted from function ``newton\_cotes'' in the scipy package.\footnote{https://github.com/scipy/scipy/blob/v0.18.0/scipy/integrate/\\quadrature.py\#L833-L842}
+\begin{lstlisting}[language=python]
+def newton_cotes(rn, equal=0):
+    '''
+    Parameters
+    ----------
+    rn : int
+        The integer order for equally-spaced data or the relative 
+        positions of the samples with the first sample at 0 and 
+        the last at N, where N+1 is the length of `rn`.  
+        N is the order of the Newton-Cotes integration.
+    equal : int, optional
+        Set to 1 to enforce equally spaced data.
+    Returns
+    -------
+    an : ndarray
+        1-D array of weights to apply to the function at the provided 
+        sample positions.
+
+    '''
+    yi = rn / float(N)
+    ti = 2 * yi - 1
+    nvec = np.arange(N+1)
+    C = ti ** nvec[:, np.newaxis]
+    Cinv = np.linalg.inv(C)
+    # improve precision of result
+    for i in range(2):
+        Cinv = 2*Cinv - Cinv.dot(C).dot(Cinv)
+    vec = 2.0 / (nvec[::2]+1)
+    ai = Cinv[:, ::2].dot(vec) * (N / 2.)
+\end{lstlisting}
+We modify this part of codes in our implementation. We find that it is generally not efficient to use high order Newton\_Cotes quadrature. 
+\subsubsection{Composite quadrature}
+\paragraph{Composite midpoint quadrature}
+
+\begin{equation}
+    \int_0^L f(x) {\rm d}x \approx h\sum_{i=0}^{n-1} f(x_{i+\frac{1}{2}}):=M(h)
+\end{equation}
+whose truncation error is
+\begin{equation}
+    \label{err_1}
+    |\int_0^L f(x) {\rm d}x-M(h)|\leq \frac{h^2}{24}M_2 L
+\end{equation}
+\paragraph{Composite trapezoidal quadrature}
+
+\begin{equation}
+    \int_0^L f(x) {\rm d}x \approx \frac{h}{2}\sum_{i=0}^{n-1} [f(x_i) + f(x_{i+1})]:=T(h)
+\end{equation}
+whose truncation error is
+\begin{equation}
+    \label{err_2}
+    |\int_0^L f(x) {\rm d}x-T(h)|\leq \frac{h^2}{12}M_2L
+\end{equation}
+\paragraph{Composite Simpson quadrature}
+
+\begin{equation}
+    \int_0^L f(x) {\rm d}x \approx \frac{h}{6}\sum_{i=0}^{n-1} [f(x_i) + f(x_{i+\frac{1}{2}}) + f(x_{i+1})]:=S(h)
+\end{equation}
+whose truncation error is
+\begin{equation}
+    \label{err_3}
+    |\int_0^L f(x) {\rm d}x-S(h)|\leq \frac{h^4}{2880}M_4L
+\end{equation}
+
+\paragraph{Estimation of $M_2$ and $M_4$}
+We provide an estimate of $M_2$ and $M_4$ for future error estimation. We have (by Wolfram Alpha\footnote{https://www.wolframalpha.com/})
+\begin{equation}
+        f''(x)=\frac{x (6 + e^x (-12 + x (6 + x) + e^x (6 + (-6 + x) x)))}{(-1 + e^x)^3}\\
+    \end{equation}
+    \begin{equation}
+        \begin{split}
+            &f^{(4)}(x) = (-4 e^{2 x} (2 x^3 + (x^3 + 18 x - 12) \cosh (x) \\
+            & +(6 - 9 x^2) \sinh(x) - 18 x + 9) \\
+            &- 2 e^{2 x} ((x^3 + 18 x - 12) \sinh(x) + 6 x^2 + (6 - 9 x^2) \cosh(x) \\
+            &+(3 x^2 + 18) \cosh(x) - 18 x \sinh(x) - 18))/(-1 + e^x)^4 \\
+             &-(4 e^x (-2 e^{2 x} (2 x^3 + (x^3 + 18 x - 12) cosh(x) \\
+             &+ (6 - 9 x^2) sinh(x) - 18 x + 9) - 6))/(-1 + e^x)^5
+        \end{split}
+    \end{equation}
+Since $\lim_{x\to 0}f''(x)=2$, and by plotting the figure, we can make $M_2=2$. Similarly, by plotting $f^{(4)}(x)$, we can make $M_4=2$.
+
+
+\subsubsection{Romberg quadrature}
+
+We define $T_1(h)$ is the composite trapezoidal quadrature with grid size $h$. Recursively, $T_k(h)$ can be written as 
+\begin{equation}
+    \label{rom_iter}
+    T_{k+1}(h)=\frac{T_k(h/2)-4^{-k}T_k(h)}{1-4^{-k}},\quad k \geq 1
+\end{equation}
+and the following error estimation can be derived
+\begin{equation}
+    \int_0^L f(x) {\rm d}x -T_{k+1}(h) = \mathcal{O}(h^{2(k+1)}),\quad k \geq 1
+\end{equation}
+
+To implement the algorithm, we encode $T_k(h/2^j)$ into a subdiagnoal matrix, and use relation \ref{rom_iter} to calculate its item recursively.
+
+
+\subsubsection{Gauss-Legendre quadrature}
+We change the integration interval from $(0,L)$ to $(-1,+1)$ by
+\begin{equation}
+    \begin{split}
+        \int_0^L f(x) dx &= \frac{L}{2}\int_{-1}^1 f(\frac{L\xi + L}{2}) d\xi\\
+        & = \frac{L}{2}\sum_{i=1}^n w_i f\left(
+            \frac{Lx_i+L}{2}
+        \right)
+    \end{split}
+\end{equation}
+where $x_i$ are the quadrature nodes and $w_i$ are corrosponding weights.
+
+By definition, Legendre polynomials can be represented by
+\begin{equation}
+    P_n(x) = \frac{1}{2^n n!}\frac{d^n}{dx^n}(x^2-1)^n
+\end{equation}
+which can be explicitly represented as
+\begin{equation}
+    P_n(x) = \frac{1}{2^n}\sum_{k=0}^{\left[\frac{n}{2}\right]}\binom{n}{k}\binom{2n-2k}{n}x^{n-2k}
+\end{equation}
+
+The recursion formula is 
+\begin{equation}
+    \label{gl_recur}
+    \begin{split}
+        (n+1)P_{n+1}(x)=(2n+1)xP_n(x)-nP_{n-1}(x)\\
+        (1-x^2)P_n'(x) = (n+1)xP_n(x)-(n+1)P_{n+1}(x)
+    \end{split}
+\end{equation}
+which can be proved by induction. 
+
+Combine \ref{gl_recur} with \ref{eqnote1}, we have
+\begin{equation}
+    w_j = \frac{2(1-x_j^2)}{(n+1)^2[P_{n+1}(x_j)]^2}
+\end{equation}
+
+A standard estimation of error shows that
+\begin{equation}
+    E(f) = \frac{2^{2n+1}(n!)^4L}{2(2n+1)[(2n)!]^3}f^{(2n)}(\xi)
+\end{equation}
+\section{Results}
+\subsection{List of program files}
+\begin{enumerate}
+    \item In the file ``Infinite\_integration.py'', we implement the Gauss-Laguerre quadrature.
+    \begin{enumerate}
+        \item {\bf Laguerre}: return $n$-th Laguerre polynomial's value and derivative at a given point.
+        \item {\bf Laguerre\_coeff}: return quadrature coefficients.
+        \item {\bf Laguerre\_zeros}: return zeros of Laguerre polynomial.
+        \item {\bf Gauss\_Laguerre}: Gauss-Laguerre quadrature.
+    \end{enumerate}
+    \item In the file ``finite\_integration.py'', we implement quadrature on a finite interval.
+    \begin{enumerate}
+        \item {\bf midpoint, simposn}: implement basic corrosponding quadrature.
+        \item {\bf composite}: implements composite midpoint, trapezoidal, and Simpson quadrature.
+        \item {\bf Romberg}: implements Romberg acceleration method.
+        \item {\bf Legendre}: return $n$-th Legendre polynomial's value and derivative at a given point.
+        \item {\bf Legendre\_coeff}: return quadrature coefficients.
+        \item {\bf Legendre\_zeros}: return zeros of Legendre polynomial.
+        \item {\bf Gauss\_Legendre}: Gauss-Legendre quadrature.
+        \item {\bf newton\_cotes\_coeff}: return quadrature coefficients.
+        \item {\bf newton\_cotes}: Newton-Cotes quadrature.
+    \end{enumerate}
+\end{enumerate}
+
+To execute the Python scripts, the following packages are required:
+
+{\bf numpy, matplotlib, tikzplotlib}\\
+where the last two packages are adopted to plot the results. 
+\subsection{Infinite interval}
+We plot the error by Gauss-Laguerre quadrature under $n=1,2,\cdots,100$ below in Figure \ref{gauss}. \\
+\begin{figure}[!htbp]
+    \centering
+    \resizebox{0.45\textwidth}{!}{
+        \input{gauss.tex}     \label{gauss}
+    }
+    \caption{Gauss-Laguerre quadrature}
+
+\end{figure}
+
+Since we cannot estimate $f^{(2n)}$ accurately, it is hard to use \ref{gl_err} to obtain theoretical bound.
+
+\subsection{Finite interval}
+
+For the composite quadrature, the stopping criterion is $|T(h)-T(h/2)|\leq 10^{-10}$, and initially, we use 10 grid point. We list the results in Table \ref{composite}. We find that $L=40\sim 80$ is an appropriate choice. Smaller $L$ makes the $\int_L^\infty$ part innegligible, larger $L$ render grid points on the large value useless, which leads to more grid points, compare figure \ref{legendre} and \ref{legendre2} for example.
+
+Setting $L=50$, for the Romberg quadrature, assume $n = 2^0,2^1,2^2,\cdots,2^{19}$, we plot the results in Figure \ref{romberg}. As before, the increase in the estimation error is induced by numerical error, and the convergence rate can be clearly observed when $\log_2(n)$ is in $5\sim 10$.
+
+\begin{figure}[!htbp]
+    \centering
+    \resizebox{0.45\textwidth}{!}{
+        \input{romberg.tex}     
+    }
+    \caption{Romberg quadrature}
+    \label{romberg}
+\end{figure}
+
+\begin{figure}[!htbp]
+    \centering
+    \resizebox{0.45\textwidth}{!}{
+        \input{legendre.tex}     
+    }
+    \caption{Legendre quadrature, $L=50$}
+    \label{legendre}
+\end{figure}
+
+\begin{figure}[!htbp]
+    \centering
+    \resizebox{0.45\textwidth}{!}{
+        \input{legendre2.tex}    
+    }
+    \caption{Legendre quadrature, $L=200$}
+    \label{legendre2}
+\end{figure}
+
+
+
+\begin{table}[!htbp]
+    \centering
+    \begin{tabular}{c|rrr}
+        \toprule
+      \diagbox{Method}{Results}  & $L$&error & iteration \\
+        \midrule
+  \multirow{5}[0]{*}{Midpoint} &  10& 0.0620    & 12 \\
+        & 20&   $1.92\times10^{-5}$   & 8 \\
+        &40&  $5.09\times 10^{-13}$    & 9 \\
+        &  80& $7.24\times 10^{-13}$    & 10 \\
+        &   160& $7.24\times 10^{-13}$    & 11 \\
+  \multirow{5}[0]{*}{Trapezoidal} 
+        &10&     0.0620    & 13\\
+        &   20& $1.92\times10^{-5}$   & 8 \\
+        &40&     $1.24\times 10^{-12}$    & 9 \\
+        &   80&   $1.00\times 10^{-12}$    & 10  \\
+        &   160&   $1.00\times 10^{-12}$    & 11  \\
+  \multirow{5}[0]{*}{Simpson} 
+  & 10&    0.0620    & 12\\
+  &  20&  $1.92\times10^{-5}$   & 8 \\
+  &  40 &  $5.08\times 10^{-13}$    & 9  \\
+    &80    &     $7.23\times 10^{-13}$    & 10 \\
+     &160   &     $7.23\times 10^{-13}$    & 11  \\
+        \bottomrule
+  \end{tabular}%
+  \caption{Composite quadrature}
+  \label{composite}
+\end{table}
+
+We take $L=40$, and calculate our theoretical error bound. For midpoint, trapezoidal, and Simpson rule, we have
+\begin{equation}
+    \begin{split}
+        e_1 = \frac{2}{24} L (L/10/2^9)^2=2\times 10^{-4}\\
+        e_2 = \frac{2}{12} L (L/10/2^9)^2=4\times 10^{-4}\\
+        e_3 = \frac{2}{2880} L (L/10/2^9)^4=1\times 10^{-10}\\
+    \end{split}
+\end{equation}
+However, despite major difference between theoretical bound, where $e_3\ll e_1,e_2$, the numerical error is quite similar ($\sim 10^{-13}$) for these three composite rule. 
+
+If we directly apply Newton\_Cotes quadrature on the interval, the performace is generally very poor due to numerical instability. We still take $L=50$, and the error is presented in \ref{directcotes}. Since composite trapezoidal quadrature is accurate enough, there is no need to apply higher order composite rule.
+\begin{table}[!htbp]
+    \centering
+    \begin{tabular}{ccccccc}
+        \toprule
+        $N$&5&10&20&30&40&50\\
+        \midrule
+        error&5.90&0.87&0.20&0.02&2898.16&79908.88\\
+        \bottomrule
+    \end{tabular}
+    \caption{Direct Newton Cotes quadrature}
+    \label{directcotes}
+\end{table}
+
+\appendices
+\section{Gaussian quadrature weights}
+\label{appendixA}
+Let $p_n$ be a nontrivial polynomial of degree $n$ such that
+\begin{equation}
+    \int_a^b \omega(x) \, x^k p_n(x) \, dx = 0, \quad \text{for all } k = 0, 1, \ldots, n - 1.
+\end{equation}
+
+The weights can be expressed as
+
+\begin{equation}
+    \label{eqnote1}
+    w_{i} = \frac{a_{n}}{a_{n-1}}\frac{\int_{a}^{b}\omega(x)p_{n-1}\left(x\right)^{2}dx}{p'_{n}(x_{i})p_{n-1}(x_{i})}
+\end{equation}
+
+where $a_{k}$ is the coefficient of $x^{k}$ in $p_{k}(x)$. To prove this, note that using Lagrange interpolation one can express $r(x)$ in terms of $r(x_{i})$ as
+
+\begin{equation}
+r(x) = \sum_{i=1}^{n}r(x_{i})\prod_{\begin{smallmatrix}1\leq j\leq n\\j\neq i\end{smallmatrix}}\frac{x-x_{j}}{x_{i}-x_{j}}
+\end{equation}
+
+because $r(x)$ has degree less than $n$ and is thus fixed by the values it attains at $n$ different points. Multiplying both sides by $r(x_i)$ and integrating from $a$ to $b$ yields
+\begin{equation}
+\int_{a}^{b}\omega(x)r(x)dx= \sum_{i=1}^{n}r(x_{i})\int_{a}^{b}\omega(x)\prod_{\begin{smallmatrix}1\leq j\leq n\\j\neq i\end{smallmatrix}}\frac{x-x_{j}}{x_{i}-x_{j}}dx
+\end{equation}
+
+The weights $w_i$ are thus given by
+
+\begin{equation}
+    \label{eqnote2}
+w_{i} = \int_{a}^{b}\omega(x)\prod_{\begin{smallmatrix}1\leq j\leq n\\j\neq i\end{smallmatrix}}\frac{x-x_{j}}{x_{i}-x_{j}}dx
+\end{equation}
+
+This integral expression for $w_{i}$ can be expressed in terms of the orthogonal polynomials $p_{n}(x)$ and $p_{n-1}(x)$ as follows.
+
+We can write
+
+\begin{equation}
+\prod_{\begin{smallmatrix}1\leq j\leq n\\j\neq i\end{smallmatrix}}\left(x-x_{j}\right) = \frac{\prod_{1\leq j\leq n} \left(x - x_{j}\right)}{x-x_{i}} = \frac{p_{n}(x)}{a_{n}\left(x-x_{i}\right)}
+\end{equation}
+
+where $a_{n}$ is the coefficient of $x^n$ in $p_{n}(x)$. Taking the limit of $x$ to $x_{i}$ yields using L'Hôpital's rule
+\begin{equation}
+\prod_{\begin{smallmatrix}1\leq j\leq n\\j\neq i\end{smallmatrix}}\left(x_{i}-x_{j}\right) = \frac{p'_{n}(x_{i})}{a_{n}}    
+\end{equation}
+
+
+ We can thus write the integral expression for the weights as
+
+ \begin{equation}
+     w_{i} = \frac{1}{p'_{n}(x_{i})}\int_{a}^{b}\omega(x)\frac{p_{n}(x)}{x-x_{i}}dx
+ \end{equation}
+
+ In the integrand, writing
+ \begin{equation}
+     \frac{1}{x-x_i} = \frac{1 - \left(\frac{x}{x_i}\right)^{k}}{x - x_i} + \left(\frac{x}{x_i}\right)^{k} \frac{1}{x - x_i}
+ \end{equation}
+ yields
+ \begin{equation}
+     \int_a^b\omega(x)\frac{x^kp_n(x)}{x-x_i}dx= x_i^k\int_{a}^{b}\omega(x)\frac{p_n(x)}{x-x_i}dx
+ \end{equation}
+ provided $k \leq n$, because $\frac{1-\left(\frac{x}{x_{i}}\right)^{k}}{x-x_{i}}$ is a polynomial of degree $k-1$ which is then orthogonal to $p_{n}(x)$. So, if $q(x)$ is a polynomial of at most $n$-th degree we have
+
+ \begin{equation}
+     \int_{a}^{b}\omega(x)\frac{p_{n}(x)}{x-x_{i}}dx=\frac{1}{q(x_{i})}\int_{a}^{b}\omega(x)\frac{q(x)p_{n}(x)}{x-x_{i}}dx 
+ \end{equation}
+   
+ We can evaluate the integral on the right hand side for $q(x) = p_{n-1}(x)$ as follows. Because $\frac{p_{n}(x)}{x-x_{i}}$ is a polynomial of degree $n-1$, we have
+ \begin{equation}
+     \frac{p_{n}(x)}{x-x_{i}} = a_{n}x^{n-1} + s(x)
+ \end{equation}
+
+ where $s(x)$ is a polynomial of degree $n - 2$. Since $s(x)$ is orthogonal to $p_{n-1}(x)$ we have
+\begin{equation}
+ \int_{a}^{b}\omega(x)\frac{p_{n}(x)}{x-x_{i}}dx=\frac{a_{n}}{p_{n-1}(x_{i})}\int_{a}^{b}\omega(x)p_{n-1}(x)x^{n-1}dx
+\end{equation}
+We can then write
+
+\begin{equation}
+    x^{n-1} = \left(x^{n-1} - \frac{p_{n-1}(x)}{a_{n-1}}\right) + \frac{p_{n-1}(x)}{a_{n-1}}
+\end{equation}
+
+The term in the brackets is a polynomial of degree $n-2$, which is therefore orthogonal to $p_{n-1}(x)$. The integral can thus be written as
+
+\begin{equation}
+    \int_{a}^{b}\omega(x)\frac{p_{n}(x)}{x-x_{i}}dx=\frac{a_{n}}{a_{n-1}p_{n-1}(x_{i})}\int_{a}^{b}\omega(x)p_{n-1}(x)^{2}dx 
+\end{equation}
+
+According to equation \ref{eqnote2}, the weights are obtained by dividing this by $p'_{n}(x_{i})$ and that yields the expression in equation \ref{eqnote1}.
+
+\section{The Golub-Welsch algorithm}
+\label{gwalg}
+Orthogonal polynomials with leading coefficient one satisfy the recurrence relation 
+\begin{equation}
+    \label{btrirecur}
+    p_{r+1}(x) = (x-a_r)p_r(x) -b_r p_{r-1}(x)
+\end{equation}
+Writing \ref{btrirecur} into matrix form, we have that $\mathbf{J}\tilde{P}=x\tilde{P}-p_n(x) \mathbf{e}_n$, where $\tilde{P}=[p_0(x),\cdots,p_{n-1}(x)]^\top, \mathbf{e}_n=[0,0,\cdots,1]^\top$, and 
+\begin{equation}
+    \mathbf{J}=\begin{pmatrix}
+        a_0 &      1 &      0 &  \ldots &  \ldots &  \ldots \\
+        b_1 &    a_1 &      1 &       0 &  \ldots &  \ldots \\
+          0 &    b_2 &    a_2 &       1 &       0 &  \ldots \\
+          0 & \ldots & \ldots &  \ldots &  \ldots &       0 \\
+     \ldots & \ldots &      0 & b_{n-2} & a_{n-2} &       1 \\
+     \ldots & \ldots & \ldots &       0 & b_{n-1} & a_{n-1}
+   \end{pmatrix}
+\end{equation}
+
+The zeros $x_j$ of the polynomials up to degree $n$, which are used as nodes for the Gaussian quadrature can be found by computing the eigenvalues of this tridiagonal matrix. However, for computing the weights and nodes, it is preferable to consider the symmetric tridiagonal matrix $\mathcal{J}$ defined as
+\begin{equation}
+    \mathcal{J}=\begin{pmatrix}
+        a_0 &      \sqrt{b_1} &      0 &  \ldots &  \ldots &  \ldots \\
+        \sqrt{b_1} &    a_1 &      \sqrt{b_2} &       0 &  \ldots &  \ldots \\
+          0 &    \sqrt{b_2} &    a_2 &  \sqrt{b_3} &       0 &  \ldots \\
+          0 & \ldots & \ldots &  \ldots &  \ldots &       0 \\
+     \ldots & \ldots &      0 & \sqrt{b_{n-2}} & a_{n-2} &       \sqrt{b_{n-1}} \\
+     \ldots & \ldots & \ldots &       0 & \sqrt{b_{n-1}} & a_{n-1}
+   \end{pmatrix}
+\end{equation}
+
+
+\end{document}
+

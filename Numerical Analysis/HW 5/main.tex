@@ -1,0 +1,429 @@
+\documentclass[conference,onecolumn,12pt]{IEEEtran}
+\IEEEoverridecommandlockouts
+
+\usepackage[english]{babel}
+\usepackage{graphicx}
+\usepackage{framed}
+\usepackage[normalem]{ulem}
+\usepackage{amsmath}
+\usepackage{listings}
+\usepackage{amsthm}
+\usepackage{subfigure}
+\usepackage{diagbox}
+\usepackage{amssymb}
+\usepackage{longtable}
+\usepackage{multirow}
+\usepackage{palatino}
+\usepackage{bigstrut}
+\usepackage{bbm}
+\usepackage{algorithm}
+\usepackage{booktabs}
+\usepackage{algpseudocode} 
+\usepackage{amsfonts}
+\usepackage[colorlinks,linkcolor=blue,anchorcolor=blue,citecolor=blue]{hyperref}
+\usepackage{enumerate}
+\usepackage{xcolor}
+\usepackage[utf8]{inputenc}
+\usepackage{pgfplots}
+\usepackage{setspace}
+\renewcommand{\baselinestretch}{1.5}
+\usepackage{fancyhdr}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\Z}{\mathbb{Z}}
+\renewcommand{\d}{\mathrm{d}}
+
+
+\begin{document}
+
+
+\title{{Lorenz System}\\
+{\footnotesize \textsuperscript{*}Report 5 on the course ``Numerical Analysis".}
+}
+
+\author{\IEEEauthorblockN{1\textsuperscript{st} Chen Yihang}
+\textit{Peking University}\\
+1700010780}
+
+\maketitle
+\thispagestyle{fancy} % IEEE模板在\maketitle后会自动声明\thispagestyle{plain}，
+% 导致第一页什么都没有。所以得把plain更改为fancy
+\lhead{} % 页眉左，需要东西的话就在{}内添加
+\chead{} % 页眉中
+\rhead{} % 页眉右
+\lfoot{} % 页眉左
+\cfoot{} % 页眉中
+\cfoot{\thepage} %页眉右，\thepage 表示当前页码
+\renewcommand{\headrulewidth}{0pt} %改为0pt即可去掉页眉下面的横线
+\renewcommand{\footrulewidth}{1pt} %改为0pt即可去掉页脚上面的横线
+\pagestyle{fancy}
+\cfoot{\thepage}
+
+\begin{abstract}
+    We implment the explicit schemes, the predictor-corrector schemes, Runge–Kutta schemes and embeded (adaptive) Runge-Kutta schemes and perform tests on the Lorenz system. Tables and figures have been produced on various hyperparameters of the Lorenz system.
+\end{abstract}
+
+\tableofcontents
+
+\clearpage
+\section{Problem Statement}
+Consider the famous Lorenz equation
+\begin{equation}
+\begin{cases}
+    \frac{\d x}{\d t}=\sigma(y-x)\\
+    \frac{\d y}{\d t} = \rho x-y -xz\\
+    \frac{\d z}{\d t} = xy-\beta z\\
+\end{cases}
+\end{equation}
+\begin{enumerate}
+    \item For $\sigma = 10, \rho=28, \beta=8/3$, choose different initial values, and observe the results of simulation: whether the solution is bounded, periodic or converged.\\
+    \item Choose different $\sigma, \rho, \beta$ and initial values, and observe the results of simulation.
+\end{enumerate}
+
+\section{ODE schemes}
+\subsection{Fixed step size}
+We implment the following algorithms
+\begin{enumerate}
+    \item {\bf Forward schemes}: Euler, Adams-2.
+    \item {\bf Predictor-corrector schemes}: Modified Euler, Milne-3, Adams-4. 
+    \item {\bf Runge-Kutta}: classical Runge-Kutta, Kutta-33, Heun-33, Kutta-44, Gill-44.
+    \item {\bf Embeded Runge-Kutta}: Bogacki-Shampine\footnote{https://en.wikipedia.org/wiki/Bogacki-Shampine\_method}, Runge–Kutta–Fehlberg\footnote{https://en.wikipedia.org/wiki/Runge-Kutta-Fehlberg\_method}, Cash-Karp\footnote{https://en.wikipedia.org/wiki/Cash-Karp\_method}, Dormand-Prince\footnote{https://en.wikipedia.org/wiki/Dormand-Prince\_method}.
+\end{enumerate}
+
+The Bogacki–Shampine method is implemented in the ode23 function in MATLAB. The Dormand–Prince method is currently the default method in the ode45 solver for MATLAB and GNU Octave and is the default choice for the Simulink's model explorer solver. Despite the fact that embeded Runge-Kutta algorithms are adaptive step size algorithms, in this part, we regard it as fixed step size ones.
+
+The descriptions of the algorithms can be found in the textbooks and the links above. Hence, we will not restate the algorithms here.
+
+\subsection{Adaptive Runge–Kutta methods}
+Adaptive methods are designed to produce an estimate of the local truncation error of a single Runge–Kutta step. This is done by having two methods, one with order $p$ and one with order $p - 1$. These methods are interwoven, i.e., they have common intermediate steps. Thanks to this, estimating the error has little or negligible computational cost compared to a step with the higher-order method.
+
+During the integration, the step size is adapted such that the estimated error stays below a user-defined threshold: If the error is too high, a step is repeated with a lower step size; if the error is much smaller, the step size is increased to save time. This results in an (almost) optimal step size, which saves computation time. Moreover, the user does not have to spend time on finding an appropriate step size.
+
+The lower-order step is given by 
+$$ y^*_{n+1} = y_n + h\sum_{i=1}^s b^*_i k_i$$
+where $k_i$ are the same as for the higher-order method. Then the error is :
+$$ \Delta = e_{n+1} = y_{n+1} - y^*_{n+1} = h\sum_{i=1}^s (b_i - b^*_i) k_i$$
+which is $O(h^p)$.
+
+The Butcher tableau for this kind of method is extended to give the values of $b^*_i$:
+
+Hence, the error $\Delta$ scales as $h^p$. If we take a step $h_1$ and produce an error $\Delta_1$ therefore, the step $h_0$ that would have given some other value $\Delta_0$ is readily estimated as
+\begin{equation}
+    h_0 = h_1\left|\frac{\Delta_0}{\Delta_1}\right|^{\frac{1}{p}}
+\end{equation}
+
+Henceforth, we will let $\Delta_0$ denote the desire accuracy.
+Then, the equation is used in two ways: If $\Delta_1$ is larger than $\Delta_0$ in magnitude, the equation tells how much to decrease the
+stepsize when we retry the present (failed) step. If $\Delta_1$ is
+smaller than $\Delta_0$, on the other hand, then the equation tells
+how much we can safely increase the stepsize for the next step.
+
+In the following, we implment the adaptive Fehlberg, Cash-Karp and Dormand-Prince methods in ``schemes\_adp.py''. The main function ``ode45'' implments the adaptive schemes. Despite the codes are quite clear, we still give a brief description of the algorithm.
+
+We use the function ``ode45\_step'' to calculate the fifth and fourth order solutions, and the $\Delta_1$ can be obtained via calculating the difference of these two solutions. The desired accuracy is set to be
+\begin{equation}
+    \Delta_0 = \varepsilon (|y|+h|f(x,y)|)
+\end{equation}
+to which some small values, such as $\varepsilon^2$ in our codes, can be added in order to prevent any item of $\Delta_0$ from being zero. Then, we can readily define the new step size as 
+\begin{equation}
+    h'=\begin{cases}
+        \max(Sh \gamma^{0.2},h/10),&\quad \gamma\geq 1\\
+        \min(Sh \gamma^{0.25}, 5h), &\quad \gamma<1 \\
+    \end{cases}
+\end{equation}
+where $\gamma=\max\left(\frac{\Delta_0}{\Delta_1}\right)$, and the division is performed element-wisely. $S$ is a safety factor, which is a few percent smaller than $1$. 
+
+If on the step $k$, $t_k+h_k>T$, then we take $h_k=T-t_k$.
+
+In our codes, we take $S=0.9, \varepsilon=2^{-52}$.
+
+\subsection{Comparision with MATLAB default ode45}
+I found that the default solver ``ode45'' in MATLAB is open-source. I read its implmentation and makes the following comments. They use the Dormand–Prince method while my implementation includes all types of 4-5 embeded methods. They use $S=0.8$ while we use $S=0.9$. They use a unified power of $0.2$ while we use $0.2$ and $0.25$ for different occasions.
+
+
+\subsection{Codes description}
+\begin{enumerate}
+  \item schemes.py: implment one step of all the schemes in the report.
+  \item ode\_solver.py: solves the ode via schemes from ``schemes.py''.
+  \item schemes\_adp.py: implment the adaptive Runge–Kutta method, whose main function is ``ode45''.
+  \item Lorenz\_plot.py: generate all the figures in the report.
+  \item test.py: generate all the tables in the report.
+  \item ode45.m: MATLAB's recommended ODE solver.
+\end{enumerate}
+\subsection{Numerical results}
+We set the Lorenz system to be $\sigma = 10, \rho=28, \beta=8/3$. We plot its trajectory until $T=1,10,100$. We regard the solution obtained by ``ode45'' with Dormand–Prince method as the groundtruth and compare the $\ell_2$ norm of other solutions. 
+
+We test $T=1$ for all the schemes in \ref{tab:1}, but will test $t=10$ only for Runge-Kutta schemes in \ref{tab:2}. 
+
+We can summarize our results by
+\begin{enumerate}
+  \item Vanilla Euler method will easily encounter overflow while calculation.
+  \item Predictor-corrector methods are not stable when numerious steps are taken.
+\end{enumerate}
+
+% Table generated by Excel2LaTeX from sheet 'Sheet1'
+\begin{table}[htbp]
+  \centering
+  \caption{$T=1, (1,1,1)^\top$}
+  \resizebox{\textwidth}{!}{
+% Table generated by Excel2LaTeX from sheet 'Sheet1'
+\begin{tabular}{lrccccccc}
+  \toprule
+  Schemes & \multicolumn{1}{l}{Order} & \multicolumn{1}{l}{Step=100} & \multicolumn{1}{l}{Step=200} & \multicolumn{1}{l}{Step=500} & \multicolumn{1}{l}{Step=1000} & \multicolumn{1}{l}{Step=2000} & \multicolumn{1}{l}{Step=5000} & \multicolumn{1}{l}{Step=10000} \\
+  \midrule
+  Kutta33 & 3     & \multicolumn{1}{r}{0.0218308} & \multicolumn{1}{r}{0.0027743} & \multicolumn{1}{r}{0.0001779} & \multicolumn{1}{r}{2.22e-05} & \multicolumn{1}{r}{2.78e-06} & \multicolumn{1}{r}{1.78e-07} & \multicolumn{1}{r}{2.22e-08} \\
+  Heun33 & 3     & \multicolumn{1}{r}{0.0220577} & \multicolumn{1}{r}{0.0027766} & \multicolumn{1}{r}{0.0001777} & \multicolumn{1}{r}{2.22e-05} & \multicolumn{1}{r}{2.77e-06} & \multicolumn{1}{r}{1.77e-07} & \multicolumn{1}{r}{2.22e-08} \\
+  Runge Kutta & 4     & \multicolumn{1}{r}{9.45e-05} & \multicolumn{1}{r}{2.53e-06} & \multicolumn{1}{r}{7.68e-08} & \multicolumn{1}{r}{5.80e-09} & \multicolumn{1}{r}{3.96e-10} & \multicolumn{1}{r}{8.95e-12} & \multicolumn{1}{r}{1.76e-12} \\
+  Kutta44 & 4     & \multicolumn{1}{r}{0.0001048} & \multicolumn{1}{r}{3.65e-06} & \multicolumn{1}{r}{1.08e-07} & \multicolumn{1}{r}{7.64e-09} & \multicolumn{1}{r}{5.08e-10} & \multicolumn{1}{r}{1.17e-11} & \multicolumn{1}{r}{1.51e-12} \\
+  Gill44 & 4     & \multicolumn{1}{r}{0.0001145} & \multicolumn{1}{r}{4.02e-06} & \multicolumn{1}{r}{1.14e-07} & \multicolumn{1}{r}{8.06e-09} & \multicolumn{1}{r}{5.36e-10} & \multicolumn{1}{r}{1.24e-11} & \multicolumn{1}{r}{1.56e-12} \\
+  Bogacki-Shampine-3 & 3     & \multicolumn{1}{r}{0.0220435} & \multicolumn{1}{r}{0.0027769} & \multicolumn{1}{r}{0.0001778} & \multicolumn{1}{r}{2.22e-05} & \multicolumn{1}{r}{2.77e-06} & \multicolumn{1}{r}{1.78e-07} & \multicolumn{1}{r}{2.22e-08} \\
+  Bogacki-Shampine-2 & 2     & \multicolumn{1}{r}{0.0201408} & \multicolumn{1}{r}{0.0024306} & \multicolumn{1}{r}{0.0001967} & \multicolumn{1}{r}{4.52e-05} & \multicolumn{1}{r}{1.18e-05} & \multicolumn{1}{r}{1.98e-06} & \multicolumn{1}{r}{5.05e-07} \\
+  Fehlberg-5 & 5     & \multicolumn{1}{r}{2.92e-05} & \multicolumn{1}{r}{9.12e-07} & \multicolumn{1}{r}{9.25e-09} & \multicolumn{1}{r}{2.87e-10} & \multicolumn{1}{r}{7.97e-12} & \multicolumn{1}{r}{1.91e-12} & \multicolumn{1}{r}{2.36e-12} \\
+  Fehlberg-4 & 4     & \multicolumn{1}{r}{6.76e-05} & \multicolumn{1}{r}{1.89e-06} & \multicolumn{1}{r}{1.99e-08} & \multicolumn{1}{r}{1.20e-09} & \multicolumn{1}{r}{8.64e-11} & \multicolumn{1}{r}{4.27e-12} & \multicolumn{1}{r}{2.46e-12} \\
+  Cash-Karp-5 & 5     & \multicolumn{1}{r}{4.28e-06} & \multicolumn{1}{r}{1.32e-07} & \multicolumn{1}{r}{1.34e-09} & \multicolumn{1}{r}{4.06e-11} & \multicolumn{1}{r}{1.19e-12} & \multicolumn{1}{r}{1.95e-12} & \multicolumn{1}{r}{2.36e-12} \\
+  Cash-Karp-4 & 4     & \multicolumn{1}{r}{1.23e-05} & \multicolumn{1}{r}{3.43e-07} & \multicolumn{1}{r}{3.23e-09} & \multicolumn{1}{r}{1.77e-10} & \multicolumn{1}{r}{1.42e-11} & \multicolumn{1}{r}{2.35e-12} & \multicolumn{1}{r}{2.40e-12} \\
+  Dormand-Prince-5 & 5     & \multicolumn{1}{r}{4.87e-06} & \multicolumn{1}{r}{1.78e-07} & \multicolumn{1}{r}{1.94e-09} & \multicolumn{1}{r}{6.30e-11} & \multicolumn{1}{r}{3.19e-12} & \multicolumn{1}{r}{1.98e-12} & \multicolumn{1}{r}{2.35e-12} \\
+  Dormand-Prince-4 & 4     & \multicolumn{1}{r}{2.08e-05} & \multicolumn{1}{r}{5.90e-07} & \multicolumn{1}{r}{1.21e-08} & \multicolumn{1}{r}{8.63e-10} & \multicolumn{1}{r}{6.01e-11} & \multicolumn{1}{r}{3.61e-12} & \multicolumn{1}{r}{2.46e-12} \\
+  Euler & 1     & \multicolumn{1}{r}{12.427199} & \multicolumn{1}{r}{4.6086493} & \multicolumn{1}{r}{1.5965305} & \multicolumn{1}{r}{0.765861096} & \multicolumn{1}{r}{0.376567753} & \multicolumn{1}{r}{0.14905459} & \multicolumn{1}{r}{0.074272394} \\
+  Adams2 & 2     & \multicolumn{1}{r}{0.129439} & \multicolumn{1}{r}{0.023051} & \multicolumn{1}{r}{0.0037252} & \multicolumn{1}{r}{0.000972439} & \multicolumn{1}{r}{0.011953608} & \multicolumn{1}{r}{0.00472911} & \multicolumn{1}{r}{0.002355916} \\
+  Euler2 & 2     & \multicolumn{1}{r}{0.0619742} & \multicolumn{1}{r}{0.0090694} & \multicolumn{1}{r}{0.0011692} & \multicolumn{1}{r}{0.000296198} & \multicolumn{1}{r}{0.011809117} & \multicolumn{1}{r}{0.00470615} & \multicolumn{1}{r}{0.00235019} \\
+  Milne3 & 3     & \multicolumn{1}{r}{0.0057503} & \multicolumn{1}{r}{0.0022439} & \multicolumn{1}{r}{0.0003135} & \multicolumn{1}{r}{5.09e-05} & \multicolumn{1}{r}{0.011739047} & \multicolumn{1}{r}{0.00469499} & \multicolumn{1}{r}{0.002347406} \\
+  Adams4 & 4     & \multicolumn{1}{r}{0.0049548} & \multicolumn{1}{r}{0.0001974} & \multicolumn{1}{r}{7.73e-06} & \multicolumn{1}{r}{9.86e-07} & \multicolumn{1}{r}{0.011738449} & \multicolumn{1}{r}{0.00469495} & \multicolumn{1}{r}{0.002347401} \\
+  ode45-Fehlberg & 5     & \multicolumn{7}{c}{3.16e-12} \\
+  ode45-Cash-Karp & 5     & \multicolumn{7}{c}{2.87e-12} \\
+  ode45-Dormand-Prince & 5     & \multicolumn{7}{c}{0} \\
+  \bottomrule
+  \end{tabular}%
+      }
+  \label{tab:1}
+\end{table}%
+
+% Table generated by Excel2LaTeX from sheet 'Sheet1'
+\begin{table}[htbp]
+  \centering
+  \caption{$T=10,(1,1,1)^\top$}
+  \resizebox{\textwidth}{!}{
+
+    \begin{tabular}{lrccccccc}
+      \toprule
+    Schemes & \multicolumn{1}{l}{Order} & \multicolumn{1}{l}{Step=1000} & \multicolumn{1}{l}{Step=2000} & \multicolumn{1}{l}{Step=5000} & \multicolumn{1}{l}{Step=10000} & \multicolumn{1}{l}{Step=20000} & \multicolumn{1}{l}{Step=50000} & \multicolumn{1}{l}{Step=100000} \\
+    \midrule
+    Kutta33 & 3     & \multicolumn{1}{r}{1.41e-01} & \multicolumn{1}{r}{1.81e-02} & \multicolumn{1}{r}{1.16e-03} & \multicolumn{1}{r}{1.45e-04} & \multicolumn{1}{r}{1.82e-05} & \multicolumn{1}{r}{1.16e-06} & \multicolumn{1}{r}{1.45e-07} \\
+    Heun33 & 3     & \multicolumn{1}{r}{1.44e-01} & \multicolumn{1}{r}{1.81e-02} & \multicolumn{1}{r}{1.16e-03} & \multicolumn{1}{r}{1.45e-04} & \multicolumn{1}{r}{1.81e-05} & \multicolumn{1}{r}{1.16e-06} & \multicolumn{1}{r}{1.45e-07} \\
+    Runge Kutta & 4     & \multicolumn{1}{r}{1.14e-03} & \multicolumn{1}{r}{3.44e-05} & \multicolumn{1}{r}{4.08e-07} & \multicolumn{1}{r}{2.14e-08} & \multicolumn{1}{r}{1.34e-09} & \multicolumn{1}{r}{3.06e-10} & \multicolumn{1}{r}{3.75e-10} \\
+    Kutta44 & 4     & \multicolumn{1}{r}{1.19e-03} & \multicolumn{1}{r}{3.52e-05} & \multicolumn{1}{r}{4.22e-07} & \multicolumn{1}{r}{2.33e-08} & \multicolumn{1}{r}{1.48e-09} & \multicolumn{1}{r}{3.03e-10} & \multicolumn{1}{r}{3.76e-10} \\
+    Gill44 & 4     & \multicolumn{1}{r}{1.27e-03} & \multicolumn{1}{r}{3.76e-05} & \multicolumn{1}{r}{4.39e-07} & \multicolumn{1}{r}{2.38e-08} & \multicolumn{1}{r}{1.52e-09} & \multicolumn{1}{r}{3.01e-10} & \multicolumn{1}{r}{3.76e-10} \\
+    Bogacki-Shampine-3 & 3     & \multicolumn{1}{r}{1.44e-01} & \multicolumn{1}{r}{1.81e-02} & \multicolumn{1}{r}{1.16e-03} & \multicolumn{1}{r}{1.45e-04} & \multicolumn{1}{r}{1.82e-05} & \multicolumn{1}{r}{1.16e-06} & \multicolumn{1}{r}{1.45e-07} \\
+    Bogacki-Shampine-2 & 2     & \multicolumn{1}{r}{2.24e-01} & \multicolumn{1}{r}{3.82e-02} & \multicolumn{1}{r}{4.44e-03} & \multicolumn{1}{r}{9.75e-04} & \multicolumn{1}{r}{2.27e-04} & \multicolumn{1}{r}{3.48e-05} & \multicolumn{1}{r}{8.56e-06} \\
+    Fehlberg-5 & 5     & \multicolumn{1}{r}{2.52e-04} & \multicolumn{1}{r}{7.90e-06} & \multicolumn{1}{r}{8.01e-08} & \multicolumn{1}{r}{2.36e-09} & \multicolumn{1}{r}{1.05e-10} & \multicolumn{1}{r}{3.09e-10} & \multicolumn{1}{r}{3.74e-10} \\
+    Fehlberg-4 & 4     & \multicolumn{1}{r}{6.45e-04} & \multicolumn{1}{r}{1.96e-05} & \multicolumn{1}{r}{1.86e-07} & \multicolumn{1}{r}{5.62e-09} & \multicolumn{1}{r}{2.71e-10} & \multicolumn{1}{r}{3.12e-10} & \multicolumn{1}{r}{3.75e-10} \\
+    Cash-Karp-5 & 5     & \multicolumn{1}{r}{3.71e-05} & \multicolumn{1}{r}{1.14e-06} & \multicolumn{1}{r}{1.15e-08} & \multicolumn{1}{r}{2.18e-10} & \multicolumn{1}{r}{1.72e-10} & \multicolumn{1}{r}{3.09e-10} & \multicolumn{1}{r}{3.74e-10} \\
+    Cash-Karp-4 & 4     & \multicolumn{1}{r}{1.15e-04} & \multicolumn{1}{r}{3.52e-06} & \multicolumn{1}{r}{3.36e-08} & \multicolumn{1}{r}{9.41e-10} & \multicolumn{1}{r}{1.74e-10} & \multicolumn{1}{r}{3.12e-10} & \multicolumn{1}{r}{3.74e-10} \\
+    Dormand-Prince-5 & 5     & \multicolumn{1}{r}{4.01e-05} & \multicolumn{1}{r}{1.50e-06} & \multicolumn{1}{r}{1.66e-08} & \multicolumn{1}{r}{6.68e-10} & \multicolumn{1}{r}{2.00e-10} & \multicolumn{1}{r}{3.10e-10} & \multicolumn{1}{r}{3.74e-10} \\
+    Dormand-Prince-4 & 4     & \multicolumn{1}{r}{2.15e-04} & \multicolumn{1}{r}{6.22e-06} & \multicolumn{1}{r}{5.91e-08} & \multicolumn{1}{r}{2.48e-09} & \multicolumn{1}{r}{2.66e-10} & \multicolumn{1}{r}{3.14e-10} & \multicolumn{1}{r}{3.75e-10} \\
+    ode45-Fehlberg & 5     & \multicolumn{7}{c}{4.45e-10} \\
+    ode45-Cash-Karp & 5     & \multicolumn{7}{c}{3.56e-10} \\
+    ode45-Dormand-Prince & 5     & \multicolumn{7}{c}{0} \\
+    \bottomrule
+    \end{tabular}
+  }
+  \label{tab:2}%
+\end{table}%
+
+
+We may consider whether we can produce satisfactory results for larger $T$. We take $T=50$. No method, even my ode45 solver, can produce promising results (basically every two schemes produce significantly different results), which reflect the chaotic behavior of the systen. We present the results in \ref{tab:3}.
+
+% Table generated by Excel2LaTeX from sheet 'Sheet1'
+\begin{table}[htbp]
+  \centering
+  \caption{$T=50,(1,1,1)^\top$, chaotic system.}
+    \begin{tabular}{lrccc}
+      \toprule
+    Schemes & \multicolumn{1}{l}{Order} & \multicolumn{1}{l}{Step=1000} & \multicolumn{1}{l}{Step=5000} & \multicolumn{1}{l}{Step=10000} \\
+    \midrule
+    Kutta33 & 3     & \multicolumn{1}{r}{21.722371} & \multicolumn{1}{r}{12.71423417} & \multicolumn{1}{r}{1.12e+01} \\
+    Heun33 & 3     & \multicolumn{1}{r}{25.032635} & \multicolumn{1}{r}{1.919558767} & \multicolumn{1}{r}{9.73e+00} \\
+    Runge Kutta & 4     & \multicolumn{1}{r}{3.3026864} & \multicolumn{1}{r}{9.247784466} & \multicolumn{1}{r}{2.09e+01} \\
+    Kutta44 & 4     & \multicolumn{1}{r}{9.6745926} & \multicolumn{1}{r}{8.947122728} & \multicolumn{1}{r}{1.25e+01} \\
+    Gill44 & 4     & \multicolumn{1}{r}{22.838871} & \multicolumn{1}{r}{9.877826653} & \multicolumn{1}{r}{2.33e+01} \\
+    Bogacki-Shampine-3 & 3     & \multicolumn{1}{r}{20.823048} & \multicolumn{1}{r}{33.70047057} & \multicolumn{1}{r}{1.57e+01} \\
+    Bogacki-Shampine-2 & 2     & \multicolumn{1}{r}{8.3741834} & \multicolumn{1}{r}{22.52080048} & \multicolumn{1}{r}{8.68e+00} \\
+    Fehlberg-5 & 5     & \multicolumn{1}{r}{5.1341464} & \multicolumn{1}{r}{8.746708108} & \multicolumn{1}{r}{1.49e+01} \\
+    Fehlberg-4 & 4     & \multicolumn{1}{r}{12.95801} & \multicolumn{1}{r}{22.01023818} & \multicolumn{1}{r}{2.17e+01} \\
+    Cash-Karp-5 & 5     & \multicolumn{1}{r}{21.286549} & \multicolumn{1}{r}{17.4042821} & \multicolumn{1}{r}{1.34e+01} \\
+    Cash-Karp-4 & 4     & \multicolumn{1}{r}{5.4040717} & \multicolumn{1}{r}{10.94574968} & \multicolumn{1}{r}{1.02e+01} \\
+    Dormand-Prince-5 & 5     & \multicolumn{1}{r}{10.903763} & \multicolumn{1}{r}{11.40696783} & \multicolumn{1}{r}{3.36e+00} \\
+    Dormand-Prince-4 & 4     & \multicolumn{1}{r}{12.358719} & \multicolumn{1}{r}{9.957384526} & \multicolumn{1}{r}{3.29e+00} \\
+    ode45-Fehlberg & 5     & \multicolumn{3}{c}{18.04508859} \\
+    ode45-Cash-Karp & 5     & \multicolumn{3}{c}{1.756454731} \\
+    ode45-Dormand-Prince & 5     & \multicolumn{3}{c}{0} \\
+    \bottomrule
+    \end{tabular}%
+  \label{tab:3}%
+\end{table}%
+
+We also consider other initialization. 
+
+% Table generated by Excel2LaTeX from sheet 'Sheet1'
+\begin{table}[htbp]
+  \centering
+  \caption{$T=1,(100,1,1)^\top$}
+  \resizebox{\textwidth}{!}{
+
+    \begin{tabular}{lrccccccc}
+      \toprule
+    Schemes & \multicolumn{1}{l}{Order} & \multicolumn{1}{l}{Step=100} & \multicolumn{1}{l}{Step=200} & \multicolumn{1}{l}{Step=500} & \multicolumn{1}{l}{Step=1000} & \multicolumn{1}{l}{Step=2000} & \multicolumn{1}{l}{Step=5000} & \multicolumn{1}{l}{Step=10000} \\
+    \midrule
+    Kutta33 & 3     & \multicolumn{1}{r}{2.1939726} & \multicolumn{1}{r}{0.339955145} & \multicolumn{1}{r}{0.02316552} & \multicolumn{1}{r}{2.93e-03} & \multicolumn{1}{r}{3.68e-04} & \multicolumn{1}{r}{2.36e-05} & \multicolumn{1}{r}{2.95e-06} \\
+    Heun33 & 3     & \multicolumn{1}{r}{2.5101006} & \multicolumn{1}{r}{0.361725167} & \multicolumn{1}{r}{0.0235087} & \multicolumn{1}{r}{2.92e-03} & \multicolumn{1}{r}{3.64e-04} & \multicolumn{1}{r}{2.32e-05} & \multicolumn{1}{r}{2.90e-06} \\
+    Runge Kutta & 4     & \multicolumn{1}{r}{3.34e-01} & \multicolumn{1}{r}{1.29e-02} & \multicolumn{1}{r}{1.95e-04} & \multicolumn{1}{r}{9.78e-06} & \multicolumn{1}{r}{5.49e-07} & \multicolumn{1}{r}{1.33e-08} & \multicolumn{1}{r}{8.12e-10} \\
+    Kutta44 & 4     & \multicolumn{1}{r}{0.3522172} & \multicolumn{1}{r}{1.35e-02} & \multicolumn{1}{r}{2.03e-04} & \multicolumn{1}{r}{1.02e-05} & \multicolumn{1}{r}{5.69e-07} & \multicolumn{1}{r}{1.37e-08} & \multicolumn{1}{r}{8.40e-10} \\
+    Gill44 & 4     & \multicolumn{1}{r}{0.3282259} & \multicolumn{1}{r}{1.27e-02} & \multicolumn{1}{r}{1.93e-04} & \multicolumn{1}{r}{9.70e-06} & \multicolumn{1}{r}{5.44e-07} & \multicolumn{1}{r}{1.31e-08} & \multicolumn{1}{r}{8.05e-10} \\
+    Bogacki-Shampine-3 & 3     & \multicolumn{1}{r}{2.2903341} & \multicolumn{1}{r}{0.345494236} & \multicolumn{1}{r}{0.0230409} & \multicolumn{1}{r}{2.89e-03} & \multicolumn{1}{r}{3.61e-04} & \multicolumn{1}{r}{2.31e-05} & \multicolumn{1}{r}{2.89e-06} \\
+    Bogacki-Shampine-2 & 2     & \multicolumn{1}{r}{2.077238} & \multicolumn{1}{r}{0.229148257} & \multicolumn{1}{r}{0.01272715} & \multicolumn{1}{r}{4.23e-03} & \multicolumn{1}{r}{1.33e-03} & \multicolumn{1}{r}{2.41e-04} & \multicolumn{1}{r}{6.26e-05} \\
+    Fehlberg-5 & 5     & \multicolumn{1}{r}{2.93e-02} & \multicolumn{1}{r}{1.25e-03} & \multicolumn{1}{r}{1.39e-05} & \multicolumn{1}{r}{4.40e-07} & \multicolumn{1}{r}{1.38e-08} & \multicolumn{1}{r}{1.43e-10} & \multicolumn{1}{r}{6.34e-12} \\
+    Fehlberg-4 & 4     & \multicolumn{1}{r}{1.02e-01} & \multicolumn{1}{r}{4.02e-03} & \multicolumn{1}{r}{4.84e-05} & \multicolumn{1}{r}{1.91e-06} & \multicolumn{1}{r}{9.05e-08} & \multicolumn{1}{r}{2.00e-09} & \multicolumn{1}{r}{1.23e-10} \\
+    Cash-Karp-5 & 5     & \multicolumn{1}{r}{1.10e-02} & \multicolumn{1}{r}{2.62e-04} & \multicolumn{1}{r}{2.37e-06} & \multicolumn{1}{r}{7.20e-08} & \multicolumn{1}{r}{2.23e-09} & \multicolumn{1}{r}{2.40e-11} & \multicolumn{1}{r}{3.34e-12} \\
+    Cash-Karp-4 & 4     & \multicolumn{1}{r}{3.02e-02} & \multicolumn{1}{r}{1.10e-03} & \multicolumn{1}{r}{1.57e-05} & \multicolumn{1}{r}{7.28e-07} & \multicolumn{1}{r}{3.77e-08} & \multicolumn{1}{r}{8.50e-10} & \multicolumn{1}{r}{5.30e-11} \\
+    Dormand-Prince-5 & 5     & \multicolumn{1}{r}{2.40e-03} & \multicolumn{1}{r}{2.22e-04} & \multicolumn{1}{r}{3.62e-06} & \multicolumn{1}{r}{1.24e-07} & \multicolumn{1}{r}{4.01e-09} & \multicolumn{1}{r}{4.08e-11} & \multicolumn{1}{r}{2.53e-12} \\
+    Dormand-Prince-4 & 4     & \multicolumn{1}{r}{4.48e-02} & \multicolumn{1}{r}{1.45e-03} & \multicolumn{1}{r}{1.77e-05} & \multicolumn{1}{r}{8.28e-07} & \multicolumn{1}{r}{4.67e-08} & \multicolumn{1}{r}{1.16e-09} & \multicolumn{1}{r}{7.44e-11} \\
+    ode45-Fehlberg & 5     & \multicolumn{7}{c}{4.26e-12} \\
+    ode45-Cash-Karp & 5     & \multicolumn{7}{c}{3.62e-12} \\
+    ode45-Dormand-Prince & 5     & \multicolumn{7}{c}{0} \\
+    \bottomrule
+    \end{tabular}%
+  }
+  \label{tab:4}%
+\end{table}%
+
+
+\clearpage
+
+\section{Plot the Lorenz equation}
+
+\subsection{Simulation method}
+For the equation
+\begin{equation}
+    \frac{\d y}{\d x} = f(x,y)
+\end{equation}
+We use the classical Runge-Kutta formula:
+\begin{equation}
+    \begin{split}
+        &y_{n+1} =y_n+\frac{h}{6}(K_1+2K_2+2K_3+K_4)\\
+        &{\rm where},\\
+        &\begin{cases}
+            K_1 = f(x_n,y_n)\\
+            K_2 = f(x_n+\frac{1}{2}h,y_n+\frac{1}{2}hK_1)\\
+            K_3 = f(x_n+\frac{1}{2}h,y_n+\frac{1}{2}hK_2)\\
+            K_4 = f(x_n+h,y_n+hK_3)\\
+        \end{cases}
+    \end{split}
+\end{equation}
+
+
+\subsection{Results}
+The results are plotted in Lorenz.py. We can have the following oberservation.
+\paragraph{$\sigma = 10, \rho=28, \beta=8/3$} We analyze the case in Figure \ref{fig:1}, Figure \ref{fig:2}.
+\begin{itemize}
+    \item Figure \ref{fig:1} shows that small perturbations of initialization results in significant difference as the system evolves. 
+    \item Figure \ref{fig:2} shows that significant different initialization will eventually become periodic in the same region as the system evolves. 
+\end{itemize}
+
+\paragraph{Other settings}
+We adjust the paramters in Lorenz system and perform simulations. We find that
+\begin{itemize}
+    \item In general, $\sigma, \rho, \beta$ should be positive to ensure the trajectory is bounded, as Figure \ref{7} shows.
+    \item The size of the paramters greatly influences the shape of attractor. It could have two symmetric attractors with shape "o", or one attractor with shape "8". Middle cases are more complicated. 
+\end{itemize}
+
+\newpage
+\begin{figure}
+    \centering
+    \includegraphics[width= \textwidth]{case1.png}
+    \caption{Case 1}
+    \label{fig:1}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width= \textwidth]{case2.png}
+    \caption{Case 2}
+    \label{fig:2}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width= \textwidth]{case3.png}
+    \caption{Case 3}
+    \label{3}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width= \textwidth]{case4.png}
+    \caption{Case 4}
+    \label{4}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width= \textwidth]{case5.png}
+    \caption{Case 5}
+    \label{5}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width= \textwidth]{case6.png}
+    \caption{Case 6}
+    \label{6}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width= \textwidth]{case7.png}
+    \caption{Case 7}
+    \label{7}
+\end{figure}
+
+
+
+
+\bibliographystyle{apalike}
+\bibliography{bib.bib}
+
+
+\end{document}
+
+\begin{center}
+\begin{table*}[htbp]
+\resizebox{\textwidth}{!}{ %
+\begin{threeparttable}[b]
+\caption{caption}
+\label{tab:}
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|}
+
+\end{tabular}
+\begin{tablenotes}
+    \item [a] {need to notice that...}
+    \item [b] {...}
+\end{tablenotes}
+\end{threeparttable}}%
+\end{table*}
+\end{center}
+
+\begin{algorithm}
+	\caption{PPO} 
+	\begin{algorithmic}[1]
+		\For {$iteration=1,2,\ldots$}
+			\For {$actor=1,2,\ldots,N$}
+				\State Run policy $\pi_{\theta_{old}}$ in environment for $T$ time steps
+				\State Compute advantage estimates $\hat{A}_{1},\ldots,\hat{A}_{T}$
+			\EndFor
+			\State Optimize surrogate $L$ wrt. $\theta$, with $K$ epochs and minibatch size $M\leq NT$
+			\State $\theta_{old}\leftarrow\theta$
+		\EndFor
+	\end{algorithmic} 
+\end{algorithm}

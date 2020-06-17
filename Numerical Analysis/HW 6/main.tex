@@ -1,0 +1,195 @@
+\documentclass[conference,onecolumn,12pt]{IEEEtran}
+\usepackage[english]{babel}
+\usepackage{graphicx}
+\usepackage{framed}
+\usepackage[normalem]{ulem}
+\usepackage{amsmath}
+\usepackage{listings}
+\usepackage{amsthm}
+\usepackage{subfigure}
+\usepackage{diagbox}
+\usepackage{amssymb}
+\usepackage{longtable}
+\usepackage{palatino}
+\usepackage{multirow}
+\usepackage{bigstrut}
+\usepackage{bbm}
+\usepackage{algorithm}
+\usepackage{booktabs}
+\usepackage{algpseudocode} 
+\usepackage{amsfonts}
+\usepackage[colorlinks,linkcolor=blue,anchorcolor=blue,citecolor=blue]{hyperref}
+\usepackage{enumerate}
+\usepackage[top=1in,bottom=1in, left=1in, right=1in]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage{pgfplots}
+\usepgfplotslibrary{groupplots,dateplot}
+\usetikzlibrary{patterns,shapes.arrows}
+\pgfplotsset{compat=newest}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\Z}{\mathbb{Z}}
+\numberwithin{equation}{section}
+\numberwithin{figure}{section}
+\numberwithin{table}{section}
+
+\theoremstyle{definition}
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+\newtheorem{proposition}{Proposition}
+\newtheorem{example}{Example}
+\newtheorem{lemma}{Lemma}
+\newtheorem*{definition}{Definition}
+\newtheorem*{note}{Note}
+\newtheorem{exercise}{Exercise}
+
+\newcommand{\Disp}{\displaystyle}
+\newcommand{\qe}{\hfill\(\bigtriangledown\)}
+\setlength{\columnseprule}{1 pt}
+\usepackage{setspace}
+\renewcommand{\baselinestretch}{1.5}
+\usepackage{fancyhdr}
+
+\begin{document}
+
+
+\title{{Critical Point of Ising Model}\\
+{\footnotesize \textsuperscript{*}Report 6 on the course ``Numerical Analysis".}
+}
+
+\author{\IEEEauthorblockN{1\textsuperscript{st} Chen Yihang}
+\textit{Peking University}\\
+1700010780}
+
+\maketitle
+
+
+\begin{abstract}
+	We implement the Metropolis algorithm on the 2-dimensional Ising model in order to find the critical temperature. Sicne the critical temperature can be explicitly obtained, we compare our numerical results to the theoretical results. In order to reduce error, we use large a Ising lattice and use around $10^7$ sampling iteration.
+\end{abstract}
+
+\thispagestyle{fancy} % IEEE模板在\maketitle后会自动声明\thispagestyle{plain}，
+% 导致第一页什么都没有。所以得把plain更改为fancy
+\lhead{} % 页眉左，需要东西的话就在{}内添加
+\chead{} % 页眉中
+\rhead{} % 页眉右
+\lfoot{} % 页眉左
+\cfoot{} % 页眉中
+\cfoot{\thepage} %页眉右，\thepage 表示当前页码
+\renewcommand{\headrulewidth}{0pt} %改为0pt即可去掉页眉下面的横线
+\renewcommand{\footrulewidth}{1pt} %改为0pt即可去掉页脚上面的横线
+\pagestyle{fancy}
+\cfoot{\thepage}
+\tableofcontents
+\section{Settings}
+The $2$-dimensional Ising model on the $N^2$ square lattice with periodic
+boundary condition. The Hamiltonian of the Ising model is defined
+as
+\begin{equation*}
+    H(\sigma)=-J\sum_{<i,j>} \sigma_i \sigma_j,\ \ \ i\in [N^2]
+\end{equation*}
+where $\sigma_i= \pm 1$. We can define the following quantities:
+\begin{enumerate}
+    \item Internal energy $u$: 
+    $u=U/{N^2}$, where $U = <H>$.
+    \item Specific heat $c$: 
+    $c = C/{N^2}$, where $C = k_B \beta^2 \mathrm{Var} (H)$
+\end{enumerate}
+Under designated conditions, we will perform a series of numerical experiments to plot the relation $u-\beta$, $c-\beta$, find critical point $\beta^\star$.
+We are to adopt the traditional Metropolis-Hastings algorithm. 
+
+\section{Simulation method}
+\subsection{Estimate $u$, $c$}
+Since 
+\begin{equation}
+\begin{split}
+u &= \frac{<H>}{N^2}\\
+c &= k_B\beta^2\frac{<H^2>-<H>^2}{N^2}\\
+\end{split}
+\end{equation}
+We only need to estimate $<H>, <H^2>$.
+\begin{equation}
+\begin{split}
+        <H> &\approx \frac{1}{T}\sum_{t=1}^TH(\sigma_t), \\
+        <H^2> &\approx \frac{1}{T}\sum_{t=1}^TH(\sigma_t)^2\\
+\end{split}
+\end{equation}
+where $\sigma_t$ is a Markov chain. It is too slow to directly calculate Hamiltonian every time we get a new stage. Instead, we update it according to the local change around the flipped spin. 
+\subsection{Metropolis-Hastings Algorithm}
+We implemented the classical Metropolis algorithm in C++, where we construct a class named \"Ising\" to implement most operations of Ising system.
+\begin{algorithm}[H]
+	\caption{Metropolis-Hastings Algorithm}
+	\begin{algorithmic}[1]
+		\Require $J, k_B, T$
+		\State $\beta = \frac{1}{k_B T}$
+		\State Initialize spins $s_i$ within $\pm 1$ equally randomly. 
+		\State Define $H(\sigma) = -J\sum_{<i, j>}{\sigma_i\sigma_j}$.
+		\Repeat
+		\State Propose a state $\sigma'$.
+		\State Compute $\Delta H = H(\sigma') - H(\sigma_n)$, $A = \min\{1, \exp(-\beta\Delta H)\}$.
+		\State Generate R.V. $r \sim \mathcal{U}[0, 1]$.
+		\State If $r \leq A$, then $\sigma_{n+1} = \sigma'$; else $\sigma_{n+1} = \sigma_n$.
+		\Until {convergence}
+	\end{algorithmic}
+\end{algorithm}
+
+
+\section{Results}
+\subsection{List of program files}
+\begin{enumerate}
+	\item {\bf Ising.cpp}: critical temperature estimation of Ising model by Metropolis algorithm.
+	\item {\bf Plot.m}: use data ``results.csv'' (generated by ``Ising.cpp'') to produce figures.  
+\end{enumerate}
+
+\subsection{Results Presentation}
+We set $N=100$ and use one Markov chain. If the $\beta$ is small, we use $10^7$ iterations to warm up; else, we use $5\times 10^8$ iterations to warm up. We use $10^7$ iterations to sample the results, and set $\beta=0.1+0.05 i$, for $i=1,\cdots,31$. The simulation takes about 20 min.\\
+\begin{figure}[htbp]
+	\centering
+	\resizebox{\textwidth}{!}{
+	\input{myfile.tex}}
+	\caption{Critical point: Ising model}
+	\label{1}
+\end{figure}
+The critical point $\beta^\star$ is around 0.45 (from file results.csv), which is close to the theoretical result $\frac{\log(1+\sqrt{2})}{2}\approx 0.44$. \cite{baxter2016exactly}. The figure is plotted in Figure \ref{1}.
+
+We find that, for the temperature lower than the critical point, significantly more warming up stages are required. Especially for temperature close to zero,  the probability of incurring a flip is $A\leq \exp(-\beta \Delta H) \approx 0$. Hence, the Metropolis algorithm is not efficient. There are some modifications to address the situation, such as kinetic Monte Carlo method.
+
+\bibliographystyle{apalike}
+\bibliography{bib.bib}
+
+
+
+
+\end{document}
+
+\begin{center}
+\begin{table*}[htbp]
+\resizebox{\textwidth}{!}{ %
+\begin{threeparttable}[b]
+\caption{caption}
+\label{tab:}
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|}
+
+\end{tabular}
+\begin{tablenotes}
+    \item [a] {need to notice that...}
+    \item [b] {...}
+\end{tablenotes}
+\end{threeparttable}}%
+\end{table*}
+\end{center}
+
+\begin{algorithm}
+	\caption{PPO} 
+	\begin{algorithmic}[1]
+		\For {$iteration=1,2,\ldots$}
+			\For {$actor=1,2,\ldots,N$}
+				\State Run policy $\pi_{\theta_{old}}$ in environment for $T$ time steps
+				\State Compute advantage estimates $\hat{A}_{1},\ldots,\hat{A}_{T}$
+			\EndFor
+			\State Optimize surrogate $L$ wrt. $\theta$, with $K$ epochs and minibatch size $M\leq NT$
+			\State $\theta_{old}\leftarrow\theta$
+		\EndFor
+	\end{algorithmic} 
+\end{algorithm}

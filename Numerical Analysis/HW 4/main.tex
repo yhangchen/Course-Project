@@ -1,0 +1,255 @@
+\documentclass[conference,onecolumn,12pt]{IEEEtran}
+\IEEEoverridecommandlockouts
+
+\usepackage[english]{babel}
+\usepackage{graphicx}
+\usepackage{framed}
+\usepackage[normalem]{ulem}
+\usepackage{amsmath}
+\usepackage{listings}
+\usepackage{amsthm}
+\usepackage{subfigure}
+\usepackage{diagbox}
+\usepackage{amssymb}
+\usepackage{longtable}
+\usepackage{multirow}
+\usepackage{palatino}
+\usepackage{bigstrut}
+\usepackage{bbm}
+\usepackage{algorithm}
+\usepackage{booktabs}
+\usepackage{algpseudocode} 
+\usepackage{amsfonts}
+\usepackage[colorlinks,linkcolor=blue,anchorcolor=blue,citecolor=blue]{hyperref}
+\usepackage{enumerate}
+\usepackage{xcolor}
+\usepackage[utf8]{inputenc}
+\usepackage{pgfplots}
+\usepackage{setspace}
+\renewcommand{\baselinestretch}{1.5}
+\usepackage{fancyhdr}
+\DeclareUnicodeCharacter{2212}{−}
+\usepgfplotslibrary{groupplots,dateplot}
+\usetikzlibrary{patterns,shapes.arrows}
+\pgfplotsset{compat=newest}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Q}{\mathbb{Q}}
+\renewcommand{\a}{\mathbf{a}}
+\renewcommand{\c}{\mathbf{c}}
+\newcommand{\Z}{\mathbb{Z}}
+\theoremstyle{definition}
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+\newtheorem{proposition}{Proposition}
+\newtheorem{example}{Example}
+\newtheorem{lemma}{Lemma}
+\newtheorem*{definition}{Definition}
+\newtheorem*{note}{Note}
+\newtheorem{exercise}{Exercise}
+\counterwithin{figure}{section}
+\counterwithin{table}{section}
+\counterwithin{equation}{section}
+
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+\pgfplotsset{compat=newest}
+%% the following commands are needed for some matlab2tikz features
+\usetikzlibrary{plotmarks}
+\usetikzlibrary{arrows.meta}
+\usepgfplotslibrary{patchplots}
+\usepackage{grffile}
+\pgfplotsset{plot coordinates/math parser=false}
+\newlength\figureheight
+\newlength\figurewidth
+
+\lstset{basicstyle = \scriptsize, numbers=left, numberstyle=\tiny, keywordstyle=\color{blue!70}, commentstyle=\color{red!50!green!50!blue!50}, frame=single, rulesepcolor=\color{red!20!green!20!blue!20}}
+\usepackage[top=1in,bottom=1in, left=1in, right=1in]{geometry}
+%A bunch of definitions that make my life easier
+\newcommand{\bproof}{\bigskip {\bf Proof. }}
+\newcommand{\eproof}{\hfill\qedsymbol}
+\newcommand{\Disp}{\displaystyle}
+\newcommand{\qe}{\hfill\(\bigtriangledown\)}
+\setlength{\columnseprule}{1 pt}
+
+
+\begin{document}
+
+
+\title{{Fast Fourier Transform}\\
+{\footnotesize \textsuperscript{*}Report 4 on the course ``Numerical Analysis".}
+}
+
+\author{\IEEEauthorblockN{1\textsuperscript{st} Chen Yihang}
+\textit{Peking University}\\
+1700010780}
+
+\maketitle
+\thispagestyle{fancy} % IEEE模板在\maketitle后会自动声明\thispagestyle{plain}，
+% 导致第一页什么都没有。所以得把plain更改为fancy
+\lhead{} % 页眉左，需要东西的话就在{}内添加
+\chead{} % 页眉中
+\rhead{} % 页眉右
+\lfoot{} % 页眉左
+\cfoot{} % 页眉中
+\cfoot{\thepage} %页眉右，\thepage 表示当前页码
+\renewcommand{\headrulewidth}{0pt} %改为0pt即可去掉页眉下面的横线
+\renewcommand{\footrulewidth}{1pt} %改为0pt即可去掉页脚上面的横线
+\pagestyle{fancy}
+\cfoot{\thepage}
+
+\begin{abstract}
+    The fast Fourier transform and inverse fast Fourier transform are implemented in this report, and are tested via filtering the noisy signals. We compare various levels of filtering by plotting the true signals, observed signals and recovered signals.  
+\end{abstract}
+\tableofcontents
+\section{Problem Statement}
+Suppose
+\begin{equation}
+    f(t) = e^{-t^2/10}(\sin(2t)+2\cos(4t)+0.4\sin(t)\sin(50t))
+\end{equation}
+is the observed signal, and hence the real signal is
+\begin{equation}
+    f_0(t) = e^{-t^2/10}(\sin(2t)+2\cos(4t))
+\end{equation}
+
+We plot the signals in Figure \ref{fig:signal}
+\begin{figure}[!htbp]
+    \centering
+    \resizebox{\textwidth}{!}{
+    \input{myfile4.tex}}
+    \caption{Observed and real signal}
+    \label{fig:signal}
+
+\end{figure}
+and we want to recover the real signal from the observed signal.
+
+Assume $y_k = f(2k\pi/256)\ (k=0,1,\cdots,255)$, $\hat{y}_k\ (k=0,1,\cdots,255)$ is the Fourier transform of $y_k$. Since $\hat{y}_{n-k} = \bar{\hat{y}}_k$, the low frequency terms are $\hat{y}_1,\hat{y_2},\cdots,\hat{y_m}$ and $\hat{y}_{255-m},\cdots,\hat{y}_{255}$ (for small $m$). We set $\hat{y}_k = 0(m\leq k\leq 255-m)$ to filter the high frequency terms out, and perform Fourier transform on new $\hat{y}'_k$, which produces $y'_k$. Plot $y_k$ and $y'_k$ and compare their differences, and try different $m$.
+
+\section{Fast Fourier Transform}
+\subsection{Theory}
+Assume the inverse binary representation of integer $i$ is invbin($i$), and $w^j_N = e^{-\frac{2\pi ij}{N}}$ as usual. For $\a = (a_0,\cdots,a_{2^n-1})$, we can define
+\begin{equation}
+\a_{{\rm invbin}(i)} = a_i
+\end{equation}
+Then we regroup $\a_\varepsilon^{(n)}, \varepsilon^{(n)} \in \{0,1\}^n$ by following method.
+
+For simplicity, we define $\varepsilon^{(k)}\in \{0,1\}^k$, $\c_{\varepsilon^{(n)}}=\a_{\varepsilon^{(n)}}$. Assume all $\c_{\varepsilon^{(k+1)}}$ has been grouped, then for any $\varepsilon^{(k)}\in \{0,1\}^k$
+\begin{equation}
+    \c_{\varepsilon^{(k)}} = \left(
+        \begin{matrix}
+            \c_{\varepsilon^{(k)}+\{0\}} + \mathbf{w}_{2^{n-k}}\odot \c_{\varepsilon^{(k)}+\{1\}}\\
+            \c_{\varepsilon^{(k)}+\{0\}} - \mathbf{w}_{2^{n-k}}\odot \c_{\varepsilon^{(k)}+\{1\}}\\
+        \end{matrix}
+    \right)
+\end{equation}
+where
+\begin{equation}
+    \mathbf{w}_{2^k} = (w_{2^k}^0,w_{2^k}^1,\cdots,w_{2^k}^{2^{k-1}-1})^\top
+\end{equation}
+
+
+\subsection{Implementation}
+In the programme, we use ``complex.h'' in C to perform complex operations. 
+
+In the begining, we need to reshuffle $y_k$. In general, we reverse the binary representation of each number in the following code:
+\begin{lstlisting}[language=C]
+int reverse_bit(int i, int n) {
+int ans = 0;
+for (int j = 0; j < n; ++j)
+{
+    ans = (ans << 1) | (i & 1);
+    i >>= 1;
+}
+return ans;
+}
+\end{lstlisting}
+
+Since the process of FFT and inverse FFT are similar, we use the variable "choice" to specify the difference. We list the code below:
+\begin{lstlisting}[language=C]
+void FFT(double complex *x, double complex *y, int n, int choice) {
+    int N = 1 << n;
+    for (int i = 0; i < N; ++i){
+        int ind = reverse_bit(i, n);
+        y[i] = x[ind];
+    }
+    for (int i = 1; i <= n; ++i) {
+        int j = 1 << i;
+        for (int s = 0; s < N; s += j) {
+            for (int k = 0; k < j / 2; ++k) {
+                double complex w = cos(2 * pi * k / j) 
+                - choice * sin(2 * pi * k / j) * _Complex_I;
+                double complex u = y[s + k];
+                double complex v = y[s + k + j / 2];
+                y[s + k] = u + w * v;
+                y[s + k + j / 2] = u - w * v;
+            }
+        }
+    }
+    if (choice < 0){
+        for (int i = 0; i <= N; ++i){
+            y[i] = y[i] / N;
+        }
+    }
+}
+\end{lstlisting}
+
+The begining loop in Line 3-6 is the reshuffling process, and the last loop in Line 20-24 is to resize the output in inverse FFT.\par
+The main part is in the Line 7-19, which describes the regrouping process. The outer loop determine the stepsize $j$ of the regrouping method by Line 8. Latter, the middle loop, in Line 9-18, divides the sequence into subsequences with length $j$. Finally, the innermost loop, in Line 10-17, join two consecutive subsequences together.
+
+
+\section{Results}
+We plot the frequency of the signal in Figure \ref{fig:freq}. Hence, we want to filter the high frequency term while keeping the most of the low frequency term. We mainly want to filter the frequency term around 50-th. The choice of $m$ should be around 10. 
+
+For $m=3,6,12,18,24,48$, we plot the results in Figure \ref{fig:main2}, \ref{fig:main3}, \ref{fig:main}. Clearly, as $m$ increases, the recovery is more and more accurate. $m$ being too small ($m=3$) will increases the error, while $m$ being too large will not filter the high frequency terms (eg. $m=50$, see Figure \ref{fig:freq}). Setting $m=12$ or $18$ is the optimal choice, which is aligned with our previous observation. 
+
+From Figure \ref{fig:main3}, we find that the error mainly comes from the boundry region, since the true signals are not periodic. Larger $m$ will reduce the infinity error of the oscillations, but will oscillates in higher frequency.
+
+
+\begin{figure}
+    \centering
+    \resizebox{\textwidth}{!}{
+    \input{myfile3.tex}}
+    \caption{Frequency of the Signal}
+    \label{fig:freq}
+
+\end{figure}
+
+\begin{figure}
+    \centering
+    \resizebox{\textwidth}{!}{
+    \input{myfile2.tex}}
+    \caption{FFT based signal recovery, compared to observed signals}    \label{fig:main2}
+
+\end{figure}
+
+\begin{figure}
+    \centering
+    \resizebox{\textwidth}{!}{
+    \input{myfile5.tex}}
+    \caption{FFT based signal recovery, compared to true signals}    \label{fig:main3}
+
+\end{figure}
+
+\begin{figure}
+    \centering
+    \resizebox{\textwidth}{!}{
+    \input{myfile.tex}}
+    \caption{FFT based signal recovery, in the complex plane}    \label{fig:main}
+
+\end{figure}
+
+
+
+Actually, we find that setting $m=48$ can filter the higher frequency terms efficiently, while setting $m=50$ cannot, which is aligned with the frequency figure in \ref{fig:freq}. We plot the results in Figure \ref{fig:main4}.
+
+\begin{figure}
+    \centering
+    \resizebox{\textwidth}{!}{
+    \input{myfile6.tex}}
+    \caption{FFT based signal recovery, compared to true and observed signals}    \label{fig:main4}
+
+\end{figure}
+
+
+
+\end{document}

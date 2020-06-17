@@ -1,0 +1,187 @@
+\documentclass[conference]{IEEEtran}
+\IEEEoverridecommandlockouts
+% The preceding line is only needed to identify funding in the first footnote. If that is unneeded, please comment it out.
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithm}
+\usepackage{algorithmicx}
+\usepackage{algpseudocode}
+\usepackage{graphicx}
+\usepackage{subfigure}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\usepackage[colorlinks,linkcolor=blue,anchorcolor=blue,citecolor=blue]{hyperref}
+
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+\begin{document}
+
+\title{Runge polynomial approximation\\
+{\footnotesize \textsuperscript{*}Report 1 on the course ``Numerical Analysis".}
+}
+
+\author{\IEEEauthorblockN{1\textsuperscript{st} Chen Yihang}
+\textit{Peking University}\\
+1700010780\\
+}
+
+\maketitle
+
+\begin{abstract}
+    This report implements Newton, Lagrange, linear, Hermite polynomial and natural spline interpolation over the Runge function. We detail our implementation and plot the interpolation function as well as interpolation error in a series of figures.
+\end{abstract}
+\section{Problem Statement}
+Use the following method to interpolate the Runge function $R(x) = \frac{1}{1+x^2}, x\in [-5,5]$, and compare the interpolation function with $R(x)$.\\
+\begin{enumerate}
+    \item For nodes $x_i=-5+i (i=0,1,\cdots,10)$, plot its Newton polynomial interpolation function.
+    \item For nodes $x_i=5\cos(\frac{2i+1}{42}\pi) (i=0,1,\cdots,20)$, plot its Lagrange polynomial interpolation function.
+    \item For nodes $x_i=-5+i (i=0,1,\cdots,10)$, plot its piecewise linear interpolation function.
+    \item For nodes $x_i=-5+i (i=0,1,\cdots,10)$, plot its piecewise 3-rd order Hermite polynomial interpolation function.
+    \item For nodes $x_i=-5+i (i=0,1,\cdots,10)$, plot its piecewise 3-rd order natural spline interpolation function.
+\end{enumerate}
+
+
+
+\section{Interpolation methods}
+\subsection{Newton polynomial}
+\par Define the divided difference by
+\begin{equation}
+    \begin{split}
+        &f[x_i,x_{i+1},\cdots,x_{i+j}] \\
+        = &\frac{f[x_{i+1},x_{i+2},\cdots,x_{i+j}]-f[x_i,x_{i+1},\cdots,x_{i+j}]} {x_{i+j}-x_i}
+    \end{split}
+\end{equation}
+\par We can recursively calculate thef difference. Then, we can directly write the Newton interpolation polynomial:
+\begin{equation}
+    \begin{split}
+        &N_n(x) = \\
+        &f[x_0] + \sum_{m=1}^n f[x_0,x_1,\cdots,x_m](x-x_0)(x-x_1)\cdots(x-x_{m-1})
+    \end{split}
+\end{equation}
+
+We use a matrix to encode the divided difference.
+\subsection{Lagrange polynomial}
+\par We can write the Lagrange interpolation polynomial directly:
+\begin{equation}
+    L_n(x) = \sum_{i=1}^n f(x_i) \frac{\prod_{j\neq i}(x-x_j)}{\prod_{j\neq i}(x_i-x_j)}
+\end{equation} 
+
+
+\subsection{Linear polynomial}
+\par Similarly, we can write
+\begin{equation}
+    \begin{split}
+        \phi(x) = \frac{f(x_{i+1})(x-x_i)-f(x_i)(x-x_{i+1})}{x_{i+1}-x_i},\quad x\in [x_i,x_{i+1}],&\\ 0\leq i<n.&
+    \end{split}
+\end{equation}
+
+\subsection{Hermite polynomial}
+\par If we have $f$ on the endpoints of the interval $[x_i,x_{i+1}]$
+\begin{equation}
+    y_i = f(x_i),\quad y_{i+1}=f(x_{i+1}),\quad m_i = f'(x_i),\quad m_{i+1} = f'(x_{i+1})
+\end{equation}
+\par We need to find a third order polynomial $H_3(x)$, s.t.
+\begin{equation}
+    H_3(x_i) = y_i,\quad H_3(x_{i+1}) = y_{i+1},\quad H_3(x_i) = m_i,\quad H_3(x_{i+1}) = m_{i+1}
+\end{equation}
+Then we plan to construt a basis of $\mathcal{P}_3$ explicitly
+\begin{equation}
+    \begin{split}
+        \alpha_i(x) &= (1+2\frac{x-x_i}{x_{i+1}-x_i})(\frac{x-x_{i+1}}{x_{i+1}-x_i})^2\\
+        \alpha_{i+1} (x) &= (1+2\frac{x-x_{i+1}}{x_{i+1}-x_i})(\frac{x-x_{i}}{x_{i+1}-x_i})^2\\
+        \beta_i(x) &= (x-x_i)(\frac{x-x_{i+1}}{x_{i+1}-x_i})^2\\
+        \beta_{i+1}(x) &= (x-x_{i+1})(\frac{x-x_{i}}{x_{i+1}-x_i})^2\\
+    \end{split}
+\end{equation}
+\par We can easily represent the Hermite polynomial on the interval
+\begin{equation}
+    H_3(x) = \sum_i [y_i \alpha_i(x)+m_i \beta_i(x)]
+\end{equation}
+
+\subsection{Natural spline interpolation}
+The key difference is that we do not use $m_i=f'(x_i)$. Instead, we should use the condition 
+\begin{equation}
+    \begin{cases}
+        S''_0(x_0) = S''_{n-1}(x_n) = 0\\
+        S''_{i-1}(x_i) = S''_i(x_i),\quad (1\leq i \leq n-1)
+    \end{cases}
+\end{equation}
+
+Define
+\begin{equation}
+    \begin{cases}
+        \lambda_0 = 1,\quad \lambda_n = 0,\\
+        \lambda_i = \frac{\Delta x_{i-1}}{\Delta x_{i-1}+\Delta x_{i}}\\
+    \end{cases}
+\end{equation}
+\begin{equation}
+    \begin{cases}
+        \mu_0 = 3\frac{y_1-y_0}{\Delta x_0},\quad \mu_n = 3\frac{y_n-y_{n-1}}{\Delta x_{n-1}}\\
+        \mu_i = 3[\frac{1-\lambda_i}{\Delta x_{i-1}}(y_i-y_{i-1})+\frac{\lambda_i}{\Delta x_{i}}(y_{i+1}-y_{i})]\\
+    \end{cases}
+\end{equation}
+
+We can stack the equations into $Am=\mu$, where $A$ is a tridiagnoal matrix. In the code, we implement the numerical method to solve the tridiagnoal linear system.
+
+\section{Results}
+To reproduce the results, please execute ``interp.py''.
+
+We can clearly observe the Runge phenonmenon in the Newton polynomial interpolation of uniform distance in Figure \ref{fig:Newton}. If we use Chebyshev's interpolation nodes, the error is sigificantly reduced, as Figure \ref{fig:Lagrange} shows. The piecewise linear interpolation, in Figure \ref{fig:Linear}, is not $C^1$ smooth, and the piecewise Hermite interpolation is not $C^2$ smooth. However, natural spline is more computationally onerous than the Hermite interpolation, and if we compare the Figure \ref{fig:Hermite_err} and \ref{fig:NaturalSpline}, it seems that Hermite slightly outperforms the natural spline in terms of $l^\infty$ error.
+\newpage
+\begin{figure}[htbp]
+    \centering
+    \subfigure[Newton polynomial]{
+    \includegraphics[width=0.45\textwidth]{Newton.jpg}}
+    \quad
+    \subfigure[Newton polynomial, error]{
+    \includegraphics[width=0.45\textwidth]{Newton_error.jpg}}
+    \caption{Newton polynomial}
+    \label{fig:Newton}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \subfigure[Lagrange polynomial]{
+    \includegraphics[width=0.45\textwidth]{Lagrange.jpg}}
+    \quad
+    \subfigure[Lagrange polynomial, error]{
+    \includegraphics[width=0.45\textwidth]{Lagrange_error.jpg}}
+    \caption{Lagrange polynomial}
+    \label{fig:Lagrange}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \subfigure[Linear polynomial]{
+    \includegraphics[width=0.45\textwidth]{Linear.jpg}}
+    \quad
+    \subfigure[Linear polynomial, error]{
+    \includegraphics[width=0.45\textwidth]{Linear_error.jpg}}
+    \caption{Linear polynomial}
+    \label{fig:Linear}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \subfigure[Hermite polynomial]{
+    \includegraphics[width=0.45\textwidth]{Hermite.jpg}}
+    \quad
+    \subfigure[Hermite polynomial, error]{
+    \includegraphics[width=0.45\textwidth]{Hermite_error.jpg}}
+    \caption{3-rd order Hermite polynomial}
+    \label{fig:Hermite_err}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \subfigure[Natural Spline]{
+    \includegraphics[width=0.45\textwidth]{NaturalSpline.jpg}}
+    \quad
+    \subfigure[Natural Spline, error]{
+    \includegraphics[width=0.45\textwidth]{NaturalSpline_error.jpg}}
+    \caption{3-rd order natural spline polynomial}
+    \label{fig:NaturalSpline}
+\end{figure}
+
+\end{document}
+

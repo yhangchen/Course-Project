@@ -1,0 +1,216 @@
+\documentclass[12pt,a4paper]{extarticle}
+\usepackage[english]{babel}
+\usepackage{graphicx}
+\usepackage{framed}
+\usepackage[normalem]{ulem}
+\usepackage{amsmath}
+\usepackage{listings}
+\usepackage{amsthm}
+\usepackage{subfigure}
+\usepackage{diagbox}
+\usepackage{amssymb}
+\usepackage{longtable}
+\usepackage{palatino}
+\usepackage{indentfirst}
+\usepackage{multirow}
+\usepackage{bigstrut}
+\usepackage{bbm}
+\usepackage{booktabs}
+\usepackage{algorithm}
+\usepackage{booktabs}
+\usepackage{algpseudocode} 
+\usepackage{amsfonts}
+\usepackage[colorlinks,linkcolor=blue,anchorcolor=blue,citecolor=blue]{hyperref}
+\usepackage{enumerate}
+\usepackage{titling}
+\usepackage{titlesec}
+\titleformat{\section}%设置section的样式
+{\normalsize \bf}%右对齐，4号字，加粗
+{\thesection .\quad}%标号后面有个点
+{0pt}
+{}
+\titleformat{\subsection}%设置section的样式
+{\small \bf}%右对齐，4号字，加粗
+{\thesubsection .\quad}%标号后面有个点
+{0pt}
+{}
+\renewcommand\maketitlehooka{\null\mbox{}\vfill}
+\renewcommand\maketitlehookd{\vfill\null}
+\usepackage[utf8]{inputenc}
+\usepackage[top=1in,bottom=1in, left=1in, right=1in]{geometry}
+%A bunch of definitions that make my life easier
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\Z}{\mathbb{Z}}
+\numberwithin{equation}{section}
+\numberwithin{figure}{section}
+\numberwithin{table}{section}
+\theoremstyle{definition}
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+\newtheorem{proposition}{Proposition}
+\newtheorem{example}{Example}
+\newtheorem{lemma}{Lemma}
+\newtheorem*{definition}{Definition}
+\newtheorem*{note}{Note}
+\newtheorem{exercise}{Exercise}
+
+\newcommand{\Disp}{\displaystyle}
+\newcommand{\qe}{\hfill\(\bigtriangledown\)}
+\setlength{\columnseprule}{1 pt}
+
+
+\begin{document}
+\begin{titlepage}
+\addtolength{\hoffset}{0cm}
+    \centering
+    \includegraphics[width=0.50\textwidth]{title.png}\par\vspace{1cm}
+    {\huge\bfseries Introduction to Roundoff Error \par}
+    \vspace{2cm}
+    {\Large\itshape \textsc{Chen Yihang}\\{ 1700010780}\par}
+    \vfill
+    Supervised by \par
+    Prof. \textsc{Zhang Pingwen} 
+    \vfill
+    {\large \today\par}
+\end{titlepage}
+\footnotesize
+
+\newpage
+\section{IEEE standard}
+A floating point number sysetem contains 4 integers:
+\begin{itemize}
+   \item $\beta$: base.
+   \item $p$: precision.
+   \item $[L,U]$: exponent range, where $L$ is the lower bound and $U$ is the upper bound.
+\end{itemize}
+
+Any $x\in F$ has the following form:
+\begin{equation}
+    x = \pm (d_0.d_1d_2\cdots d_{p-1})_{\beta}\times \beta^E
+\end{equation}
+where $0\leq d_i \leq \beta-1$, for $i=0,1,\cdots,p-1$. $d_0.d_1d_2\cdots d_{p-1}$ is called mantissa and $E$ is called exponent.\par 
+For a real number $x$, it can only be approximated through rounding rules in the floating number system.We denote the floating approximation as $fl(x)$.\par 
+The normalized version of floating-point system requires $d_0=1,\ 0\leq d_i<\beta$, for $i=1,\cdots,p-1$ unless $x=0$. Since the first term is determined, it gives an extra bit of precision so that the roundoff error is reduced. The effective number of normalized floating point is $2(\beta-1)\beta^{p-1}(U-L+1)+1$.\par 
+The IEEE Standard for Floating-Point Arithmetic (IEEE 754) is a technical standard for {\bf normalized floating-point} computation which was established in 1985 by the Institute of Electrical and Electronics Engineers (IEEE). We can list the standard below
+\begin{table}[!htbp]
+    \small
+    \centering
+    \begin{tabular}{c|ccc}
+        \toprule
+        \toprule
+        TYPES&$\beta$ & $p$ &$[L,U]$\\
+        \midrule
+        Single precision&2&24&$[-126,127]$\\
+        Double precision&2&53&$[-1022,1023]$\\
+        \bottomrule
+        \bottomrule
+    \end{tabular}
+    \label{tab:ieee1}
+    \caption{IEEE standard: settings}
+\end{table}
+
+The above data is stored by binary representation:
+\begin{table}[!htbp]
+    \small
+    \centering
+    \resizebox{\textwidth}{!}{
+    \begin{tabular}{c|cccc}
+        \toprule
+        \toprule
+        TYPES&SIGN&BIASED EXPONENT&NORMALISED MANTISA&BIAS\\
+        \midrule
+        Single precision&1(31st bit)&8(30-23 bits)&23(22-0 bits)&127\\
+        Double precision&1(63rd bit)&11(62-52 bits)&52(51-0 bits)&1023\\
+        \bottomrule
+        \bottomrule
+    \end{tabular}}
+    \label{tab:ieee2}
+    \caption{IEEE standard: storage}
+\end{table}
+
+The effective range of single precision is $\pm 2^{-126}\ {\rm to}\ (2-2^{-23})\times 2^{127}$, of the double precision is $\pm 2^{-1022}\ {\rm to}\ (2-2^{-52})\times 2^{1023}$.
+
+\section{Roundoff error}
+Difference between the results produced by an algorithm when using exact arithmetic and when using finite precision rounded arithmic. One of the goals of numerical analysis is to estimate computation errors, which include both truncation errors and roundoff errors. There are mainly two sources of roundoff errors:
+\begin{enumerate}
+    \item Computers have magnitude and precision limits on their ability to present numbers.
+    \item Certain numerical calculations are highly sensitive to roundoff errors.
+\end{enumerate}
+\subsection{Roundoff error caused by representation}
+There are two common rounding rules: round-by-chop and round-to-nearest. The IEEE standard uses round-to-nearest. \par For $x = \pm (d_0.d_1d_2\cdots d_{p-1}d_p\cdots)_{\beta}\times \beta^E$,
+\begin{enumerate}
+    \item Round-by-chop: $fl(x) = \pm (d_0.d_1d_2\cdots d_{p-1})_{\beta}\times \beta^E$.
+    \item Round-to-nearest: $fl(x)$ is set to the nearest floating number to $x$. In order to reduce biased rounding, when there is a tie, we set $d_{p-1}$ to be even, e.g. $1.050\approx 1.0,\ 1.051\approx 1.1$.\
+\end{enumerate}
+
+If define the machine epsilon to be $\max_x \frac{x-fl(x)}{x}$, then the round-by-chop method's machine epsilon is $\beta^{1-p}$ and round-to-nearest method's is $\frac{1}{2}\beta^{1-p}$.
+\subsection{Roundoff error caused by arithmetic}
+The procedure of floating-point arithmetic can be summerized as follows
+\begin{itemize}
+    \item {\bf Step 1:} Round $x$ and $y$ to their floating-point approximation $fl(x)$ and $fl(y)$.
+    \item {\bf Step 2:} Perform exact arithmetic between $fl(x)$ and $fl(y)$.
+    \item {\bf Step 3:} Round the result to its floating-point approximation.
+\end{itemize}
+
+\begin{example}
+    $0.1+0.2\neq 0.3$ in Python
+    \begin{equation}
+        \begin{split}
+            0.1 &= (1.100110011001\cdots)_2\times 2^{-4}\\
+            0.2 &= (1.100110011001\cdots))_2\times 2^{-3}    
+        \end{split}
+    \end{equation}
+    
+    Hence, by round-to-nearest approximation, we can get
+    \begin{equation}
+        \begin{split}
+            fl(0.1) &= (1.(1001)^{12}1010)_2\times 2^{-4}\\
+            fl(0.2) &= (1.(1001)^{12}1010)_2\times 2^{-3}    
+        \end{split}
+    \end{equation}
+
+    Adding them together, we can get $(1.(0011)^{12} 0100)_2\times 2^{-2}$ (after rounding),  which is 0.30000000000000004 instead of 0.3.
+\end{example}
+
+\begin{example}
+    {\bf Subtractive cancellation} 
+    For $|\epsilon|<\epsilon_m$, then $fl((1+\epsilon)-(1-\epsilon))=fl(1+\epsilon)-fl(1-\epsilon)=1-1=0$. 
+\end{example}
+
+The error introduced by arithmetic can accumulate in an unstable\footnote{\scriptsize Usually in a sequential calculation.} or ill-conditioned\footnote{\scriptsize A problem is well-conditioned if small relative changes in input result in small relative changes in the solution. Otherwise. the problem is called ill-conditioned} problem, such as Runge phenomenon.\footnote{\scriptsize Since high order polynomials are sentitive to roundoff error.}
+
+\section{Other floating point system}
+\subsection{Arbitary-precision arithmetic}
+In computer science, arbitrary-precision arithmetic, also called bignum arithmetic, multiple-precision arithmetic, or sometimes infinite-precision arithmetic, indicates that calculations are performed on numbers whose digits of precision are limited only by the available memory of the host system. This contrasts with the faster fixed-precision arithmetic found in most arithmetic logic unit (ALU) hardware, which typically offers between 8 and 64 bits of precision. Arbitrary-precision arithmetic is considerably slower than arithmetic using numbers that fit entirely within processor registers, since the latter are usually implemented in hardware arithmetic whereas the former must be implemented in software.\par
+{\bf Applications:} Arbitrary precision is used in applications where the speed of arithmetic is not a limiting factor, or where precise results with very large numbers are required, such as public-key cryptography, computation of fundamental mathematical constants, computation of fractal images such as Mandelbrot set.
+\subsection{Extended precision}
+We use long double in C as an example. On the x86 architecture, most C compilers implement long double as the 80-bit extended precision type supported by x86 hardware (sometimes stored as 12 or 16 bytes to maintain data structure alignment), as specified in the C99 / C11 standards. \footnote{\scriptsize An exception is Microsoft Visual C++ for x86, which makes long double a synonym for double. The Intel C++ compiler on Microsoft Windows supports extended precision, but requires the /Qlong‑double switch for long double to correspond to the hardware's extended precision format.}\par This 80-bit format uses one bit for the sign of the significand, 15 bits for the exponent field and 64 bits for the significand. The exponent field is biased by 16383. Note that it is an unnormalized floating-point sysetem.
+\begin{table}[!htbp]
+    \small
+    \centering
+    \resizebox{\textwidth}{!}{
+    \begin{tabular}{c|ccccc}
+        \toprule
+        \toprule
+        TYPES&SIGN&BIASED EXPONENT&INTERGER PART& FRACTION&BIAS\\
+        \midrule
+        Long double & 1(79st bit)&15(64-78 bits) &1(63 bit) & 63(0-62 bit)&16383\\
+        \bottomrule
+        \bottomrule
+    \end{tabular}}
+    \label{tab:ld}
+    \caption{x86 long double}
+\end{table}
+
+\section{Disasters caused by errors}
+\begin{itemize}
+    \item {\bf The Patriot Missile failure} in Dharan, Saudi Arabia, on February 25, 1991 which resulted in 28 deaths, is ultimately attributable to poor handling of rounding errors.\cite{defense1992software}\\It turns out that the cause was an inaccurate calculation of the time since boot due to computer arithmetic errors. Specifically, the time in tenths of second as measured by the system's internal clock was multiplied by 1/10 to produce the time in seconds. This calculation was performed using a 24 bit fixed point register. In particular, the value 1/10 was chopped at 24 bits after the radix point. In other words, the binary expansion of 1/10 is 0.0001100110011001100110011001100.... Now the 24 bit register in the Patriot stored instead 0.00011001100110011001100 introducing an error of 0.0000000000000000000000011001100... binary, or about 0.000000095 decimal. The Patriot battery had been up around 100 hours. Multiplying by the number of tenths of a second in 100 hours gives $0.000000095\times 100\times 60\times 60\times 10=0.34$.) A Scud travels at about 1,676 meters per second, and so travels more than half a kilometer in this time. This was far enough that the incoming Scud was outside the "range gate" that the Patriot tracked. 
+    \item {\bf The explosion of the Ariane 5 rocket} just after lift-off on its maiden voyage off French Guiana, on June 4, 1996, was ultimately the consequence of a simple overflow. \cite{lions1996ariane}\\The failure of the Ariane 501 was caused by the complete loss of guidance and altitude information 37 seconds after start of the main engine ignition sequence (30 seconds after lift-off). This loss of information was due to specification and design errors in the software of the inertial reference system.\\
+    The internal SRI software exception was caused during execution of a data conversion from 64-bit floating point to 16-bit signed integer value. The floating point number which was converted had a value greater than what could be represented by a 16-bit signed integer. This resulted in an Operand Error. The data conversion instructions (in Ada code) were not protected from causing an Operand Error, although other conversions of comparable variables in the same place in the code were protected.
+\end{itemize}
+
+\bibliographystyle{apalike}
+\bibliography{bib.bib}
+\end{document}

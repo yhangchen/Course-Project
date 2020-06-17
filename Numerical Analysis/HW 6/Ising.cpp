@@ -10,6 +10,7 @@
 
 using namespace std;
 
+// generate double precision random number in [0,1]
 inline double double_rand() {
 	return (double(rand()) * (RAND_MAX + 1) + double(rand())) / (RAND_MAX + 1)/ (RAND_MAX + 1);
 }
@@ -22,15 +23,19 @@ private:
     double _H = 0;
 
 	// indexes of neighbours
+    // right
 	inline int r(int ind) {
 		return (ind / N) * N + (ind % N + 1) % N;
 	}
+    // left
 	inline int l(int ind) {
 		return (ind / N) * N + (ind % N + N - 1) % N;
 	}
+    // down
 	inline int d(int ind) {
 		return (ind % N)  + ((ind / N + N - 1) % N) * N;
 	}
+    // upper
 	inline int u(int ind) {
 		return (ind % N)  + ((ind / N + 1) % N) * N;
 	}
@@ -44,11 +49,13 @@ public:
     Hamilton();
     }
 
+    // random initiate the state.
     void init_state() {
         for (int i = 0; i < N * N; ++i)
             state[i] = 2 * (rand() % 2) - 1;
     }
 
+    // calculate the Hamiltonian
     void Hamilton() {
         for (int i = 0; i < N * N; ++i){
             _H -= J / 2 * state[i] * (state[u(i)] + state[d(i)] + state[l(i)] + state[r(i)]);
@@ -56,10 +63,12 @@ public:
     }
 
 	void flip(int i) {
+        // update the Hamiltonian
         _H +=  + 2 * J * state[i] * (state[u(i)] + state[d(i)] + state[l(i)] + state[r(i)]);
         state[i] = -state[i];
 	}
 
+    // Metropolis algorithm
 	void Metropolis() {
         int i = rand() % N;
         int j = rand() % N;
@@ -100,13 +109,16 @@ int main(){
         else {
             	warming_up = 1e7;
         }
+        // construct the model
         Ising model(N, beta, J, kB);
+        // warmming up
         for (int j = 0; j < warming_up; ++j)
         {
             model.Metropolis();
         }
         double total_H = 0;
         double total_H2 = 0;
+        // sampling
         for (int k = 0; k < max_iter; ++k)
         {
             model.Metropolis();
@@ -117,6 +129,7 @@ int main(){
         }
         double E_H = total_H / max_iter;
         double E_H2 = total_H2 / max_iter;
+        // averaging
         Us[count] = E_H / N / N;
         Cs[count] = kB * beta * beta * (E_H2 - E_H * E_H) / N / N;
 		cout << betas[count] << ", " << Us[count] << ", " << Cs[count]
