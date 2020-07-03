@@ -1,0 +1,39 @@
+\subsection{Input Format}
+We adopt the input format suggested in \cite{Jones1993MulticommodityNF}, where three types of formulations have been discussed. 
+\begin{enumerate}
+    \item \textbf{Origin-Destination Problem (ODP)}\\We define a commodity as a product that
+travels between a specific origin and a specific destination.
+\item \textbf{Destination Specific Problem (DSP)} \\
+We define a
+commodity as a product that travels to a specific destination from multiple origins, or vice
+versa, from a specific origin to multiple destinations.
+\item \textbf{Product Specific Problem (PSP)}\\
+We define a commodity as a product that
+must travel through a network from multiple origins to multiple destinations.
+
+\end{enumerate}
+
+The data will be split into 4 sections: a node file
+for general information about the network, a link file, a supply/demand file with the name of the following 4 files, xxx.nod, xxx.arc, xxx.sup and xxx.mut. 
+
+Notice that our problem belongs to the Origin-Destination Formulation, and xxx.sup cannot be directly applied to the ODP, since some origin or destination of a given flow is not specified (denoted as ``-1'').  Some datasets include an additional file xxx.od. Most instances of the JLF problems \cite{Jones1993MulticommodityNF} have the Origin-Destination Formulation, hence they have both a ".sup" file for the Product-Specific (aggregated) Formulation and a ".od" file for the OS (disaggregated) formulation.
+
+\subsection{Data Input}
+The dataset contains 4 files: .nod, .arc, .od, .mut.
+
+We read the data as the following order: 
+\begin{itemize}
+    \item First, we read .nod file. This file contains 4 numbers, of which 2 numbers are useful: nStations (the number of nodes) and nArcs (the number of arcs). 
+    
+    \item We read the .arc file, and build a table containing the information about the arcs. Since our problem does not consider the type of product, we only use the information of the from node, to node, cost and mutual capacity. 
+    
+    Note that the cost for each arc is set to 1, despite the fact that we do not consider the cost in this problem. Setting it to 1 simply means the number of arcs contained by the path.
+    \item We build a list about the nodes. For each node, the list contains a line indicating the ID, and the outdegree of the node.
+    \item We build a cost table, which contains the cost and the id for for each arc.
+    \item Finally, we read the '.od' file and build a table about the commodities. Each line contains the origin and the destination, and the quantity of a commodity flow. 
+    
+    
+    
+\end{itemize}
+
+

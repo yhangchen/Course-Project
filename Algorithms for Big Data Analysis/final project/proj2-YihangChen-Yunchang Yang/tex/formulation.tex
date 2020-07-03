@@ -1,0 +1,41 @@
+\subsection{Generic Definition}
+\label{sec:definition}
+$\mathcal{G}=(\mathcal{V},\mathcal{E})$ is a directed network, where $\mathcal{V}$ and $\mathcal{E}$ are the set of nodes and uni-directional edges with sizes $N$ and $L$ respectively. For each edge $l\ (l=1,2,\cdots,L)$, the link capacity is denoted as $c_l \in \mathbb{R}^{+}$, and $\mathbf{c}=(c_1,c_2,\cdots,c_L)^\top$ to be the link capacity vector of the overall network. 
+
+The communication network is
+used to deliver data flows from source nodes to destination nodes to facilitate end to-end data services. Specifically, we consider $K$ flows in the network indexed by $k
+(k = 1,2,\cdots,K)$. For each flow $k$, there is a source-destination pair associated with
+it and we assume that there are $P_k\in \mathbf{Z}^{+}$ available paths for this source-destination pair indexed by $p_k\ (p_k=1,2,\cdots,P_k)$. 
+
+We use a $L\times P_k$ routing matrix to represent the relationship between the links and the available paths of flow $k$, $\mathbf{R}_k=(R^k_{l,p_k})$, where $R^k_{l,p_k}=\{0,1\}$. $R^k_{l,p_k}=1$ if and only if the path $p_k$ transverses link $l$ for flow $k$.
+
+Let $\mathbf{x}_k = (x_{k,1}, x_{k,2},\cdots, x_{k,P_k})$  be the rate allocation and path selection vector of flow $k$, where each element $x_{k,p} (x_{k,p}\geq  0, \forall k, p)$ measures the rate allocation at
+path $p$ for flow $k$. $x_{k,p}$ also gives information about what paths to select for flow $k$. Specifically, the path selected by flow $k$ are those paths with $x_{k,p_k} > 0$ for any $p_k$. Define $\x = (\x_1, \x_2,\cdots, x_K)$ to be the rate allocation and path selection vector of all flows.
+
+Our destination is to balance the network load across links, which can be formulated by an optimization problem
+
+\begin{equation}
+\label{eq:origin}
+\begin{array}{cl}
+\min _{\mathbf{x}} & \max _{l} \frac{\mathbf{R}[l] \mathbf{x}}{c_{l}} \\
+\text {s.t.} & \mathbf{R x} \leq \mathbf{c} \\
+& \left\|\mathbf{x}_{k}\right\|_{1}=d_{k} \\
+& \mathbf{x} \geq 0
+\end{array}\end{equation}
+
+
+By introducing an additional variable $t$, we can transform the nonlinear optimization problem into the following LP:
+\begin{subequations}
+\begin{align}
+\min _{\mathbf{x},t} \quad & t \\
+\text {s.t.} \quad& \mathbf{R x} \leq \mathbf{c}t\label{eq:2b} \\
+& 1^\top \mathbf{x}_{k}=d_{k} \label{eq:2c} \\
+& t\leq 1 \label{eq:2d}\\
+& \mathbf{x} \geq 0
+\end{align}
+\end{subequations}
+
+
+
+
+

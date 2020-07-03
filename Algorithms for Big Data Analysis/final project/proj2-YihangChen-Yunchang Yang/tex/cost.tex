@@ -1,0 +1,238 @@
+The problem we deal with in our work has a very close relationship with the classical Multicommodity Network Flow (MCNF) problem. Here we provide a brief description. Note that some definitions, such as link cost and node capacity, are not included in our algorithm.
+
+\subsection{Arc-Node Model}
+Given a directed graph $G:=(N, A)$, the arcs are defined by their start and end nodes $(i, j),$ and their cost per unit $c_{i j}$. Each node $n \in N$ and arc $(i, j) \in A$ have a maximum capacity $u_{n}$ and $v_{i j}$ respectively. Moreover, a commodities $k \in K$ is characterized by its start and end nodes, as well as a quantity $q_{k} .$ Finally, to simplify the expression of the flow conservation constraints, we define a variable $\delta_{n}^{k}$ which equals 1 if the node $n$ is the start node of the commodity $k,$ equals -1 if $n$ is the end node, otherwise it equals $0 .$ The decision variable $x_{i j}^{k}$ correspond to the fraction of the total quantity of the commodity $k$ passing through the arc $(i, j)$.
+
+The node-arc formulation is defined as follow:
+\begin{equation}\begin{array}{lll}
+\operatorname{minimize} & \sum_{k \in K} \sum_{(i, j) \in A} c_{i j} x_{i j}^{k} q_{k} \\
+\text { subject to } & \sum_{i, j) \in A} x_{i j}^{k}-\sum_{(j, i) \in A} x_{j i}^{k}=\delta_{i}^{k} & \forall i \in N, \forall k \in K \\
+& \sum_{k \in K} \sum_{(j, i) \in A} x_{j i}^{k} q_{k} \leq u_{i} & \forall i \in N \\
+& \sum_{k \in K} x_{i j}^{k} q_{k} \leq v_{i j} & \forall(i, j) \in A \\
+& x_{i j}^{k} \geq 0 & \forall(i, j) \in A, \forall k \in K
+\end{array}\end{equation}
+
+This formulation aims to minimize the total cost of shipping all the commodities, while conserving, for each commodity, the entire flow between the start and
+end nodes. Moreover, the total quantity of the commodities at each node and
+arcs is limited, and the commodities are allowed to split during the shipping.
+
+\subsection{Path-Based Model}
+Another widely used MCNF formulation is called path-based model. Given a graph $G:=(N, A)$ similar to the one defined in the arc-node model, nodes and arcs have a capacity $u_{n}$ and $v_{i j}$ respectively, the cost per unit of an arc is $c_{i j},$ and the quantity of the commodity $k$ is $q_{k} .$ Also, we define the sets $P(k)$ such that it contains all the possible paths from the start and end node of the commodity $k .$ The cost per unit of a path $p$ is denoted $c_{p},$ it corresponds to the sum of $c_{i j},$ for all arcs $(i, j)$ contained in the path $p .$ Unlike the arc-node variant, the decisions variables are $x_{p}^{k}$ which is the fraction of the total quantity of the commodity $k$ passing through the path $p \in P(k)$ Besides, to simplify the formulation of the capacity constraints, we define $\alpha_{i j}^{p}$ to be equals to 1 if the arc $(i, j)$ is a part of the path $p .$ As well as $\beta_{n}^{p}$ to be equal to 1 if the node $n$ is contained in the path $p$ and is not the origin of the path $p$.
+
+The path-based formulation is described as follows:
+\begin{equation}\label{pathbasedmodel}\begin{array}{lll}
+\operatorname{minimize} & \sum_{k \in K} \sum_{p \in P(k)} c_{p} x_{p}^{k} q_{k} \\
+\text { subject to } & \sum_{p \in P(k)} x_{p}^{k}=1 & \forall k \in K \\
+& \sum_{k \in K} \sum_{p \in P(k)} x_{p}^{k} q_{k} \beta_{i}^{p} \leq u_{i} \quad \forall i \in N \\
+& \sum_{k \in K} \sum_{p \in P(k)} x_{p}^{k} q_{k} \alpha_{i j}^{p} \leq v_{i j} & \forall(i, j) \in A \\
+& x_{p}^{k} \geq 0 & \forall p \in P(k), \forall k \in K
+\end{array}\end{equation}
+
+Similarly, the objective is to minimize the total cost of transporting all the commodities, while conserving, for each commodity all the flow from the start node
+to the end node. Besides the nodes and arcs have maximal capacities and the commodities can split during the transportation.
+
+This formulation allow us to visualize the MCNF in another way, instead of focusing
+on the arcs, we look at the bigger picture and compute how good it is to
+assign a certain amount of a commodity to a path. Our problem is like the path-based model.
+
+\subsection{Comparison of different models}
+Thus, we defined the MCNF in two different ways. It would be interesting to know
+in which cases a formulation is more efficient than the other one.
+
+First, observe
+that in general, the number of variables in
+the path-based formulation is highly bigger than in the arc-node model. Besides the
+number of variable grows exponentially with the number of arcs in the path-based
+model. However, notice that the number of flow conservation constraints is highly lower in the path-based model. As the number of
+commodities grows, the number of constraints in the arc-node model grows greatly
+faster than in the path-based model.
+
+Previous literatures show that for the small dataset the running time of the arc-node formulation is extremely
+faster than the path-based model. Indeed, the later require a large amount of precomputational
+time, to generate the set $P(k)$ for each commodity and the number of
+variables is larger in the path-based formulation. Besides, the path based model requires
+much more memory than the arc-node formulation, again it can be explained
+by the large difference of number of variables generated between the two models.
+
+However, we notice that the main benefit of the path-based approach
+is the low number of constraints. Moreover, most of the time the optimal
+solution contains only a small amount of variables among all the ones generated,
+meaning that we do not need all variables to obtain the optimal solution. One way
+to leverage these observations would be to employ a method which does not require
+all the variables to find the optimal solution, but only the relevant ones. From the
+literature review we have seen that a wide variety of approaches exist, with the aim
+of cutting down the amount of variables considered. One of them is the column
+generation approach, which is today extensively used.
+
+\subsection{Column Generation on LP}
+
+Column generation is a method to efficiently solve linear programs with a
+huge number of variables. The
+principal idea works as follows: We want to
+solve an LP, called master LP (MP), and consider a restricted master LP (RMP), which
+contains all constraints of the master LP, but only a subset of the variables.
+Then we solve a pricing problem, i.e., we decide whether there is a variable
+that is currently not contained in the restricted master LP, but might improve
+the objective function. If there are no such variables, it is guaranteed that
+the current solution of the restricted master LP is optimal for the whole
+problem. Otherwise, we add the variables and iterate.
+
+Consider the
+following linear program, the so-called master problem (MP):
+\begin{equation}\label{MP}\begin{aligned}
+\max \quad &\boldsymbol{c}^{\mathrm{T}} \boldsymbol{x}\\
+\text {s.t. } \quad& \boldsymbol{Ax} \leq \boldsymbol{b}\\
+&\boldsymbol{x} \geq \mathbf{0}
+\end{aligned}\tag{MP}\end{equation}
+where $A \in \mathbb{R}^{m \times n}$ and $\boldsymbol{b} \in \mathbb{R}^{m} .$ A vector $x \in \mathbb{R}^{n}$ is feasible for the primal program if $A \boldsymbol{x} \leq \boldsymbol{b}$ and $\boldsymbol{x} \geq \mathbf{0} .$ The dual program is
+\begin{equation}\label{D-MP}\begin{aligned}
+\min \quad & b^{\mathrm{T}} y \\
+\text {s.t. }\quad & A^{\mathrm{T}} y \geq c \\
+& y \geq 0
+\end{aligned}\tag{D-MP}\end{equation}
+We have the following duality theorem: $x^*$ and $y^*$ are
+respectively the optimal solution of the primal and dual problem if and
+only if the three following conditions hold :
+\begin{itemize}
+    \item Primal feasibility : $x^*$ satisfies each constraint of primal problem.
+    \item Objective function : The value of the primal objective function for $x^*$ is the same as the
+dual objective function value for $y^*$.
+    \item Dual feasibility : $y^*$ satisfies each constraint of dual problem.
+\end{itemize}
+
+Now consider the following RMP with respect to a certain subset of variables $\{x_{p'}:p'\in P' \subset [n]\}$:
+\begin{equation}\label{RMP}\begin{aligned}
+\max \quad &\sum_{p'}c_{p'}x_{p'}\\
+\text {s.t. } \quad& \sum_{p'}A_{mp'}x_{p'} \leq b_m\quad \forall m \\
+&\boldsymbol{x} \geq \mathbf{0}
+\end{aligned}\tag{RMP}\end{equation}
+
+A feasible solution $(x'_{p})_{p\in P'}$ for \eqref{RMP} yields a feasible solution $(x_{p})_{p\in [n]}$ for \eqref{MP} by setting $x_{p}=x'_{p}$ for $p\in P'$, and $x_{p}=0 $ otherwise.  It follows
+that the optimal solution value $v(\text{RMP})$ of \eqref{RMP} is not larger than the optimal value of \eqref{MP}. We want to
+decide whether the solution is optimal for \eqref{MP}. If this is not the
+case, we want to add additional variables to \eqref{RMP}  that help improve the
+solution value. How can we do that?
+
+
+Recall the duality theorem, given the optimal solution to the RMP called $(x'_{p})_{p\in P'}$ and its dual variables $(y'_{p})$
+we can confirm that $(x'_{p})_{p\in P'}$ satisfies the Primal feasibility condition as the RMP contains
+the same constraints as the MP. Besides the Objective function condition is also satisfied
+thanks to the strong duality theorem. The only condition left that we must
+verify, to ensure that the optimal solution of the RMP is also the optimal solution to
+the MP, is the dual feasibility. That is, verify that $(y'_{p})$ satisfy all the constraints of the
+dual of the MP, which is called the pricing problem. 
+
+If the dual variables of (RMP) satisfies the restrictions of (D-MP), then from the duality theorem we are done.  If there exists a variable $p$ for which D-MP is violated, we add
+the corresponding variable to (RMP) and repeat the process.
+
+Let $y_{k}$ with $k \in K, y_{(i)}$ with $i \in N$ and $y_{(i, j)}$ such that $(i, j) \in A$ denote the dual variables corresponding to the $k^{t h}$ constraint of the flow constraints, the $i^{t h}$ constraint of the node constraints,  and to the $(i, j)^{t h}$ constraint of the arc constraints in \eqref{pathbasedmodel} respectively. The dual problem of the MP is formulated as follows: 
+
+\begin{equation}\begin{array}{lll}
+\text { maximize } & \sum_{k \in K} y_{k}+\sum_{i \in N} y_{(i)} u_{i}+\sum_{(i, j) \in A} y_{(i, j)} v_{i j} \\
+\text { subject to } & y_{k}+\sum_{i \in N} y_{(i)} q_{k} \beta_{i}^{p}+\sum_{(i, j) \in A} y_{(i, j)} q_{k} \alpha_{i j}^{p} \leq c_{p}^{k} q_{k} & \forall k \in K, \forall p \in P(k) \\
+& y_{k} \in \mathbb{R} & \forall k \in K \\
+& y_{(i)} \leq 0 & \forall i \in N \\
+& y_{(i, j)} \leq 0 & \forall(i, j) \in A
+\end{array}\end{equation}
+
+The aim is to verify whether the dual variable satisfies all the constraints, this problem is called the Pricing problem. Nonetheless, the amount of constraints is equal to the number of variables in the MP, which is extremely large. This huge quantity of variables was the reason why we needed to find a new efficient approach to exploit the path-based model. Thus, the key is to identify an efficient technique to verify all those constraints without explicitly enumerate all of them.
+
+We are going to formulate the constraints in another way to tackle the pricing problem from a different point of view :
+
+\begin{equation}\begin{aligned}
+\forall k \in K, \forall p \in P(k) &: \quad y_{k}+\sum_{i \in N} y_{(i)} q_{k} \beta_{i}^{p}+\sum_{(i, j) \in A} y_{(i, j)} q_{k} \alpha_{i j}^{p} \leq c_{p}^{k} q_{k} \\
+& \equiv-y_{k}-\sum_{i \in N} y_{(i)} q_{k} \beta_{i}^{p}-\sum_{(i, j) \in A} y_{(i, j)} q_{k} \alpha_{i j}^{p}+c_{p}^{k} q_{k} \geq 0 \\
+& \equiv-y_{k}-\sum_{(i, j) \in A} y_{(j)} q_{k} \alpha_{i j}^{p}-\sum_{(i, j) \in A} y_{(i, j)} q_{k} \alpha_{i j}^{p}+q_{k} \sum_{(i, j) \in A} c_{i j}^{k} \alpha_{i j}^{p} \geq 0 \\
+& \equiv-y_{k}+q_{k} \sum_{(i, j) \in A} \alpha_{i j}^{p}\left(c_{i j}^{k}-y_{(j)}-y_{(i, j)}\right) \geq 0
+\end{aligned}\end{equation}
+
+Consequently, for each commodity $k \in K$ all of the following inequalities need to be satisfied:
+
+\begin{equation}-y_{k}+q_{k} \sum_{(i, j) \in A} \alpha_{i j}^{p}\left(c_{i j}^{k}-y_{(j)}-y_{(i, j)}\right) \geq 0 \quad \text { subject to }: p \in P(k)\end{equation}
+
+Which is equivalent to the system:
+
+\begin{align}
+&-y_{k}+q_{k} \sum_{(i, j) \in A} \alpha_{i j}^{p}\left(c_{i j}^{k}-y_{(j)}-y_{(i, j)}\right) \geq 0 \\
+\text { subject to : } \quad &\sum_{(i, j) \in A} \alpha_{i j}^{p}-\sum_{(j, i) \in A} \alpha_{j i}^{p}=\gamma_{i}^{k} \\
+&\alpha_{i j}^{p} \in\{0,1\} \quad \forall i \in N
+\end{align}
+
+where $\gamma_{i}^{k}$ equals 1 if $i$ is the starting node of the commodity $k$, equals -1 if $i$ is the destination of $k$ and 0 otherwise. Notice that $P$ denotes all paths in the network.
+
+
+Finally, we can rewrite the pricing problem as Integer Programs, the following problem will be called sub-pricing problem for commodity $k$:
+\begin{equation}\begin{array}{lll}
+\text { minimize } & -y_{k}+q_{k} \sum_{(i, j) \in A} \alpha_{i j}\left(c_{i j}^{k}-y_{(j)}-y_{(i, j)}\right) \\
+\text { subject to : } & \sum_{(i, j) \in A} \alpha_{i j}-\sum_{(j, i) \in A} \alpha_{j i}=\gamma_{i}^{k} & \forall i \in N \\
+& \alpha_{i j} \in\{0,1\} & \forall(i, j) \in A
+\end{array}\end{equation}
+
+Indeed if the objective function value of the optimal solution is negative, then it implies that the path $p$ described by the arcs $\alpha_{i j}$ 's violates a constraint in the dual of the MP. Thus the corresponding variable in the RMP needs to be generated to satisfy the constraint, in order to ensure that the constraint will be satisfied later on. Finally, if for each commodity, the objective function value of the optimal solution is nonnegative, it implies that the corresponding $\mathrm{RMP}$ solution is also optimal to the MP.
+
+The constraints aim to produce a set of arcs such that it contains exactly one arc starting from the origin of the commodity $\mathrm{k},$ and one arc ending at the destination of commodity $\mathrm{k},$ moreover the set of arcs must form a path. Thus, the feasible $\alpha_{i j}$ 's vectors represent all the paths from the origin of commodity $k$ to its destination. On the other hand, the objective function contains one constant $y_{k},$ and the other term is a cost vector modified by the dual variables $y_{(i)}$ and $y_{(i, j)} .$ Therefore, this integer program is in fact a shortest path problem with penalized arcs costs. Hence, the pricing problem boils down to a set of $\|K\|$ shortest path problems.
+
+
+
+% \subsection{Column Generation on Path-bassed Formulation}
+% Recall that the path-based formulation of min-cost problem is as \eqref{pathbasedmodel}. As stated earlier, the
+% goal is to narrow down the number of variables generated, and solve the problem
+% to optimality. This problem is called the Restricted Master problem (RMP). The difference
+% between the MP and the RMP is only that the RMP generate a subset of
+% variables instead of all of them.
+
+% In each interation, we first solve the corresponding RMP with subset of variables $\{x_{p'}:p'\in P' \subset [P]\}$. Then we solve the corresponding dual problem, to get the dual variables $y_{commodities}, y_{arc}$ of the commodities, nodes, arc constraints in \eqref{pathbasedmodel}, respectively.
+
+% Then we solve the corresponding pricing problems, which is in fact a set of $K$ shortest path problems with penalized arcs costs. For each commodity $k$, the penalized arc cost is
+% \begin{equation}
+%     c'(i,j)=c(i,j)-y_{arc}(i,j)
+% \end{equation}
+% And we run dijkstra's algorithm on the penalized cost $c'$ to find a shortest path of commodity $k$. And we calculate the reduced cost . If the reduced cost is negative, then it
+% implies that the path $p$ described by the arcs $a_{ij}$’s violates a constraint in the dual of
+% the MP. Thus the corresponding variable in the RMP needs to be generated to satisfy
+% the constraint, in order to ensure that the constraint will be satisfied later on. Finally,
+% if for each commodity, the reduced cost of the optimal solution is nonnegative,
+% it implies that the corresponding RMP solution is also optimal to the MP. 
+
+% However, in the first place, we need to find a feasible set of variables to the RMP
+% to guarantee the primal feasibility condition of Theorem 1. As we only request feasibility,
+% a fast heuristic algorithm can be applied. The algorithm return a feasible set of initial variables using greedy algorithm.
+% \begin{itemize}
+%     \item 1. Compute the shortest path for each commodity
+%     \item 2. Sort the commodities by the outdegree value of their shortest path
+%         (outdegree of a path = sum of the outdegree of all nodes the path contains, except the destination node)
+%     \item 3. Iterate over the sorted commodity, for each of them, try to route it through its shortest path. If the nodes/arcs capacity constraints are not violated, then route the commoditiy through its shortest path. Otherwise,  compute the shortest path for the commodity, ignoring the violated nodes/arcs. If there is no shortest path, put the commodity at the beginning of the list. Otherwise, repeat 3.
+%     \item 4. If all commodities have a feasible path, Algorithm returns
+%           Otherwise : Return to step 3.
+% \end{itemize}
+
+
+\subsection{Initial Paths Generation}
+The first task is to find a method to find a promising set of
+initial variables. We use the Dijkstra’s algorithm to compute the shortest path between one origin-destination pair. However, owing to the link capacity, some additional modifications must be made.
+
+For a given OD-pair $i$, we first compute a path linking these two nodes. In sequel, we check whether the commodity carried by this path satisfies the link capacity. Assume the link can be denoted by $a_0a_1\cdots a_n$. For $i=n,n-1,\cdots,1$, we check whether the link $a_{i-1}a_i$ satisfies the capacity constraint. After routing over the whole path, if necessary, we decrease the amount of the commodities carried by this path according to each capacity constraint. 
+
+Finally, we update the link capacity, i.e. subtracts the amount that has been occupied by this path. If one link's capacity is reduced to zero, we choose to ignore it in the future Dijkstra's algorithm. 
+
+Clearly, it may occur that one origin-destination pair might be unavailable because of the link reduction. To prevent this from happening, we adopt the following strategy:
+\begin{enumerate}
+    \item For the fist epoch, we run the Dijkstra's algorithm directly to compute the shortest path. 
+    \item The commodities are sorted according to the outdegree value of their shortest path, which equals the sum of the outdegree of each nodes the path contains, except the destination node. The intuition is that the outdegree of a path tend to represent the number of alternative path from two nodes.
+    \item Iterate over the commodities according to the order. If again, one OD-pair is infeasible, we rerun the algorithm and put this OD-pair in the beginning.
+\end{enumerate}
+
+For most cases, such algorithm is able to ensure the feasible initial paths.
+
+
+
+
+
+
+
+
+
+
+
+
+

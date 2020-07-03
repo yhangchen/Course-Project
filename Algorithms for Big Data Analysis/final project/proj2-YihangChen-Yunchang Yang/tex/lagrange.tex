@@ -1,0 +1,75 @@
+\subsection{General Description}
+Lagrangian relaxation dualizes the bundle constraints using a Lagrangian multiplier $\pi\geq 0$ so that the remaining problem
+can be decomposed into $K$ smaller min-cost network flow problems. In the literature it is widely used for node-arc formulations. Below we describe its general form.
+
+Suppose that we want to solve the following optimization problem:
+\begin{equation}\begin{array}{cl}
+\min & f(x) \\
+\text { s.t. } & A x=b
+\end{array}\end{equation}
+The Lagrange dual function is \begin{equation}L(x, z)=f(x)+z^{\top}(A x-b)\end{equation}
+And solving the primal problem is equivalent to soling the following max-min problem:
+\begin{equation}\max _{z} \min _{x} L(x, z)\end{equation}
+which can be solved using the following scheme, called dual gradient ascent method:
+\begin{equation}\begin{aligned}
+x^{k+1} &=\operatorname{argmin}_{x} L\left(x, z^{k}\right) \\
+&=\operatorname{argmin}_{x}\left(f(x)+\left(z^{k}\right)^{T} A x\right) \\
+z^{k+1} &=\operatorname{argmax}_{z} L\left(x^{k+1}, z\right)-\frac{1}{2 t}\left\|z-z^{k}\right\|_{2}^{2} \\
+&=z^{k}+t\left(A x^{k+1}-b\right)
+\end{aligned}\end{equation}
+
+
+
+\subsection{Application to our problem}
+In particular, we apply the Lagrange relaxation method to our multicommodity flow problem. In the $i$-th iteration, We introduce dual variables $\lambda^{i} \in \mathbb{R}^{L}$ for the capacity constraints, and the relaxed primal problem can be written as
+
+\begin{subequations}
+\begin{align}
+\min _{\mathbf{x},t} \quad & t+\lambda^{\top}\left(\mathbf{R x} - \mathbf{c}t\right)\\
+\text {s.t.} \quad
+& 1^\top \mathbf{x}_{k}=d_{k}  \\
+& \mathbf{x} \geq 0 \\
+& 0\leq t \leq 1
+\end{align}
+\end{subequations}
+
+this problem can be further decomposed into $K+1$ smaller problems: for each $k\in \{1,...,K\}$,
+\begin{subequations}
+\begin{align}
+\min _{\mathbf{x}_k} \quad & \lambda^{\top}\left(\mathbf{R}_k\mathbf{x_k}\right)\\
+\text {s.t.} \quad
+& 1^\top \mathbf{x}_{k}=d_{k}  \\
+& \mathbf{x} \geq 0 
+\end{align}
+\end{subequations}
+
+and
+\begin{subequations}
+\begin{align}
+\min _{t} \quad & t+\lambda^{\top}\left( - \mathbf{c}t\right)\\
+\text {s.t.} \quad
+& 0\leq t \leq 1
+\end{align}
+\end{subequations}
+
+For the $k$-th subproblem, we can view it as a min-cost problem, with cost of the $l$-th arc $\lambda^{i}_{l}$ . We then use the column generation method mentioned in Section 3. We first solve the restricted master problem:
+\begin{subequations}
+\begin{align}
+\min _{\mathbf{x}_k} \quad & \lambda^{\top}\left(\mathbf{R}_k^{B}\mathbf{x_k}\right)\\
+\text {s.t.} \quad
+& 1^\top \mathbf{x}_{k}=d_{k}  \\
+& \mathbf{x} \geq 0 
+\end{align}
+\end{subequations}
+where $\mathbf{R}_k^{B}$ contains a subset of all columns (paths) of $\mathbf{R}_k$. And we generate the corresponding dual variable.  Then, we aim to verify whether the all the dual constraints are satisfied, which are of huge amount. Hence, we might formulate it as a pricing problem, and use the method mentioned in Section 3 to solve it. And we repeat the process until there is no dual constraint violated. 
+
+After we solve the subproblems, we update $\lambda^{i}$ using subgradient method:
+\begin{align}
+    \lambda^{i+1}=\lambda^{i}+\alpha_i\left(\mathbf{R} \mathbf{x} - \mathbf{c} t\right)
+\end{align}
+
+
+Subgradient methods are common techniques for determining the Lagrangian multipliers. They are easy to implement
+but have slow convergence rates. They usually do not have a good stopping criterion, and in practice usually
+terminate when a predefined number of iterations or nonimproving steps is reached.
+In the experiment we set $\alpha_i=1/i$.

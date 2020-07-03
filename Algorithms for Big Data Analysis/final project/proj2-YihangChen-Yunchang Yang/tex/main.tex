@@ -1,0 +1,162 @@
+\documentclass{article}
+
+% if you need to pass options to natbib, use, e.g.:
+%     \PassOptionsToPackage{numbers, compress}{natbib}
+% before loading neurips_2020
+
+% ready for submission
+% \usepackage{neurips_2020}
+
+% to compile a preprint version, e.g., for submission to arXiv, add add the
+% [preprint] option:
+%     \usepackage[preprint]{neurips_2020}
+
+% to compile a camera-ready version, add the [final] option, e.g.:
+    \usepackage[final]{neurips_2020}
+
+% to avoid loading the natbib package, add option nonatbib:
+    %  \usepackage[nonatbib]{neurips_2020}
+
+\usepackage[utf8]{inputenc} % allow utf-8 input
+\usepackage[T1]{fontenc}    % use 8-bit T1 fonts
+\usepackage{hyperref}       % hyperlinks
+\usepackage{url}            % simple URL typesetting
+\usepackage{booktabs}       % professional-quality tables
+\usepackage{amsfonts, amsmath}       % blackboard math symbols
+\usepackage{nicefrac}       % compact symbols for 1/2, etc.
+\usepackage{microtype}      % microtypography
+\newcommand{\x}{\mathbf{x}}
+\newcommand{\R}{\mathbf{R}}
+\title{Price-Directive Methods in \\Multicommodity Flow Problem}
+
+\author{%
+  Yihang Chen \\
+  Department of Mathematics\\
+  Peking University\\
+  1700010780\\
+  \And
+  Yunchang Yang \\
+  Center for Big Data Science\\
+  Peking University\\
+  1901111594\\
+  \\
+  % examples of more authors
+  % \And
+  % Coauthor \\
+  % Affiliation \\
+  % Address \\
+  % \texttt{email} \\
+  % \AND
+  % Coauthor \\
+  % Affiliation \\
+  % Address \\
+  % \texttt{email} \\
+  % \And
+  % Coauthor \\
+  % Affiliation \\
+  % Address \\
+  % \texttt{email} \\
+  % \And
+  % Coauthor \\
+  % Affiliation \\
+  % Address \\
+  % \texttt{email} \\
+}
+
+\begin{document}
+
+\maketitle
+\section{Introduction}
+The multicommodity network flow (MCNF) problem seeks optimal flow assignment of different commodities to be
+shipped between specified origins and destinations, where flows of different commodities compete for the same arc
+capacities. It has very broad applications in the management of telecommunication, transportation, and logistics networks.
+
+The MCNF can model a wide variety of real-world problem, and a lot of case specific
+variants exist. We can split them in three main categories depending on the
+domain of the decision variables, either they are integers, then the problem is called
+integer MCNF, approximation algorithm are mainly used in this case. Second, the
+decision variables take on real values and the problem can be modeled as a LP. The
+last category is mixed integer MCNF, where some decision variables are integers and
+others real values. It has been proved that in integer and mixed integer MCNF, the
+problem becomes NP-hard.
+
+Today most of the methods employed to solve the MCNF use "decomposition"
+techniques and can be classified in three categories:
+\begin{enumerate}
+    \item {\bf Price-directive Methods}:\\
+Price-directive methods are based on the idea that by associating the bundle constraints with ”correct” penalty functions
+(dual prices, or Lagrangian multipliers), a hard MCNF problem can be decomposed into k easy SCNF problems. Some widely use price-directive methods are Lagrangian relaxation or Dantzig-Wolfe decomposition.
+
+\item {\bf Resource-directive Methods}:\\
+These methods aim for reducing the MCNF to multiple single commodity flow problem which can then be solved very efficiently. To do so, a new constraint
+is introduced which allocate a certain amount of capacity on each arc for each
+commodity, without exceeding the total original arc capacity. However these
+methods does not ensure convergence.
+\item {\bf Partitioning methods}:\\
+Most of the well-known LP solver methods can be adjusted to the MCNF specifically,
+for instance the "network simplex" is a speed-up modified version of
+simplex method.
+\end{enumerate}
+
+It has been shown that the resource-directive algorithms converge rapidly
+for small problems but are outperformed by the price-directive techniques for large instances. 
+
+While the classical multicommodity flow problem tries to minimize the total cost of the network flow, we focus our attention on the link capacity. We want the network load to be balanced across links so as to avoid network congestions and we consider to minimize the maximum (or worst-case) link utilization ratio to achieve load balancing. Our model is based on the path-based formulation of the multicommodity flow framework.
+
+\section{Problem Formulation}
+\input{formulation}
+
+\section{Classical MCNF}
+\input{cost}
+
+\section{Lagrange Relaxation}
+\input{lagrange}
+
+\section{Dantzig-Wolfe Decomposition}
+\input{dantzig.tex}
+
+
+\section{Dataset Preprocessing}
+\input{dataset}
+
+\section{Numerical Experiments}
+
+\input{experiments}
+
+
+\appendix
+\section{Baseline for the MCNF}
+We use the node-arc formulation to directly solve the MCNF problem. The results are listed below.
+\begin{table}[htbp]
+  \centering
+  \caption{JLF Assad - Baseline}
+    \begin{tabular}{lrrrr}
+    \toprule
+          & \multicolumn{1}{l}{assad1.5k} & \multicolumn{1}{l}{assad1.6k} & \multicolumn{1}{l}{assad3.4k} & \multicolumn{1}{l}{assad3.7k} \\
+              \midrule
+    Total & 0.0649 & 0.1551 & 0.3687 & 0.4770 \\
+    Objective & 1&1 &0.8898& 0.9153\\
+    \bottomrule
+    \end{tabular}%
+  \label{tab:addlabel}%
+\end{table}%
+\begin{table}[htbp]
+  \centering
+  \caption{AerTrans - Baseline}
+    \begin{tabular}{lrrrrrrrr}
+    \toprule
+          & \multicolumn{1}{l}{jl023} & \multicolumn{1}{l}{jl049} & \multicolumn{1}{l}{jl141} & \multicolumn{1}{l}{jl147} & \multicolumn{1}{l}{jl158} & \multicolumn{1}{l}{jl188} & \multicolumn{1}{l}{jl207} & \multicolumn{1}{l}{jl209} \\
+          \midrule
+    Total & 21.692281 & 0.829 & 6.913 & 6.545 & 7.02  & 13.962 & 41.754 & 47.835 \\
+    Objective & 1& 1& 1& 1& 1& 1&1&1\\
+    \bottomrule
+    \end{tabular}%
+  \label{tab:addlabel}%
+\end{table}%
+
+
+
+\bibliographystyle{plain}
+\bibliography{bib.bib}
+
+\end{document}
