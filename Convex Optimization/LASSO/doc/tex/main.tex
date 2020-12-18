@@ -1,0 +1,463 @@
+\documentclass{article}
+
+% if you need to pass options to natbib, use, e.g.:
+%     \PassOptionsToPackage{numbers, compress}{natbib}
+% before loading neurips_2020
+
+% ready for submission
+% \usepackage{neurips_2020}
+
+% to compile a preprint version, e.g., for submission to arXiv, add add the
+% [preprint] option:
+%     \usepackage[preprint]{neurips_2020}
+
+% to compile a camera-ready version, add the [final] option, e.g.:
+    \usepackage[final]{neurips_2020}
+
+% to avoid loading the natbib package, add option nonatbib:
+    %  \usepackage[nonatbib]{neurips_2020}
+
+\usepackage[utf8]{inputenc} % allow utf-8 input
+\usepackage[T1]{fontenc}    % use 8-bit T1 fonts
+\usepackage{url}            % simple URL typesetting
+\usepackage{booktabs}       % professional-quality tables
+\usepackage{amsfonts, amsmath}       % blackboard math symbols
+\usepackage{nicefrac}       % compact symbols for 1/2, etc.
+\usepackage{microtype}      % microtypography
+\usepackage{bbm}
+\usepackage[colorlinks,
+            linkcolor=blue,   
+            anchorcolor=blue,
+            citecolor=blue,
+            ]{hyperref}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{palatino}
+\usepackage[most]{tcolorbox}
+\usepackage{listings} 
+
+
+\newcommand{\x}{\mathbf{x}}
+\newcommand{\R}{\mathbf{R}}
+\numberwithin{equation}{section}
+\numberwithin{figure}{section}
+
+
+\title{Algorithms for $\ell_1$ minimization}
+
+\author{%
+  Yihang Chen \\
+  Department of Mathematics\\
+  Peking University\\
+  1700010780\\
+}
+
+\begin{document}
+\maketitle
+\section{Problem formulation}
+
+\begin{tcolorbox}[colback=blue!5!white,colframe=blue!75!black,title= Lasso]
+Consider the $\ell_1$-regularized problem
+\begin{equation}
+    \min_x\quad f_\mu(x) = g(x)+\mu h(x):= \frac{1}{2}\|Ax-b\|_2^2+\mu\|x\|_1 \label{eq:lasso}
+\end{equation}
+where $A\in \mathbb{R}^{m\times n},b\in \mathbb{R}^m$ and $\mu>0$ are given.
+\end{tcolorbox}
+
+\section{CVX solutions}
+We can obtain and solutions directly from cvx mosek and cvx gurobi. 
+
+The $\ell_1$ regularized problem (\ref{eq:lasso}) is equivalent to the following optimization problem
+\begin{equation}
+\begin{split}
+        \min&\quad \frac{1}{2}\|A(x^+-x^-)-b\|_2^2+\mu \mathbbm{1}^\top (x^+ + x^-)\\
+        s.t.&\quad x^+,x^-\geq 0
+\end{split}\label{eq:reformation1}
+\end{equation}
+which can be rewritten into
+\begin{equation}
+    \begin{split}
+        \min &\quad \frac{1}{2}\left(\begin{matrix} x^+ \\ x^- \end{matrix}
+\right)^\top \left(\begin{matrix} A^\top A& -A^\top A \\-A^\top A & A^\top A \end{matrix}
+\right) \left(\begin{matrix} x^+ \\ x^- \end{matrix}
+\right) + \left(\begin{matrix} \mu \mathbbm{1}-A^\top b\\ \mu \mathbbm{1}+A^\top b \end{matrix}
+\right)^\top \left(\begin{matrix} x^+ \\ x^- \end{matrix}
+\right)+\frac{1}{2}b^\top b\\
+        s.t.&\quad x^+,x^-\geq 0.
+    \end{split}
+\end{equation}
+
+The problem (\ref{eq:reformation1}) can be solved by mosek and gurobi.
+
+We plot the exact solution
+and solutions from cvx mosek, cvx gurobi, mosek and gurobi.
+
+
+
+\section{Various algorithms}
+\subsection{Projection gradient method by reformulating the primal problem as a quadratic program with box constraints}
+According the the problem (\re  f{eq:reformation1}), define
+\begin{equation}
+    f_\mu(x^+,x^-) = \frac{1}{2}(x^+-x^-)^\top A^\top A(x^+-x^-) + (\mu\mathbbm{1}-A^\top b)^\top x^\top +(\mu\mathbbm{1}+A^\top b)^\top x^-+\frac{1}{2}b^\top b
+\end{equation}
+
+We aim to minimize $f_\mu(x^+,x^-)$ such that $x^+,x^-\geq 0$ by the projection gradient method. We have $\nabla_{x^+} f_\mu(x^+,x^-)=A^\top A(x^+-x^-)+\mu \mathbbm{1}-A^\top b, \nabla_{x^-} f_\mu(x^+,x^-)=A^\top A(x^--x^+)+\mu \mathbbm{1}+A^\top b$. 
+
+The projection gradient method can be summarized in Algorithm \ref{alg:projgrad}, where $\sigma(x)=\max\{x,0\}$ is the projection operator.
+
+
+
+
+    \begin{algorithm}[!htbp]\caption{Projection gradient method with continuation method}\label{alg:projgrad}
+        \begin{algorithmic}[1]
+        \STATE {\bfseries Input:} initial value $x_0$, step size $\alpha$, continuation parameter $\gamma,N$, maximum iteration number for each stage $M$.
+        \FOR{$i=1,\cdots,N$}
+        \STATE $\mu_i = \gamma^{N-i}\mu$.
+        \FOR{$j=1,\cdots,M$}
+        \STATE $x^+\leftarrow \sigma(x^+ -\alpha \nabla_{x^+} f_{\mu_i}(x^+,x^-)), x^-\leftarrow \sigma(x^- -\alpha \nabla_{x^-} f_{\mu_i}(x^+,x^-)) $
+        \ENDFOR
+        \ENDFOR
+        \STATE {\bfseries Output:} $x=x^+-x^-$.
+        \end{algorithmic}
+        \end{algorithm}
+
+
+\subsection{Subgradient method for the primal problem}
+The subgradient of $f_\mu$ is $\partial f_\mu(x) = A^\top(Ax-b)+\mu\cdot \mathrm{sign}(x)$. The subgradient method can be summarized in Algorithm \ref{alg:subgrad}.
+
+\begin{algorithm}[!htbp]\caption{Subgradient method for the primal problem with continuation method}\label{alg:subgrad}
+\begin{algorithmic}[1]
+\STATE {\bfseries Input:} initial value $x_0$, step size $\alpha$, continuation parameter $\gamma,N$, maximum iteration number for each stage $M$.
+\FOR{$i=1,\cdots,N$}
+\STATE $\mu_i = \gamma^{N-i}\mu$.
+\FOR{$j=1,\cdots,M$}
+\STATE $x\leftarrow x - \alpha \partial f_\mu(x)$.
+\ENDFOR
+\ENDFOR
+\STATE {\bfseries Output:} $x$.
+\end{algorithmic}
+\end{algorithm}
+
+\subsection{Gradient method for the smoothed primal problem}
+We consider the Huber penalty approximation of $\|x\|_1$:
+\begin{equation}
+\begin{split}
+        h_\lambda(x) &= \sum_{i=1}^n h_\lambda^l(x)\\
+        \mathrm{where}\quad h_\lambda^l(x)&=\begin{cases}
+        x_l^2/(2\lambda),\quad & |x_l|\leq\lambda\\
+        |x_l|-\lambda/2,\quad & |x_l|>\lambda
+        \end{cases}
+\end{split}
+\end{equation}
+
+We choose an additional parameter $\beta$ for the decay of $\lambda$. The define $f_{i,j}(x)=\frac{1}{2}\|Ax-b\|_2^2+\mu_i h_{\lambda_j}(x)$. The gradient can be computed as
+\begin{equation}
+    \nabla f_{i,j}(x)_k = \begin{cases}
+    (A^\top Ax-A^\top b)_k +\mu_ix_k/\lambda_j,\quad |x_k|\leq \lambda_j,\\
+    (A^\top Ax-A^\top b)_k +\mu_i\mathrm{sign}(x_k),\quad |x_k|> \lambda_j
+    \end{cases}
+\end{equation}
+
+In $(k+1)$-th iteration, if $k=0$, we use the initial step size $\alpha$. Otherwise, we use the BB step size $\alpha_k$:
+\begin{equation}
+    \alpha_k = \frac{(x_k-x_{k-1})^\top (x_k-x_{k-1})}{(x_k-x_{k-1})^\top(\nabla f_{i,j}(x_k)-\nabla f_{i,j}(x_{k-1}))} \label{eq:bb1}
+\end{equation}
+
+Then we can update $x_{k+1}$ by $x_{k+1}=x_k-\alpha_k\nabla f_{i,j}(x_k)$.
+
+Similarly,we use the continuation strategy. We have three parameters $\gamma, M_1,M_2$ for continuation, and set $\mu_0=\mu_{\max}=\max\{\gamma\|A^\top b\|_\infty,\mu\}$. While $\mu_i>\mu$ or $\lambda_j>\lambda$, we update $\mu_{i+1},\lambda_{i+1}$ by
+\begin{equation}
+\mu_{i+1}=\max\{\mu, \gamma\min\{\|\nabla g(x_k)\|_\infty, \mu_i\} \}, \quad \lambda_{j+1}=\max\{\beta\lambda_j,\lambda\}
+\end{equation}
+
+\begin{algorithm}[!htbp]\caption{Gradient method for smoothed primal problem with continuation strategy}\label{alg:sgrad}
+\begin{algorithmic}[1]
+\STATE {\bfseries Input:} initial value $x_0$, step size $\alpha$, continuation parameter $\gamma, M_1, M_2$, $\lambda$ decay parameter $\beta$.
+\STATE $\mu_0=\mu_{\max}=\max\{\gamma\|A^\top b\|_\infty,\mu\},\alpha_0=\alpha, k=0$.
+\WHILE{$\mu_i>\mu\mathrm{\ or \ }\lambda_j>\lambda$}
+\FOR{$l=1,2,\cdots,M_1$}
+\STATE Calculate BB step size $\alpha_k$, and update $x_{k+1}$.
+\ENDFOR
+\STATE $\mu_{i+1}=\max\{\mu, \gamma\min\{\|\nabla g(x_k)\|_\infty, \mu_i\} \},  \lambda_{j+1}=\max\{\beta\lambda_j,\lambda\}, i = i+1, j = j+1
+$.
+\STATE Set $x_0 := x_k$ and $k=0$. Update $\alpha_k=\min\{\alpha,\lambda_j\}$.
+\ENDWHILE
+\FOR{$l=1,2,\cdots,M_2$}
+\STATE Calculate BB step size $\alpha_k$, and update $x_{k+1}$.
+\ENDFOR
+\end{algorithmic}
+\end{algorithm}
+
+
+
+\subsection{Fast (Nesterov/accelerated) gradient method for the smoothed primal problem}
+We still apply the continuation strategy with only a slight modification of the Algorithm \ref{alg:sgrad}. 
+
+Specifically, we set $x_{-1}=x_0$. In $(k+1)$-th iteration, we update $x_{k+1}$ by
+\begin{equation}
+    \begin{cases}
+    y &= x_k+\frac{k-1}{k+2}(x_k-x_{k-1})\\
+    x_{k+1} &=y-\alpha_k\nabla f_{i,j}(x_k)
+    \end{cases}\label{eq:fsgrad}
+\end{equation}
+
+
+\begin{algorithm}[!htbp]\caption{Fast gradient method for smoothed primal problem with continuation strategy}\label{alg:fsgrad}
+\begin{algorithmic}[1]
+\STATE {\bfseries Input:} initial value $x_0$, step size $\alpha$, continuation parameter $\gamma, M_1, M_2$, $\lambda$ decay parameter $\beta$.
+\STATE $\mu_0=\mu_{\max}=\max\{\gamma\|A^\top b\|_\infty,\mu\},\alpha_0=\alpha, k=0$.
+\WHILE{$\mu_i>\mu\mathrm{\ or \ }\lambda_j>\lambda$}
+\FOR{$l=1,2,\cdots,M_1$}
+\STATE Update $x_{k+1}$ by (\ref{eq:fsgrad}), $\alpha_{k+1}=\alpha_k,k=k+1$.
+\ENDFOR
+\STATE $\mu_{i+1}=\max\{\mu, \gamma\min\{\|\nabla g(x_k)\|_\infty, \mu_i\} \},  \lambda_{j+1}=\max\{\beta\lambda_j,\lambda\}, i = i+1, j = j+1
+$.
+\STATE Set $x_{=1} = x_0 := x_k$ and $k=0$. Update $\alpha_k=\min\{\alpha,\lambda_j\}$.
+\ENDWHILE
+\FOR{$l=1,2,\cdots,M_2$}
+\STATE Update $x_{k+1}$ by (\ref{eq:fsgrad}), $\alpha_{k+1}=\alpha_k,k=k+1$.
+\ENDFOR
+\end{algorithmic}
+\end{algorithm}
+
+\subsection{Proximal gradient method for the primal problem}
+Define the proximal operator $\mathrm{prox}_{\alpha_k \mu h}(x)=\arg\min_z \frac{1}{2}\|z-x\|_2^2+\alpha_k \mu h(z)$. When $h(x)=\|x\|_1$, the proximal operaator can be computed explicitly as $\mathrm{prox}_{\alpha_k \mu h}(x)=S_{\alpha_k \mu}(x)$, where $S$ is the soft thresholding operator. Define $f_i=g+\mu_i h$, in $(k+1)$-th iteration, we use the BB step size 
+\begin{equation}
+    \alpha_k = \frac{(x_k-x_{k-1})^\top (x_k-x_{k-1})}{(x_k-x_{k-1})^\top(\nabla g(x_k)-\nabla g(x_{k-1}))} \label{eq:bb2}
+\end{equation}
+Then, we update $x_{k+1}$ by
+\begin{equation}
+    x_{k+1}=S_{\alpha_k \mu_i}(x_k-\alpha_k \nabla g(x_k))\label{eq:proxgrad}
+\end{equation}
+
+
+\begin{algorithm}[!htbp]\caption{Proximal gradient method with continuation strategy}\label{alg:proxgrad}
+\begin{algorithmic}[1]
+\STATE {\bfseries Input:} initial value $x_0$, step size $\alpha$, continuation parameter $\gamma, \varepsilon_1, \varepsilon_2$.
+\STATE $\mu_0=\mu_{\max}=\max\{\gamma\|A^\top b\|_\infty,\mu\},\alpha_0=\alpha, i = k=0$.
+\STATE Update $x_{k+1}$ by (\ref{eq:proxgrad}), $k = k+1$.
+\WHILE{$\mu_i>\mu$}
+\FOR{$k=1,2,\cdots,M_1$}
+\STATE Calculate BB step size $s_k$ by (\ref{eq:bb2}), update $x_{k+1}$ by (\ref{eq:proxgrad}).
+\ENDFOR
+\STATE $\mu_{i+1}=\max\{\mu, \gamma\min\{\|\nabla g(x_k)\|_\infty, \mu_i\} \},  i = i+1$.
+\STATE Set $\alpha_k = \alpha$, update $x_{k+1}$ by (\ref{eq:proxgrad}), $k=k+1$.
+\ENDWHILE
+\FOR{$k=1,2,\cdots,M_2$}
+\STATE Calculate BB step size $s_k$ by (\ref{eq:bb2}), update $x_{k+1}$ by (\ref{eq:proxgrad}).
+\ENDFOR
+\end{algorithmic}
+\end{algorithm}
+\subsection{Fast proximal gradient method for the primal problem}
+In this part, we update $x_{k+1}$ by
+\begin{equation}
+\begin{cases}
+y_k &= x_k+\frac{k-1}{k+2}(x_k-x_{k-1})\\
+x_{k+1}&=S_{\alpha_k \mu_i}(y_k-\alpha_k \nabla g(y_k))
+\end{cases}
+    \label{eq:fproxgrad}
+\end{equation}
+\begin{algorithm}[!htbp]\caption{Fast proximal gradient method with continuation strategy}\label{alg:fproxgrad}
+\begin{algorithmic}[1]
+\STATE {\bfseries Input:} initial value $x_0$, step size $\alpha$, continuation parameter $\gamma, \varepsilon_1, \varepsilon_2$.
+\STATE $\mu_0=\mu_{\max}=\max\{\gamma\|A^\top b\|_\infty,\mu\},\alpha_0=\alpha, i = k=0$.
+\STATE Update $x_{k+1}$ by (\ref{eq:fproxgrad}), $k = k+1$.
+\WHILE{$\mu_i>\mu$}
+\FOR{$k=1,2,\cdots,M_1$}
+\STATE Calculate BB step size $s_k$ by (\ref{eq:bb2}), update $x_{k+1}$ by (\ref{eq:fproxgrad}).
+\ENDFOR
+\STATE $\mu_{i+1}=\max\{\mu, \gamma\min\{\|\nabla g(x_k)\|_\infty, \mu_i\} \},  i = i+1$.
+\STATE Set $\alpha_k = \alpha$, update $x_{k+1}$ by (\ref{eq:fproxgrad}), $k=k+1$.
+\ENDWHILE
+\FOR{$k=1,2,\cdots,M_2$}
+\STATE Calculate BB step size $s_k$ by (\ref{eq:bb2}), update $x_{k+1}$ by (\ref{eq:fproxgrad}).
+\ENDFOR
+\end{algorithmic}
+\end{algorithm}
+
+
+
+
+\subsection{Augmented Lagrangian method for the dual problem}
+The original problem (\ref{eq:lasso}) is equivalent to the following problem:
+\begin{equation}
+    \min_x\quad \frac{1}{2}\|y\|_F^2+\mu \|x\|_{1,2}\quad \mathrm{s.t.}\quad Ax-b = y
+\end{equation}
+The corresponding Lagrangian is
+\begin{equation}
+    L(x,y,z) = \frac{1}{2}\|y\|_F^2+\mu \|x\|_{1,2} +z^\top(Ax-b-y)
+\end{equation}
+where $z\in \mathbb{R}^m$.
+By minimizing $L$, we have
+\begin{equation}
+\begin{split}
+        \min_{x,y}L(x,y,z) &= -b^\top z+\min_y(\frac{1}{2}\|y\|_2^2-z^\top y)+\min_x(\mu h(x)+(A^\top z)^\top x)\\
+        &= -b^\top z-g_0^\star(z)-\mu h^\star(A^\top z/\mu)
+\end{split}
+\end{equation}
+where the $g_0^\star$ and $h^\star$ are the conjugate of the function $g_0=\frac{1}{2}\|\cdot\|_2^2$ and $h$, which can be directly computed by $g_0^\star(z) = \frac{1}{2}\|z\|^2$, $h^\star(z)=\begin{cases}0,\quad & \|z\|_\infty\leq 1\\ +\infty,\quad &\|z\|_\infty> 1\end{cases}$
+
+Hence the dual problem for problem (\ref{eq:lasso}) is
+\begin{equation}
+    \min \frac{1}{2}\|z\|_2^2+b^\top z,\quad \mathrm{s.t.}\quad A^\top z=w,\quad \|w\|_\infty\leq \mu.
+\end{equation}
+whose augmented Lagrangian is
+\begin{equation}
+\label{eq:dualaugLag}
+    L_a(z,w,\lambda)=\frac{1}{2}\|z\|_2^2+b^\top z+\lambda^\top(A^\top z-w)+\frac{a}{2}\|A^\top z-w\|_2^2.
+\end{equation}
+
+If we set $z^0=0,w^0,\lambda^0=0$. Given $(z^k,w^k,\lambda^k)$, the relationship between $w^{k+1}$ and $z^{k+1}$
+\begin{equation}
+    w^{k+1}=\lambda^k/a+A^\top z^{k+1}-S_{\mu}(\lambda^k/a+A^\top z^{k+1}).
+\end{equation}
+where the soft thresholding function $S_\mu$ is defined as
+\begin{equation}
+    S_\mu(w) = \mathrm{sign}(w)\cdot (|w|-\mu)^+
+\end{equation}
+Then, we have the following problem:
+\begin{equation}
+\label{eq:alm_z}
+    \arg\min_z \frac{1}{2}\|z\|_2^2+b^\top z+\frac{a}{2}\|S_\mu(\lambda^k/t+A^\top z)\|_2^2
+\end{equation}
+We consider to use the Newton's method to solve the minimization (\ref{eq:alm_z}). We define $z^{k,0}=z^k$, the update can be written as
+\begin{equation}
+\begin{split}
+        z^{k,j+1}&=z^{k,j}-H({z^{k,j}})^{-1}d({z^{k,j}})\\
+        &=z^{k,j} - (z^{k,j}+b+a\sum_{|v^{k,j}_i|>\mu}A_iS_\mu(v^{k,j})_i )^{-1}(I+a\sum_{|v^{k,j}_i|>\mu}A_iA_i^\top)
+\end{split}
+\end{equation}
+where $v^{k,j} = \lambda^k/a +A^\top z^{k,j}$.
+We perform the update until $\|d(z^{k,j})\|_2/\|d(z^{k,0})\|_2\leq \epsilon_3$, assuming we terminate the iteration at the $M_2$-th step.
+
+Since the computational cost of solving $H({z^{k,j}})^{-1}d({z^{k,j}})$ is large when $H({z^{k,j}})$ varies, we approximate $H({z^{k,j}})\approx I+aAA^\top=LDL^\top$ in advance. Empirically, we find approximate $d({z^{k,j}})\approx {z^{k,j}}+b+aAS_\mu(v^{k,j})$ does not impair the performance and improve the efficiency.
+
+In all, we can update $(z^{k+1},w^{k+1},\lambda^{k+1})$:
+\begin{equation}
+\label{eq:alm_update}
+    \begin{cases}
+    z^{k+1}=z^{k,M_3}.\\
+    w^{k+1}=\lambda^k/a+A^\top z^{k+1}-S_{\mu}(\lambda^k/a+A^\top z^{k+1})\\
+    \lambda^{k+1}=\lambda^k+a(A^\top z^{k+1}-w^{k+1})
+    \end{cases}
+\end{equation}
+
+\begin{algorithm}[!htbp]\caption{Augmented Lagrangian method for the dual problem with continuation strategy.}\label{alg:alm}
+\begin{algorithmic}[1]
+\STATE {\bfseries Input:} Augmented Lagragian parameter $a$, continuation parameter $\gamma, M_1, M_2$, Newton's method parameter $M_3$.
+Calculate $\mu_0=\max\{\gamma\|A^\top b\|_\infty,\mu\}$. Initialize variables $i=k=0,z^0=0,\lambda^0=0$.
+\WHILE{$\mu_i>\mu$}
+\FOR{$k=1,2,\cdots,M_1$}
+\item Update $(z^{k+1},w^{k+1},\lambda^{k+1})$ by (\ref{eq:alm_update}), $k = k+1$.
+\ENDFOR
+\item $\mu_{i+1}=\max\{\mu, \gamma\mu_i\}, i =i+1,z^0=z^k,\lambda^0=\lambda^k,k=0$.
+\ENDWHILE
+\FOR{$k=1,2,\cdots,M_2$}
+\item Update $(z^{k+1},w^{k+1},\lambda^{k+1})$ by (\ref{eq:alm_update}), $k = k+1$.
+\ENDFOR
+\STATE $x=-\lambda^k$.
+\end{algorithmic}
+\end{algorithm}
+\subsection{Alternating direction method of multipliers for the dual problem}
+Similarity we obtain the augmented Lagrangian (\ref{eq:dualaugLag}), while we minimize this Lagrangian with alternating direction strategy. First we minimize $L_a(z^k,w,\lambda^k)$ w.r.t. $w$, we have
+$W^{k+1}=\lambda^k/a+A^\top z^{k}-S_{\mu}(\lambda^k/a+A^\top z^{k})$. Then we minimize $L_a(w^{k+1},z,\lambda^k)$ w.r.t. $z$. Therefore we can update $(z^{k+1},w^{k+1},\lambda^{k+1})$:
+\begin{equation}
+\label{eq:admm_dual_update}
+    \begin{cases}
+    w^{k+1}=\lambda^k/a+A^\top z^{k}-S_{\mu}(\lambda^k/a+A^\top z^{k})\\
+    z^{k+1}=(I+aAA^\top)^{-1}(-b-A\lambda^k+aAw^{k+1})\\
+    \lambda^{k+1}=\lambda^k+a(A^\top z^{k+1}-w^{k+1})
+    \end{cases}
+\end{equation}
+
+\begin{algorithm}[!htbp]\caption{ADMM for the dual problem with continuation strategy}\label{alg:alm}
+\begin{algorithmic}[1]
+\STATE {\bfseries Input:} Augmented Lagragian parameter $a$, continuation parameter $\gamma, M_1, M_2$.
+Calculate $\mu_0=\max\{\gamma\|A^\top b\|_\infty,\mu\}$. Initialize variables $i=k=0,z^0=0,\lambda^0=0$.
+\WHILE{$\mu_i>\mu$}
+\FOR{$k=1,2,\cdots,M_1$}
+\item Update $(z^{k+1},w^{k+1},\lambda^{k+1})$ by (\ref{eq:admm_dual_update}).
+\ENDFOR
+\item $\mu_{i+1}=\max\{\mu, \gamma\mu_i\}, i =i+1, z^0=z^k,\lambda^0=\lambda^k,k=0$.
+\ENDWHILE
+\FOR{$k=1,2,\cdots,M_2$}
+\item Update $(z^{k+1},w^{k+1},\lambda^{k+1})$ by (\ref{eq:admm_dual_update}).
+\ENDFOR
+\STATE $x=-\lambda^k$.
+\end{algorithmic}
+\end{algorithm}
+
+
+
+
+
+\subsection{Alternating direction method of multipliers with linearization for the primal problem}
+The primal problem can be reformulated as
+\begin{equation}
+    \min \frac{1}{2}\|Ax-b\|_2^2+\mu\|y\|_1\quad \mathrm{s.t.\ \ } x=y
+\end{equation}
+The augmented Lagrangian is
+\begin{equation}
+    L_a^p(x,y,z) = \frac{1}{2}\|Ax-b\|_2^2+\mu \|y\|_1+z^\top(x-y)+\frac{a}{2}\|x-y\|_2^2.
+\end{equation}
+We first update $x^{k+1}$ by direct minimization $x^{k+1}=\arg\min_xL_a(x^k,y^k,z^k)=(A^\top A+aI)^{-1}(A^\top b+ay^k-z^k)$; then we update $y^{k+1}=\arg\min_yL_a(x^{k+1},y,z^k)=S_{\frac{\mu}{a}}(x^{k+1}+\frac{z^k}{t})$. The update can be summarized as
+\begin{equation}
+\label{eq:admm_primal_update}
+    \begin{cases}
+    x^{k+1}=(A^\top A+aI)^{-1}(A^\top b+ay^k-z^k)\\
+    y^{k+1}=S_{\frac{\mu}{a}}(x^{k+1}+\frac{z^k}{a})\\
+    z^{k+1}=z^k+a(x^{k+1}-y^{k+1})
+    \end{cases}
+\end{equation}
+
+\begin{algorithm}[!htbp]\caption{ADMM with linearization for the primal problem with continuation strategy}\label{alg:alm}
+\begin{algorithmic}[1]
+\STATE {\bfseries Input:} Augmented Lagragian parameter $a$, continuation parameter $\gamma, \varepsilon_1, \varepsilon_2$.
+Calculate $\mu_0=\max\{\gamma\|A^\top b\|_\infty,\mu\}$. Initialize variables $i=k=0,x^0=y^0=x_0,z^0=0$.
+\WHILE{$\mu_i>\mu$}
+\FOR{$k=1,2,\cdots,M_1$}
+\item Update $(x^{k+1},y^{k+1},z^{k+1})$ by (\ref{eq:admm_primal_update}), $k = k+1$.
+\ENDFOR
+\item $\mu_{i+1}=\max\{\mu, \gamma\mu_i\}, i = i+1, x^0=z^k,y^0=y^k,z^0=z^k,k=0$.
+\ENDWHILE
+\FOR{$k=1,2,\cdots,M_2$}
+\item Update $(x^{k+1},y^{k+1},z^{k+1})$ by (\ref{eq:admm_primal_update}), $k = k+1$.
+\ENDFOR
+\STATE $x=x^k$.
+\end{algorithmic}
+\end{algorithm}
+
+
+
+% \subsection{Proximal point method for the dual problem}
+
+% \subsection{Block coordinate method for the primal problem}
+
+% \subsection{Semi-smooth Newton method}
+
+
+
+% \section{Numerical results}
+% % Table generated by Excel2LaTeX from sheet 'Sheet1'
+% \begin{table}[htbp]
+%   \centering
+%   \caption{Numerical results (rel: relative value w.r.t. cvx mosek)}
+%     \begin{tabular}{l|rrrrrr}
+%     \toprule
+%     solver & \multicolumn{1}{l}{efval} & \multicolumn{1}{l}{time} & \multicolumn{1}{l}{iter} & \multicolumn{1}{l}{sparsity} & \multicolumn{1}{l}{rel objval} & \multicolumn{1}{l}{rel error} \\
+%     \midrule
+%     cvx mosek & 8.09e-02 & 0.9   & \multicolumn{1}{l}{NA} & 0.191406 & 0     & 0 \\
+%     cvx gurobi & 8.09e-02 & 1.43  & \multicolumn{1}{l}{NA} & 0.102539 & -2.11e-07 & 3.00e-06 \\
+%     mosek & 8.09e-02 & 1.56  & \multicolumn{1}{l}{NA} & 0.125977 & -1.49e-07 & 1.76e-06 \\
+%     gurobi & 8.09e-02 & 9.99  & \multicolumn{1}{l}{NA} & 0.100586 & -2.13e-07 & 3.11e-06 \\
+%     projection gradient & 8.09e-02 & 1.05  & 1200  & 0.112305 & -2.10e-07 & 2.61e-06 \\
+%     \bottomrule
+%     \end{tabular}%
+%   \label{tab:addlabel}%
+% \end{table}%
+
+
+\bibliographystyle{plain}
+\bibliography{bib.bib}
+
+\end{document}
