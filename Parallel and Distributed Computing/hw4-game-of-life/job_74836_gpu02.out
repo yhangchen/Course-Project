@@ -1,0 +1,414 @@
+************TEST START************
+
+Initial Population is 79669
+lifeSpace_1 size: 400 x 400, total generations: 100
+Final Population is 15491
+
+  Num CPU Threads: 1
+CPU: 0.89570 sec
+
+  grid  dim:  20000, 1, 1.
+  block dim: 8, 1, 1.
+  kernel time: 0.00482 sec.
+simpleGPU: 0.32889 sec
+
+  grid  dim:  50, 50, 1.
+  block dim: 8, 8, 1.
+  kernel time: 0.00209 sec.
+tilingGPU: 0.00398 sec
+
+GPU results are correct.
+
+************TEST END************
+
+************TEST START************
+
+Initial Population is 399803
+lifeSpace_1 size: 400 x 2000, total generations: 100
+Final Population is 76351
+
+  Num CPU Threads: 1
+CPU: 4.47279 sec
+
+  grid  dim:  65535, 1, 1.
+  block dim: 8, 1, 1.
+  kernel time: 0.01842 sec.
+simpleGPU: 0.24861 sec
+
+  grid  dim:  50, 250, 1.
+  block dim: 8, 8, 1.
+  kernel time: 0.00565 sec.
+tilingGPU: 0.00958 sec
+
+GPU results are correct.
+
+************TEST END************
+
+************TEST START************
+
+Initial Population is 2000505
+lifeSpace_1 size: 2000 x 2000, total generations: 100
+Final Population is 377814
+
+  Num CPU Threads: 1
+CPU: 22.39981 sec
+
+  grid  dim:  65535, 1, 1.
+  block dim: 8, 1, 1.
+  kernel time: 0.08470 sec.
+simpleGPU: 0.32186 sec
+
+  grid  dim:  250, 250, 1.
+  block dim: 8, 8, 1.
+  kernel time: 0.02505 sec.
+tilingGPU: 0.02992 sec
+
+GPU results are correct.
+
+************TEST END************
+
+************TEST START************
+
+Initial Population is 79669
+lifeSpace_1 size: 400 x 400, total generations: 100
+Final Population is 15491
+
+  Num CPU Threads: 4
+CPU: 0.90072 sec
+
+  grid  dim:  20000, 1, 1.
+  block dim: 8, 1, 1.
+  kernel time: 0.00471 sec.
+simpleGPU: 0.32334 sec
+
+  grid  dim:  50, 50, 1.
+  block dim: 8, 8, 1.
+  kernel time: 0.00208 sec.
+tilingGPU: 0.00274 sec
+
+GPU results are correct.
+
+************TEST END************
+
+************TEST START************
+
+Initial Population is 399803
+lifeSpace_1 size: 400 x 2000, total generations: 100
+Final Population is 76351
+
+  Num CPU Threads: 4
+CPU: 4.48054 sec
+
+  grid  dim:  65535, 1, 1.
+  block dim: 8, 1, 1.
+  kernel time: 0.01678 sec.
+simpleGPU: 0.29594 sec
+
+  grid  dim:  50, 250, 1.
+  block dim: 8, 8, 1.
+  kernel time: 0.00530 sec.
+tilingGPU: 0.00683 sec
+
+GPU results are correct.
+
+************TEST END************
+
+************TEST START************
+
+Initial Population is 2000505
+lifeSpace_1 size: 2000 x 2000, total generations: 100
+Final Population is 377814
+
+  Num CPU Threads: 4
+CPU: 22.41004 sec
+
+  grid  dim:  65535, 1, 1.
+  block dim: 8, 1, 1.
+  kernel time: 0.07720 sec.
+simpleGPU: 0.36117 sec
+
+  grid  dim:  250, 250, 1.
+  block dim: 8, 8, 1.
+  kernel time: 0.02238 sec.
+tilingGPU: 0.04894 sec
+
+GPU results are correct.
+
+************TEST END************
+
+************TEST START************
+
+Initial Population is 79669
+lifeSpace_1 size: 400 x 400, total generations: 100
+Final Population is 15491
+
+  Num CPU Threads: 8
+CPU: 0.91034 sec
+
+  grid  dim:  20000, 1, 1.
+  block dim: 8, 1, 1.
+  kernel time: 0.00423 sec.
+simpleGPU: 0.49392 sec
+
+  grid  dim:  50, 50, 1.
+  block dim: 8, 8, 1.
+  kernel time: 0.00187 sec.
+tilingGPU: 0.00773 sec
+
+GPU results are correct.
+
+************TEST END************
+
+************TEST START************
+
+Initial Population is 399803
+lifeSpace_1 size: 400 x 2000, total generations: 100
+Final Population is 76351
+
+  Num CPU Threads: 8
+CPU: 4.48554 sec
+
+  grid  dim:  65535, 1, 1.
+  block dim: 8, 1, 1.
+  kernel time: 0.01877 sec.
+simpleGPU: 0.27991 sec
+
+  grid  dim:  50, 250, 1.
+  block dim: 8, 8, 1.
+  kernel time: 0.00586 sec.
+tilingGPU: 0.00907 sec
+
+GPU results are correct.
+
+************TEST END************
+
+************TEST START************
+
+Initial Population is 2000505
+lifeSpace_1 size: 2000 x 2000, total generations: 100
+Final Population is 377814
+
+  Num CPU Threads: 8
+CPU: 22.39709 sec
+
+  grid  dim:  65535, 1, 1.
+  block dim: 8, 1, 1.
+  kernel time: 0.08498 sec.
+simpleGPU: 0.37679 sec
+
+  grid  dim:  250, 250, 1.
+  block dim: 8, 8, 1.
+  kernel time: 0.02199 sec.
+tilingGPU: 0.03678 sec
+
+GPU results are correct.
+
+************TEST END************
+
+************TEST START************
+
+Initial Population is 79669
+lifeSpace_1 size: 400 x 400, total generations: 100
+Final Population is 15491
+
+  Num CPU Threads: 1
+CPU: 0.89669 sec
+
+  grid  dim:  10000, 1, 1.
+  block dim: 16, 1, 1.
+  kernel time: 0.00268 sec.
+simpleGPU: 0.23234 sec
+
+  grid  dim:  25, 25, 1.
+  block dim: 16, 16, 1.
+  kernel time: 0.00184 sec.
+tilingGPU: 0.00438 sec
+
+GPU results are correct.
+
+************TEST END************
+
+************TEST START************
+
+Initial Population is 399803
+lifeSpace_1 size: 400 x 2000, total generations: 100
+Final Population is 76351
+
+  Num CPU Threads: 1
+CPU: 4.46911 sec
+
+  grid  dim:  50000, 1, 1.
+  block dim: 16, 1, 1.
+  kernel time: 0.00891 sec.
+simpleGPU: 0.22668 sec
+
+  grid  dim:  25, 125, 1.
+  block dim: 16, 16, 1.
+  kernel time: 0.00495 sec.
+tilingGPU: 0.00793 sec
+
+GPU results are correct.
+
+************TEST END************
+
+************TEST START************
+
+Initial Population is 2000505
+lifeSpace_1 size: 2000 x 2000, total generations: 100
+Final Population is 377814
+
+  Num CPU Threads: 1
+CPU: 22.38421 sec
+
+  grid  dim:  65535, 1, 1.
+  block dim: 16, 1, 1.
+  kernel time: 0.03949 sec.
+simpleGPU: 0.33988 sec
+
+  grid  dim:  125, 125, 1.
+  block dim: 16, 16, 1.
+  kernel time: 0.02193 sec.
+tilingGPU: 0.02518 sec
+
+GPU results are correct.
+
+************TEST END************
+
+************TEST START************
+
+Initial Population is 79669
+lifeSpace_1 size: 400 x 400, total generations: 100
+Final Population is 15491
+
+  Num CPU Threads: 4
+CPU: 0.90034 sec
+
+  grid  dim:  10000, 1, 1.
+  block dim: 16, 1, 1.
+  kernel time: 0.00280 sec.
+simpleGPU: 0.29418 sec
+
+  grid  dim:  25, 25, 1.
+  block dim: 16, 16, 1.
+  kernel time: 0.00195 sec.
+tilingGPU: 0.00257 sec
+
+GPU results are correct.
+
+************TEST END************
+
+************TEST START************
+
+Initial Population is 399803
+lifeSpace_1 size: 400 x 2000, total generations: 100
+Final Population is 76351
+
+  Num CPU Threads: 4
+CPU: 4.47551 sec
+
+  grid  dim:  50000, 1, 1.
+  block dim: 16, 1, 1.
+  kernel time: 0.01050 sec.
+simpleGPU: 0.37114 sec
+
+  grid  dim:  25, 125, 1.
+  block dim: 16, 16, 1.
+  kernel time: 0.00574 sec.
+tilingGPU: 0.00699 sec
+
+GPU results are correct.
+
+************TEST END************
+
+************TEST START************
+
+Initial Population is 2000505
+lifeSpace_1 size: 2000 x 2000, total generations: 100
+Final Population is 377814
+
+  Num CPU Threads: 4
+CPU: 22.40412 sec
+
+  grid  dim:  65535, 1, 1.
+  block dim: 16, 1, 1.
+  kernel time: 0.04579 sec.
+simpleGPU: 0.36312 sec
+
+  grid  dim:  125, 125, 1.
+  block dim: 16, 16, 1.
+  kernel time: 0.02539 sec.
+tilingGPU: 0.03110 sec
+
+GPU results are correct.
+
+************TEST END************
+
+************TEST START************
+
+Initial Population is 79669
+lifeSpace_1 size: 400 x 400, total generations: 100
+Final Population is 15491
+
+  Num CPU Threads: 8
+CPU: 0.90998 sec
+
+  grid  dim:  10000, 1, 1.
+  block dim: 16, 1, 1.
+  kernel time: 0.00303 sec.
+simpleGPU: 0.34894 sec
+
+  grid  dim:  25, 25, 1.
+  block dim: 16, 16, 1.
+  kernel time: 0.00204 sec.
+tilingGPU: 0.00273 sec
+
+GPU results are correct.
+
+************TEST END************
+
+************TEST START************
+
+Initial Population is 399803
+lifeSpace_1 size: 400 x 2000, total generations: 100
+Final Population is 76351
+
+  Num CPU Threads: 8
+CPU: 4.49105 sec
+
+  grid  dim:  50000, 1, 1.
+  block dim: 16, 1, 1.
+  kernel time: 0.01042 sec.
+simpleGPU: 0.22037 sec
+
+  grid  dim:  25, 125, 1.
+  block dim: 16, 16, 1.
+  kernel time: 0.00571 sec.
+tilingGPU: 0.00715 sec
+
+GPU results are correct.
+
+************TEST END************
+
+************TEST START************
+
+Initial Population is 2000505
+lifeSpace_1 size: 2000 x 2000, total generations: 100
+Final Population is 377814
+
+  Num CPU Threads: 8
+CPU: 22.42459 sec
+
+  grid  dim:  65535, 1, 1.
+  block dim: 16, 1, 1.
+  kernel time: 0.04583 sec.
+simpleGPU: 0.30000 sec
+
+  grid  dim:  125, 125, 1.
+  block dim: 16, 16, 1.
+  kernel time: 0.02535 sec.
+tilingGPU: 0.02891 sec
+
+GPU results are correct.
+
+************TEST END************
+

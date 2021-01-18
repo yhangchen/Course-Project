@@ -1,0 +1,54 @@
+************TEST START************
+
+Initial Population is 79669
+lifeSpace_1 size: 400 x 400, total generations: 100
+Final Population is 15491
+
+  Num CPU Threads: 8
+CPU: 0.41985 sec
+
+************TEST START************
+
+Initial Population is 399803
+lifeSpace_1 size: 400 x 2000, total generations: 100
+Final Population is 76351
+
+  Num CPU Threads: 8
+CPU: 1.99657 sec
+
+************TEST START************
+
+Initial Population is 2000505
+lifeSpace_1 size: 2000 x 2000, total generations: 100
+Final Population is 377814
+
+  Num CPU Threads: 8
+CPU: 10.02208 sec
+
+************TEST START************
+
+Initial Population is 79669
+lifeSpace_1 size: 400 x 400, total generations: 100
+Final Population is 15491
+
+  Num CPU Threads: 8
+CPU: 0.58984 sec
+
+************TEST START************
+
+Initial Population is 399803
+lifeSpace_1 size: 400 x 2000, total generations: 100
+Final Population is 76351
+
+  Num CPU Threads: 8
+CPU: 2.03302 sec
+
+************TEST START************
+
+Initial Population is 2000505
+lifeSpace_1 size: 2000 x 2000, total generations: 100
+Final Population is 377814
+
+  Num CPU Threads: 8
+CPU: 9.82362 sec
+

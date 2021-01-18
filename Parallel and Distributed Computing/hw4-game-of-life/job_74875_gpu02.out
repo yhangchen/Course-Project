@@ -1,0 +1,52 @@
+************TEST START************
+
+Initial Population is 799979721
+  grid  dim:  65535, 1, 1.
+  block dim: 8, 1, 1.
+  kernel time: 26.26473 sec.
+simpleGPU: 28.42349 sec
+
+  grid  dim:  5000, 5000, 1.
+  block dim: 8, 8, 1.
+  kernel time: 7.81866 sec.
+tilingGPU: 16.21500 sec
+
+************TEST START************
+
+Initial Population is 799979721
+  grid  dim:  65535, 1, 1.
+  block dim: 16, 1, 1.
+  kernel time: 14.21215 sec.
+simpleGPU: 16.39350 sec
+
+  grid  dim:  2500, 2500, 1.
+  block dim: 16, 16, 1.
+  kernel time: 7.63598 sec.
+tilingGPU: 16.62610 sec
+
+************TEST START************
+
+Initial Population is 799979721
+  grid  dim:  65535, 1, 1.
+  block dim: 32, 1, 1.
+  kernel time: 8.59912 sec.
+simpleGPU: 10.75161 sec
+
+  grid  dim:  1250, 1250, 1.
+  block dim: 32, 32, 1.
+  kernel time: 7.89222 sec.
+tilingGPU: 16.24306 sec
+
+************TEST START************
+
+Initial Population is 799979721
+  grid  dim:  65535, 1, 1.
+  block dim: 64, 1, 1.
+  kernel time: 7.58502 sec.
+simpleGPU: 9.76549 sec
+
+  grid  dim:  625, 625, 1.
+  block dim: 64, 64, 1.
+  kernel time: 0.74369 sec.
+tilingGPU: 9.21603 sec
+
