@@ -112,9 +112,9 @@ def main():
     intercept_GDmu = reg.intercept_
 
     ## Transform back the slope and intercept into the coefficients (a,b)
-    a_GD = slope_GD
+    a_GD = np.exp(slope_GD)
     b_GD = np.exp(intercept_GD)
-    a_GDmu = slope_GDmu
+    a_GDmu = np.exp(slope_GDmu)
     b_GDmu = np.exp(intercept_GDmu)
 
     print("GD results: a_GD={:.6f}, b_GD={:.6f}".format(a_GD, b_GD))
