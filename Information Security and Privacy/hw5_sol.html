@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang xml:lang>
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>hw5_sol</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <style type="text/css">
+html {
+font-size: 100%;
+overflow-y: scroll;
+-webkit-text-size-adjust: 100%;
+-ms-text-size-adjust: 100%;
+}
+body {
+color: #000;
+font-family: Georgia, Palatino, 'Palatino Linotype', Times, 'Times New Roman', serif;
+font-size: 12px;
+line-height: 1.7;
+padding: 1em;
+margin: auto;
+max-width: 42em;
+background: #fefefe;
+}
+a {
+color: #0645ad;
+text-decoration: none;
+}
+a:visited {
+color: #0b0080;
+}
+a:hover {
+color: #06e;
+}
+a:active {
+color: #faa700;
+}
+a:focus {
+outline: thin dotted;
+}
+*::-moz-selection {
+background: rgba(255, 255, 0, 0.3);
+color: #000;
+}
+*::selection {
+background: rgba(255, 255, 0, 0.3);
+color: #000;
+}
+a::-moz-selection {
+background: rgba(255, 255, 0, 0.3);
+color: #0645ad;
+}
+a::selection {
+background: rgba(255, 255, 0, 0.3);
+color: #0645ad;
+}
+p {
+margin: 1em 0;
+}
+img {
+max-width: 100%;
+}
+h1, h2, h3, h4, h5, h6 {
+color: #111;
+line-height: 125%;
+margin-top: 2em;
+font-weight: normal;
+}
+h4, h5, h6 {
+font-weight: bold;
+}
+h1 {
+font-size: 2.5em;
+}
+h2 {
+font-size: 2em;
+}
+h3 {
+font-size: 1.5em;
+}
+h4 {
+font-size: 1.2em;
+}
+h5 {
+font-size: 1em;
+}
+h6 {
+font-size: 0.9em;
+}
+blockquote {
+color: #666666;
+margin: 0;
+padding-left: 3em;
+border-left: 0.5em #EEE solid;
+}
+hr {
+display: block;
+height: 2px;
+border: 0;
+border-top: 1px solid #aaa;
+border-bottom: 1px solid #eee;
+margin: 1em 0;
+padding: 0;
+}
+pre, code, kbd, samp {
+color: #000;
+font-family: monospace, monospace;
+_font-family: 'courier new', monospace;
+font-size: 0.98em;
+background-color: #eee;
+padding-left: 5px;
+padding-right: 5px;
+}
+pre {
+white-space: pre;
+white-space: pre-wrap;
+word-wrap: break-word;
+}
+b, strong {
+font-weight: bold;
+}
+dfn {
+font-style: italic;
+}
+ins {
+background: #ff9;
+color: #000;
+text-decoration: none;
+}
+mark {
+background: #ff0;
+color: #000;
+font-style: italic;
+font-weight: bold;
+}
+sub, sup {
+font-size: 75%;
+line-height: 0;
+position: relative;
+vertical-align: baseline;
+}
+sup {
+top: -0.5em;
+}
+sub {
+bottom: -0.25em;
+}
+ul, ol {
+margin: 1em 0;
+padding: 0 0 0 2em;
+}
+li p:last-child {
+margin-bottom: 0;
+}
+ul ul, ol ol {
+margin: .3em 0;
+}
+dl {
+margin-bottom: 1em;
+}
+dt {
+font-weight: bold;
+margin-bottom: .8em;
+}
+dd {
+margin: 0 0 .8em 2em;
+}
+dd:last-child {
+margin-bottom: 0;
+}
+img {
+border: 0;
+-ms-interpolation-mode: bicubic;
+vertical-align: middle;
+}
+figure {
+display: block;
+text-align: center;
+margin: 1em 0;
+}
+figure img {
+border: none;
+margin: 0 auto;
+}
+figcaption {
+font-size: 0.8em;
+font-style: italic;
+margin: 0 0 .8em;
+}
+table {
+margin-bottom: 2em;
+border-bottom: 1px solid #ddd;
+border-right: 1px solid #ddd;
+border-spacing: 0;
+border-collapse: collapse;
+}
+table th {
+padding: .2em 1em;
+background-color: #eee;
+border-top: 1px solid #ddd;
+border-left: 1px solid #ddd;
+}
+table td {
+padding: .2em 1em;
+border-top: 1px solid #ddd;
+border-left: 1px solid #ddd;
+vertical-align: top;
+}
+.author {
+font-size: 1.2em;
+text-align: center;
+}
+@media only screen and (min-width: 480px) {
+body {
+font-size: 14px;
+}
+}
+@media only screen and (min-width: 768px) {
+body {
+font-size: 16px;
+}
+}
+@media print {
+* {
+background: transparent !important;
+color: black !important;
+filter: none !important;
+-ms-filter: none !important;
+}
+body {
+font-size: 12pt;
+max-width: 100%;
+}
+a, a:visited {
+text-decoration: underline;
+}
+hr {
+height: 1px;
+border: 0;
+border-bottom: 1px solid black;
+}
+a[href]:after {
+content: " (" attr(href) ")";
+}
+abbr[title]:after {
+content: " (" attr(title) ")";
+}
+.ir a:after, a[href^="javascript:"]:after, a[href^="#"]:after {
+content: "";
+}
+pre, blockquote {
+border: 1px solid #999;
+padding-right: 1em;
+page-break-inside: avoid;
+}
+tr, img {
+page-break-inside: avoid;
+}
+img {
+max-width: 100% !important;
+}
+@page :left {
+margin: 15mm 20mm 15mm 10mm;
+}
+@page :right {
+margin: 15mm 10mm 15mm 20mm;
+}
+p, h2, h3 {
+orphans: 3;
+widows: 3;
+}
+h2, h3 {
+page-break-after: avoid;
+}
+}</style>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<h1 id="com-402-homework-5-solution">COM-402 Homework 5 Solution</h1>
+<ul>
+<li><a href="#exercise-1-attack-p0wn-it">Exercise 1: [attack] P0wn it</a>
+<ul>
+<li><a href="#exercise-11">Exercise 1.1</a>
+<ul>
+<li><a href="#where-is-the-vulnerability">Where is the vulnerability?</a></li>
+<li><a href="#optional-detour-the-sql-table">[Optional] Detour: the SQL table</a></li>
+<li><a href="#how-to-attack-it">How to attack it</a>
+<ul>
+<li><a href="#solution-1-blind-attack">Solution 1: blind attack</a></li>
+<li><a href="#solution-2-filtering-junk">Solution 2: Filtering junk</a></li>
+</ul></li>
+<li><a href="#python-to-the-rescue">Python to the rescue</a>
+<ul>
+<li><a href="#a-requests-request">A requests’ request</a></li>
+<li><a href="#making-a-beautiful-soup-out-of-that">Making a beautiful soup out of that</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#exercise-12">Exercise 1.2</a>
+<ul>
+<li><a href="#where-is-the-vulnerability-ii">Where is the vulnerability (II)?</a></li>
+<li><a href="#optional-detour-the-second-sql-table">[Optional] Detour: the second SQL table</a></li>
+<li><a href="#the-attack">The Attack</a></li>
+<li><a href="#a-wild-python-sneaks-in">A wild Python sneaks in</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#exercise-2-defense-no-sql-injection">Exercise 2: [defense] No SQL Injection!</a>
+<ul>
+<li><a href="#you-should-know">You should know</a>
+<ul>
+<li><a href="#flask">Flask</a>
+<ul>
+<li><a href="#routes">Routes</a></li>
+</ul></li>
+<li><a href="#pymysql">PyMysql</a></li>
+<li><a href="#python">Python</a></li>
+</ul></li>
+<li><a href="#the-solution">The solution</a>
+<ul>
+<li><a href="#messages">/messages</a>
+<ul>
+<li><a href="#errors">Errors</a></li>
+</ul></li>
+<li><a href="#users">/users</a>
+<ul>
+<li><a href="#simple-case-no-limit">Simple case: no limit</a></li>
+<li><a href="#going-to-the-limit">Going to the limit</a></li>
+<li><a href="#errors-1">Errors</a></li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul>
+<h1 id="exercise-1-attack-p0wn-it">Exercise 1: [attack] P0wn it</h1>
+<h2 id="exercise-1.1">Exercise 1.1</h2>
+<h3 id="where-is-the-vulnerability">Where is the vulnerability?</h3>
+<p>Before writing any code, let’s try to understand what the injection is all about. As the hint suggests, we won’t be attacking the form. We don’t know enough about the internals of the webserver to blindly enter some text, and hope it will somehow return something.</p>
+<p>We are interested in a hidden message. It makes sense to look at the <code>/message</code> page then. There should be one message, that exists in the database, that doesn’t show here. By clicking one message (“<em>Show message</em>”), we see the author name, and some text. But more interesting is the URL: <code>http://&lt;ip&gt;/messages/id=9</code> (or some other integer). If we manually change that number to some other (like 2), we have an other message.</p>
+<p>What (probably) happens behind is that this value is retrieved by the server, and inputted in a request of the like <code>SELECT ... WHERE ... AND id=...</code>. There are valid methods to input the ID in that request. And there are not so valid methods. For example, such an invalid method is to do the following:</p>
+<pre><code>request = &quot;SELECT ... WHERE ... AND id='&quot;
+id = retrieve_id_from_url()
+request = request + id + &quot;'&quot;</code></pre>
+<p>We can check our hypothesis. If we input some valid number (between 1 and 21 roughly), we have a message. If we input a number too big or some invalid string (containing letters for example), then we have <em>nothing</em> (blank page, but it’s a code 200 OK). But if we input the special character <code>'</code>, we have a nice cynical error page. This indicates that the SQL request failed.</p>
+<h3 id="optional-detour-the-sql-table">[Optional] Detour: the SQL table</h3>
+<p>Before going further, we can have a look at the SQL table for a better understanding. You can skip this step if you are already familiar with SQL.</p>
+<p>Once connected to the docker, and logged in MySQL with the correct credential, what do we do? As you see in the interpreter, no database is selected (because before the input is written <code>[(none)]</code>). Let’s see which database(s) exist:</p>
+<pre><code>&gt;show databases;
++--------------------+
+| Database           |
++--------------------+
+| com402_1           |
+| information_schema |
++--------------------+</code></pre>
+<p><code>information_schema</code> is a by-product of MySQL, not so interesting for us. Let’s focus on the other one, and tell MySQL we will use it:</p>
+<pre><code>&gt;use com402_1;</code></pre>
+<p>Now, we can have a look at what table(s) are inside:</p>
+<pre><code>&gt;show tables;
++--------------------+
+| Tables_in_com402_1 |
++--------------------+
+| contact_messages   |
++--------------------+</code></pre>
+<p>Quite simple, only one table. To understand what it consists of, we can ask MySQL to explain the table to us.</p>
+<pre><code>&gt;explain contact_messages;
++---------+-----------------+------+-----+---------+----------------+
+| Field   | Type            | Null | Key | Default | Extra          |
++---------+-----------------+------+-----+---------+----------------+
+| id      | int(6) unsigned | NO   | PRI | NULL    | auto_increment |
+| name    | varchar(100)    | NO   |     | NULL    |                |
+| mail    | varchar(100)    | NO   |     | NULL    |                |
+| message | varchar(200)    | NO   |     | NULL    |                |
++---------+-----------------+------+-----+---------+----------------+</code></pre>
+<p>This tells us everything we need to know. An unsigned int ID, and 3 texts (VARCHAR, texts of variable length, capped to 100 or 200).</p>
+<p>Note that we don’t look at the content of the database, because that would be cheating. We can perfectly manage without (and even without knowing any of this).</p>
+<h3 id="how-to-attack-it">How to attack it</h3>
+<p>Now we have our goal: carefully craft <code>id</code>, so that when it is appended to the request, we bypass the restriction on James Bond. So we have a request of the type <code>SELECT ... FROM ... WHERE ... AND id=' + id + '</code>. Somewhere, James Bond is filtered out. Either in the <code>WHERE</code> clause (like, <code>WHERE email NOT LIKE &quot;james@bond%&quot;</code>) or later in the webserver. In the latter case, it will be hard/impossible to bypass the restriction. So let’s hope the filtering is done within SQL.</p>
+<p>The goal is to corrupt the logic of the request. Let’s imagine a base request for better understanding:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw">SELECT</span> name, mail, message <span class="kw">FROM</span> com402_1 <span class="kw">WHERE</span> mail <span class="kw">NOT</span> <span class="kw">LIKE</span> <span class="st">'james@bond%'</span> <span class="kw">AND</span> id=<span class="st">'&lt;INPUT_HERE&gt;'</span></a></code></pre></div>
+<p>Testing and debugging is not easy in the browser, because special characters are getting modified to “url-safe” ones. Trying multiple times is tedious. This is why using python (or another language) is convenient. While we’ll explain multiple solutions right below, see <a href="#python-to-the-rescue">Python to the rescue</a> to have a somewhat automated framework.</p>
+<h4 id="solution-1-blind-attack">Solution 1: blind attack</h4>
+<p>Probably the simplest way: add an “always true” logic: <code>or '1' = '1'</code>. Though, we have to be careful about quotes. If we just input <code>or '1' = '1'</code> as an ID, we would obtain</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw">SELECT</span> name, mail, message <span class="kw">FROM</span> com402_1 <span class="kw">WHERE</span> mail <span class="kw">NOT</span> <span class="kw">LIKE</span> <span class="st">'james@bond%'</span> <span class="kw">AND</span> id=<span class="st">'or '</span><span class="dv">1</span><span class="st">' = '</span><span class="dv">1</span><span class="st">''</span></a></code></pre></div>
+<p>Which is totally incorrect. We would prefer</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw">SELECT</span> name, mail, message <span class="kw">FROM</span> com402_1 <span class="kw">WHERE</span> mail <span class="kw">NOT</span> <span class="kw">LIKE</span> <span class="st">'james@bond%'</span> <span class="kw">AND</span> id=<span class="st">'1'</span> <span class="kw">or</span> <span class="st">'1'</span> = <span class="st">'1'</span></a></code></pre></div>
+<p>By extracting the interesting part (leaving the last quote, and not touching anything before the 1), we have our input: <code>1' or '1' = '1</code></p>
+<p>By sending this request, we completely obliterate any logic previously established in the query. Because in a <code>WHERE</code> clause, the <code>AND</code> and <code>OR</code> follow the <a href="https://en.wikipedia.org/wiki/Order_of_operations">PEMDAS</a> rule, and because <code>AND</code> “is” a multiplication while <code>OR</code> “is” an addition, then the <code>AND</code> takes precedence over the <code>OR</code>. This means that whatever happens before in the query, adding a <code>OR True</code> will always validate. This means that the selection will grab everything.</p>
+<p><strong>[Example]PEDMAS applied to SQL</strong><br> Consider the following query (borrowed from <a href="https://www.bennadel.com/blog/126-sql-and-or-order-of-operations.htm">bennadel.com</a>)</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw">SELECT</span></a>
+<a class="sourceLine" id="cb9-2" data-line-number="2">    name</a>
+<a class="sourceLine" id="cb9-3" data-line-number="3"><span class="kw">FROM</span></a>
+<a class="sourceLine" id="cb9-4" data-line-number="4">    tag</a>
+<a class="sourceLine" id="cb9-5" data-line-number="5"><span class="kw">WHERE</span></a>
+<a class="sourceLine" id="cb9-6" data-line-number="6">    <span class="dv">1</span> = <span class="dv">0</span></a>
+<a class="sourceLine" id="cb9-7" data-line-number="7"><span class="kw">AND</span></a>
+<a class="sourceLine" id="cb9-8" data-line-number="8">    <span class="dv">1</span> = <span class="dv">0</span></a>
+<a class="sourceLine" id="cb9-9" data-line-number="9"><span class="kw">OR</span></a>
+<a class="sourceLine" id="cb9-10" data-line-number="10">    <span class="dv">1</span> = <span class="dv">1</span></a>
+<a class="sourceLine" id="cb9-11" data-line-number="11"><span class="kw">AND</span></a>
+<a class="sourceLine" id="cb9-12" data-line-number="12">    <span class="dv">1</span> = <span class="dv">0</span></a>
+<a class="sourceLine" id="cb9-13" data-line-number="13"><span class="kw">AND</span></a>
+<a class="sourceLine" id="cb9-14" data-line-number="14">    <span class="dv">2</span> = <span class="dv">2</span></a>
+<a class="sourceLine" id="cb9-15" data-line-number="15"><span class="kw">OR</span></a>
+<a class="sourceLine" id="cb9-16" data-line-number="16">    <span class="dv">1</span> = <span class="dv">1</span></a>
+<a class="sourceLine" id="cb9-17" data-line-number="17"><span class="kw">AND</span></a>
+<a class="sourceLine" id="cb9-18" data-line-number="18">    <span class="dv">2</span> = <span class="dv">2</span></a></code></pre></div>
+<p>Without parenthesis, it becomes hard to see what will happen. What is the order here ? The order of evaluation will change the outcome. Considering that <code>AND</code> is equivalent to a multiplication (<code>1 AND 0 = 0</code>, <code>1 AND 1 = 1</code>) and the <code>OR</code> is an addition (<code>1 OR 0 = 1</code>, <code>0 OR 0 = 0</code>), we use PEMDAS, and can draw parenthesis:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="kw">SELECT</span></a>
+<a class="sourceLine" id="cb10-2" data-line-number="2">    name</a>
+<a class="sourceLine" id="cb10-3" data-line-number="3"><span class="kw">FROM</span></a>
+<a class="sourceLine" id="cb10-4" data-line-number="4">    tag</a>
+<a class="sourceLine" id="cb10-5" data-line-number="5"><span class="kw">WHERE</span></a>
+<a class="sourceLine" id="cb10-6" data-line-number="6">    (</a>
+<a class="sourceLine" id="cb10-7" data-line-number="7">            <span class="dv">1</span> = <span class="dv">0</span></a>
+<a class="sourceLine" id="cb10-8" data-line-number="8">        <span class="kw">AND</span></a>
+<a class="sourceLine" id="cb10-9" data-line-number="9">            <span class="dv">1</span> = <span class="dv">0</span></a>
+<a class="sourceLine" id="cb10-10" data-line-number="10">    )</a>
+<a class="sourceLine" id="cb10-11" data-line-number="11"><span class="kw">OR</span></a>
+<a class="sourceLine" id="cb10-12" data-line-number="12">    (</a>
+<a class="sourceLine" id="cb10-13" data-line-number="13">            <span class="dv">1</span> = <span class="dv">1</span></a>
+<a class="sourceLine" id="cb10-14" data-line-number="14">        <span class="kw">AND</span></a>
+<a class="sourceLine" id="cb10-15" data-line-number="15">            <span class="dv">1</span> = <span class="dv">0</span></a>
+<a class="sourceLine" id="cb10-16" data-line-number="16">        <span class="kw">AND</span></a>
+<a class="sourceLine" id="cb10-17" data-line-number="17">            <span class="dv">2</span> = <span class="dv">2</span></a>
+<a class="sourceLine" id="cb10-18" data-line-number="18">    )</a>
+<a class="sourceLine" id="cb10-19" data-line-number="19"><span class="kw">OR</span></a>
+<a class="sourceLine" id="cb10-20" data-line-number="20">    (</a>
+<a class="sourceLine" id="cb10-21" data-line-number="21">            <span class="dv">1</span> = <span class="dv">1</span></a>
+<a class="sourceLine" id="cb10-22" data-line-number="22">        <span class="kw">AND</span></a>
+<a class="sourceLine" id="cb10-23" data-line-number="23">            <span class="dv">2</span> = <span class="dv">2</span></a>
+<a class="sourceLine" id="cb10-24" data-line-number="24">    )</a></code></pre></div>
+<p>This is why adding a final <code>OR</code> will remove previous restrictions. Though, this method can’t add a restriction: if a row was selected by the logic before the <code>OR</code>, it can’t be “removed” with the one after.</p>
+<h4 id="solution-2-filtering-junk">Solution 2: Filtering junk</h4>
+<p>The previous solution works, but it’s kind of ugly. We have a database with roughly 20 messages, and apparently only one from a “James” and it’s the only hidden. It is easy for us to filter, or catch which one is different. But in a database with billions of entries, this becomes quite more cumbersome. Let’s try and filter that.</p>
+<p>As we saw before, a final <code>OR</code> will be evaluated last. It would be neat to use that to filter more than simply <em>select everything</em></p>
+<p>Consider the <code>WHERE</code> as two part: on the right side of our malicious <code>OR</code>, we can do whatever we want, while on the left side we can only chose the ID, and the rest of the logic is imposed. Thus the following idea: chose an ID that will select nothing on the left, and craft the right side to select exactly what we want.</p>
+<p>First thing first: left side. An ID that select nothing is relatively easy. Try and change the ID to another integer (0, 100,…) and you will get nothing. Try a random string (not “too wild”, with only alphanumeric), and you again get nothing. So the ID <code>298dfi</code> is sure to select nothing. Plus, if you took a look at the database, you saw that the ID is an integer and filtering by an ID that isn’t an integer won’t work. But not crash.</p>
+<p>Then, the right side. It’s not too difficult to craft a filter that only select the secret message: <code>... OR mail like 'james%</code> (don’t forget to exclude the trailing quote). The name of the column is not too hard to guess, if you haven’t looked at the database schema. It’s very common to have names like <code>mail</code>, <code>email</code>, <code>user_email</code>,… Trying a few of them surely will work.</p>
+<p>Small problem there: if you try this, you will get an error. The issue is that the percent sign <code>%</code> doesn’t really go well in URLs. This sign is reserved to express other characters, and doesn’t go through nicely (it’s called <a href="https://en.wikipedia.org/wiki/Percent-encoding">percent encoding</a>). Best to avoid it. Fortunately, we know the full email address of our target, and can get away with looking for it directly: <code>... OR mail = 'james@bond.mi5</code></p>
+<p>The final input will look like this:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb11-1" data-line-number="1">e398w<span class="st">' OR mail = '</span>james@bond.mi5</a></code></pre></div>
+<p>Sending this input, you will get all the messages (well, only one in our case) sent by your target.</p>
+<h3 id="python-to-the-rescue">Python to the rescue</h3>
+<p>Once you have installed the packages with your preferred method (pip, conda, pip3, virtualenv,…), we can start. The first (and actually not trivial) step is to import the two packages. <code>requests</code> is easy, but BeautifulSoup is a bit more tedious:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="im">import</span> requests</a>
+<a class="sourceLine" id="cb12-2" data-line-number="2"><span class="im">from</span> bs4 <span class="im">import</span> BeautifulSoup</a></code></pre></div>
+<p>Then, we define some useful constants:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb13-1" data-line-number="1">addr <span class="op">=</span> <span class="st">&quot;http://0.0.0.0:5001&quot;</span></a>
+<a class="sourceLine" id="cb13-2" data-line-number="2">url <span class="op">=</span> addr <span class="op">+</span> <span class="st">&quot;/messages&quot;</span></a></code></pre></div>
+<h4 id="a-requests-request">A requests’ request</h4>
+<p>Working with <code>requests</code> is fairly easy. You just do <code>requests.get(url)</code>, or <code>requests.post(url)</code>,… We can also specify headers, parameters, and a bunch of other things. For parameters (in our case, <code>id=...</code>), we can either “hardcode” them in the URL (<code>/messages?id=...</code>), or specify them with a dictionary (see <a href="https://requests.readthedocs.io/en/latest/user/quickstart/#passing-parameters-in-urls">the doc</a>). A request simply becomes</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb14-1" data-line-number="1">payload <span class="op">=</span> {<span class="st">&quot;id&quot;</span>: <span class="st">&quot;SOME_MALICIOUS_INPUT&quot;</span>}</a>
+<a class="sourceLine" id="cb14-2" data-line-number="2">r <span class="op">=</span> requests.get(url, params<span class="op">=</span>payload)</a></code></pre></div>
+<p>Note that <code>r</code> is a complex object, that contains the whole response. Some interesting properties: * <code>r.text</code> is the actual HTML of the response, what we usually are interested in, * <code>r.status_code</code> is the HTTP status code of the response (e.g. 200 for OK), * <code>r.headers</code> contains a dictionary with the headers of the response.</p>
+<h4 id="making-a-beautiful-soup-out-of-that">Making a beautiful soup out of that</h4>
+<p>Now that we sent a request to the server and got a response, we are stuck with one giant string containing the whole HTML of the webpage. Yuck! Parsing that manually will take ages!</p>
+<p>That’s the exact reason BeautifulSoup came to be: save that time. It will parse that HTML, and leave us with a nice high-level object that we can query. It allows to query for specific tags, with specific parameters, look for children or parents of some elements.</p>
+<p>The first step is to put on your chef’s hat, and <em>prepare the soup</em>, from the big string of HTML we spoke about earlier:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb15-1" data-line-number="1">soup <span class="op">=</span> BeautifulSoup(r.text, <span class="st">&quot;html.parser&quot;</span>)</a></code></pre></div>
+<p>If you take a look at the HTML of <code>/messages</code>, you will see that messages follow a pattern: they are contained in <code>div</code> (a fundamental HTML tag), have classes <code>p-2</code>, <code>m-2</code>, and <code>card</code>. So we create a filter and iterate through all such elements:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb16-1" data-line-number="1"><span class="cf">for</span> div <span class="kw">in</span> soup.find_all(<span class="st">'div'</span>,{<span class="st">&quot;class&quot;</span>:<span class="st">&quot;p-2 m-2 card&quot;</span>}):</a>
+<a class="sourceLine" id="cb16-2" data-line-number="2">    ...</a></code></pre></div>
+<p>Note the syntax: we search all div that have the mentioned classes, and iterate through them. Those elements <code>div</code> are high-level objects that again contain a lot of methods, such as the ability to find parents or children, or start a new search in them.</p>
+<p>We don’t have much indicator for what the secret message will look like; our best shot is to look for a message written by <code>james</code>. So we check whether <code>james</code> is present within each div:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb17-1" data-line-number="1">    <span class="cf">if</span> <span class="st">&quot;james&quot;</span> <span class="kw">in</span> div.text:</a>
+<a class="sourceLine" id="cb17-2" data-line-number="2">        ...</a></code></pre></div>
+<p>Finally, we look for the children of those div of type <code>blockquote</code>, and print their content:</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb18-1" data-line-number="1">        <span class="cf">for</span> blockquote <span class="kw">in</span> div.find_all(<span class="st">'blockquote'</span>):</a>
+<a class="sourceLine" id="cb18-2" data-line-number="2">            <span class="bu">print</span>(blockquote.text)</a></code></pre></div>
+<p>Great! We now have a nice framework to test our injections, by modifying the text we want and launch a script. This could be improved even more, with additional debug info, and perhaps reading the injection from the arguments of the script. This way, there would be nothing to change in the script, just adapt the call of the script.</p>
+<h2 id="exercise-1.2">Exercise 1.2</h2>
+<p>Like before, we will solve the exercise in two ways: we will first take a quick look at the database, and then solve the exercise with and without the supposition that we did.</p>
+<h3 id="where-is-the-vulnerability-ii">Where is the vulnerability (II)?</h3>
+<p>We now apparently focus on the <code>/users</code> page. As before, we have no reason to believe the homepage’s form allows for an injection, as we don’t receive significant feedback when we submit a text. We <em>may</em> use XSS, but it’s not the point here.</p>
+<p>In modern applications, when you have such a table to display and want to allow client-side filtering, you usually select the superset of what you want to display, and send that to the client. Then, with client-side methods (such as a flavour of JS), you allow for dynamic filtering. You have everything, but only filter the view.</p>
+<p>The website makes a huge mistake here: They have their initial query do display “everything”, but then every time you enter a query, it is sent to the server, a SQL query is done with that, and you receive your result. We can see that by taking a look at the <em>Network</em> tab of the development console of your browser. When you hit <em>Enter</em>, a <code>POST</code> request is made and in the request (in the <code>form-data</code> field), you have your request. As a result, the server responds with the filtered content, and some css/js. Your input is being processed by the server, that’s interesting! If they don’t sanitize your input (spoiler, they don’t), you found a powerful vulnerability. ### [Optional] Detour: the second SQL table This will be quick and crude. For a more detailed <em>how-to</em>, refer to the <a href="#optional-detour-the-sql-table">same section</a> in the other exercise.</p>
+<p>We login using the provided credentials (different from the first exercise), and find a different database, with one table <code>users</code> . After asking MySQL to explain its schema to us, we have the following one:</p>
+<pre><code>&gt; explain users;
++----------+-----------------+------+-----+---------+----------------+
+| Field    | Type            | Null | Key | Default | Extra          |
++----------+-----------------+------+-----+---------+----------------+
+| id       | int(6) unsigned | NO   | PRI | NULL    | auto_increment |
+| name     | varchar(100)    | NO   |     | NULL    |                |
+| password | varchar(40)     | NO   |     | NULL    |                |
++----------+-----------------+------+-----+---------+----------------+</code></pre>
+<p>Nothing fancy here, but it’s useful to have the names of the fields. This is just a help, because we could easily have guessed the name of the table and the fields, even without access.</p>
+<h3 id="the-attack">The Attack</h3>
+<p>What (likely) happens after a query, behind the scene? Notice each line is accompanied with the ID (or <em>some</em> ID) of the user. Thus, there most likely is a request of the type</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb20-1" data-line-number="1"><span class="co">&quot;SELECT id, name FROM users WHERE name = '&quot;</span> <span class="op">+</span> QUERY_FROM_USER <span class="op">+</span> <span class="st">&quot;'&quot;</span></a></code></pre></div>
+<p>Keep in mind that it’s in the event that there is a vulnerability, so it’s a supposition. It’s also possible that our input is sanitized, or that they do that in a viable way that doesn’t simply append our text. But if there was no vulnerability, the exercise would be over, and you would be sad.</p>
+<p>Our goal is different from before. In the first exercise, we had a limit on <em>rows</em>: some were filtered out, and we had to use SQL logic to broaden the selection and select the rows that were interesting. Here, we have a limit on <em>columns</em>: we see all rows, but somehow have to get information from another column that the ones selected.</p>
+<p>This is a common task in SQL. The method of choice for that is to use the <code>UNION</code> operator. This operator allows you to write a completely new request (<code>SELECT ... FROM ...</code>), and append it below the previous results, as additional rows. With this method, we can get arbitrary content from arbitrary columns and append it to the result intended by the web app. There is a catch however: the number of columns must match. If the first statement selected 19 columns, the second statement of the <code>UNION</code> must also select 19 columns. This number can be a bit tedious to find, and often requires several tries. Luckily in our case, we can suspect that there are only 2 columns selected in the original query: <code>id</code> and <code>name</code>.</p>
+<p>So, we have to write a complete query, that selects what we want, and has exactly 2 columns. It’s knowing (or not) the names of the columns and tables, it’s fairly easy:</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb21-1" data-line-number="1"><span class="kw">SELECT</span> name,<span class="kw">password</span> <span class="kw">FROM</span> users <span class="kw">WHERE</span> name = <span class="st">'inspector_derrick'</span></a></code></pre></div>
+<p>This will append one (or multiple, if applicable) rows to the query, and will contain the name and password of Inspector Derrick. If you want to be extra-evil, you can modify the <code>WHERE</code> clause to include everyone: <code>WHERE '1'='1'</code>, or <code>WHERE name != 'someBodyOnceToldMe'</code>. You can’t remove the clause altogether, because you need to take into account the quote that will be appended after your query. If it’s extraneous, the query won’t run. So you need to have a quote as the very last character of your query, and remove it.</p>
+<p>The final step is to craft a complete input to give to the form. Nothing fancy: as before, we have to take care of quotes, and add our query with a union. You can chose to input an “invalid” query for the first part, in order to have a clean output, or put any name. A correct string to send would be the following:</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb22-1" data-line-number="1">somebodynotindatabase<span class="st">' UNION SELECT name,password FROM users WHERE name = '</span>inspector_derrick</a></code></pre></div>
+<h3 id="a-wild-python-sneaks-in">A wild Python sneaks in</h3>
+<p>Once again, we will showcase the use of Python. It may not be necessary, but by gaining insight on how to use Python, requests and BeautifulSoup, you surely will step up your hacking game. We won’t be as detailed as for the first exercise. You can go back if you need better understanding of requests and BS4</p>
+<p>Just like for GET, <code>requests</code> allows to make POST requests. The syntax is <a href="https://www.w3schools.com/PYTHON/ref_requests_post.asp">fairly similar</a>. You must specify the URL, and if you wish to add form-data you pass a dictionary as the <code>data</code> parameter.</p>
+<p>To know the form of the dictionary, you must take a look at the request your browser does when doing a legitimate search. Open the console/developers tools of your browser, go to the <em>Network</em> tab, and do a search. By digging a little bit, you will find that the data of the request is within a parameter <code>name</code>. The request looks like <code>name=inspector_derrick</code>. Great, you have your parameter name!</p>
+<p>The payload and the code will look like that:</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb23-1" data-line-number="1">payload <span class="op">=</span> {<span class="st">&quot;name&quot;</span>: <span class="st">&quot;MALICIOUS_INPUT_HERE&quot;</span>}</a>
+<a class="sourceLine" id="cb23-2" data-line-number="2">r <span class="op">=</span> requests.post(url, data<span class="op">=</span>payload)</a></code></pre></div>
+<p>Now for the cooking of the soup: if you take a look at the HTML of the page, you will see that entries are in <code>&lt;p&gt;</code> tags, with class <code>list-group-item</code>. You thus simply have to filter by that, and print the text:</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb24-1" data-line-number="1">soup <span class="op">=</span> bs4.BeautifulSoup(r.text, <span class="st">&quot;html.parser&quot;</span>)</a>
+<a class="sourceLine" id="cb24-2" data-line-number="2"><span class="cf">for</span> entry <span class="kw">in</span> soup.find_all(<span class="st">&quot;p&quot;</span>, {<span class="st">&quot;class&quot;</span>: <span class="st">&quot;list-group-item&quot;</span>}):</a>
+<a class="sourceLine" id="cb24-3" data-line-number="3">    <span class="bu">print</span>(entry.text)</a></code></pre></div>
+<p>Which will print every line of your request.</p>
+<p>Bonus: the output seems to have the form <code>firstParOfTheRequest:SecondPartOfTheRequest</code>. By splitting at that colon, you can better parse the output.</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb25-1" data-line-number="1">username, password <span class="op">=</span> entry.text.split(<span class="st">&quot;:&quot;</span>, <span class="dv">1</span>)</a></code></pre></div>
+<p>Specify the <code>1</code> in <code>split</code> to ensure a colon in the password is not split, if any.</p>
+<h1 id="exercise-2-defense-no-sql-injection">Exercise 2: [defense] No SQL Injection!</h1>
+<p>In this exercise, we will have to re-do some of what you hacked in the previous exercise. Fortunately, we only have to return raw data, which is easier to handle rather than templates and HTML. First we’ll go through some background information about Flask, Python, PyMysql,… and get to actual coding later. If you already are familiar with everything here, feel free to skip.</p>
+<h2 id="you-should-know">You should know</h2>
+<h3 id="flask">Flask</h3>
+<p>Flask is a great framework for quick-and-dirty webservers. It allows to setup a PoC server in a few lines, and showcase your content easily. More in-depth apps are also possible, but require a bit more work. #### Routes In the provided template, you can see two functions (<code>contact</code> and <code>messages</code>), both of which have a <a href="https://realpython.com/primer-on-python-decorators/"><em>decorator</em></a> (the <code>@app.route</code> above). This indicates to flask that this function should be called whenever a request to the indicated path (respectively <code>/users</code> and <code>/messages</code>) is done. You can also specify which methods (by default, only GET) is/are accepted.</p>
+<p>The return value from these methods is the actual content of your HTTP response. If it only contains raw data, raw data will be displayed (great for a REST API). You can also specify, with your content, an integer that will be the HTTP status code (by default, 200).</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb26-1" data-line-number="1"><span class="cf">return</span> <span class="st">&quot;Some content&quot;</span> <span class="co"># &lt;-- this will be displayed in the browser, status 200</span></a>
+<a class="sourceLine" id="cb26-2" data-line-number="2"><span class="cf">return</span> <span class="st">&quot;Some other content&quot;</span>, <span class="dv">301</span> <span class="co"># &lt;-- Browser knows it's a 301, displays the string.</span></a></code></pre></div>
+<p>When in a function that accepts multiple methods (<code>GET</code> and <code>POST</code> notably), you don’t immediately know which one it is. For that, you must first import <code>flask.request</code> (which provides a bunch of great functions), and then switch on <code>request.method</code>:</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb27-1" data-line-number="1"><span class="im">from</span> flask <span class="im">import</span> request <span class="co"># already done in the template</span></a>
+<a class="sourceLine" id="cb27-2" data-line-number="2">...</a>
+<a class="sourceLine" id="cb27-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb27-4" data-line-number="4"><span class="at">@app.route</span>(...)</a>
+<a class="sourceLine" id="cb27-5" data-line-number="5"><span class="kw">def</span> someroute():</a>
+<a class="sourceLine" id="cb27-6" data-line-number="6">    <span class="cf">if</span> request.method <span class="op">==</span> <span class="st">&quot;GET&quot;</span>:</a>
+<a class="sourceLine" id="cb27-7" data-line-number="7">        <span class="co">#do stuff</span></a>
+<a class="sourceLine" id="cb27-8" data-line-number="8">        <span class="cf">return</span> <span class="st">&quot;Absolutely valid&quot;</span>, <span class="dv">200</span></a>
+<a class="sourceLine" id="cb27-9" data-line-number="9">    <span class="cf">elif</span> request.method <span class="op">==</span> <span class="st">&quot;POST&quot;</span>:</a>
+<a class="sourceLine" id="cb27-10" data-line-number="10">        <span class="co"># some more stuff</span></a>
+<a class="sourceLine" id="cb27-11" data-line-number="11">        <span class="cf">return</span> <span class="st">&quot;All good&quot;</span> <span class="co"># 200 is returned by default</span></a>
+<a class="sourceLine" id="cb27-12" data-line-number="12">    <span class="cf">else</span>:</a>
+<a class="sourceLine" id="cb27-13" data-line-number="13">        <span class="cf">return</span> <span class="st">&quot;Nope, only GET or POST&quot;</span>, <span class="dv">418</span></a></code></pre></div>
+<p>Finally, when returning “raw” data (not a webpage), it’s good practice to “jsonify” it (make it interpretable by JS).</p>
+<p>Finally, in a <code>GET</code> or <code>POST</code> request, you can easily retrieve the form data (for <code>POST</code>) or arguments values (like <code>/messages?arg1=somevalue&amp;arg2=someothervalue</code>). Respectively: * Form values: <code>request.form</code>, a dictionary <code>{argname: argvalue}</code> * Arguments: <code>request.args</code>, identical structure.</p>
+<p>Remember that it’s good practice to not directly access the desired value, but do a <code>.get</code>, more robust</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb28-1" data-line-number="1">args <span class="op">=</span> request.args</a>
+<a class="sourceLine" id="cb28-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb28-3" data-line-number="3">value <span class="op">=</span> args[<span class="st">&quot;argument_name&quot;</span>]  <span class="co"># &lt;- OK: will throw an error if the key is not in the dict</span></a>
+<a class="sourceLine" id="cb28-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb28-5" data-line-number="5">value <span class="op">=</span> args.get(<span class="st">&quot;argument_name&quot;</span>, <span class="st">&quot;default_value&quot;</span>)  <span class="co"># &lt;- Best: if key not found, returns the default value</span></a></code></pre></div>
+<h3 id="pymysql">PyMysql</h3>
+<p>PyMysql is a great client library to connect to MySQL databases. Its basic functionalities can be boiled down to 4 steps: 1. Create a connection (the <code>db</code> object, provided in template) 2. When necessary (JIT), create (then destroy) a <em>cursor</em>, on which you can execute queries (also already provided) 3. On this cursor, <em>execute</em> your query (append it to the database’s queue of orders). Nothing is done yet, neither returned yet. 4. Actually commit: * If you don’t expect a result (<code>INSERT</code>, <code>CREATE</code>, <code>DELETE</code>,…), you must simply call <code>commit()</code> on the cursor (not needed here) * If you expect a result (<code>SELECT</code>), you must <em>fetch</em> the results (either one by one with <code>fetchone()</code>, or all at once with <code>fetchall()</code>).</p>
+<p>We already provided a skeleton code, on which the connection and the cursors are created. Now you only have to create the queries, execute them and fetch the results.</p>
+<p><strong>About queries</strong><br> As hinted, there is a <em>bad</em> way, and a <em>good</em> way of executing a query. The bad way is what you attacked during exercise 1: you create a single string with everything in it, and call <code>cursor.execute()</code> on it. It may not be terrible if you only use trusted data source, or hardcoded queries. But cursors can execute multiple queries within one call, and don’t do many checks. You can try and sanitize the user’s input yourself but it’s generally a bad idea (we know you’re smart, but smarter people have already done a better job for you).</p>
+<p>The <em>good</em> way is to use parameters to your call. In your query, specify with a placeholder where data is supposed to go, and give to the cursor the query and the data separately. PyMysql will ensure there is no malicious code here, and only allow for your query to run.</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb29-1" data-line-number="1"><span class="co">## BAD WAY</span></a>
+<a class="sourceLine" id="cb29-2" data-line-number="2">username <span class="op">=</span> get_data_from_user()</a>
+<a class="sourceLine" id="cb29-3" data-line-number="3">bad_query <span class="op">=</span> <span class="st">&quot;SELECT id, name FROM users WHERE name LIKE '&quot;</span> <span class="op">+</span> username <span class="op">+</span> <span class="st">&quot;'&quot;</span></a>
+<a class="sourceLine" id="cb29-4" data-line-number="4">cursor.execute(bad_query)</a></code></pre></div>
+<p>This is exactly what went wrong in exercise 1. You allow the user to put anything int he username, including injections.</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb30-1" data-line-number="1"><span class="co">## CORRECT WAY</span></a>
+<a class="sourceLine" id="cb30-2" data-line-number="2">username <span class="op">=</span> get_data_from_user()</a>
+<a class="sourceLine" id="cb30-3" data-line-number="3">good_query <span class="op">=</span> <span class="st">&quot;SELECT id, name FROM users WHERE name LIKE </span><span class="sc">%s</span><span class="st">&quot;</span></a>
+<a class="sourceLine" id="cb30-4" data-line-number="4">cursor.execute(good_query, username)</a></code></pre></div>
+<p>With that method, <code>username</code> will automatically be parsed. If it only contains odd values, it will be just another string, without injection. If an injection is tried, it will simply break the query, and throw an error without completing. As a good programmer, you must expect this to happen, and catch the error, to have a normal flow.</p>
+<h3 id="python">Python</h3>
+<p>Speaking about errors: because our code will throw a lot of errors when processing malicious input, we must catch them and “<a href="https://en.wikipedia.org/w/index.php?title=Fail_gracefully">fail gracefully</a>”.</p>
+<p>The Python way of doing so is to use <code>try/except</code>, like so:</p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb31-1" data-line-number="1"><span class="cf">try</span>:</a>
+<a class="sourceLine" id="cb31-2" data-line-number="2">    x <span class="op">=</span> <span class="dv">1</span><span class="op">/</span><span class="dv">0</span></a>
+<a class="sourceLine" id="cb31-3" data-line-number="3"><span class="cf">except</span> <span class="pp">ArithmeticError</span>:</a>
+<a class="sourceLine" id="cb31-4" data-line-number="4">    <span class="bu">print</span>(<span class="st">&quot;Can't divide by 0&quot;</span>)</a>
+<a class="sourceLine" id="cb31-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb31-6" data-line-number="6"><span class="co"># and continue</span></a></code></pre></div>
+<p>Everything between the <code>try</code> and the <code>except</code> that throws an error will be intercepted, and go to the <code>except</code> clause. You can also catch multiple errors at once:</p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb32-1" data-line-number="1"><span class="cf">try</span>:</a>
+<a class="sourceLine" id="cb32-2" data-line-number="2">    ...</a>
+<a class="sourceLine" id="cb32-3" data-line-number="3"><span class="cf">except</span> (<span class="pp">ArithmeticError</span>, <span class="pp">OSError</span>, <span class="pp">ValueError</span>):</a>
+<a class="sourceLine" id="cb32-4" data-line-number="4">    ...</a></code></pre></div>
+<p>And finally, if you want to be fool-proof, simply catch everything:</p>
+<div class="sourceCode" id="cb33"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb33-1" data-line-number="1"><span class="cf">try</span>:</a>
+<a class="sourceLine" id="cb33-2" data-line-number="2">    ...</a>
+<a class="sourceLine" id="cb33-3" data-line-number="3"><span class="cf">except</span> <span class="pp">Exception</span>: <span class="co"># the base class of all errors</span></a>
+<a class="sourceLine" id="cb33-4" data-line-number="4">    ...</a></code></pre></div>
+<h2 id="the-solution">The solution</h2>
+<h3 id="messages">/messages</h3>
+<p>Let’s get on to the first step, <code>/messages</code>. Let’s start simply, and add some checks and safeties later. The first step is to differentiate between a <code>GET</code> and a <code>POST</code>:</p>
+<div class="sourceCode" id="cb34"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb34-1" data-line-number="1"><span class="cf">if</span> request.method <span class="op">==</span> <span class="st">&quot;GET&quot;</span>:</a>
+<a class="sourceLine" id="cb34-2" data-line-number="2">    <span class="cf">pass</span></a>
+<a class="sourceLine" id="cb34-3" data-line-number="3"><span class="cf">elif</span> request.method <span class="op">==</span> <span class="st">&quot;POST&quot;</span>:</a>
+<a class="sourceLine" id="cb34-4" data-line-number="4">    <span class="cf">pass</span></a></code></pre></div>
+<p>The <code>GET</code> is the simplest, as it doesn’t require users’ input:</p>
+<div class="sourceCode" id="cb35"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb35-1" data-line-number="1"><span class="cf">if</span> request.method <span class="op">==</span> <span class="st">&quot;GET&quot;</span>:</a>
+<a class="sourceLine" id="cb35-2" data-line-number="2">    sql <span class="op">=</span> <span class="st">&quot;SELECT name, message FROM messages&quot;</span></a>
+<a class="sourceLine" id="cb35-3" data-line-number="3">    cursor.execute(sql)</a>
+<a class="sourceLine" id="cb35-4" data-line-number="4">    json <span class="op">=</span> []</a>
+<a class="sourceLine" id="cb35-5" data-line-number="5">    <span class="cf">for</span> name, message <span class="kw">in</span> cursor.fetchall():</a>
+<a class="sourceLine" id="cb35-6" data-line-number="6">        json.append({<span class="st">&quot;name&quot;</span>: name, <span class="st">&quot;message&quot;</span>: message})</a>
+<a class="sourceLine" id="cb35-7" data-line-number="7">    <span class="cf">return</span> jsonify(json)</a></code></pre></div>
+<p>Very simple and straightforward. Execute a simple query, fetch the results, and output a JSON object as required (list of dictionaries). No possible trouble here. Nice warmup.</p>
+<p>The <code>POST</code> becomes more interesting. Now you have to retrieve data from the request’s body, and use it wisely</p>
+<div class="sourceCode" id="cb36"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb36-1" data-line-number="1"><span class="cf">elif</span> request.method <span class="op">==</span> <span class="st">&quot;POST&quot;</span>:</a>
+<a class="sourceLine" id="cb36-2" data-line-number="2">    form <span class="op">=</span> request.form</a>
+<a class="sourceLine" id="cb36-3" data-line-number="3">    name_value <span class="op">=</span> form.get(<span class="st">&quot;name&quot;</span>, <span class="va">None</span>)</a>
+<a class="sourceLine" id="cb36-4" data-line-number="4">    <span class="cf">if</span> name_value <span class="kw">is</span> <span class="va">None</span>:</a>
+<a class="sourceLine" id="cb36-5" data-line-number="5">        <span class="cf">return</span> <span class="st">&quot;You must provide a 'name' when POSTing&quot;</span>, <span class="dv">500</span></a>
+<a class="sourceLine" id="cb36-6" data-line-number="6">    sql <span class="op">=</span> <span class="st">&quot;SELECT name, message FROM messages WHERE name like </span><span class="sc">%s</span><span class="st">&quot;</span></a>
+<a class="sourceLine" id="cb36-7" data-line-number="7">    cursor.execute(sql, name_value)</a>
+<a class="sourceLine" id="cb36-8" data-line-number="8">    json <span class="op">=</span> []</a>
+<a class="sourceLine" id="cb36-9" data-line-number="9">    <span class="cf">for</span> n, m <span class="kw">in</span> cursor.fetchall():</a>
+<a class="sourceLine" id="cb36-10" data-line-number="10">        json.append({<span class="st">&quot;name&quot;</span>: n, <span class="st">&quot;message&quot;</span>: m})</a>
+<a class="sourceLine" id="cb36-11" data-line-number="11">    <span class="cf">return</span> jsonify(json)</a></code></pre></div>
+<p>Let’s break this down: 1. We retrieve the form data 2. We look for a <code>name</code> field. 3. If not present, reject, this is mandatory on <code>POST</code>. 4. If present, craft your query safely, say where the value should be, and give the query and the name to the cursor. 5. Finally, retrieve the results, format them, and return</p>
+<p>Note that if someone give more than 1 field in the form (<code>name</code> and <code>malicious_arg</code> for example), our code simply ignores it.</p>
+<h4 id="errors">Errors</h4>
+<p>Now, this code looks almost complete. There are some redundancies that are easy to fix, but globally it does the job. On a malicious input, our code won’t execute the injection, but throw an error. In case of an error, Flask will automatically return a <code>500 Server Error</code> status, but it’s not exactly a “failed gracefully”. We surround then everything with a <code>try/except</code>. We could catch every exceptions, but it’s bad practice. If something else goes wrong, we won’t see it and mistake it for a malicious input. For example, if the database was to shut down, our website will be down and no error will appear. We restrict ourselves to the necessary. On a query with odd arguments, pymysql will throw a <code>ProgrammingError</code>.</p>
+<div class="sourceCode" id="cb37"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb37-1" data-line-number="1"><span class="cf">try</span>:</a>
+<a class="sourceLine" id="cb37-2" data-line-number="2">    <span class="cf">with</span> db.cursor() <span class="im">as</span> cursor:</a>
+<a class="sourceLine" id="cb37-3" data-line-number="3">        <span class="cf">if</span> request.method <span class="op">==</span> <span class="st">&quot;GET&quot;</span>:</a>
+<a class="sourceLine" id="cb37-4" data-line-number="4">            ...</a>
+<a class="sourceLine" id="cb37-5" data-line-number="5">        <span class="cf">elif</span> request.method <span class="op">==</span> <span class="st">&quot;POST&quot;</span>:</a>
+<a class="sourceLine" id="cb37-6" data-line-number="6">            ...</a>
+<a class="sourceLine" id="cb37-7" data-line-number="7"><span class="cf">except</span> pymysql.err.ProgrammingError:</a>
+<a class="sourceLine" id="cb37-8" data-line-number="8">    <span class="bu">print</span>(<span class="st">&quot;Sounds like a malicious input&quot;</span>)</a>
+<a class="sourceLine" id="cb37-9" data-line-number="9">    <span class="cf">return</span> <span class="st">&quot;Trying to hack me?&quot;</span> <span class="dv">500</span></a></code></pre></div>
+<p>With that, only <code>ProgrammingError</code>s will be caught, and we will notice the rest.</p>
+<h3 id="users">/users</h3>
+<p>The procedure for this endpoint is roughly the same. Prepare a request, check if there is a valid argument in the URL, adapt consequently the query, get your results, format them, and return. The whole procedure will as before be surrounded by a <code>try/except</code> to ensure the program runs smoothly.</p>
+<h4 id="simple-case-no-limit">Simple case: no limit</h4>
+<p>Without worrying about user input, the code is quite simple:</p>
+<div class="sourceCode" id="cb38"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb38-1" data-line-number="1">sql <span class="op">=</span> <span class="st">&quot;SELECT name FROM users&quot;</span></a>
+<a class="sourceLine" id="cb38-2" data-line-number="2">cursor.execute(sql)</a>
+<a class="sourceLine" id="cb38-3" data-line-number="3">all_names <span class="op">=</span> []</a>
+<a class="sourceLine" id="cb38-4" data-line-number="4"><span class="cf">for</span> name <span class="kw">in</span> cursor.fetchall():</a>
+<a class="sourceLine" id="cb38-5" data-line-number="5">    all_names.append(name[<span class="dv">0</span>])</a>
+<a class="sourceLine" id="cb38-6" data-line-number="6">json <span class="op">=</span> {<span class="st">&quot;users&quot;</span>: all_names}</a>
+<a class="sourceLine" id="cb38-7" data-line-number="7"><span class="cf">return</span> jsonify(json)</a></code></pre></div>
+<p>Nothing fancy, it’s exactly what we explained above. We must put <code>name[0]</code> and not just <code>name</code>, as opposed to before, because it’s a tuple of size 1. When we select a multiple columns (as in <code>/messages</code>), by doing <code>for a,b in cursor.fetchall()</code>, we do <em>tuple unpacking</em>. It’s also a tuple, but we split it. With only 1 column, Python doesn’t know if we want to iterate through the tuples, or “unpack” the one element within.</p>
+<h4 id="going-to-the-limit">Going to the limit</h4>
+<p>Now, we expect a user input. As explained in <a href="#flask">the dedicated section</a>, the way to read arguments in a URl is to do use <code>request.args</code>, that behaves like a dictionary. We check whether the user asked for a limit, adapt our query consequently, and execute.</p>
+<div class="sourceCode" id="cb39"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb39-1" data-line-number="1">sql <span class="op">=</span> <span class="st">&quot;SELECT name FROM users&quot;</span></a>
+<a class="sourceLine" id="cb39-2" data-line-number="2">args <span class="op">=</span> request.args</a>
+<a class="sourceLine" id="cb39-3" data-line-number="3">limit <span class="op">=</span> args.get(<span class="st">&quot;limit&quot;</span>, <span class="va">None</span>)</a>
+<a class="sourceLine" id="cb39-4" data-line-number="4"><span class="cf">if</span> limit <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</a>
+<a class="sourceLine" id="cb39-5" data-line-number="5">    sql <span class="op">+=</span> <span class="st">&quot; LIMIT 0, </span><span class="sc">%s</span><span class="st">&quot;</span></a>
+<a class="sourceLine" id="cb39-6" data-line-number="6">    cursor.execute(sql, <span class="bu">int</span>(limit))</a>
+<a class="sourceLine" id="cb39-7" data-line-number="7"><span class="cf">else</span>:</a>
+<a class="sourceLine" id="cb39-8" data-line-number="8">    cursor.execute(sql)</a>
+<a class="sourceLine" id="cb39-9" data-line-number="9"><span class="co"># then fetchall(), format and return</span></a></code></pre></div>
+<p>Notice again how we don’t simply append the limit, but specify a placeholder (<code>%s</code>) in the query, and let PyMysql do the replacement job. Much safer.</p>
+<h4 id="errors-1">Errors</h4>
+<p>Just as before, we must check for a <code>ProgrammingError</code>, in case of a bad/malformed/malicious input. But we may encounter an error before: the <code>int(limit)</code> may very well crash if <code>limit</code> can’t be interpreted as an int. In this case, it will throw a <code>ValueError</code>. We simply add this to our <code>try/except</code>:</p>
+<div class="sourceCode" id="cb40"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb40-1" data-line-number="1"><span class="cf">try</span>:</a>
+<a class="sourceLine" id="cb40-2" data-line-number="2">    <span class="cf">with</span> db.cursor() <span class="im">as</span> cursor:</a>
+<a class="sourceLine" id="cb40-3" data-line-number="3">        sql <span class="op">=</span> <span class="st">&quot;SELECT name FROM users&quot;</span></a>
+<a class="sourceLine" id="cb40-4" data-line-number="4">        <span class="co">#....</span></a>
+<a class="sourceLine" id="cb40-5" data-line-number="5">        <span class="cf">return</span> jsonify(json)</a>
+<a class="sourceLine" id="cb40-6" data-line-number="6"><span class="cf">except</span> (pymysql.err.ProgrammingError, <span class="pp">ValueError</span>):</a>
+<a class="sourceLine" id="cb40-7" data-line-number="7">    <span class="cf">return</span> <span class="st">&quot;Bad user, bad!&quot;</span>, <span class="dv">500</span></a></code></pre></div>
+</body>
+</html>

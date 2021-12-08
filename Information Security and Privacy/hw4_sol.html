@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang xml:lang>
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>hw4_sol</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <style type="text/css">
+html {
+font-size: 100%;
+overflow-y: scroll;
+-webkit-text-size-adjust: 100%;
+-ms-text-size-adjust: 100%;
+}
+body {
+color: #000;
+font-family: Georgia, Palatino, 'Palatino Linotype', Times, 'Times New Roman', serif;
+font-size: 12px;
+line-height: 1.7;
+padding: 1em;
+margin: auto;
+max-width: 42em;
+background: #fefefe;
+}
+a {
+color: #0645ad;
+text-decoration: none;
+}
+a:visited {
+color: #0b0080;
+}
+a:hover {
+color: #06e;
+}
+a:active {
+color: #faa700;
+}
+a:focus {
+outline: thin dotted;
+}
+*::-moz-selection {
+background: rgba(255, 255, 0, 0.3);
+color: #000;
+}
+*::selection {
+background: rgba(255, 255, 0, 0.3);
+color: #000;
+}
+a::-moz-selection {
+background: rgba(255, 255, 0, 0.3);
+color: #0645ad;
+}
+a::selection {
+background: rgba(255, 255, 0, 0.3);
+color: #0645ad;
+}
+p {
+margin: 1em 0;
+}
+img {
+max-width: 100%;
+}
+h1, h2, h3, h4, h5, h6 {
+color: #111;
+line-height: 125%;
+margin-top: 2em;
+font-weight: normal;
+}
+h4, h5, h6 {
+font-weight: bold;
+}
+h1 {
+font-size: 2.5em;
+}
+h2 {
+font-size: 2em;
+}
+h3 {
+font-size: 1.5em;
+}
+h4 {
+font-size: 1.2em;
+}
+h5 {
+font-size: 1em;
+}
+h6 {
+font-size: 0.9em;
+}
+blockquote {
+color: #666666;
+margin: 0;
+padding-left: 3em;
+border-left: 0.5em #EEE solid;
+}
+hr {
+display: block;
+height: 2px;
+border: 0;
+border-top: 1px solid #aaa;
+border-bottom: 1px solid #eee;
+margin: 1em 0;
+padding: 0;
+}
+pre, code, kbd, samp {
+color: #000;
+font-family: monospace, monospace;
+_font-family: 'courier new', monospace;
+font-size: 0.98em;
+background-color: #eee;
+padding-left: 5px;
+padding-right: 5px;
+}
+pre {
+white-space: pre;
+white-space: pre-wrap;
+word-wrap: break-word;
+}
+b, strong {
+font-weight: bold;
+}
+dfn {
+font-style: italic;
+}
+ins {
+background: #ff9;
+color: #000;
+text-decoration: none;
+}
+mark {
+background: #ff0;
+color: #000;
+font-style: italic;
+font-weight: bold;
+}
+sub, sup {
+font-size: 75%;
+line-height: 0;
+position: relative;
+vertical-align: baseline;
+}
+sup {
+top: -0.5em;
+}
+sub {
+bottom: -0.25em;
+}
+ul, ol {
+margin: 1em 0;
+padding: 0 0 0 2em;
+}
+li p:last-child {
+margin-bottom: 0;
+}
+ul ul, ol ol {
+margin: .3em 0;
+}
+dl {
+margin-bottom: 1em;
+}
+dt {
+font-weight: bold;
+margin-bottom: .8em;
+}
+dd {
+margin: 0 0 .8em 2em;
+}
+dd:last-child {
+margin-bottom: 0;
+}
+img {
+border: 0;
+-ms-interpolation-mode: bicubic;
+vertical-align: middle;
+}
+figure {
+display: block;
+text-align: center;
+margin: 1em 0;
+}
+figure img {
+border: none;
+margin: 0 auto;
+}
+figcaption {
+font-size: 0.8em;
+font-style: italic;
+margin: 0 0 .8em;
+}
+table {
+margin-bottom: 2em;
+border-bottom: 1px solid #ddd;
+border-right: 1px solid #ddd;
+border-spacing: 0;
+border-collapse: collapse;
+}
+table th {
+padding: .2em 1em;
+background-color: #eee;
+border-top: 1px solid #ddd;
+border-left: 1px solid #ddd;
+}
+table td {
+padding: .2em 1em;
+border-top: 1px solid #ddd;
+border-left: 1px solid #ddd;
+vertical-align: top;
+}
+.author {
+font-size: 1.2em;
+text-align: center;
+}
+@media only screen and (min-width: 480px) {
+body {
+font-size: 14px;
+}
+}
+@media only screen and (min-width: 768px) {
+body {
+font-size: 16px;
+}
+}
+@media print {
+* {
+background: transparent !important;
+color: black !important;
+filter: none !important;
+-ms-filter: none !important;
+}
+body {
+font-size: 12pt;
+max-width: 100%;
+}
+a, a:visited {
+text-decoration: underline;
+}
+hr {
+height: 1px;
+border: 0;
+border-bottom: 1px solid black;
+}
+a[href]:after {
+content: " (" attr(href) ")";
+}
+abbr[title]:after {
+content: " (" attr(title) ")";
+}
+.ir a:after, a[href^="javascript:"]:after, a[href^="#"]:after {
+content: "";
+}
+pre, blockquote {
+border: 1px solid #999;
+padding-right: 1em;
+page-break-inside: avoid;
+}
+tr, img {
+page-break-inside: avoid;
+}
+img {
+max-width: 100% !important;
+}
+@page :left {
+margin: 15mm 20mm 15mm 10mm;
+}
+@page :right {
+margin: 15mm 10mm 15mm 20mm;
+}
+p, h2, h3 {
+orphans: 3;
+widows: 3;
+}
+h2, h3 {
+page-break-after: avoid;
+}
+}</style>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<h1 id="com-402-homework-4-solution">COM-402 Homework 4 Solution</h1>
+<ul>
+<li><a href="#exercise-1-attack-sniffing-credit-cards-numbers">Exercise 1: [attack] Sniffing credit cards numbers</a>
+<ul>
+<li><a href="#setting-up-the-mitm">Setting up the MitM</a></li>
+<li><a href="#building-the-mitm-script">Building the MitM script</a></li>
+</ul></li>
+<li><a href="#exercise-2-attack-tls-downgrade">Exercise 2: [attack] TLS Downgrade</a>
+<ul>
+<li><a href="#spotting-tcp-handshakes">Spotting TCP handshakes</a></li>
+<li><a href="#spotting-the-cipher-suite">Spotting the cipher suite</a></li>
+<li><a href="#changing-the-suite">Changing the suite</a></li>
+</ul></li>
+<li><a href="#exercise-3-defense-secure-nginx-configuration">Exercise 3: [defense] Secure NGINX configuration</a>
+<ul>
+<li><a href="#part-a">Part A</a>
+<ul>
+<li><a href="#quick-word-on-locations">Quick word on locations</a></li>
+</ul></li>
+<li><a href="#part-b">Part B</a>
+<ul>
+<li><a href="#creating-the-certificate">Creating the certificate</a></li>
+<li><a href="#updating-nginx">Updating Nginx</a></li>
+</ul></li>
+<li><a href="#part-c">Part C</a>
+<ul>
+<li><a href="#about-hsts">About HSTS</a> # Exercise 1: [attack] Sniffing credit cards numbers</li>
+</ul></li>
+</ul></li>
+</ul>
+<p>The goal of this exercise is to set up a MitM (man-in-the-middle) attack, where we divert to our machine non encrypted traffic sent by naïve users. Once the packets have been captured, they can be analyzed to steal important information, and finally forwarded to their original destination. This is done in order to be harder to detect by the users (as the packets will reach their destination), therefore giving us the possibility to steal more data in the future.</p>
+<h2 id="setting-up-the-mitm">Setting up the MitM</h2>
+<p>As the premise of the exercise suggests, we first need to set ourselves as the MitM. In order to do this, we follow these steps:</p>
+<ol start="0" type="1">
+<li><p>Open a text editor, to write names, IP addresses,… it will come in handy later.</p></li>
+<li><p>First of all, we set up our <code>docker-compose.yml</code> as described in the handout, and we launch it with the command <code>docker-compose up</code></p></li>
+<li><p>Now that the containers are running, we want to check the IP of our MitM container, in order to be able to set it as the client’s default gateway. To do this, we start by opening a shell in the mitm container with the command <code>docker exec -it mitm /bin/sh</code>. Then, we use the command <code>ip addr</code> to check our local IP address or <code>eth0</code>: <code>192.168.112.3</code>. Another solution is to use <code>docker inspect mitm</code> and look for the IP.</p>
+<p><strong>Note</strong> IP addresses may change for you; make sure you understand which IP belongs to which device. We write the following correction with one possibility of IP combinations.</p></li>
+<li><p>Next step requires entering the client (<code>docker exec -it client /bin/sh</code>), with the goal of first deleting, then replacing the current default route, so that all the traffic outside our local network goes through the MitM. In order to do this, we first enter the following command <code>ip route del default</code>. Then <code>ip route add default via 192.168.112.3</code>. If we want to make sure we did it right, we can just launch the command <code>ip route</code>: the response will show <code>default via 192.168.112.3 dev eth0</code>. 4-5) Following the instructions in the handout (pasting the commands in the mitm shell), we allow forwarding of packets from the mitm, and we make it act like a NAT.</p></li>
+</ol>
+<p>In order to confirm the results of our work, we can launch a command such as <code>traceroute 1.1.1.1</code> from the client’s shell. Without going into much detail, the command shows all the hops the packets go through before reaching their destination. If we have completed the setup correctly, the first hop will be our mitm’s machine.</p>
+<p>As already stated in the handout, these steps require <em>a bit</em> of cheating, as we are opening a shell in the client: this is indeed not an easy task, and was allowed in this exercise for simplicity’s sake. In a real life scenario, however, the same result would be achievable by setting up a <a href="https://en.wikipedia.org/wiki/Rogue_DHCP">Rogue DHCP server</a>, that, upon client connection, would offer the address of the MitM as a default gateway. You can also use <a href="https://en.wikipedia.org/wiki/ARP_spoofing">ARP spoofing</a>, where you basically spam the target with the message “I’M THE DEFAULT GATEWAY”; when they send an ARP request to know who is the gateway, they will receive your response first and ignore the legitimate one.</p>
+<h2 id="building-the-mitm-script">Building the MitM script</h2>
+<p>Now that we have completed all the preparation, our goal is to build a script that can: 1) Intercept the packets sent by the client 2) Filter the interesting packets, that present the structure reported in the handout 3) Print interesting results, thus providing us the secrets we are looking for</p>
+<p>As suggested in the handout, the <a href="https://pypi.org/project/NetfilterQueue/">NetfilterQueue</a> and <a href="https://scapy.readthedocs.io/en/latest/">Scapy</a> libraries come in handy to build the script.</p>
+<p>After executing the necessary steps to forward packets to the Queue, described in the handout, we can start building the script. This will look a lot like the basic NetfilterQueue example shown in the documentation, with a big difference in the content of the callback function, that will have the task of looking inside the packets and filtering them. Let’s recall the basic NetfilterQueue example:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="im">from</span> netfilterqueue <span class="im">import</span> NetfilterQueue</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw">def</span> print_and_accept(pkt):</a>
+<a class="sourceLine" id="cb1-4" data-line-number="4">    <span class="bu">print</span>(pkt)</a>
+<a class="sourceLine" id="cb1-5" data-line-number="5">    pkt.accept()</a>
+<a class="sourceLine" id="cb1-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb1-7" data-line-number="7">nfqueue <span class="op">=</span> NetfilterQueue()</a>
+<a class="sourceLine" id="cb1-8" data-line-number="8">nfqueue.bind(<span class="dv">1</span>, print_and_accept)</a>
+<a class="sourceLine" id="cb1-9" data-line-number="9"><span class="cf">try</span>:</a>
+<a class="sourceLine" id="cb1-10" data-line-number="10">    nfqueue.run()</a>
+<a class="sourceLine" id="cb1-11" data-line-number="11"><span class="cf">except</span> <span class="pp">KeyboardInterrupt</span>:</a>
+<a class="sourceLine" id="cb1-12" data-line-number="12">    <span class="bu">print</span>(<span class="st">''</span>)</a>
+<a class="sourceLine" id="cb1-13" data-line-number="13"></a>
+<a class="sourceLine" id="cb1-14" data-line-number="14">nfqueue.unbind()</a></code></pre></div>
+<p>In short: we create a queue, create a custom function, and bind it to the queue, so that each packet is passes through. The custom function ‘must’ finish by <code>packet.accept()</code> so it goes through. As we only sniff without modification, it’s fast enough and doesn’t require special magic. So we now only have to craft a nice custom function, to replace <code>print_and_accept</code>.</p>
+<p>In order to correctly get to the information we are looking for, we turn the NetfilterQueue packet into a Scapy one:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="im">from</span> scapy.layers.inet <span class="im">import</span> IP</a>
+<a class="sourceLine" id="cb2-2" data-line-number="2">...</a>
+<a class="sourceLine" id="cb2-3" data-line-number="3">packet <span class="op">=</span> IP(pkt.get_payload())</a></code></pre></div>
+<p>Next step is to filter and keep only packets on the HTTP layer, and that are requests (not answers, because the secrets come from the user). We don’t want TCP packets (ACK,…), but one that comes from above. You can get a good idea of the packets by using the method <code>packet.layers()</code>. To keep only those, we apply the filter:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="im">from</span> scapy.layers <span class="im">import</span> http</a>
+<a class="sourceLine" id="cb3-2" data-line-number="2">...</a>
+<a class="sourceLine" id="cb3-3" data-line-number="3"><span class="cf">if</span> packet.haslayer(http.HTTPRequest):</a>
+<a class="sourceLine" id="cb3-4" data-line-number="4">    do_things</a></code></pre></div>
+<p>OK, so now only HTTP requests packets are arriving. We want to look at the content now, and remove all the extraneous info. From the packet, we do the following: * Look at the http layer * Take a look at the fields * Keep only the field <code>Unknown_Headers</code> (because obviously this is where the secret is) * Keep only the <code>secret</code> header (use <code>&quot;secret&quot;.encode()</code>, notice the <code>b</code> in front) * Decode to have it in utf-8</p>
+<p>This gives the following line:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb4-1" data-line-number="1">data <span class="op">=</span> packet[http.HTTPRequest].fields[<span class="st">'Unknown_Headers'</span>][<span class="st">'secret'</span>.encode()].decode()</a></code></pre></div>
+<p>Running the previous lines, we obtain the following output:</p>
+<pre><code>iGU8QHIC5DC2 cc --- 8452.8214.9088.8566 imFZBAY33dH7ApVnitRJVVxlPbi
+S1nHw3yUNW9HkBFuTg8b pwd --- VERYSECURE1111 18fuxn3iq83NvO
+Teqyo9m0NkbT1dMxuQAEnbdOgTHdDpgfZlvBdxgatNLJHezqX9ZaS3gQUWw
+eTjx8hb4ZMQa7
+cY0n cc --- 1094.5623.4.45 1So5cgSGVojjlPMvqClcF81gnbyd5VElDUkaNH
+ZmVWy91i
+p1A3gwAidnKaL6AuggavmerNjdFo
+xL47O9zztPG26PyfOFroXRcfPd0s5mRMlaG pwd --- VERYSECURE1111 vGGfAtUZlhKetJ6mEnLuhzZT3Sm8eixV
+wjjPv22EuKMacV9NsBj1LuvSJYsTJpQ1P5cb
+vDiRSZe3GHuZfPAKwdo01ftim5nFZGlzVTrGU0weTpsDkzUQKRGZVQ
+vbQ10ktR5cvpGpLBTTHZnYZ
+sdfIMvtgRL069fTsqW0TgtEG1WKi4jSBZ5V3dsQDayiI2O3Pl6RUznQTWvwdzFT271IqI0OeAPWXAQ1FtxWaT
+hcarKomBmex8afJqPAYXDDr6FHKMz5nteqNhtO31Ha78JPxgJyjnZLMrCFMuLxFrEz9a334ajZYYStz64
+qbNl9cPv4ayzL8fKRYpP4NVARMP7Mfc7BOjFLOnDJpQLafFYTjXzuXz77cowol6SBvdktVDhZCL7kD
+vJ9EqM5p8xlEfTSnmApHpOKZFfdY6IuPIz7dNfNmHSfqEyZnNI9O0VZrLyYG
+h1vKiNjHhEUxbfBPopQbBdjnZkdr33ktGCJ4a0aFiYD06M8f5bpNic7BzMtGK3EV6GHLdC5S2m7rhFYmHN8n7FTH0Jz
+NL86eZ1O1jxXOenUJJztZtqOJmM7I5PL6jQx8SipuSHbtQskvTGc3dmz4D5yNN2NfSwHoRWhg1hPHCpKWFSMfC4VnGxLP7
+d9WacSWHhYhCxVhxiz9AkOe0dCz5APjD9eSiDgeZHjM5zpWtd3ITVPcltRyZo1oPQcxvqHserNwI3nhFK2PtibLMlK
+s8zzxWS9LPiqbovA9917JJhhTflVNo8Cv572GnHFTr2kRWXnHycecnv6UwyobN9eOEe7fZpXio</code></pre>
+<p>From that, we could technically already let it run, and by inspection find the passwords and CC numbers. But there is a major problem: we are lazy (the IT kind). We want to let it run and have a list of secrets by the end, all while watching Twitch. <a href="https://xkcd.com/1205/">Is it worth the time</a>? Probably not, but we’ll do it anyway.</p>
+<p>So from here, we want to match the content against regular expressions. In order to filter the packets, we use the <a href="https://docs.python.org/3/library/re.html">re</a> library to compile 2 different regex patterns, that we will later try to match with the incoming bytes of data. The following do that:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb6-1" data-line-number="1">credit_card_pattern <span class="op">=</span> re.<span class="bu">compile</span>(<span class="st">&quot;cc\s+---\s+((?:[0-9]</span><span class="sc">{4}</span><span class="st">\.)</span><span class="sc">{3}</span><span class="st">[0-9]</span><span class="sc">{4}</span><span class="st">)&quot;</span>)</a>
+<a class="sourceLine" id="cb6-2" data-line-number="2">pass_pattern <span class="op">=</span> re.<span class="bu">compile</span>(<span class="st">&quot;pwd\s+---\s+([0-9A-Z:;&lt;=&gt;?@]+)&quot;</span>)</a></code></pre></div>
+<p>Quick explanation (you can have fun with <a href="https://regex101.com/">this website</a> to test your regex): * <strong>credit card</strong>: we await the literal string <code>cc</code>, then at least a space (<code>\s+</code>), 3 dashes (<code>---</code>), and again at least a space. This is the detection part. Then we create a capturing group <code>()</code>, composed of 2 parts: the first one is a repeating non-capturing group <code>(?:...){3}</code>. This defines a group that won’t be captured, that must appear exactly thrice (if you are confused by the reason why we need a non-capturing group, copy-paste the regex to the aforementioned <a href="https://regex101.com/">website</a> and try removing the <em>?:</em> from the regex. <em>regex101</em> will show you a clear explanation of what happens then). The second part is the rest of the capturing group. So what we capture here is the pattern <code>[0-9]{4}\.</code> (4 digits followed by a dot) 3 times, then <code>[0-9]{4}</code>, which is again 4 digits (without trailing dot). * <strong>Password</strong>: The password is described as <em>a mix of 0-9 digits, uppercase letters A-Z, symbols :;&lt;=&gt;?@.</em>. The regex is thus very similar to the previous: we first need <code>pwd\s+---\s+</code> to indicate the literal <code>pwd</code>, followed by spaces, 3 dashes, and spaces again. After that, the password begins: we define a characters set <code>[]</code> with all the characters defined above: <code>[0-9A-Z:;&lt;=&gt;?@]</code>. We then say that we expect a string composed of only those characters, of length at least 1. Then we wrap that with a capturing group.</p>
+<p>Now, last step, we need to look for those regex in each packet (valid packet, as defined above). Simply:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="im">import</span> sys()</a>
+<a class="sourceLine" id="cb7-2" data-line-number="2">...</a>
+<a class="sourceLine" id="cb7-3" data-line-number="3">secrets <span class="op">=</span> <span class="bu">set</span>()</a>
+<a class="sourceLine" id="cb7-4" data-line-number="4">...</a>
+<a class="sourceLine" id="cb7-5" data-line-number="5"><span class="co"># findall returns a list with all matches, empty if no match</span></a>
+<a class="sourceLine" id="cb7-6" data-line-number="6"><span class="co"># [] + [&quot;somesecret&quot;] = [&quot;somesecret&quot;]</span></a>
+<a class="sourceLine" id="cb7-7" data-line-number="7">sec <span class="op">=</span> credit_card_pattern.findall(data) <span class="op">+</span> pass_pattern.findall(data)</a>
+<a class="sourceLine" id="cb7-8" data-line-number="8"><span class="cf">if</span> <span class="bu">len</span>(sec) <span class="op">&gt;</span> <span class="dv">0</span>:</a>
+<a class="sourceLine" id="cb7-9" data-line-number="9">    <span class="bu">print</span>(<span class="st">&quot;New secret found: </span><span class="sc">{}</span><span class="st">&quot;</span>.<span class="bu">format</span>(sec[<span class="dv">0</span>]))</a>
+<a class="sourceLine" id="cb7-10" data-line-number="10">    secrets.add(sec[<span class="dv">0</span>])</a>
+<a class="sourceLine" id="cb7-11" data-line-number="11"><span class="cf">if</span> <span class="bu">len</span>(secrets) <span class="op">&gt;=</span> <span class="dv">3</span>:</a>
+<a class="sourceLine" id="cb7-12" data-line-number="12">    <span class="bu">print</span>(<span class="st">&quot;Found all secrets: </span><span class="sc">{}</span><span class="st">&quot;</span>.<span class="bu">format</span>(secrets))</a>
+<a class="sourceLine" id="cb7-13" data-line-number="13">    sys.exit()</a></code></pre></div>
+<p>We exploit the <code>set()</code> structure. We simply add our secret to it, and it will be discarded if the string is already present. If the secret is new, we add it to our local dictionary; otherwise, we just ignore it. Once 3 different secrets have been found, our mission has been accomplished, and we can quit the program.</p>
+<h1 id="exercise-2-attack-tls-downgrade">Exercise 2: [attack] TLS Downgrade</h1>
+<p>Here, we will largely copy the structure of the previous exercise. After setting up similarly the interfaces, NAT,… we create the skeleton for the interception:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="im">from</span> netfilterqueue <span class="im">import</span> NetfilterQueue</a>
+<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="im">from</span> scapy.<span class="bu">all</span> <span class="im">import</span> <span class="op">*</span></a>
+<a class="sourceLine" id="cb8-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb8-4" data-line-number="4"><span class="kw">def</span> packetReceived(pkt):</a>
+<a class="sourceLine" id="cb8-5" data-line-number="5">    <span class="co"># code here</span></a>
+<a class="sourceLine" id="cb8-6" data-line-number="6">    pkt.accept()</a>
+<a class="sourceLine" id="cb8-7" data-line-number="7">    <span class="cf">return</span></a>
+<a class="sourceLine" id="cb8-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb8-9" data-line-number="9"></a>
+<a class="sourceLine" id="cb8-10" data-line-number="10">nfqueue <span class="op">=</span> NetfilterQueue()</a>
+<a class="sourceLine" id="cb8-11" data-line-number="11">nfqueue.bind(<span class="dv">1</span>, packetReceived)</a>
+<a class="sourceLine" id="cb8-12" data-line-number="12"><span class="cf">try</span>:</a>
+<a class="sourceLine" id="cb8-13" data-line-number="13">    nfqueue.run()</a>
+<a class="sourceLine" id="cb8-14" data-line-number="14"><span class="cf">except</span> <span class="pp">KeyboardInterrupt</span>:</a>
+<a class="sourceLine" id="cb8-15" data-line-number="15">    <span class="bu">print</span>(<span class="st">''</span>)</a>
+<a class="sourceLine" id="cb8-16" data-line-number="16">nfqueue.unbind()</a></code></pre></div>
+<p>Inside <code>packetReceived</code> we can now do our nasty affairs. We start by converting the packet to a scapy one:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb9-1" data-line-number="1">ip <span class="op">=</span> IP(pkt.get_payload())</a></code></pre></div>
+<h2 id="spotting-tcp-handshakes">Spotting TCP handshakes</h2>
+<p>First of all, let’s look at the raw layer, where dark things happen:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="cf">if</span> ip.haslayer(<span class="st">&quot;Raw&quot;</span>):</a>
+<a class="sourceLine" id="cb10-2" data-line-number="2">    tcpPayload <span class="op">=</span> ip[<span class="st">&quot;Raw&quot;</span>].load</a></code></pre></div>
+<p>We now have a raw TCP payload, in bytes. Not very talkative, but we are talented.</p>
+<p>Let’s dive deep in the code. If you look at the provided <a href="https://tls.ulfheim.net/">resource</a>, you can have a glance at what a <em>TLSv1.2 header</em> looks like. We learn that the first byte of the TLS record header is <code>0x16</code> to indicate a handshake, and the 2 following are the major and minor byte of the version (major is almost always <code>0x03</code>, minor ranges between <code>0x00</code> and <code>0x03</code>).</p>
+<p>So we filter that:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="cf">if</span> (tcpPayload[<span class="dv">0</span>] <span class="op">==</span> <span class="bn">0x16</span> <span class="kw">and</span> tcpPayload[<span class="dv">1</span>] <span class="op">==</span> <span class="bn">0x03</span>):</a>
+<a class="sourceLine" id="cb11-2" data-line-number="2">    <span class="co"># this is a TCP handshake</span></a></code></pre></div>
+<h2 id="spotting-the-cipher-suite">Spotting the cipher suite</h2>
+<p>If you fire up wireshark, and capture some packets, you will see the <code>TLSv1.2 Client Hello</code> ones. Inspect one, and you’ll notice a few things:</p>
+<ul>
+<li>The first bytes in the Secure Sockets Layer are indeed <code>0x16</code> and <code>0x3000</code>, corresponding to the expected RFC: it’s a handshake, of version SSL 3.0.</li>
+<li>Then you have the actual handshake, with it’s version: TLSv1.2 (<code>0x0303</code>)</li>
+<li>Then 32 bytes of randomness</li>
+<li>Then a few bytes</li>
+<li>And finally the Cipher Suites. Only one here (<code>TLS_RSA_WITH_AES_256_CBC_SHA (0x0035)</code>)</li>
+</ul>
+<p>After some counting, you see that those last bytes are respectively in position 46 and 47 of the payload. So we filter for that too:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="cf">if</span> (tcpPayload[<span class="dv">46</span>] <span class="op">==</span> <span class="bn">0x00</span> <span class="kw">and</span> tcpPayload[<span class="dv">47</span>] <span class="op">==</span> <span class="bn">0x35</span>):</a>
+<a class="sourceLine" id="cb12-2" data-line-number="2">    <span class="co"># this is a TCP handshake with cypher TLS_RSA_WITH_AES_256_CBC_SHA</span></a></code></pre></div>
+<h2 id="changing-the-suite">Changing the suite</h2>
+<p>Now that we identified the packet that tells the server “Please use AES 256”, we have two choices: either drop it completely, resulting in a DoS (and maybe in a shift toward HTTP), or change the message. If that’s the case, we can arbitrarily chose a weak suite, that we can attack later on.</p>
+<p>Note that we usually can’t chose any weak suite, but we still have some room to manoeuver. While servers shouldn’t accept too weak/old suits, many of them still do to a certain degree, simply because denying them will keep some of your customers out (even if they <em>really</em> should have upgraded their browser by now…). So we can lower a bit, but not too much. In more advanced attacks, you would select all the suits that you like, in “increasing security” order and present that to the server. They will then select the weakest they can. But to keep things simple, we’ll just downgrade 256 to 128.</p>
+<p>Let’s select the AES 128 (formally, <code>TLS_RSA_WITH_AES_128_CBC_SHA</code>). Looking at the RFC, we see the corresponding bytes are <code>0x00, 0x2F</code> (instead of <code>0x00, 0x35</code>). So just one byte to change, great.</p>
+<p>Now let’s get the complete frame and alter it:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb13-1" data-line-number="1">msgBytes <span class="op">=</span> pkt.get_payload()       <span class="co"># msgBytes is read-only, copy it</span></a>
+<a class="sourceLine" id="cb13-2" data-line-number="2">msgBytes2 <span class="op">=</span> [b <span class="cf">for</span> b <span class="kw">in</span> msgBytes]</a>
+<a class="sourceLine" id="cb13-3" data-line-number="3">msgBytes2[<span class="dv">112</span>] <span class="op">=</span> <span class="bn">0x00</span>  <span class="co"># actually useless, it's the same</span></a>
+<a class="sourceLine" id="cb13-4" data-line-number="4">msgBytes2[<span class="dv">113</span>] <span class="op">=</span> <span class="bn">0x2F</span></a>
+<a class="sourceLine" id="cb13-5" data-line-number="5">pkt.set_payload(<span class="bu">bytes</span>(msgBytes2))</a></code></pre></div>
+<p><strong>Wait a second, why 112 and 113</strong> ?</p>
+<p>It’s now time we speak about the difference between the payload and the frame. Up until now we spoke about absolute positions of bytes (e.g. we took the 47 and 48th bytes of the TCP payload to filter the cipher suite). This was inside the TCP payload. In Wireshark, this corresponds to the bytes in the <em>Secure Socket Layer</em> tab. But with <code>pkt.get_payload()</code>, you get the whole payload. This includes the 66 bytes of the other layers (previous tabs in Wireshark). So the attack is shifted by 66 bytes (and 66+46 = 112).</p>
+<p>Finally, we accept the (modified) packet, and the attack will succeed.</p>
+<h1 id="exercise-3-defense-secure-nginx-configuration">Exercise 3: [defense] Secure NGINX configuration</h1>
+<h2 id="part-a">Part A</h2>
+<p>This one is rather straightforward. The default configuration should look something like that:</p>
+<pre class="nginx"><code>server {
+    listen       80; # listen on port 8
+    server_name  localhost; # optional
+
+    location / {
+        root /www;
+    }
+}</code></pre>
+<p>Basically: * Create a “server” instance, for independent configuration. * Listen to port 80 * (Opt) Indicate the server name; useful when you expect multiple websites (e.g. 20minutes.ch and 20minuten.ch, the FR and DE versions both point to the same IPs). This will do an additional filter. * Then indicate the location.</p>
+<h3 id="quick-word-on-locations">Quick word on locations</h3>
+<p>Locations in Nginx can be tricky. In particular, when a page is requested, it looks through all rules. But they don’t apply in order (i.e. sees if first one fits, then second,…), but rather on a “which one fits best” mode. Say, we have these two locations:</p>
+<pre class="nginx"><code>location / {
+    root /www
+}
+
+location /static {
+    root /www/someplace/imadeup/onmycomputer/
+}</code></pre>
+<p>We could be tempted to think that a request to <code>/static/images/cutecat.jpg</code> would trigger the first one (and look in the server at <code>/www/static/images/cutecat.jpg</code>). But no: because the second one “fits better” (because of the <code>/static/</code>). Thus it will look into <code>/www/someplace/imadeup/onmycomputer/static/images/cutecat.jpg</code>. But someone requesting <code>/images/cutedog.jpg</code> will trigger the first one.</p>
+<h2 id="part-b">Part B</h2>
+<p>Self-signed certificates, while not useless, are not widespread. The point of a certificate is to say that “I am the true owner of this website, this is the true website, and someone can prove it”. When serving your website, you will also serve the certificate. The browser then checks that someone of authority has emitted that certificate. If it didn’t, and everyone was using self-signed certificates, then I could simply create my own certificate for https://swisscom.ch. Then I could hijack/redirect connections to my own server, and the visitor would have no way of knowing whether they are visiting my pirate website or the legit one. Though, it would still provide confidentiality (I would still have a private/public keys, and could encrypt the stream). This is sometimes in closed networks, or with limited public. You could put a self-signed certificate on some IoT, and give it a domain name. Then you could access it relatively safely.</p>
+<h3 id="creating-the-certificate">Creating the certificate</h3>
+<p>As mentioned, you should not just create that blindly. Instead, incorporate that into the <code>Dockerfile</code>, as an additional step. Instead of filling the prompt as suggested in DigitalOcean, we add the <code>-subj</code> flag. The command we wish to run is</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb16-1" data-line-number="1"><span class="ex">openssl</span> req \</a>
+<a class="sourceLine" id="cb16-2" data-line-number="2">-x509 \</a>
+<a class="sourceLine" id="cb16-3" data-line-number="3">-nodes \</a>
+<a class="sourceLine" id="cb16-4" data-line-number="4">-days 365 \</a>
+<a class="sourceLine" id="cb16-5" data-line-number="5">-newkey rsa:2048 \</a>
+<a class="sourceLine" id="cb16-6" data-line-number="6">-keyout /certs/selfsigned.key \</a>
+<a class="sourceLine" id="cb16-7" data-line-number="7">-out /certs/selfsigned.crt \</a>
+<a class="sourceLine" id="cb16-8" data-line-number="8">-subj <span class="st">&quot;/C=CH/ST=Vaud/L=Lausanne/O=server/OU=server/CN=server&quot;</span></a></code></pre></div>
+<p>So simply we create a new line in the Dockerfile:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode dockerfile"><code class="sourceCode dockerfile"><a class="sourceLine" id="cb17-1" data-line-number="1"><span class="kw">RUN</span> openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /certs/selfsigned.key -out /certs/selfsigned.crt -subj <span class="st">&quot;/C=CH/ST=Vaud/L=Lausanne/O=server/OU=server/CN=server&quot;</span></a></code></pre></div>
+<p>The key and certificate will automatically be output to <code>/certs/</code>.</p>
+<h3 id="updating-nginx">Updating Nginx</h3>
+<p>The last step is to adapt the Nginx configuration file. First of all, we need to redirect all HTTP traffic to HTTPS. For that, we modify the main location:</p>
+<pre class="nginx"><code>location / {
+    # root /www;
+    return 301 https://$host$request_uri;
+}</code></pre>
+<p>We commented out the previous line, and redirected (using the 301 REDIRECT HTTP status) to the HTTPS version.</p>
+<p>Then, we need to treat that new case separately. Thus, we create a new <code>server</code> entry that listens to the HTTPS port:</p>
+<pre class="nginx"><code>server {
+    listen 443 ssl;
+    server_name localhost;
+
+    location / {
+        root /www;
+    }
+}</code></pre>
+<p>This code is very similar to before. Now we listen to the 443 (the <code>ssl</code> keyword specifies that <em>all connections accepted on this port should work in SSL mode</em> [<a href="https://nginx.org/en/docs/http/ngx_http_core_module.html#listen">source</a>]). The rest is a copy-paste from before.</p>
+<p>But how do we input the certificates? There is a simple Nginx command for that:</p>
+<pre class="nginx"><code>ssl_certificate /certs/selfsigned.crt;
+ssl_certificate_key /certs/selfsigned.key;</code></pre>
+<p>This specifies the location of the key and certificate. Obviously, for now, they are the self-signed ones. These two lines go about anywhere in the <code>server</code> block, but it’s best practice to put them between the <code>server_name</code> and <code>location</code> clauses.</p>
+<h2 id="part-c">Part C</h2>
+<p>This part is a bit more tricks. Before, you had the server generate the key/certificate on its own. Here, you must generate the key and the Certificate Signing Request first (we assume you do it from your computer, but you should be able to do that from the <code>server</code> docker, then copy it back to your computer).</p>
+<p>Once you have generated it, you must launch the docker, which will sign the certificate, and create a <code>.crt</code> file.</p>
+<p>Only after that should you move all of that to the <code>/server</code> directory, and adapt the <code>Dockerfile</code>.</p>
+<p>In summary:</p>
+<ol type="1">
+<li>Generate a key and a CSR:</li>
+</ol>
+<div class="sourceCode" id="cb21"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb21-1" data-line-number="1"><span class="ex">openssl</span> genrsa -out request.key 2048</a>
+<a class="sourceLine" id="cb21-2" data-line-number="2"><span class="ex">openssl</span> req -new -key request.key -out request.csr -subj <span class="st">&quot;/C=CH/ST=Vaud/L=Lausanne/O=server/OU=server/CN=server&quot;</span></a></code></pre></div>
+<ol start="2" type="1">
+<li>Launch the docker: <code>docker-compose up --build</code>. This will fail part C, as expected. But this also creates a new <code>request.crt</code> file.</li>
+<li>Copy/move all <code>request.*</code> files to <code>/server</code></li>
+<li>Adapt the <code>Dockerfile</code>, to use these. And don’t forget to remove the <code>RUN openssl...</code> from before (not mandatory, but cleaner).</li>
+</ol>
+<div class="sourceCode" id="cb22"><pre class="sourceCode dockerfile"><code class="sourceCode dockerfile"><a class="sourceLine" id="cb22-1" data-line-number="1"><span class="kw">COPY</span> request.key request.crt /certs/</a></code></pre></div>
+<ol start="5" type="1">
+<li>Make sure the Nginx config file looks for the correct files. Instead of the files <code>selfsigned.crt</code>, use those:</li>
+</ol>
+<pre class="nginx"><code>ssl_certificate /certs/request.crt;
+ssl_certificate_key /certs/request.key;</code></pre>
+<p>And TADAAA! You now have a valid, signed certificate.</p>
+<h3 id="about-hsts">About HSTS</h3>
+<p>This part is very simple: simply add, after the <code>ssl_certificate</code> lines, the following command:</p>
+<pre class="nginx"><code>add_header Strict-Transport-Security &quot;max-age=31536000; includeSubDomains&quot; always;</code></pre>
+<p>The number make the header valid for a whole year. Simply adding that should make the last test pass flawlessly.</p>
+</body>
+</html>

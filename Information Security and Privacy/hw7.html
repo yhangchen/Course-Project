@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang xml:lang>
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>hw7</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <style type="text/css">
+html {
+font-size: 100%;
+overflow-y: scroll;
+-webkit-text-size-adjust: 100%;
+-ms-text-size-adjust: 100%;
+}
+body {
+color: #000;
+font-family: Georgia, Palatino, 'Palatino Linotype', Times, 'Times New Roman', serif;
+font-size: 12px;
+line-height: 1.7;
+padding: 1em;
+margin: auto;
+max-width: 42em;
+background: #fefefe;
+}
+a {
+color: #0645ad;
+text-decoration: none;
+}
+a:visited {
+color: #0b0080;
+}
+a:hover {
+color: #06e;
+}
+a:active {
+color: #faa700;
+}
+a:focus {
+outline: thin dotted;
+}
+*::-moz-selection {
+background: rgba(255, 255, 0, 0.3);
+color: #000;
+}
+*::selection {
+background: rgba(255, 255, 0, 0.3);
+color: #000;
+}
+a::-moz-selection {
+background: rgba(255, 255, 0, 0.3);
+color: #0645ad;
+}
+a::selection {
+background: rgba(255, 255, 0, 0.3);
+color: #0645ad;
+}
+p {
+margin: 1em 0;
+}
+img {
+max-width: 100%;
+}
+h1, h2, h3, h4, h5, h6 {
+color: #111;
+line-height: 125%;
+margin-top: 2em;
+font-weight: normal;
+}
+h4, h5, h6 {
+font-weight: bold;
+}
+h1 {
+font-size: 2.5em;
+}
+h2 {
+font-size: 2em;
+}
+h3 {
+font-size: 1.5em;
+}
+h4 {
+font-size: 1.2em;
+}
+h5 {
+font-size: 1em;
+}
+h6 {
+font-size: 0.9em;
+}
+blockquote {
+color: #666666;
+margin: 0;
+padding-left: 3em;
+border-left: 0.5em #EEE solid;
+}
+hr {
+display: block;
+height: 2px;
+border: 0;
+border-top: 1px solid #aaa;
+border-bottom: 1px solid #eee;
+margin: 1em 0;
+padding: 0;
+}
+pre, code, kbd, samp {
+color: #000;
+font-family: monospace, monospace;
+_font-family: 'courier new', monospace;
+font-size: 0.98em;
+background-color: #eee;
+padding-left: 5px;
+padding-right: 5px;
+}
+pre {
+white-space: pre;
+white-space: pre-wrap;
+word-wrap: break-word;
+}
+b, strong {
+font-weight: bold;
+}
+dfn {
+font-style: italic;
+}
+ins {
+background: #ff9;
+color: #000;
+text-decoration: none;
+}
+mark {
+background: #ff0;
+color: #000;
+font-style: italic;
+font-weight: bold;
+}
+sub, sup {
+font-size: 75%;
+line-height: 0;
+position: relative;
+vertical-align: baseline;
+}
+sup {
+top: -0.5em;
+}
+sub {
+bottom: -0.25em;
+}
+ul, ol {
+margin: 1em 0;
+padding: 0 0 0 2em;
+}
+li p:last-child {
+margin-bottom: 0;
+}
+ul ul, ol ol {
+margin: .3em 0;
+}
+dl {
+margin-bottom: 1em;
+}
+dt {
+font-weight: bold;
+margin-bottom: .8em;
+}
+dd {
+margin: 0 0 .8em 2em;
+}
+dd:last-child {
+margin-bottom: 0;
+}
+img {
+border: 0;
+-ms-interpolation-mode: bicubic;
+vertical-align: middle;
+}
+figure {
+display: block;
+text-align: center;
+margin: 1em 0;
+}
+figure img {
+border: none;
+margin: 0 auto;
+}
+figcaption {
+font-size: 0.8em;
+font-style: italic;
+margin: 0 0 .8em;
+}
+table {
+margin-bottom: 2em;
+border-bottom: 1px solid #ddd;
+border-right: 1px solid #ddd;
+border-spacing: 0;
+border-collapse: collapse;
+}
+table th {
+padding: .2em 1em;
+background-color: #eee;
+border-top: 1px solid #ddd;
+border-left: 1px solid #ddd;
+}
+table td {
+padding: .2em 1em;
+border-top: 1px solid #ddd;
+border-left: 1px solid #ddd;
+vertical-align: top;
+}
+.author {
+font-size: 1.2em;
+text-align: center;
+}
+@media only screen and (min-width: 480px) {
+body {
+font-size: 14px;
+}
+}
+@media only screen and (min-width: 768px) {
+body {
+font-size: 16px;
+}
+}
+@media print {
+* {
+background: transparent !important;
+color: black !important;
+filter: none !important;
+-ms-filter: none !important;
+}
+body {
+font-size: 12pt;
+max-width: 100%;
+}
+a, a:visited {
+text-decoration: underline;
+}
+hr {
+height: 1px;
+border: 0;
+border-bottom: 1px solid black;
+}
+a[href]:after {
+content: " (" attr(href) ")";
+}
+abbr[title]:after {
+content: " (" attr(title) ")";
+}
+.ir a:after, a[href^="javascript:"]:after, a[href^="#"]:after {
+content: "";
+}
+pre, blockquote {
+border: 1px solid #999;
+padding-right: 1em;
+page-break-inside: avoid;
+}
+tr, img {
+page-break-inside: avoid;
+}
+img {
+max-width: 100% !important;
+}
+@page :left {
+margin: 15mm 20mm 15mm 10mm;
+}
+@page :right {
+margin: 15mm 10mm 15mm 20mm;
+}
+p, h2, h3 {
+orphans: 3;
+widows: 3;
+}
+h2, h3 {
+page-break-after: avoid;
+}
+}</style>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<h1 id="homework-7">Homework 7</h1>
+<h2 id="exercise-1-attack-what-are-donalds-favourite-movies">Exercise 1: [attack] What are Donald’s Favourite Movies?</h2>
+<p>You have learned in class that it is possible to deanonymize most kinds of “anonymized” datasets. It just happens so that you have obtained several datasets containing “anonymized” movie ratings. They are databases stored as csv-files in the following format:</p>
+<pre><code>sha256(salt | email), sha256(salt | movie), date, rating</code></pre>
+<p>The salt is the same within each database. We call these the “COM-402 databases”.</p>
+<p>The emails and the movies in the databases are hashed, so they are perfectly private, right? Let’s see if you can circumvent this protection mechanism. To de-anonymize a database, you also get csv-files with publicly available ratings from IMDb (we call them “IMDb databases”) in the following format:</p>
+<pre><code>email, movie, date, rating</code></pre>
+<p>The entries in an IMDb database are a strict subset of the entries in a corresponding COM-402 database. Hence, there is some overlap between the ratings in an anonymized dataset and the public dataset.</p>
+<p>Your goal is to find out what movies a user with email <code>donald.trump@whitehouse.gov</code> has rated. <strong>Disclaimer:</strong> Any coincidences with real people are accidental.</p>
+<p>You have three sub-exercises of increasing difficulty, the third being optional (we will not ask questions about it). Each exercise comes with its own pair of anonymized and public databases. You can solve each exercise in any language you like, even paper and pencil if you’re not afraid of searching for overlaps in 200 emails.</p>
+<h3 id="dates-are-giving-it-away">1. Dates are giving it away</h3>
+<p>Each user rated the movie at the same date in both the anonymized COM-402 and public IMDb database. Database files: <code>com402-1.csv</code>, <code>imdb-1.csv</code>.</p>
+<p><strong>Hint:</strong> some dates might have more than one rating, so you need to make sure you remove these duplicates.</p>
+<h3 id="more-realistic">2. More realistic</h3>
+<p>Here the dates are random, reflecting the fact that you might not rate a movie on Netflix and on IMDb on the same day. However, a simple frequency attack on the movies is enough to map the movies to the hashes. Database files: <code>com402-2.csv</code>, <code>imdb-2.csv</code>.</p>
+<p><strong>Hint</strong>: First match the movie hashes to their plaintext names by frequencies in the anonymized and private dataset.</p>
+<p><strong>Hint:</strong> Once you have mapped the hashes of the movies to the plaintext names of the movies, try to find the Donald’s email hash.</p>
+<h3 id="even-more-realistic-optional">3. Even more realistic (optional)</h3>
+<p>Here the dates of ratings in the COM-402 database and IMDb are not the same, but similar. Dates are within 14 days, and are following a triangular distribution using Python’s <code>random.choices</code> and weights: <code>[1, 2, …, 14, 13, …, 1]</code>.</p>
+<p>Database files: <code>com402-3.csv</code>, <code>imdb-3.csv</code>.</p>
+<p><strong>Hint:</strong> First search for email hash/plaintext overlap and fit those to find the hash of the victim’s email. Then you can search for the closest overlap of the public ratings and the anonymous ratings of your email.</p>
+<h3 id="getting-the-database-files-and-solutions">Getting the database files and solutions</h3>
+<p>To get the database files, create a Docker container from <code>com402/hw7</code> image:</p>
+<pre><code>docker create com402/hw7</code></pre>
+<p>Noting the returned container ID as <code>id</code>, you can now copy all the databases from the <code>/anon_data</code> folder on the container:</p>
+<pre><code>docker cp &quot;&lt;id&gt;:/anon_data/&quot; .</code></pre>
+<p>To check your solutions, get the lists of movies and hashes from the <code>/real_data</code> folder:</p>
+<pre><code>docker cp &quot;&lt;id&gt;:/real_data/&quot; .</code></pre>
+<h2 id="exercise-2-defense-differentially-private-queries">Exercise 2: [defense] Differentially Private Queries</h2>
+<p>This time, you play the role of a company that collects movie ratings, e.g., IMDb, and you want to securely disclose them. You have a rating database in clear, where each row has the format <code>[email, movie, date, rating]</code>. By now you know well that creating anonymized datasets is very hard, so releasing a database with pseudonymized (e.g., hashed) identifiers is not an option. You still want to enable researchers to learn some useful information from your database, but not at the cost of the privacy of your users. Hence, you decide to allow the researchers to send you queries that you can respond to in a differentially private way. This should help preserve the privacy of your users while still allowing the researchers to learn some insights about the data.</p>
+<p>You allow counting queries of a certain format. The researchers should be able to get the number of people who have rated a given movie greater than or equal to a certain level. If you were to express this in terms of SQL:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode sql"><code class="sourceCode sql"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw">SELECT</span> <span class="fu">COUNT</span>(*)</a>
+<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="kw">FROM</span> db</a>
+<a class="sourceLine" id="cb6-3" data-line-number="3"><span class="kw">WHERE</span> movie = [queried movie name]</a>
+<a class="sourceLine" id="cb6-4" data-line-number="4">      <span class="kw">AND</span> rating &gt;= [queried rating <span class="kw">level</span>]</a></code></pre></div>
+<p>This will enable them to learn which movies are rated well and which ones are not. As this is a typical example of a count query, you use the <a href="https://en.wikipedia.org/wiki/Additive_noise_mechanisms">Laplace mechanism</a> to ensure differential privacy (DP). Recall that the Laplace mechanism works as follows: to satisfy epsilon-DP, to each response you will add some noise drawn from Laplace distribution with the scale parameter that depends on the sensitivity of the count query and the epsilon. Refer to the lecture material for more detail.</p>
+<p>The researchers pass a thorough vetting process, so you can safely assume they do not collude: will not share outputs they receive with each other. Each researcher gets their own <strong>privacy budget</strong>: the total epsilon for all the queries of this researcher. With each individual query the researcher specifies what value of epsilon should be used for the query. The lower the epsilon, the more noise will have to be added to the response (and more privacy the users will have). The higher the epsilon, the more accurate will the response be. Each query will always have to be within the total epsilon budget of the researcher.</p>
+<p><strong>Hint:</strong> Use sequential composition property of differential privacy to figure out how to keep account of the privacy budget and ensure that the queries do not exceed it.</p>
+<p><strong>Hint:</strong> In your database, a user can only rate one movie once. This assumption allows you to compute the sensitivity of a single query.</p>
+<p>To implement this querying system, you have to code up a class <code>DpQuerySession</code> with a property <code>remaining_budget</code> and a method <code>get_count</code>. Start with the following annotated template (best to copy from the online/Markdown version):</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="co"># dp.py</span></a>
+<a class="sourceLine" id="cb7-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb7-3" data-line-number="3"><span class="im">import</span> csv</a>
+<a class="sourceLine" id="cb7-4" data-line-number="4"><span class="im">import</span> attr</a>
+<a class="sourceLine" id="cb7-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb7-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb7-7" data-line-number="7"><span class="kw">class</span> BudgetDepletedError(<span class="pp">Exception</span>):</a>
+<a class="sourceLine" id="cb7-8" data-line-number="8">    <span class="cf">pass</span></a>
+<a class="sourceLine" id="cb7-9" data-line-number="9"></a>
+<a class="sourceLine" id="cb7-10" data-line-number="10"></a>
+<a class="sourceLine" id="cb7-11" data-line-number="11"><span class="at">@attr.s</span></a>
+<a class="sourceLine" id="cb7-12" data-line-number="12"><span class="kw">class</span> Rating:</a>
+<a class="sourceLine" id="cb7-13" data-line-number="13">    <span class="co">&quot;&quot;&quot;Movie rating.&quot;&quot;&quot;</span></a>
+<a class="sourceLine" id="cb7-14" data-line-number="14">    user <span class="op">=</span> attr.ib()</a>
+<a class="sourceLine" id="cb7-15" data-line-number="15">    movie <span class="op">=</span> attr.ib()</a>
+<a class="sourceLine" id="cb7-16" data-line-number="16">    date <span class="op">=</span> attr.ib()</a>
+<a class="sourceLine" id="cb7-17" data-line-number="17">    stars <span class="op">=</span> attr.ib()</a>
+<a class="sourceLine" id="cb7-18" data-line-number="18"></a>
+<a class="sourceLine" id="cb7-19" data-line-number="19"><span class="co"># Unsure what Rating this? It is a convenient alternative to namedtuple.</span></a>
+<a class="sourceLine" id="cb7-20" data-line-number="20"></a>
+<a class="sourceLine" id="cb7-21" data-line-number="21"><span class="kw">class</span> DpQuerySession:</a>
+<a class="sourceLine" id="cb7-22" data-line-number="22">    <span class="co">&quot;&quot;&quot;</span></a>
+<a class="sourceLine" id="cb7-23" data-line-number="23"><span class="co">    Respond to database queries with differential privacy.</span></a>
+<a class="sourceLine" id="cb7-24" data-line-number="24"></a>
+<a class="sourceLine" id="cb7-25" data-line-number="25"><span class="co">    Args:</span></a>
+<a class="sourceLine" id="cb7-26" data-line-number="26"><span class="co">        db (str): Path to the ratings database csv-file.</span></a>
+<a class="sourceLine" id="cb7-27" data-line-number="27"><span class="co">        privacy_budget (float): Total differential privacy epsilon for the session.</span></a>
+<a class="sourceLine" id="cb7-28" data-line-number="28"><span class="co">    &quot;&quot;&quot;</span></a>
+<a class="sourceLine" id="cb7-29" data-line-number="29"></a>
+<a class="sourceLine" id="cb7-30" data-line-number="30">    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, db, privacy_budget):</a>
+<a class="sourceLine" id="cb7-31" data-line-number="31">        <span class="va">self</span>.db <span class="op">=</span> db</a>
+<a class="sourceLine" id="cb7-32" data-line-number="32">        <span class="va">self</span>.privacy_budget <span class="op">=</span> privacy_budget</a>
+<a class="sourceLine" id="cb7-33" data-line-number="33">        <span class="va">self</span>._load_db()</a>
+<a class="sourceLine" id="cb7-34" data-line-number="34"></a>
+<a class="sourceLine" id="cb7-35" data-line-number="35">    <span class="kw">def</span> _load_db(<span class="va">self</span>):</a>
+<a class="sourceLine" id="cb7-36" data-line-number="36">        <span class="co">&quot;&quot;&quot;Load the rating database from a csv-file.&quot;&quot;&quot;</span></a>
+<a class="sourceLine" id="cb7-37" data-line-number="37">        <span class="va">self</span>._entries <span class="op">=</span> []</a>
+<a class="sourceLine" id="cb7-38" data-line-number="38">        <span class="cf">with</span> <span class="bu">open</span>(<span class="va">self</span>.db) <span class="im">as</span> f:</a>
+<a class="sourceLine" id="cb7-39" data-line-number="39">            reader <span class="op">=</span> csv.reader(f, quotechar<span class="op">=</span><span class="st">'&quot;'</span>, delimiter<span class="op">=</span><span class="st">&quot;,&quot;</span>)</a>
+<a class="sourceLine" id="cb7-40" data-line-number="40">            <span class="cf">for</span> email, movie, date, stars <span class="kw">in</span> reader:</a>
+<a class="sourceLine" id="cb7-41" data-line-number="41">                <span class="va">self</span>._entries.append(</a>
+<a class="sourceLine" id="cb7-42" data-line-number="42">                    Rating(user<span class="op">=</span>email, movie<span class="op">=</span>movie, date<span class="op">=</span>date, stars<span class="op">=</span><span class="bu">int</span>(stars))</a>
+<a class="sourceLine" id="cb7-43" data-line-number="43">                )</a>
+<a class="sourceLine" id="cb7-44" data-line-number="44"></a>
+<a class="sourceLine" id="cb7-45" data-line-number="45">    <span class="at">@property</span></a>
+<a class="sourceLine" id="cb7-46" data-line-number="46">    <span class="kw">def</span> remaining_budget(<span class="va">self</span>):</a>
+<a class="sourceLine" id="cb7-47" data-line-number="47">        <span class="co">&quot;&quot;&quot;</span></a>
+<a class="sourceLine" id="cb7-48" data-line-number="48"><span class="co">        Calculate the remaining privacy budget.</span></a>
+<a class="sourceLine" id="cb7-49" data-line-number="49"></a>
+<a class="sourceLine" id="cb7-50" data-line-number="50"><span class="co">        Returns:</span></a>
+<a class="sourceLine" id="cb7-51" data-line-number="51"><span class="co">            float: The remaining privacy budget.</span></a>
+<a class="sourceLine" id="cb7-52" data-line-number="52"><span class="co">        &quot;&quot;&quot;</span></a>
+<a class="sourceLine" id="cb7-53" data-line-number="53">        <span class="cf">return</span> <span class="dv">0</span></a>
+<a class="sourceLine" id="cb7-54" data-line-number="54"></a>
+<a class="sourceLine" id="cb7-55" data-line-number="55">    <span class="kw">def</span> get_count(<span class="va">self</span>, movie_name, rating_threshold, epsilon):</a>
+<a class="sourceLine" id="cb7-56" data-line-number="56">        <span class="co">&quot;&quot;&quot;</span></a>
+<a class="sourceLine" id="cb7-57" data-line-number="57"><span class="co">        Get the number of ratings where a given movie is rated at least as high as the threshold.</span></a>
+<a class="sourceLine" id="cb7-58" data-line-number="58"></a>
+<a class="sourceLine" id="cb7-59" data-line-number="59"><span class="co">        Args:</span></a>
+<a class="sourceLine" id="cb7-60" data-line-number="60"><span class="co">            movie_name (str): Movie name.</span></a>
+<a class="sourceLine" id="cb7-61" data-line-number="61"><span class="co">            rating_threshold (int): Rating threshold (number between 1 and 5).</span></a>
+<a class="sourceLine" id="cb7-62" data-line-number="62"><span class="co">            epsilon: Differential privacy epsilon to use for this query.</span></a>
+<a class="sourceLine" id="cb7-63" data-line-number="63"></a>
+<a class="sourceLine" id="cb7-64" data-line-number="64"><span class="co">        Returns:</span></a>
+<a class="sourceLine" id="cb7-65" data-line-number="65"><span class="co">            float: The count with differentially private noise added.</span></a>
+<a class="sourceLine" id="cb7-66" data-line-number="66"></a>
+<a class="sourceLine" id="cb7-67" data-line-number="67"><span class="co">        Raises:</span></a>
+<a class="sourceLine" id="cb7-68" data-line-number="68"><span class="co">            BudgetDepletedError: When query would exceed the total privacy budget.</span></a>
+<a class="sourceLine" id="cb7-69" data-line-number="69"><span class="co">        &quot;&quot;&quot;</span></a>
+<a class="sourceLine" id="cb7-70" data-line-number="70">        <span class="co"># </span><span class="al">WARNING</span><span class="co">: Do not convert the response to positive integers. Leave as a</span></a>
+<a class="sourceLine" id="cb7-71" data-line-number="71">        <span class="co"># possibly negative float. This is a requirement for our verification.</span></a>
+<a class="sourceLine" id="cb7-72" data-line-number="72">        <span class="co">#</span></a>
+<a class="sourceLine" id="cb7-73" data-line-number="73">        <span class="co"># Question: Converting to a positive integer does not affect privacy. Why?</span></a>
+<a class="sourceLine" id="cb7-74" data-line-number="74"></a>
+<a class="sourceLine" id="cb7-75" data-line-number="75">        <span class="cf">return</span> <span class="dv">0</span></a></code></pre></div>
+<p>This is an example using the <code>DpQuerySession</code>:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb8-1" data-line-number="1">querier <span class="op">=</span> DpQuerier(<span class="st">&quot;imdb-dp.csv&quot;</span>, privacy_budget<span class="op">=</span><span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb8-2" data-line-number="2">count <span class="op">=</span> querier.get_count(<span class="st">&quot;Seven Samurai&quot;</span>, rating_threshold<span class="op">=</span><span class="dv">3</span>, epsilon<span class="op">=</span><span class="fl">0.25</span>)</a></code></pre></div>
+<p>You can get the <code>imdb-dp.csv</code> database from the hw7 container’s <code>/dp</code> folder:</p>
+<pre><code>docker cp &lt;id&gt;:/dp/imdb-dp.csv .</code></pre>
+<h3 id="verifying-your-solution">Verifying your solution</h3>
+<p>From your current folder where your <code>dp.py</code> file resides, run the following to verify your solution:</p>
+<pre><code>docker run -v $(pwd):/dp/solution com402/hw7</code></pre>
+<p>Our verification script will do its best to guide you to the right implementation. <strong>We recommend that you do not inspect the exact content of our verification script and try to figure out on your own how to translate the theory of differential privacy into practice.</strong></p>
+<p>If you want to run <code>dp.py</code> outside of our Docker container, make sure you have installed the <code>attrs</code> package in your Python environment with <code>pip install attrs</code>, and you are using Python 3. You can then execute <code>docker cp &lt;id&gt;:/dp/verify.py .</code> and execute the verification script yourself.</p>
+</body>
+</html>

@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang xml:lang>
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>hw1</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <style type="text/css">
+html {
+font-size: 100%;
+overflow-y: scroll;
+-webkit-text-size-adjust: 100%;
+-ms-text-size-adjust: 100%;
+}
+body {
+color: #000;
+font-family: Georgia, Palatino, 'Palatino Linotype', Times, 'Times New Roman', serif;
+font-size: 12px;
+line-height: 1.7;
+padding: 1em;
+margin: auto;
+max-width: 42em;
+background: #fefefe;
+}
+a {
+color: #0645ad;
+text-decoration: none;
+}
+a:visited {
+color: #0b0080;
+}
+a:hover {
+color: #06e;
+}
+a:active {
+color: #faa700;
+}
+a:focus {
+outline: thin dotted;
+}
+*::-moz-selection {
+background: rgba(255, 255, 0, 0.3);
+color: #000;
+}
+*::selection {
+background: rgba(255, 255, 0, 0.3);
+color: #000;
+}
+a::-moz-selection {
+background: rgba(255, 255, 0, 0.3);
+color: #0645ad;
+}
+a::selection {
+background: rgba(255, 255, 0, 0.3);
+color: #0645ad;
+}
+p {
+margin: 1em 0;
+}
+img {
+max-width: 100%;
+}
+h1, h2, h3, h4, h5, h6 {
+color: #111;
+line-height: 125%;
+margin-top: 2em;
+font-weight: normal;
+}
+h4, h5, h6 {
+font-weight: bold;
+}
+h1 {
+font-size: 2.5em;
+}
+h2 {
+font-size: 2em;
+}
+h3 {
+font-size: 1.5em;
+}
+h4 {
+font-size: 1.2em;
+}
+h5 {
+font-size: 1em;
+}
+h6 {
+font-size: 0.9em;
+}
+blockquote {
+color: #666666;
+margin: 0;
+padding-left: 3em;
+border-left: 0.5em #EEE solid;
+}
+hr {
+display: block;
+height: 2px;
+border: 0;
+border-top: 1px solid #aaa;
+border-bottom: 1px solid #eee;
+margin: 1em 0;
+padding: 0;
+}
+pre, code, kbd, samp {
+color: #000;
+font-family: monospace, monospace;
+_font-family: 'courier new', monospace;
+font-size: 0.98em;
+background-color: #eee;
+padding-left: 5px;
+padding-right: 5px;
+}
+pre {
+white-space: pre;
+white-space: pre-wrap;
+word-wrap: break-word;
+}
+b, strong {
+font-weight: bold;
+}
+dfn {
+font-style: italic;
+}
+ins {
+background: #ff9;
+color: #000;
+text-decoration: none;
+}
+mark {
+background: #ff0;
+color: #000;
+font-style: italic;
+font-weight: bold;
+}
+sub, sup {
+font-size: 75%;
+line-height: 0;
+position: relative;
+vertical-align: baseline;
+}
+sup {
+top: -0.5em;
+}
+sub {
+bottom: -0.25em;
+}
+ul, ol {
+margin: 1em 0;
+padding: 0 0 0 2em;
+}
+li p:last-child {
+margin-bottom: 0;
+}
+ul ul, ol ol {
+margin: .3em 0;
+}
+dl {
+margin-bottom: 1em;
+}
+dt {
+font-weight: bold;
+margin-bottom: .8em;
+}
+dd {
+margin: 0 0 .8em 2em;
+}
+dd:last-child {
+margin-bottom: 0;
+}
+img {
+border: 0;
+-ms-interpolation-mode: bicubic;
+vertical-align: middle;
+}
+figure {
+display: block;
+text-align: center;
+margin: 1em 0;
+}
+figure img {
+border: none;
+margin: 0 auto;
+}
+figcaption {
+font-size: 0.8em;
+font-style: italic;
+margin: 0 0 .8em;
+}
+table {
+margin-bottom: 2em;
+border-bottom: 1px solid #ddd;
+border-right: 1px solid #ddd;
+border-spacing: 0;
+border-collapse: collapse;
+}
+table th {
+padding: .2em 1em;
+background-color: #eee;
+border-top: 1px solid #ddd;
+border-left: 1px solid #ddd;
+}
+table td {
+padding: .2em 1em;
+border-top: 1px solid #ddd;
+border-left: 1px solid #ddd;
+vertical-align: top;
+}
+.author {
+font-size: 1.2em;
+text-align: center;
+}
+@media only screen and (min-width: 480px) {
+body {
+font-size: 14px;
+}
+}
+@media only screen and (min-width: 768px) {
+body {
+font-size: 16px;
+}
+}
+@media print {
+* {
+background: transparent !important;
+color: black !important;
+filter: none !important;
+-ms-filter: none !important;
+}
+body {
+font-size: 12pt;
+max-width: 100%;
+}
+a, a:visited {
+text-decoration: underline;
+}
+hr {
+height: 1px;
+border: 0;
+border-bottom: 1px solid black;
+}
+a[href]:after {
+content: " (" attr(href) ")";
+}
+abbr[title]:after {
+content: " (" attr(title) ")";
+}
+.ir a:after, a[href^="javascript:"]:after, a[href^="#"]:after {
+content: "";
+}
+pre, blockquote {
+border: 1px solid #999;
+padding-right: 1em;
+page-break-inside: avoid;
+}
+tr, img {
+page-break-inside: avoid;
+}
+img {
+max-width: 100% !important;
+}
+@page :left {
+margin: 15mm 20mm 15mm 10mm;
+}
+@page :right {
+margin: 15mm 10mm 15mm 20mm;
+}
+p, h2, h3 {
+orphans: 3;
+widows: 3;
+}
+h2, h3 {
+page-break-after: avoid;
+}
+}</style>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<h1 id="homework-1-stack-smashing">Homework 1: Stack Smashing</h1>
+<p>In this exercise, you will be exploiting buffer overflows and other memory-safety bugs to obtain unauthorized root access. More precisely, you will interact with some flawed C programs, the <code>targets</code>, divert their execution flow and spawn a root shell.</p>
+<p>You will get four targets programs to crack. The <strong>first three</strong> are mandatory in order to prepare for the quiz. The fourth one is optional (we will not ask questions about it).</p>
+<h2 id="setup">Setup</h2>
+<p>You will test your exploits within the virtual machine (VM) we provide that is configured with LubuntuOS that has the address space layout randomization (ASLR) turned off.</p>
+<ul>
+<li><a href="https://drive.google.com/file/d/1MJzlf-_L4IbEFQzdLUbrZnUH7YxWx1Lo/view?usp=sharing">Download the image (hw1-vm.ova)</a>. Open it with Virtual Box.</li>
+</ul>
+<h3 id="accounts-and-locations">Accounts and locations</h3>
+<p>There are two accounts on the machine:</p>
+<ul>
+<li>User account username:password: <code>user:user</code></li>
+<li>Superuser account username:password: <code>root:root</code></li>
+</ul>
+<p>The VM originally contains a folder <em>/home/user/Desktop/hmw01/targets/</em> containing four source files <code>target*.c</code> that need to be built (and attacked) as well as skeletons of your exploits <code>sploit*.c</code> located in <em>/home/user/Desktop/hmw01/sploits/</em>.</p>
+<h3 id="keyboard-layout">Keyboard layout</h3>
+<p>By connecting through SSH, as explained below, you should not need to change the keyboard layout. However, if you are using the VM with its graphical interface, you might want to change it. By default, this VM is set to use the Swiss-French keyboard layout. If you want to change the layout inside the VM, use <code>setxkbmap</code>:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1"></a><span class="co"># To list the available keyboard, you can use</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="ex">localectl</span> list-x11-keymap-layouts</span>
+<span id="cb1-3"><a href="#cb1-3"></a></span>
+<span id="cb1-4"><a href="#cb1-4"></a><span class="co"># If you want to change to US keyboard</span></span>
+<span id="cb1-5"><a href="#cb1-5"></a><span class="ex">setxkbmap</span> us</span></code></pre></div>
+<p>Please note that this change is not permanent and will be reset if you restart the VM. To make it permanent, you can edit the file <em>/etc/default/keyboard</em> and change the value of the <code>XKBLAYOUT=&quot;ch&quot;</code> variable for the keyboard you selected. If you selected the US keyboard, the line should be <code>XKBLAYOUT=&quot;us&quot;</code>.</p>
+<h3 id="networking">Networking</h3>
+<p>It is convenient to access the VM via SSH (copy-paste works better, and you can transfer files both way using the <code>scp</code> command). You can do so with port forwarding.</p>
+<p>If you’re using <em>VirtualBox</em>, follow these steps to enable port forwarding from <code>host:2222</code> to <code>vm:22</code>:</p>
+<ul>
+<li>Open the settings of your image</li>
+<li>Go to the “Network” panel</li>
+<li>Choose “Advanced” and click on the “Port forwarding” button</li>
+<li>Add a forwarding rule (green “plus” button on the side)</li>
+<li>In the forwarding rule, leave IP addresses empty, set <strong>Host port</strong> to <code>2222</code>, and <strong>Guest port</strong> to <code>22</code> (the default SSH port)</li>
+<li>Restart the virtual machine</li>
+</ul>
+<p>Now, you can connect to your virtual machine via ssh:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1"></a><span class="fu">ssh</span> -p 2222 user@127.0.0.1</span></code></pre></div>
+<p>This is how you copy files <strong>to</strong> the VM (note the uppercase <code>P</code>):</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1"></a><span class="fu">scp</span> -P 2222 <span class="op">&lt;</span>path_to_copy_on_host_OS<span class="op">&gt;</span> user@127.0.0.1:<span class="op">&lt;</span>path_to_copy_to_on_guest_OS<span class="op">&gt;</span></span></code></pre></div>
+<p>Copy files <strong>from</strong> the VM:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1"></a><span class="fu">scp</span> -P 2222 user@127.0.0.1:<span class="op">&lt;</span>path_to_copy_on_guest_OS<span class="op">&gt;</span> <span class="op">&lt;</span>path_to_copy_to_on_host_OS<span class="op">&gt;</span></span></code></pre></div>
+<h3 id="target-programs">Target programs</h3>
+<p>The <code>targets</code> directory in the VM contains the source code for the targets, along with a Makefile for building them. In real life, most likely you wouldn’t have access to the source code. In this homework, you can use it to get a better understanding of what is going on.</p>
+<p>To build the targets, change to the <code>targets/</code> directory and type <code>make</code> on the command line; the Makefile will take care of building the targets with the correct options. For the sake of this exercise, you should not change these sources nor the Makefile, but you can look at the process.</p>
+<p>Then, to install the target binaries, run <em>as user</em>:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1"></a><span class="fu">make</span> install</span></code></pre></div>
+<p>Then, to make the target binaries owned by root, run <em>as user</em>:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1"></a><span class="fu">su</span>   <span class="co"># now you are &quot;root&quot;</span></span>
+<span id="cb6-2"><a href="#cb6-2"></a><span class="fu">make</span> setuid</span>
+<span id="cb6-3"><a href="#cb6-3"></a><span class="bu">exit</span>   <span class="co"># back to &quot;user&quot;</span></span></code></pre></div>
+<p>Your exploits should assume that the compiled target programs are owned by root.</p>
+<p>Instead of exiting with the <code>exit</code> command, you can keep a separate terminal or virtual console open with a root login, and run <code>make setuid</code> from <code>/home/user/targets</code> directory in that terminal or console.</p>
+<p>Ask yourself: what is the <a href="https://linuxconfig.org/how-to-use-special-permissions-the-setuid-setgid-and-sticky-bits">setuid bit</a>, and exactly why is it needed here? Make sure to understand who owns and runs the targets. Notably, how is it possible to run a <em>root</em> shell if the target is run by the <em>user</em>?</p>
+<p>Then, run the first target in this shell, and keep it open. In another shell, you will write your attack.</p>
+<h2 id="other-commands">Other Commands</h2>
+<ul>
+<li><p>To compile your exploits :</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1"></a><span class="fu">make</span></span></code></pre></div></li>
+<li><p>To remove the exploit binaries:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1"></a><span class="fu">make</span> clean</span></code></pre></div></li>
+<li><p>To remove the target binaries:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1"></a><span class="fu">make</span> uninstall</span></code></pre></div></li>
+</ul>
+<h2 id="required-reading">Required reading</h2>
+<p>Before starting to work on the homework, you want to read this article:</p>
+<ul>
+<li><a href="http://insecure.org/stf/smashstack.html"><em>Smashing The Stack For Fun And Profit</em></a>, Aleph One</li>
+</ul>
+<h2 id="shellcode">Shellcode</h2>
+<p>A buffer overflow can be used to make a program crash, to divert its execution to another place in the same program (how?), or to spawn other programs. The classical program to spawn is a shell, which gives you interactive access to the machine on which the shell is run.</p>
+<p>To spawn another program, you will have to write a <a href="https://en.wikipedia.org/wiki/Shellcode">shellcode</a> at the appropriate location in the memory of the program. Many variants exist, tailored to specific applications and scenarios; in this exercise, you are provided with an appropriate shellcode (the Aleph One shellcode) in <code>sploits/shellcode.h</code>.</p>
+<h2 id="building-your-exploits">Building your exploits</h2>
+<p>Each exploit, when run in the VM with its target properly installed, should yield a root shell (<code>/bin/sh</code>). Once you get the shell, you can use the command <code>whoami</code> to verify that you are indeed <code>root</code>.</p>
+<h3 id="using-the-gdb-debugger">Using the gdb debugger</h3>
+<p>To understand what is going on, it is helpful to run code through gdb, the standard debugger.</p>
+<p>A good way to run gdb is to use the <code>-e</code> and <code>-s</code> command line flags; for example, the command <code>gdb -e sploit3 -s target3</code> in the VM tells gdb to execute <code>sploit3</code> and use the symbol file in <code>target3</code>. These flags let you trace the execution of the <code>target3</code> after the sploit’s memory image has been replaced with the target’s through the <code>execve</code> system call.</p>
+<p>When running gdb using these command-line flags, you should use the following procedure for setting breakpoints and debugging memory:</p>
+<ol type="1">
+<li>Tell <code>gdb</code> to notify you on <code>exec()</code>, by issuing the command <code>catch exec</code></li>
+<li>Run the program using (to your surprise) the command <code>run</code>. gdb will execute the sploit until the <code>execve</code> syscall, then return control to you</li>
+<li>Set any breakpoints you want in the target (e.g. <code>break 15</code> sets a breakpoint at line 15)</li>
+<li>Resume execution by telling gdb <code>continue</code> (or just <code>c</code>)</li>
+</ol>
+<p>You should find the <code>x</code> command useful to examine memory (and the different ways you can print the contents such as <code>/a /i</code> after <code>x</code>). The <code>info register</code> command is useful for printing out the contents of registers such as ebp and esp.</p>
+<p>If you try to set breakpoints before the <code>exec</code> boundary, you will get a segfault.</p>
+<p>Check the <code>disassemble</code> and <code>stepi</code> commands, they might be helpful.</p>
+<p>If you wish, you can instrument the target code with arbitrary assembly using the <code>__asm__()</code> pseudofunction. Be sure, however, that your final exploits work against the unmodified targets.</p>
+<h2 id="suggested-reading">Suggested reading</h2>
+<p>These articles and books should be helpful:</p>
+<ul>
+<li><a href="http://insecure.org/stf/smashstack.html"><em>Smashing The Stack For Fun And Profit</em></a>, Aleph One</li>
+<li><a href="http://phrack.org/issues/60/10.html"><em>Basic Integer Overflows</em></a>, Blexim</li>
+<li><a href="http://pages.cs.wisc.edu/~rist/642-fall-2014/formatstring-1.2.pdf"><em>Exploiting Format String Vulnerabilities</em></a>, Scut, Team Teso</li>
+<li><a href="https://courses.cs.washington.edu/courses/cse484/14au/reading/low-level-security-by-example.pdf"><em>Low-level Software Security by Example</em></a>, U. Erlingsson, Y. Younan, and F. Piessens</li>
+<li><em>The Ethical Hacker’s Handbook, Ch 11: Basic Linux Exploits</em>, A. Harper et al.</li>
+</ul>
+<p>Additionally, these entries in the <a href="http://www.phrack.org">Phrack</a> online journal might be useful:</p>
+<ul>
+<li>Aleph One, Smashing the Stack for Fun and Profit, Phrack 49 #14.</li>
+<li>klog, The Frame Pointer Overwrite, Phrack 55 #08.</li>
+<li>Bulba and Kil3r, Bypassing StackGuard and StackShield, Phrack 56 #0x05.</li>
+<li>Silvio Cesare, Shared Library Call Redirection via ELF PLT Infection, Phrack 56 #0x07.</li>
+<li>Michel Kaempf, Vudo - An Object Superstitiously Believed to Embody Magical Powers, Phrack 57 #0x08.</li>
+<li>Anonymous, Once Upon a free()…, Phrack 57 #0x09.</li>
+<li>Gera and Riq, Advances in Format String Exploiting, Phrack 59 #0x04.</li>
+<li>blexim, Basic Integer Overflows, Phrack 60 #0x10.</li>
+</ul>
+<h2 id="acknowledgements">Acknowledgements</h2>
+<p>This assignment is based in part on materials from Prof. Hovav Shacham at UC San Diego, Prof. Dan Boneh at Stanford and Adam Everspaugh at UW Madison. Adapted for COM-402 by <a href="https://github.com/ceyhunalp/com402-hw5ex1">Ceyhun Alp</a>.</p>
+</body>
+</html>

@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang xml:lang>
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>hw3_sol</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <style type="text/css">
+html {
+font-size: 100%;
+overflow-y: scroll;
+-webkit-text-size-adjust: 100%;
+-ms-text-size-adjust: 100%;
+}
+body {
+color: #000;
+font-family: Georgia, Palatino, 'Palatino Linotype', Times, 'Times New Roman', serif;
+font-size: 12px;
+line-height: 1.7;
+padding: 1em;
+margin: auto;
+max-width: 42em;
+background: #fefefe;
+}
+a {
+color: #0645ad;
+text-decoration: none;
+}
+a:visited {
+color: #0b0080;
+}
+a:hover {
+color: #06e;
+}
+a:active {
+color: #faa700;
+}
+a:focus {
+outline: thin dotted;
+}
+*::-moz-selection {
+background: rgba(255, 255, 0, 0.3);
+color: #000;
+}
+*::selection {
+background: rgba(255, 255, 0, 0.3);
+color: #000;
+}
+a::-moz-selection {
+background: rgba(255, 255, 0, 0.3);
+color: #0645ad;
+}
+a::selection {
+background: rgba(255, 255, 0, 0.3);
+color: #0645ad;
+}
+p {
+margin: 1em 0;
+}
+img {
+max-width: 100%;
+}
+h1, h2, h3, h4, h5, h6 {
+color: #111;
+line-height: 125%;
+margin-top: 2em;
+font-weight: normal;
+}
+h4, h5, h6 {
+font-weight: bold;
+}
+h1 {
+font-size: 2.5em;
+}
+h2 {
+font-size: 2em;
+}
+h3 {
+font-size: 1.5em;
+}
+h4 {
+font-size: 1.2em;
+}
+h5 {
+font-size: 1em;
+}
+h6 {
+font-size: 0.9em;
+}
+blockquote {
+color: #666666;
+margin: 0;
+padding-left: 3em;
+border-left: 0.5em #EEE solid;
+}
+hr {
+display: block;
+height: 2px;
+border: 0;
+border-top: 1px solid #aaa;
+border-bottom: 1px solid #eee;
+margin: 1em 0;
+padding: 0;
+}
+pre, code, kbd, samp {
+color: #000;
+font-family: monospace, monospace;
+_font-family: 'courier new', monospace;
+font-size: 0.98em;
+background-color: #eee;
+padding-left: 5px;
+padding-right: 5px;
+}
+pre {
+white-space: pre;
+white-space: pre-wrap;
+word-wrap: break-word;
+}
+b, strong {
+font-weight: bold;
+}
+dfn {
+font-style: italic;
+}
+ins {
+background: #ff9;
+color: #000;
+text-decoration: none;
+}
+mark {
+background: #ff0;
+color: #000;
+font-style: italic;
+font-weight: bold;
+}
+sub, sup {
+font-size: 75%;
+line-height: 0;
+position: relative;
+vertical-align: baseline;
+}
+sup {
+top: -0.5em;
+}
+sub {
+bottom: -0.25em;
+}
+ul, ol {
+margin: 1em 0;
+padding: 0 0 0 2em;
+}
+li p:last-child {
+margin-bottom: 0;
+}
+ul ul, ol ol {
+margin: .3em 0;
+}
+dl {
+margin-bottom: 1em;
+}
+dt {
+font-weight: bold;
+margin-bottom: .8em;
+}
+dd {
+margin: 0 0 .8em 2em;
+}
+dd:last-child {
+margin-bottom: 0;
+}
+img {
+border: 0;
+-ms-interpolation-mode: bicubic;
+vertical-align: middle;
+}
+figure {
+display: block;
+text-align: center;
+margin: 1em 0;
+}
+figure img {
+border: none;
+margin: 0 auto;
+}
+figcaption {
+font-size: 0.8em;
+font-style: italic;
+margin: 0 0 .8em;
+}
+table {
+margin-bottom: 2em;
+border-bottom: 1px solid #ddd;
+border-right: 1px solid #ddd;
+border-spacing: 0;
+border-collapse: collapse;
+}
+table th {
+padding: .2em 1em;
+background-color: #eee;
+border-top: 1px solid #ddd;
+border-left: 1px solid #ddd;
+}
+table td {
+padding: .2em 1em;
+border-top: 1px solid #ddd;
+border-left: 1px solid #ddd;
+vertical-align: top;
+}
+.author {
+font-size: 1.2em;
+text-align: center;
+}
+@media only screen and (min-width: 480px) {
+body {
+font-size: 14px;
+}
+}
+@media only screen and (min-width: 768px) {
+body {
+font-size: 16px;
+}
+}
+@media print {
+* {
+background: transparent !important;
+color: black !important;
+filter: none !important;
+-ms-filter: none !important;
+}
+body {
+font-size: 12pt;
+max-width: 100%;
+}
+a, a:visited {
+text-decoration: underline;
+}
+hr {
+height: 1px;
+border: 0;
+border-bottom: 1px solid black;
+}
+a[href]:after {
+content: " (" attr(href) ")";
+}
+abbr[title]:after {
+content: " (" attr(title) ")";
+}
+.ir a:after, a[href^="javascript:"]:after, a[href^="#"]:after {
+content: "";
+}
+pre, blockquote {
+border: 1px solid #999;
+padding-right: 1em;
+page-break-inside: avoid;
+}
+tr, img {
+page-break-inside: avoid;
+}
+img {
+max-width: 100% !important;
+}
+@page :left {
+margin: 15mm 20mm 15mm 10mm;
+}
+@page :right {
+margin: 15mm 10mm 15mm 20mm;
+}
+p, h2, h3 {
+orphans: 3;
+widows: 3;
+}
+h2, h3 {
+page-break-after: avoid;
+}
+}</style>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<h1 id="com-402-homework-3-solution">COM-402 Homework 3 Solution</h1>
+<ul>
+<li><a href="#exercise-1-password-cracking">Exercise 1: Password Cracking</a>
+<ul>
+<li><a href="#part-1a-brute-force-attack">Part 1a: Brute force attack</a>
+<ul>
+<li><a href="#understanding-the-task">Understanding the task</a></li>
+<li><a href="#the-methods">The methods</a></li>
+<li><a href="#code">Code</a></li>
+<li><a href="#leveraging-your-multi-core-machine">Leveraging your multi-core machine</a></li>
+<li><a href="#code-explanation">Code explanation</a></li>
+</ul></li>
+<li><a href="#part-1b-dictionary-attack-with-rules">Part 1b: Dictionary attack with rules</a>
+<ul>
+<li><a href="#how-it-works">How it works</a></li>
+<li><a href="#which-dictionary">Which dictionary</a></li>
+<li><a href="#parallelism">Parallelism</a></li>
+<li><a href="#commutativity">Commutativity</a></li>
+<li><a href="#the-size-of-files">The size of files</a></li>
+<li><a href="#the-code-finally">The code (finally)</a>
+<ul>
+<li><a href="#generating-the-combinations">Generating the combinations</a></li>
+<li><a href="#creating-the-combinations">Creating the combinations</a></li>
+<li><a href="#hashing">Hashing</a></li>
+<li><a href="#complete-with-parallelism">Complete, with parallelism</a></li>
+</ul></li>
+<li><a href="#passwords">Passwords</a></li>
+<li><a href="#final-thoughts">Final thoughts</a></li>
+</ul></li>
+<li><a href="#part-1c-hashes-get-salty">Part 1c: Hashes get salty</a>
+<ul>
+<li><a href="#why-using-salt">Why using salt?</a></li>
+<li><a href="#wpa2-trivia">WPA2 Trivia</a></li>
+<li><a href="#how-to-attack">How to attack</a></li>
+<li><a href="#the-code">The code</a>
+<ul>
+<li><a href="#salt-and-hash">Salt and hash</a></li>
+<li><a href="#parallelizing">Parallelizing</a></li>
+</ul></li>
+<li><a href="#passwords-1">Passwords</a></li>
+<li><a href="#closing-thoughts">Closing thoughts</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#exercise-2">Exercise 2</a>
+<ul>
+<li><a href="#hashing-1">Hashing</a></li>
+<li><a href="#reduce-functions">Reduce functions</a></li>
+<li><a href="#first-string-of-rows">First string of rows</a></li>
+<li><a href="#computing-the-table">Computing the table</a>
+<ul>
+<li><a href="#serializing">Serializing</a></li>
+</ul></li>
+<li><a href="#second-phase-attack">Second phase: attack</a></li>
+<li><a href="#parallelization">Parallelization</a></li>
+<li><a href="#matching-passwords">Matching passwords</a></li>
+<li><a href="#theoretical-questions">Theoretical questions</a> # Exercise 1: Password Cracking Password cracking are kind of the <em>Hollywood</em> way of hacking. But contrary to what Horacio taught us, this is not always suitable. For example, against a web login, this is a very bad idea, as each try is monitored, takes a couple secondes, and may result in you being blocked.</li>
+</ul></li>
+</ul>
+<p>Though, there are certain situations when this is doable. In particular, when you have at hand encrypted passwords. But why would they be encrypted? And how?</p>
+<p>When you deal with users and passwords, it’s very <em>very</em> bad practice to store plaintext passwords. What you do is store the password as a hash and when the user logs in, you compute the hash of its input and compare it to the stored hash. You can also add some subtleties, such as salt or time-dependent hashes. But the idea is always the same.</p>
+<p>Now, suppose your database gets hacked and dumped. Everyone on the internet has access to your database. Now, hackers have a list of hashes, that match usernames. This is, in itself, useless as the hashes are non-reversible and can’t be used to log in. That’s when password cracking shines: you have at hand a bunch of hashes, and your goal is to reverse them to find the original passwords.</p>
+<p><strong>Note</strong>: For all password cracking, it’s always a good idea not to try and find one hash, but to compute a hash and compare it to all the unsolved hashes. This will save a lot of time, rather than doing the whole process multiple times.</p>
+<h2 id="part-1a-brute-force-attack">Part 1a: Brute force attack</h2>
+<h3 id="understanding-the-task">Understanding the task</h3>
+<p>Bruteforce attacks are the simplest form of password cracking. Basically, you try all the combinations one after the other. Given that you do it well, this method is guaranteed to reverse the hash… some day. Because the complexity and thus length of the task is directly proportional to the length of the password, and the size of the character set. More precisely: say you try all combinations from a set of 36 characters (lowercase letters and all numbers), with a password length fo 5, you’ll have to try <span class="math inline">36<sup>5</sup> = 60466176</span> different passwords.</p>
+<p>For example, a hacker knowing all passwords are less than 5 characters and only lowercase letters will laugh. But having upper and lower cases, numbers, some special characters and a 16-length password, you’re in for about <span class="math inline">10<sup>29</sup></span>. Practically unbreakable.</p>
+<p>Here we’ll try and hack</p>
+<p><span class="math inline">36<sup>4</sup> + 36<sup>5</sup> + 36<sup>6</sup> = 2238928128</span></p>
+<p>passwords. This is a relatively imposing number, but a laptop on a CPU can try all of them within a few hours.</p>
+<h3 id="the-methods">The methods</h3>
+<p>There are several methods for you to try and hack the hashes. In a real scenario, you’d want to rely on existing softwares. The most well-known and used are <a href="https://www.openwall.com/john/">John the Ripper</a> and <a href="https://hashcat.net/hashcat/">Hashcat</a>. They support many hash types, are optimized to run as fast as possible and can even leverage your GPU(s).</p>
+<p>For the sake of the comprehension, we will use here a custom python script. Python is great, but not necessarily in this situation, because it’s a quite heavier language, compared to say C or C++. Nonetheless, this is far simpler to demo on that.</p>
+<h3 id="code">Code</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="im">import</span> itertools</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="im">import</span> hashlib</a>
+<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="im">import</span> time</a>
+<a class="sourceLine" id="cb1-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb1-5" data-line-number="5"><span class="co"># all the possible characters</span></a>
+<a class="sourceLine" id="cb1-6" data-line-number="6">charset <span class="op">=</span> <span class="st">&quot;abcdefghijklmnopqrstuvwxyz1234567890&quot;</span></a>
+<a class="sourceLine" id="cb1-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb1-8" data-line-number="8"><span class="co"># the list of all the hashes</span></a>
+<a class="sourceLine" id="cb1-9" data-line-number="9">all_hashes <span class="op">=</span> <span class="bu">set</span>([</a>
+<a class="sourceLine" id="cb1-10" data-line-number="10">    <span class="st">&quot;7c58133ee543d78a9fce240ba7a273f37511bfe6835c04e3edf66f308e9bc6e5&quot;</span>,</a>
+<a class="sourceLine" id="cb1-11" data-line-number="11">    <span class="st">&quot;37a2b469df9fc4d31f35f26ddc1168fe03f2361e329d92f4f2ef04af09741fb9&quot;</span>,</a>
+<a class="sourceLine" id="cb1-12" data-line-number="12">    <span class="st">&quot;19dbaf86488ec08ba7a824b33571ce427e318d14fc84d3d764bd21ecb29c34ca&quot;</span>,</a>
+<a class="sourceLine" id="cb1-13" data-line-number="13">    <span class="st">&quot;06240d77c297bb8bd727d5538a9121039911467c8bb871a935c84a5cfe8291e4&quot;</span>,</a>
+<a class="sourceLine" id="cb1-14" data-line-number="14">    <span class="st">&quot;f5cd3218d18978d6e5ef95dd8c2088b7cde533c217cfef4850dd4b6fa0deef72&quot;</span>,</a>
+<a class="sourceLine" id="cb1-15" data-line-number="15">    <span class="st">&quot;dd9ad1f17965325e4e5de2656152e8a5fce92b1c175947b485833cde0c824d64&quot;</span>,</a>
+<a class="sourceLine" id="cb1-16" data-line-number="16">    <span class="st">&quot;845e7c74bc1b5532fe05a1e682b9781e273498af73f401a099d324fa99121c99&quot;</span>,</a>
+<a class="sourceLine" id="cb1-17" data-line-number="17">    <span class="st">&quot;a6fb7de5b5e11b29bc232c5b5cd3044ca4b70f2cf421dc02b5798a7f68fc0523&quot;</span>,</a>
+<a class="sourceLine" id="cb1-18" data-line-number="18">    <span class="st">&quot;1035f3e1491315d6eaf53f7e9fecf3b81e00139df2720ae361868c609815039c&quot;</span>,</a>
+<a class="sourceLine" id="cb1-19" data-line-number="19">    <span class="st">&quot;10dccbaff60f7c6c0217692ad978b52bf036caf81bfcd90bfc9c0552181da85a&quot;</span>])</a>
+<a class="sourceLine" id="cb1-20" data-line-number="20"></a>
+<a class="sourceLine" id="cb1-21" data-line-number="21">begin <span class="op">=</span> time.time()</a>
+<a class="sourceLine" id="cb1-22" data-line-number="22"></a>
+<a class="sourceLine" id="cb1-23" data-line-number="23"><span class="cf">for</span> length <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">4</span>, <span class="dv">7</span>):</a>
+<a class="sourceLine" id="cb1-24" data-line-number="24">    <span class="co"># define all possible combinations of a certain length</span></a>
+<a class="sourceLine" id="cb1-25" data-line-number="25">    <span class="cf">for</span> comb <span class="kw">in</span> itertools.product(charset, repeat<span class="op">=</span>length):</a>
+<a class="sourceLine" id="cb1-26" data-line-number="26">        <span class="co"># change &quot;('a', 'a', 'a', 'a')&quot; to 'aaaa'</span></a>
+<a class="sourceLine" id="cb1-27" data-line-number="27">        password <span class="op">=</span> <span class="st">&quot;&quot;</span>.join(comb)</a>
+<a class="sourceLine" id="cb1-28" data-line-number="28">        <span class="co"># compute the hash</span></a>
+<a class="sourceLine" id="cb1-29" data-line-number="29">        h <span class="op">=</span> hashlib.sha256(password.encode())</a>
+<a class="sourceLine" id="cb1-30" data-line-number="30">        digest <span class="op">=</span> h.hexdigest()</a>
+<a class="sourceLine" id="cb1-31" data-line-number="31"></a>
+<a class="sourceLine" id="cb1-32" data-line-number="32">        <span class="cf">if</span> digest <span class="kw">in</span> all_hashes:</a>
+<a class="sourceLine" id="cb1-33" data-line-number="33">            <span class="co"># if one hash match, print and remove (to save some time)</span></a>
+<a class="sourceLine" id="cb1-34" data-line-number="34">            <span class="bu">print</span>(<span class="st">&quot;</span><span class="sc">{}</span><span class="st"> === </span><span class="sc">{}</span><span class="st">&quot;</span>.<span class="bu">format</span>(digest, password))</a>
+<a class="sourceLine" id="cb1-35" data-line-number="35">            all_hashes.remove(digest)</a>
+<a class="sourceLine" id="cb1-36" data-line-number="36">        <span class="cf">else</span>:</a>
+<a class="sourceLine" id="cb1-37" data-line-number="37">            <span class="co"># print your progress</span></a>
+<a class="sourceLine" id="cb1-38" data-line-number="38">            <span class="bu">print</span>(password, end<span class="op">=</span><span class="st">&quot;</span><span class="ch">\r</span><span class="st">&quot;</span>)</a>
+<a class="sourceLine" id="cb1-39" data-line-number="39"></a>
+<a class="sourceLine" id="cb1-40" data-line-number="40">end <span class="op">=</span> time.time()</a>
+<a class="sourceLine" id="cb1-41" data-line-number="41"><span class="bu">print</span>(<span class="st">&quot;Time for naïve: </span><span class="sc">{:.3f}</span><span class="st">&quot;</span>.<span class="bu">format</span>(end<span class="op">-</span>begin))</a></code></pre></div>
+<p>This code runs within a few hours on a CPU laptop. Not great, not terrible.</p>
+<p>We obtain the following corresponding passwords:</p>
+<pre><code>7c5813... === xex167
+37a2b4... === xontbc
+19dbaf... === szpn9
+06240d... === feh9ay
+f5cd32... === 7rimq7
+dd9ad1... === gi02n
+845e7c... === j67c
+a6fb7d... === bgfvf
+1035f3... === 2vdxm
+10dccb... === 26i4id</code></pre>
+<p>As you probably realize, this kind of attack can’t be reasonably used at large scale. This is a last resort method, that can’t be deployed for large passwords, or too complicated passwords.</p>
+<h3 id="leveraging-your-multi-core-machine">Leveraging your multi-core machine</h3>
+<p>Though, this task is embarrassingly parallel. If you had a thousand threads, you can easily split your task among them, and your computation would be roughly a thousand time faster. Good libraries such as Hashcat or John actually do that, and can use your CPU at its maximum capacity. This is also how GPUs are leveraged: they contain thousands of “weak cores”. Individually they are not great for heavy computing, but for such task they are perfect.</p>
+<p>Here is an example of a parallelized code that uses your CPU resources a bit better:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="im">import</span> hashlib</a>
+<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="im">import</span> multiprocessing</a>
+<a class="sourceLine" id="cb3-3" data-line-number="3"><span class="im">import</span> time</a>
+<a class="sourceLine" id="cb3-4" data-line-number="4"><span class="im">import</span> itertools</a>
+<a class="sourceLine" id="cb3-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb3-6" data-line-number="6"><span class="kw">def</span> block_func(combination):</a>
+<a class="sourceLine" id="cb3-7" data-line-number="7">    <span class="co">&quot;&quot;&quot;Take one combination, compute its hash, and return if a match is found&quot;&quot;&quot;</span></a>
+<a class="sourceLine" id="cb3-8" data-line-number="8">    password <span class="op">=</span> <span class="st">&quot;&quot;</span>.join(combination)</a>
+<a class="sourceLine" id="cb3-9" data-line-number="9">    h <span class="op">=</span> hashlib.sha256(password.encode())</a>
+<a class="sourceLine" id="cb3-10" data-line-number="10">    digest <span class="op">=</span> h.hexdigest()</a>
+<a class="sourceLine" id="cb3-11" data-line-number="11">    <span class="cf">if</span> digest <span class="kw">in</span> all_digests:</a>
+<a class="sourceLine" id="cb3-12" data-line-number="12">        all_digests.remove(digest)</a>
+<a class="sourceLine" id="cb3-13" data-line-number="13">        <span class="bu">print</span>(<span class="st">&quot;</span><span class="sc">{}</span><span class="st"> === </span><span class="sc">{}</span><span class="st">&quot;</span>.<span class="bu">format</span>(digest, password))</a>
+<a class="sourceLine" id="cb3-14" data-line-number="14">        <span class="cf">return</span> digest</a>
+<a class="sourceLine" id="cb3-15" data-line-number="15"></a>
+<a class="sourceLine" id="cb3-16" data-line-number="16"><span class="co"># all the possible characters</span></a>
+<a class="sourceLine" id="cb3-17" data-line-number="17">charset <span class="op">=</span> <span class="st">&quot;abcdefghijklmnopqrstuvwxyz1234567890&quot;</span></a>
+<a class="sourceLine" id="cb3-18" data-line-number="18"></a>
+<a class="sourceLine" id="cb3-19" data-line-number="19">begin <span class="op">=</span> time.time()</a>
+<a class="sourceLine" id="cb3-20" data-line-number="20"></a>
+<a class="sourceLine" id="cb3-21" data-line-number="21"><span class="co"># create a pool of processes</span></a>
+<a class="sourceLine" id="cb3-22" data-line-number="22">pool <span class="op">=</span> multiprocessing.Pool(processes<span class="op">=</span><span class="dv">16</span>)</a>
+<a class="sourceLine" id="cb3-23" data-line-number="23">total_matches <span class="op">=</span> []</a>
+<a class="sourceLine" id="cb3-24" data-line-number="24"><span class="cf">for</span> length <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">4</span>, <span class="dv">7</span>):</a>
+<a class="sourceLine" id="cb3-25" data-line-number="25">    <span class="co"># create the set of passwords for this length</span></a>
+<a class="sourceLine" id="cb3-26" data-line-number="26">    combinations_generator <span class="op">=</span> itertools.product(charset, repeat<span class="op">=</span>length)</a>
+<a class="sourceLine" id="cb3-27" data-line-number="27"></a>
+<a class="sourceLine" id="cb3-28" data-line-number="28">    <span class="co"># compute number of possible passwords</span></a>
+<a class="sourceLine" id="cb3-29" data-line-number="29">    total_combinations <span class="op">=</span> <span class="bu">len</span>(charset)<span class="op">**</span>length</a>
+<a class="sourceLine" id="cb3-30" data-line-number="30"></a>
+<a class="sourceLine" id="cb3-31" data-line-number="31">    <span class="co">#read the generator lazily and map combinations to the function</span></a>
+<a class="sourceLine" id="cb3-32" data-line-number="32">    <span class="cf">for</span> i, x <span class="kw">in</span> <span class="bu">enumerate</span>(pool.imap_unordered(block_func, combinations_generator, <span class="dv">1000</span>)):</a>
+<a class="sourceLine" id="cb3-33" data-line-number="33">        <span class="cf">if</span> x <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</a>
+<a class="sourceLine" id="cb3-34" data-line-number="34">            total_matches.append(x)</a>
+<a class="sourceLine" id="cb3-35" data-line-number="35">        <span class="cf">if</span> i <span class="op">%</span> <span class="dv">100</span> <span class="op">==</span> <span class="dv">0</span>:</a>
+<a class="sourceLine" id="cb3-36" data-line-number="36">            <span class="co"># display your progress</span></a>
+<a class="sourceLine" id="cb3-37" data-line-number="37">            <span class="bu">print</span>(<span class="st">&quot;</span><span class="sc">{:.3f}</span><span class="st">&quot;</span>.<span class="bu">format</span>(<span class="dv">100</span><span class="op">*</span>i<span class="op">/</span>total_combinations), end<span class="op">=</span><span class="st">&quot;</span><span class="ch">\r</span><span class="st">&quot;</span>)</a>
+<a class="sourceLine" id="cb3-38" data-line-number="38"></a>
+<a class="sourceLine" id="cb3-39" data-line-number="39">end <span class="op">=</span> time.time()</a>
+<a class="sourceLine" id="cb3-40" data-line-number="40"><span class="bu">print</span>(<span class="st">&quot;Time for naïve: </span><span class="sc">{:.3f}</span><span class="st">&quot;</span>.<span class="bu">format</span>(end<span class="op">-</span>begin))</a></code></pre></div>
+<h3 id="code-explanation">Code explanation</h3>
+<p>The above code is quite simple, but not perfect. It uses <code>imap_unordered</code>, which will do the following: * Read the generator lazily by chunks of 1000 (you don’t want to have <em>all</em> the combinations at once in memory) * Then the 16 workers generated earlier will pick the combinations one after the other and apply each combination to the defined function * Because it’s unordered, if a worker finishes early, he doesn’t have to wait until his predecessor is done, because the output can be unordered.</p>
+<p>This leverages the computing power of your CPU better, but is still not perfect. The main defect is that it creates a lot of computing overhead. Each “block” (a combination) is quite fast, so a worker is often starting and finishing. It would be better to give to each worker a chunk of combinations, and they each spend some time iterating within them. But for now, good enough.</p>
+<h2 id="part-1b-dictionary-attack-with-rules">Part 1b: Dictionary attack with rules</h2>
+<p>As you saw in the previous part, exhaustive attacks while very powerful are not a viable solution for many passwords. But (un)fortunately, humans are not random machines, and strongly dislike passwords of the type <code>dn8S89?/8+F\f'hk7|è</code>, while they can simple remember <code>password123</code>. Even in 2020, those are still <a href="https://en.wikipedia.org/wiki/List_of_the_most_common_passwords#SplashData">awfully used</a>.</p>
+<h3 id="how-it-works">How it works</h3>
+<p>The idea behind dictionary attacks is just that: humans are more likely to generate their passwords using words from a dictionary. So if you have your hand on a dictionary, you can try all the words in it. For all intents and purposes, a dictionary is a list of unique words, likely to be used by humans.</p>
+<p>Let’s start with a simple dictionary. Take the Oxford dictionary, it contains about 171k words. Not too bad, finding all the hashes may take a couple seconds on a laptop CPU. You may find a few passwords with that.</p>
+<p>But what if someones uses <code>Password</code>? Well, that’s the next step. Now that you have your list of words, it’s better to try some tweaks. Try some capital letters, change letters (<code>o -&gt; O -&gt; 0</code>, <code>A -&gt; 4</code>). Next step is to combine words. Concatenate 2,3,4 or 10 words, try combinations.</p>
+<p>And what about <code>motdepasse</code> ? Yet another step. Your dictionary may not be exhaustive, and you only cover english speakers. Well, download a french, german or finnish dictionary, and add them to your initial one.</p>
+<p>And what about using your mother’s name, Martha, in the password? Yes, possible. Retrieve a list of human names. And also city names. And celebrities. And events. And slurs. And everything. Oh, and don’t forget non-alphanumerical characters (<code>!,ç%&amp;+&quot;...</code>)</p>
+<p><strong>It’s exploding!!</strong></p>
+<p>By doing all these steps, you realize you now have a database of several billions or more words to try. Are you really in a better spot that with brute force? Actually yes. Because now you have the same space size (say, <span class="math inline">10<sup>12</sup></span> passwords), but with bruteforce that only covered the passwords less than 5 characters, on a small characters set. Now your huge dictionary covers <code>P4ssw0rd123!</code> which is more likely to be used rather than <code>4D/x.</code>. With brute force, you’d never reach that password.</p>
+<p>Hackers spend years enhancing their dictionaries. If you’re smart, you also sort these words in a manner that allows smart selection. For example, you’re hacking a German music platform. Chances are, your finnish and fishing-related dictionary are not useful there. If you target a specific person or entity, you also must have a “personal” dictionary (their pet’s name, date of birth, significant other’s name,…).</p>
+<p>Having a good dictionary is tedious, but may really help you when cracking passwords.</p>
+<h3 id="which-dictionary">Which dictionary</h3>
+<p>On the recommended website, you can find all sorts of dictionaries. Some are plain “dictionaries” (list of US cities for example), while there are also a bunch of lists of passwords. You’ll find a more complete one on <a href="https://crackstation.net/crackstation-wordlist-password-cracking-dictionary.htm">crackstation</a> (either the full 15 GiB one with all words in wikipedia and words from project Gutenberg, or the smaller, 650 MiB one, with only dumps of passwords). All the hashes we gave you come from the <em>rockyou.txt</em> dictionary. It’s a very complete and famous leak, containing a lot of unencrypted passwords, making it a very interesting tool.</p>
+<p>For the sake of completeness, we will assume this is not the case, and will explore multiple dictionaries.</p>
+<h3 id="parallelism">Parallelism</h3>
+<p>As before, this task is embarrassingly parallel. Each entry in your dictionary is independent from the others (this is not exactly true, but good enough for us). Thus, to gain a lot of time, you can re-use some code from before and leverage your cores.</p>
+<h3 id="commutativity">Commutativity</h3>
+<p>On your first try, you may try the following: take all your modifications, and create all the combinations (4 modifications, that gives 16 different outcomes, including the “no-modif” one). While this is absolutely OK, there may be one or more password that will remain unbreakable. The reason for that is commutativity. The first modification possible (change capital letters) will be affected by the others transformations.</p>
+<p>Take <code>window</code>, the example given. If you first <em>title-ize</em> it the replace the numbers, you’ll get <code>W1nd0w</code>. If you first replace the <code>i</code>s, then <em>title-ize</em>, the replace the <code>o</code>s, you’ll get <code>W1Nd0w</code>. And first replacing the numbers then <em>title-ize</em>, you obtain <code>W1Nd0W</code>. These three will yield different hashes.</p>
+<p>It is thus important to take all combinations, with respect to the order. That gives 65 possible combinations of these modifications (again, including the empty modification). Don’t worry though, if you code it smartly, many combinations are commutative, and this rarely matters. After filtering, you’ll have to compute only a handful of versions of the password, usually between 1 and 20.</p>
+<h3 id="the-size-of-files">The size of files</h3>
+<p>All the files from <em>skullsecurity</em> are relatively small, and fit in memory. This is not always the case (for example, the 15 GiB file from <em>crackstation</em>). For this reason, you must think about it and work with the file open.</p>
+<h3 id="the-code-finally">The code (finally)</h3>
+<h4 id="generating-the-combinations">Generating the combinations</h4>
+<p>One good way to generate all combinations of modifications is to take advantage of the fact that Python deals with functions as objects. This allows to create an array of the unique modifications, and then create combinations from that. Here, we define named functions for the sake of completeness, but as the functions are almost trivial, lambda functions could have done the trick.</p>
+<p>Also, we use <a href="https://docs.python.org/3/library/typing.html">hints</a>, available from python 3.5, that make the development a lot more easier.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw">def</span> modif1(p: <span class="bu">str</span>):</a>
+<a class="sourceLine" id="cb4-2" data-line-number="2">    <span class="cf">return</span> p.title()</a>
+<a class="sourceLine" id="cb4-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb4-4" data-line-number="4"><span class="kw">def</span> modif2(p: <span class="bu">str</span>):</a>
+<a class="sourceLine" id="cb4-5" data-line-number="5">    <span class="cf">return</span> p.replace(<span class="st">&quot;e&quot;</span>, <span class="st">&quot;3&quot;</span>)</a>
+<a class="sourceLine" id="cb4-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb4-7" data-line-number="7"><span class="kw">def</span> modif3(p: <span class="bu">str</span>):</a>
+<a class="sourceLine" id="cb4-8" data-line-number="8">    <span class="cf">return</span> p.replace(<span class="st">&quot;o&quot;</span>, <span class="st">&quot;0&quot;</span>)</a>
+<a class="sourceLine" id="cb4-9" data-line-number="9"></a>
+<a class="sourceLine" id="cb4-10" data-line-number="10"><span class="kw">def</span> modif4(p: <span class="bu">str</span>):</a>
+<a class="sourceLine" id="cb4-11" data-line-number="11">    <span class="cf">return</span> p.replace(<span class="st">&quot;i&quot;</span>, <span class="st">&quot;1&quot;</span>)</a>
+<a class="sourceLine" id="cb4-12" data-line-number="12"></a>
+<a class="sourceLine" id="cb4-13" data-line-number="13">all_modifs_combinations <span class="op">=</span> <span class="bu">set</span>()</a>
+<a class="sourceLine" id="cb4-14" data-line-number="14">all_modifs <span class="op">=</span> [modif1, modif2, modif3, modif4]</a>
+<a class="sourceLine" id="cb4-15" data-line-number="15"><span class="cf">for</span> length <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="bu">len</span>(all_modifs)<span class="op">+</span><span class="dv">1</span>):</a>
+<a class="sourceLine" id="cb4-16" data-line-number="16">    <span class="cf">for</span> comb <span class="kw">in</span> itertools.permutations(all_modifs, length):</a>
+<a class="sourceLine" id="cb4-17" data-line-number="17">        all_modifs_combinations.add(comb)</a></code></pre></div>
+<h4 id="creating-the-combinations">Creating the combinations</h4>
+<div class="sourceCode" id="cb5"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="co"># let p be a given entry from the dictionary</span></a>
+<a class="sourceLine" id="cb5-2" data-line-number="2">all_versions <span class="op">=</span> <span class="bu">set</span>([p])</a>
+<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="cf">for</span> comb <span class="kw">in</span> all_modifs_combinations: <span class="co"># go through each set of modifications</span></a>
+<a class="sourceLine" id="cb5-4" data-line-number="4">    p_temp <span class="op">=</span> p</a>
+<a class="sourceLine" id="cb5-5" data-line-number="5">    <span class="cf">for</span> modificator <span class="kw">in</span> comb: <span class="co"># apply them fo the base password iteratively</span></a>
+<a class="sourceLine" id="cb5-6" data-line-number="6">        p_temp <span class="op">=</span> modificator(p_temp)</a>
+<a class="sourceLine" id="cb5-7" data-line-number="7">    all_versions.add(p_temp) <span class="co"># all_versions is a set, so no duplicate will remain</span></a></code></pre></div>
+<h4 id="hashing">Hashing</h4>
+<div class="sourceCode" id="cb6"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="cf">for</span> version <span class="kw">in</span> all_versions:</a>
+<a class="sourceLine" id="cb6-2" data-line-number="2">    <span class="bu">hash</span> <span class="op">=</span> hashlib.sha256(version.encode()).hexdigest()</a>
+<a class="sourceLine" id="cb6-3" data-line-number="3">    <span class="cf">if</span> <span class="bu">hash</span> <span class="kw">in</span> all_hashes:</a>
+<a class="sourceLine" id="cb6-4" data-line-number="4">        <span class="bu">print</span>(<span class="st">&quot;</span><span class="sc">{}</span><span class="st"> === </span><span class="sc">{}</span><span class="st"> (from </span><span class="sc">{}</span><span class="st">)&quot;</span>.<span class="bu">format</span>(<span class="bu">hash</span>, version, p))</a>
+<a class="sourceLine" id="cb6-5" data-line-number="5">        all_hashes.remove(<span class="bu">hash</span>)</a>
+<a class="sourceLine" id="cb6-6" data-line-number="6">        <span class="cf">return</span> p, <span class="bu">hash</span></a></code></pre></div>
+<h4 id="complete-with-parallelism">Complete, with parallelism</h4>
+<div class="sourceCode" id="cb7"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="im">import</span> hashlib</a>
+<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="im">import</span> itertools</a>
+<a class="sourceLine" id="cb7-3" data-line-number="3"><span class="im">import</span> multiprocessing</a>
+<a class="sourceLine" id="cb7-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb7-5" data-line-number="5">all_hashes <span class="op">=</span> <span class="bu">set</span>([</a>
+<a class="sourceLine" id="cb7-6" data-line-number="6">    <span class="st">&quot;...&quot;</span>,</a>
+<a class="sourceLine" id="cb7-7" data-line-number="7">    <span class="st">&quot;...&quot;</span>,</a>
+<a class="sourceLine" id="cb7-8" data-line-number="8">    <span class="st">&quot;...&quot;</span></a>
+<a class="sourceLine" id="cb7-9" data-line-number="9">])</a>
+<a class="sourceLine" id="cb7-10" data-line-number="10"></a>
+<a class="sourceLine" id="cb7-11" data-line-number="11"></a>
+<a class="sourceLine" id="cb7-12" data-line-number="12"><span class="kw">def</span> modif1(p: <span class="bu">str</span>):</a>
+<a class="sourceLine" id="cb7-13" data-line-number="13">    <span class="cf">return</span> p.title()</a>
+<a class="sourceLine" id="cb7-14" data-line-number="14"><span class="kw">def</span> modif2(p: <span class="bu">str</span>):</a>
+<a class="sourceLine" id="cb7-15" data-line-number="15">    <span class="cf">return</span> p.replace(<span class="st">&quot;e&quot;</span>, <span class="st">&quot;3&quot;</span>)</a>
+<a class="sourceLine" id="cb7-16" data-line-number="16"><span class="kw">def</span> modif3(p: <span class="bu">str</span>):</a>
+<a class="sourceLine" id="cb7-17" data-line-number="17">    <span class="cf">return</span> p.replace(<span class="st">&quot;o&quot;</span>, <span class="st">&quot;0&quot;</span>)</a>
+<a class="sourceLine" id="cb7-18" data-line-number="18"><span class="kw">def</span> modif4(p: <span class="bu">str</span>):</a>
+<a class="sourceLine" id="cb7-19" data-line-number="19">    <span class="cf">return</span> p.replace(<span class="st">&quot;i&quot;</span>, <span class="st">&quot;1&quot;</span>)</a>
+<a class="sourceLine" id="cb7-20" data-line-number="20"></a>
+<a class="sourceLine" id="cb7-21" data-line-number="21"><span class="kw">def</span> modif_and_hash(p):</a>
+<a class="sourceLine" id="cb7-22" data-line-number="22">    <span class="co">&quot;&quot;&quot;Try all modifications and hashes from one given base password.&quot;&quot;&quot;</span></a>
+<a class="sourceLine" id="cb7-23" data-line-number="23">    <span class="cf">if</span> <span class="bu">len</span>(all_hashes) <span class="op">==</span> <span class="dv">0</span>:</a>
+<a class="sourceLine" id="cb7-24" data-line-number="24">        <span class="cf">return</span></a>
+<a class="sourceLine" id="cb7-25" data-line-number="25">    p <span class="op">=</span> p.replace(<span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>, <span class="st">&quot;&quot;</span>) <span class="co"># ensure there are no \n at the end</span></a>
+<a class="sourceLine" id="cb7-26" data-line-number="26">    <span class="co"># create the alternative from the base passwords</span></a>
+<a class="sourceLine" id="cb7-27" data-line-number="27">    all_versions <span class="op">=</span> <span class="bu">set</span>([p]) <span class="co"># include the base password</span></a>
+<a class="sourceLine" id="cb7-28" data-line-number="28">    <span class="cf">for</span> comb <span class="kw">in</span> all_modifs_combinations:</a>
+<a class="sourceLine" id="cb7-29" data-line-number="29">        p_temp <span class="op">=</span> p</a>
+<a class="sourceLine" id="cb7-30" data-line-number="30">        <span class="cf">for</span> modificator <span class="kw">in</span> comb:</a>
+<a class="sourceLine" id="cb7-31" data-line-number="31">            p_temp <span class="op">=</span> modificator(p_temp)</a>
+<a class="sourceLine" id="cb7-32" data-line-number="32">        all_versions.add(p_temp)</a>
+<a class="sourceLine" id="cb7-33" data-line-number="33">    <span class="co"># Hash and compare each of them</span></a>
+<a class="sourceLine" id="cb7-34" data-line-number="34">    <span class="cf">for</span> version <span class="kw">in</span> all_versions:</a>
+<a class="sourceLine" id="cb7-35" data-line-number="35">        <span class="bu">hash</span> <span class="op">=</span> hashlib.sha256(version.encode()).hexdigest()</a>
+<a class="sourceLine" id="cb7-36" data-line-number="36">        <span class="cf">if</span> <span class="bu">hash</span> <span class="kw">in</span> all_hashes:</a>
+<a class="sourceLine" id="cb7-37" data-line-number="37">            <span class="bu">print</span>(<span class="st">&quot;</span><span class="sc">{}</span><span class="st"> === </span><span class="sc">{}</span><span class="st"> (from </span><span class="sc">{}</span><span class="st">)&quot;</span>.<span class="bu">format</span>(<span class="bu">hash</span>, version, p))</a>
+<a class="sourceLine" id="cb7-38" data-line-number="38">            all_hashes.remove(<span class="bu">hash</span>)</a>
+<a class="sourceLine" id="cb7-39" data-line-number="39">            <span class="cf">return</span> p, <span class="bu">hash</span></a>
+<a class="sourceLine" id="cb7-40" data-line-number="40"></a>
+<a class="sourceLine" id="cb7-41" data-line-number="41"></a>
+<a class="sourceLine" id="cb7-42" data-line-number="42"><span class="co"># define the name of all dictionaries, along with their encoding</span></a>
+<a class="sourceLine" id="cb7-43" data-line-number="43">dictionaries <span class="op">=</span> [</a>
+<a class="sourceLine" id="cb7-44" data-line-number="44">    (<span class="st">&quot;500-worst-passwords.txt&quot;</span>, <span class="st">&quot;utf-8&quot;</span>),</a>
+<a class="sourceLine" id="cb7-45" data-line-number="45">    (<span class="st">&quot;alypaa.txt&quot;</span>, <span class="st">&quot;utf-8&quot;</span>),</a>
+<a class="sourceLine" id="cb7-46" data-line-number="46">    (<span class="st">&quot;cain.txt&quot;</span>, <span class="st">&quot;utf-8&quot;</span>),</a>
+<a class="sourceLine" id="cb7-47" data-line-number="47">    (<span class="st">&quot;carders.cc.txt&quot;</span>, <span class="st">&quot;latin-1&quot;</span>),</a>
+<a class="sourceLine" id="cb7-48" data-line-number="48">    (<span class="st">&quot;conficker.txt&quot;</span>, <span class="st">&quot;utf-8&quot;</span>),</a>
+<a class="sourceLine" id="cb7-49" data-line-number="49">    (<span class="st">&quot;english.txt&quot;</span>, <span class="st">&quot;utf-8&quot;</span>),</a>
+<a class="sourceLine" id="cb7-50" data-line-number="50">    (<span class="st">&quot;elitehacker.txt&quot;</span>, <span class="st">&quot;utf-8&quot;</span>),</a>
+<a class="sourceLine" id="cb7-51" data-line-number="51">    (<span class="st">&quot;facebook-pastebay.txt&quot;</span>, <span class="st">&quot;utf-8&quot;</span>),</a>
+<a class="sourceLine" id="cb7-52" data-line-number="52">    (<span class="st">&quot;facebook-phished.txt&quot;</span>, <span class="st">&quot;latin-1&quot;</span>),</a>
+<a class="sourceLine" id="cb7-53" data-line-number="53">    (<span class="st">&quot;faithwriters.txt&quot;</span>, <span class="st">&quot;utf-8&quot;</span>),</a>
+<a class="sourceLine" id="cb7-54" data-line-number="54">    (<span class="st">&quot;file-locations.txt&quot;</span>, <span class="st">&quot;utf-8&quot;</span>),</a>
+<a class="sourceLine" id="cb7-55" data-line-number="55">    (<span class="st">&quot;fuzzing-strings.txt&quot;</span>, <span class="st">&quot;utf-8&quot;</span>),</a>
+<a class="sourceLine" id="cb7-56" data-line-number="56">    (<span class="st">&quot;german.txt&quot;</span>, <span class="st">&quot;latin-1&quot;</span>),</a>
+<a class="sourceLine" id="cb7-57" data-line-number="57">    (<span class="st">&quot;hak5.txt&quot;</span>, <span class="st">&quot;utf-8&quot;</span>),</a>
+<a class="sourceLine" id="cb7-58" data-line-number="58">    (<span class="st">&quot;honeynet.txt&quot;</span>, <span class="st">&quot;latin-1&quot;</span>),</a>
+<a class="sourceLine" id="cb7-59" data-line-number="59">    (<span class="st">&quot;hotmail.txt&quot;</span>, <span class="st">&quot;utf-8&quot;</span>),</a>
+<a class="sourceLine" id="cb7-60" data-line-number="60">    (<span class="st">&quot;john.txt&quot;</span>, <span class="st">&quot;utf-8&quot;</span>),</a>
+<a class="sourceLine" id="cb7-61" data-line-number="61">    (<span class="st">&quot;phpbb.txt&quot;</span>, <span class="st">&quot;latin-1&quot;</span>),</a>
+<a class="sourceLine" id="cb7-62" data-line-number="62">    (<span class="st">&quot;phpmyadmin-locations.txt&quot;</span>, <span class="st">&quot;latin-1&quot;</span>),</a>
+<a class="sourceLine" id="cb7-63" data-line-number="63">    (<span class="st">&quot;singles.org.txt&quot;</span>, <span class="st">&quot;utf-8&quot;</span>),</a>
+<a class="sourceLine" id="cb7-64" data-line-number="64">    (<span class="st">&quot;tuscl.txt&quot;</span>, <span class="st">&quot;latin-1&quot;</span>),</a>
+<a class="sourceLine" id="cb7-65" data-line-number="65">    (<span class="st">&quot;twitter-banned.txt&quot;</span>, <span class="st">&quot;utf-8&quot;</span>),</a>
+<a class="sourceLine" id="cb7-66" data-line-number="66">    (<span class="st">&quot;us_cities.txt&quot;</span>, <span class="st">&quot;utf-8&quot;</span>),</a>
+<a class="sourceLine" id="cb7-67" data-line-number="67">    (<span class="st">&quot;web-extensions.txt&quot;</span>, <span class="st">&quot;utf-8&quot;</span>),</a>
+<a class="sourceLine" id="cb7-68" data-line-number="68">    (<span class="st">&quot;web-mutations.txt&quot;</span>, <span class="st">&quot;utf-8&quot;</span>),</a>
+<a class="sourceLine" id="cb7-69" data-line-number="69">    (<span class="st">&quot;rockyou.txt&quot;</span>, <span class="st">&quot;latin-1&quot;</span>),</a>
+<a class="sourceLine" id="cb7-70" data-line-number="70">    (<span class="st">&quot;crackstation.txt&quot;</span>, <span class="st">&quot;latin-1&quot;</span>)</a>
+<a class="sourceLine" id="cb7-71" data-line-number="71">]</a>
+<a class="sourceLine" id="cb7-72" data-line-number="72">all_modifs_combinations <span class="op">=</span> <span class="bu">set</span>()</a>
+<a class="sourceLine" id="cb7-73" data-line-number="73">all_modifs <span class="op">=</span> [modif1, modif2, modif3, modif4]</a>
+<a class="sourceLine" id="cb7-74" data-line-number="74"><span class="cf">for</span> length <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="bu">len</span>(all_modifs)<span class="op">+</span><span class="dv">1</span>):</a>
+<a class="sourceLine" id="cb7-75" data-line-number="75">    <span class="cf">for</span> comb <span class="kw">in</span> itertools.permutations(all_modifs, length):</a>
+<a class="sourceLine" id="cb7-76" data-line-number="76">        all_modifs_combinations.add(comb)</a>
+<a class="sourceLine" id="cb7-77" data-line-number="77"></a>
+<a class="sourceLine" id="cb7-78" data-line-number="78"><span class="co"># iterate through all dictionaries</span></a>
+<a class="sourceLine" id="cb7-79" data-line-number="79"><span class="cf">for</span> fname, encoding <span class="kw">in</span> dictionaries:</a>
+<a class="sourceLine" id="cb7-80" data-line-number="80">    <span class="bu">print</span>(<span class="st">&quot;Opening file </span><span class="sc">{}</span><span class="st">&quot;</span>.<span class="bu">format</span>(fname))</a>
+<a class="sourceLine" id="cb7-81" data-line-number="81">    <span class="bu">file</span> <span class="op">=</span> <span class="bu">open</span>(<span class="st">&quot;Dictionaries/</span><span class="sc">{}</span><span class="st">&quot;</span>.<span class="bu">format</span>(fname), encoding<span class="op">=</span>encoding)</a>
+<a class="sourceLine" id="cb7-82" data-line-number="82">    pool <span class="op">=</span> multiprocessing.Pool(<span class="dv">8</span>) <span class="co"># define a pool of 8 workers</span></a>
+<a class="sourceLine" id="cb7-83" data-line-number="83">    results <span class="op">=</span> []</a>
+<a class="sourceLine" id="cb7-84" data-line-number="84"></a>
+<a class="sourceLine" id="cb7-85" data-line-number="85">    <span class="co"># read the file by chunks of 10k rows at a time, then feed one</span></a>
+<a class="sourceLine" id="cb7-86" data-line-number="86">    <span class="co"># rows one after the other to a worker</span></a>
+<a class="sourceLine" id="cb7-87" data-line-number="87">    <span class="cf">for</span> r <span class="kw">in</span> pool.imap_unordered(modif_and_hash, <span class="bu">file</span>, <span class="dv">10000</span>):</a>
+<a class="sourceLine" id="cb7-88" data-line-number="88">        <span class="cf">if</span> r <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</a>
+<a class="sourceLine" id="cb7-89" data-line-number="89">            results.append(r)</a>
+<a class="sourceLine" id="cb7-90" data-line-number="90">    <span class="bu">file</span>.close()</a></code></pre></div>
+<h3 id="passwords">Passwords</h3>
+<ul>
+<li><code>2e41f7133f... === alban1an123</code></li>
+<li><code>7987d2f5f9... === Dalbc00s</code></li>
+<li><code>076f8c265a... === 0scar00</code></li>
+<li><code>b1ea522fd2... === captpimp</code></li>
+<li><code>3992b888e7... === B3Llucc1</code></li>
+<li><code>326e90c0d2... === delmar00</code></li>
+<li><code>2693983012... === 6033503</code></li>
+<li><code>4fbee71939... === 802561</code></li>
+<li><code>55c5a78379... === 1M0nj1tas</code></li>
+<li><code>5106610b8a... === 19387</code></li>
+</ul>
+<h3 id="final-thoughts">Final thoughts</h3>
+<p>As you can observe, this method allows to test not more or less, but different passwords. If you were absolutely positive the password was random (e.g. generated by a password manager), then this method is useless. But against passwords of most people, this is a very powerful attack. No wonder hackers take years to complete their own dictionaries! Also, just as before, it would be possible to generate in advance a list of all hashes, and create a lookup table (or a <a href="https://lasec.epfl.ch/pub/lasec/doc/Oech03.pdf">rainbow table</a>, courtesy of Philippe Oeschlin, teacher of fall 2020). Next exercise will show you one protection against that.</p>
+<h2 id="part-1c-hashes-get-salty">Part 1c: Hashes get salty</h2>
+<h3 id="why-using-salt">Why using salt?</h3>
+<p>The previous attack, while powerful in theory, is often countered. If you push forward the reasoning there once you have your list of words, you can just compute a lookup table of all the hashes of all those passwords, and use it. You just have to do the work once, and then de-hashing is <span class="math inline">𝒪(1)</span>! Good for us, no good for others. But if every password you store has a “unique” salt at the end, this “do the work once” must be done once per salt. Supposing, as mentioned, a 2 hexadecimal characters salt, this increases your work by a factor 256! The good thing is that you don’t even need to keep the salt secret (well, it’s always better). If the password is salted, chances are there are no lookup table for those hashes.</p>
+<h3 id="wpa2-trivia">WPA2 Trivia</h3>
+<p>With WPA2 Personal, <a href="https://crypto.stackexchange.com/questions/28975/encryption-algorithm-used-in-wpa-wpa2">routers salt the password with the SSID of the network</a>. But some big routers always came with the same default SSID that people never bothered changing (<em>linksys</em>, <em>asus</em>, <em>orange</em>,…). Some are so common that people started <a href="https://wigle.net/stats#ssidstats">collecting them</a>. Once you have the most common, you can start creating lookup tables and rainbow tables, specific for each of these common SSIDs. For this reason, amongst others, modern routers now come with a default SSID appended by some pseudo-random value (like <em>linksys-SJF3O-F82ND-F8F3K</em>).</p>
+<h3 id="how-to-attack">How to attack</h3>
+<p>The idea is very similar to the previous exercise. Now, instead of applying some functions to your password, you just try to append each salt and try it. Because we provide you with all the salts used, you only have to generate 10 versions for each password you consider, and hash each of them. But if we hadn’t, or if the salt was partially dynamic, we would need to try all the salts for all the passwords. For example, <a href="https://passlib.readthedocs.io/en/stable/index.html">passlib</a> (a standard authentication library for python) lets you specify a 0-16 alphanumerical characters salt or <a href="https://passlib.readthedocs.io/en/stable/lib/passlib.hash.sha256_crypt.html#passlib.hash.sha256_crypt">will generate one at random each time</a>. With such method, you can’t rely on rainbow tables at large scales.</p>
+<h3 id="the-code">The code</h3>
+<p>We mostly reuse the code from before.</p>
+<h4 id="salt-and-hash">Salt and hash</h4>
+<div class="sourceCode" id="cb8"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw">def</span> salt_and_hash(p):</a>
+<a class="sourceLine" id="cb8-2" data-line-number="2">    <span class="co">&quot;&quot;&quot;Take one password, and hash it using all the possible salts.&quot;&quot;&quot;</span></a>
+<a class="sourceLine" id="cb8-3" data-line-number="3">    salts <span class="op">=</span> [<span class="st">&quot;b9&quot;</span>, <span class="st">&quot;be&quot;</span>, <span class="st">&quot;bc&quot;</span>, <span class="st">&quot;72&quot;</span>, <span class="st">&quot;9f&quot;</span>, <span class="st">&quot;17&quot;</span>, <span class="st">&quot;94&quot;</span>, <span class="st">&quot;7f&quot;</span>, <span class="st">&quot;2e&quot;</span>, <span class="st">&quot;24&quot;</span>]</a>
+<a class="sourceLine" id="cb8-4" data-line-number="4">    p <span class="op">=</span> p.replace(<span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>, <span class="st">&quot;&quot;</span>) <span class="co"># remove possible trailing \n</span></a>
+<a class="sourceLine" id="cb8-5" data-line-number="5">    <span class="cf">for</span> s <span class="kw">in</span> salts:</a>
+<a class="sourceLine" id="cb8-6" data-line-number="6">        salted <span class="op">=</span> p<span class="op">+</span>s</a>
+<a class="sourceLine" id="cb8-7" data-line-number="7">        <span class="bu">hash</span> <span class="op">=</span> hashlib.sha256(salted.encode()).hexdigest()</a>
+<a class="sourceLine" id="cb8-8" data-line-number="8">        <span class="cf">if</span> <span class="bu">hash</span> <span class="kw">in</span> all_hashes_c:</a>
+<a class="sourceLine" id="cb8-9" data-line-number="9">            <span class="bu">print</span>(<span class="st">&quot;</span><span class="sc">{}</span><span class="st"> === </span><span class="sc">{}</span><span class="st"> (salt </span><span class="sc">{}</span><span class="st">)&quot;</span>.<span class="bu">format</span>(<span class="bu">hash</span>, p, s))</a>
+<a class="sourceLine" id="cb8-10" data-line-number="10">            <span class="cf">return</span> p, <span class="bu">hash</span></a></code></pre></div>
+<h4 id="parallelizing">Parallelizing</h4>
+<div class="sourceCode" id="cb9"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb9-1" data-line-number="1">dictionaries <span class="op">=</span> [</a>
+<a class="sourceLine" id="cb9-2" data-line-number="2">    ...</a>
+<a class="sourceLine" id="cb9-3" data-line-number="3">    (<span class="st">&quot;rockyou.txt&quot;</span>, <span class="st">&quot;latin1&quot;</span>),</a>
+<a class="sourceLine" id="cb9-4" data-line-number="4">    (<span class="st">&quot;crackstation.txt&quot;</span>, <span class="st">&quot;latin-1&quot;</span>)</a>
+<a class="sourceLine" id="cb9-5" data-line-number="5">]</a>
+<a class="sourceLine" id="cb9-6" data-line-number="6"><span class="co"># try multiple files</span></a>
+<a class="sourceLine" id="cb9-7" data-line-number="7"><span class="cf">for</span> fname, encoding <span class="kw">in</span> dictionaries:</a>
+<a class="sourceLine" id="cb9-8" data-line-number="8">    <span class="bu">print</span>(<span class="st">&quot;Opening file </span><span class="sc">{}</span><span class="st">&quot;</span>.<span class="bu">format</span>(fname))</a>
+<a class="sourceLine" id="cb9-9" data-line-number="9">    <span class="bu">file</span> <span class="op">=</span> <span class="bu">open</span>(<span class="st">&quot;Dictionaries/</span><span class="sc">{}</span><span class="st">&quot;</span>.<span class="bu">format</span>(fname), encoding<span class="op">=</span>encoding)</a>
+<a class="sourceLine" id="cb9-10" data-line-number="10">    pool <span class="op">=</span> multiprocessing.Pool(<span class="dv">8</span>) <span class="co"># 8 concurrent workers</span></a>
+<a class="sourceLine" id="cb9-11" data-line-number="11">    results <span class="op">=</span> []</a>
+<a class="sourceLine" id="cb9-12" data-line-number="12">    <span class="co"># open the file 10k rows at a time, and feed them to &quot;salt_and_hash&quot;</span></a>
+<a class="sourceLine" id="cb9-13" data-line-number="13">    <span class="cf">for</span> r <span class="kw">in</span> pool.imap_unordered(salt_and_hash, <span class="bu">file</span>, <span class="dv">10000</span>):</a>
+<a class="sourceLine" id="cb9-14" data-line-number="14">        <span class="co"># store your results, for later use</span></a>
+<a class="sourceLine" id="cb9-15" data-line-number="15">        <span class="cf">if</span> r <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</a>
+<a class="sourceLine" id="cb9-16" data-line-number="16">            results.append(r)</a>
+<a class="sourceLine" id="cb9-17" data-line-number="17">    <span class="bu">file</span>.close()</a></code></pre></div>
+<h3 id="passwords-1">Passwords</h3>
+<ul>
+<li><code>962642e330bd === albanian123</code> (salt <code>b9</code>)`</li>
+<li><code>8eef79d547f7 === thesims9</code> (salt <code>be</code>)</li>
+<li><code>e71067887d50 === jasnic1</code> (salt <code>bc</code>)</li>
+<li><code>889a22781ef9 === atychi1</code> (salt <code>72</code>)</li>
+<li><code>6a16f9c6d954 === solkingfran</code> (salt <code>9f</code>)</li>
+<li><code>2317603823a0 === kapono</code> (salt <code>17</code>)</li>
+<li><code>c6c51f8a7319 === kaylahh1</code> (salt <code>94</code>)</li>
+<li><code>c01304fc3665 === kennethix</code> (salt <code>7f</code>)</li>
+<li><code>cff39d9be689 === steele99</code> (salt <code>2e</code>)</li>
+<li><code>662ab7be194c === born03101991#</code> (salt <code>24</code>)</li>
+</ul>
+<h3 id="closing-thoughts">Closing thoughts</h3>
+<p>As you saw, this is quite straightforward. But remember that in the wild, you may not know the list of potential salts, and may have to explore a huge list <em>for each password</em>. If you were to knew that the hashes were always 2 hexa characters, this is 256 times harder than a normal dictionary attack.</p>
+<h1 id="exercise-2">Exercise 2</h1>
+<h2 id="hashing-1">Hashing</h2>
+<p>The first thing to do, is define a hashing function. As instructed, we use SHA256. You are probably familiar with the process, by now:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="im">import</span> hashlib</a>
+<a class="sourceLine" id="cb10-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb10-3" data-line-number="3"><span class="kw">def</span> hashing(plaintext: <span class="bu">str</span>):</a>
+<a class="sourceLine" id="cb10-4" data-line-number="4">    <span class="cf">return</span> hashlib.sha256(plaintext.encode()).hexdigest()</a></code></pre></div>
+<h2 id="reduce-functions">Reduce functions</h2>
+<p>This is a more tricky part. Given a cipher (a hash), we have to find multiple functions that will map (deterministically) to the “passwords space”. There are many good functions out there. This is actually important for a good rainbow table, because the better those functions are, the less collisions you will have. As instructed, we build a function that transforms the hash into a base 16 int, then turns that into a “base 36” number, thus allowing us to cover the whole character set.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="kw">def</span> reduction(h: <span class="bu">str</span>, i: <span class="bu">int</span>):</a>
+<a class="sourceLine" id="cb11-2" data-line-number="2">    corresp_int <span class="op">=</span> <span class="bu">int</span>(h, <span class="dv">16</span>) <span class="op">+</span> i  <span class="co"># change the hash to an int (base 16), and add number of column</span></a>
+<a class="sourceLine" id="cb11-3" data-line-number="3">    chars <span class="op">=</span> string.ascii_lowercase <span class="op">+</span> string.digits</a>
+<a class="sourceLine" id="cb11-4" data-line-number="4">    chars_len <span class="op">=</span> <span class="bu">len</span>(chars)</a>
+<a class="sourceLine" id="cb11-5" data-line-number="5">    pwd <span class="op">=</span> <span class="st">&quot;&quot;</span></a>
+<a class="sourceLine" id="cb11-6" data-line-number="6">    <span class="co"># convert to the new base, char by char, until the size of the password</span></a>
+<a class="sourceLine" id="cb11-7" data-line-number="7">    <span class="co"># reaches desired length.</span></a>
+<a class="sourceLine" id="cb11-8" data-line-number="8">    <span class="cf">while</span> <span class="bu">len</span>(pwd) <span class="op">&lt;</span> SIZE_PASSWORDS:</a>
+<a class="sourceLine" id="cb11-9" data-line-number="9">        pwd <span class="op">=</span> pwd <span class="op">+</span> chars[corresp_int <span class="op">%</span> chars_len]</a>
+<a class="sourceLine" id="cb11-10" data-line-number="10">        corresp_int <span class="op">=</span> corresp_int <span class="op">//</span> chars_len</a>
+<a class="sourceLine" id="cb11-11" data-line-number="11">    <span class="cf">return</span> pwd</a></code></pre></div>
+<p>It is important to note that, while only a single <code>reduction</code> function is defined, it actually serves the purpose of multiple different functions in practice (one per column), as the column number is added to the int derived from the hash.</p>
+<h2 id="first-string-of-rows">First string of rows</h2>
+<p>Once you have the first element of the row, the rest is computed deterministically (given the hashing and reduction functions). But this first element ought to be unique. Fortunately, we have a unique element assigned to each row: its index. We pass it (as an hexadecimal number) to the reduction function, to obtain our first and unique element.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb12-1" data-line-number="1">init_plaintext <span class="op">=</span> reduction(<span class="bu">hex</span>(row_num), <span class="dv">0</span>)</a></code></pre></div>
+<p>The strings generated that way will be <code>baaaaaaa</code>, <code>caaaaaaa</code>,… For additional randomness, we could replace the 0 with a random integer and, depending on the size of the table, check for collisions.</p>
+<h2 id="computing-the-table">Computing the table</h2>
+<p>This is the initial step of any attack. If your table is well done, it’s worth to spend a lot of time creating it, as it will make attacks more likely to succeed. The general process is as follows (pseudo-code):</p>
+<pre class="pseudocode"><code>for n in NUMBER_ROWS:
+    s = random_string
+    for reduc in ordered_reduction_functions:
+        h = hash(s)
+        s = reduc(h)</code></pre>
+<p>Then, store your initial and last strings (plaintext) in a lookup table.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="kw">def</span> build():</a>
+<a class="sourceLine" id="cb14-2" data-line-number="2">    end_to_start_matching <span class="op">=</span> <span class="bu">dict</span>()</a>
+<a class="sourceLine" id="cb14-3" data-line-number="3">    <span class="cf">for</span> row_num <span class="kw">in</span> <span class="bu">range</span>(NUM_ROWS):</a>
+<a class="sourceLine" id="cb14-4" data-line-number="4">        init_plaintext <span class="op">=</span> reduction(<span class="bu">hex</span>(row_num), <span class="dv">0</span>)</a>
+<a class="sourceLine" id="cb14-5" data-line-number="5">        plaintext <span class="op">=</span> init_plaintext</a>
+<a class="sourceLine" id="cb14-6" data-line-number="6">        <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(NUM_REDUCTIONS):</a>
+<a class="sourceLine" id="cb14-7" data-line-number="7">            h <span class="op">=</span> hashing(plaintext)</a>
+<a class="sourceLine" id="cb14-8" data-line-number="8">            plaintext <span class="op">=</span> reduction(h, i)</a>
+<a class="sourceLine" id="cb14-9" data-line-number="9">        end_to_start_matching[plaintext] <span class="op">=</span> init_plaintext</a></code></pre></div>
+<p>At each iteration, you compute <code>NUM_REDUCTIONS</code> passwords but only keep 2: the initial string, and the final one. And because each reduction function is different, the risk of collision is minimal.</p>
+<h3 id="serializing">Serializing</h3>
+<p>Once you have computed your table, simply store it as a pickle file.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb15-1" data-line-number="1"><span class="im">import</span> pickle <span class="im">as</span> pkl</a>
+<a class="sourceLine" id="cb15-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb15-3" data-line-number="3"><span class="cf">with</span> <span class="bu">open</span>(filename, <span class="st">&quot;wb&quot;</span>) <span class="im">as</span> f: <span class="co">#mode &quot;wb&quot; is important</span></a>
+<a class="sourceLine" id="cb15-4" data-line-number="4">    pkl.dump(end_to_start_matching, f)</a></code></pre></div>
+<p>On the other hand, deserializing is very similar:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb16-1" data-line-number="1"><span class="cf">with</span> <span class="bu">open</span>(filename, <span class="st">&quot;rb&quot;</span>) <span class="im">as</span> f:</a>
+<a class="sourceLine" id="cb16-2" data-line-number="2">    end_to_start_matching <span class="op">=</span> pkl.load(f)</a></code></pre></div>
+<h2 id="second-phase-attack">Second phase: attack</h2>
+<p>The attack is done in two steps: first, compute hashing and reductions, as explained in the handout, until you have a match between the computed hash and one of the “final hashes” computed earlier; If you have a match, recompute the whole row until you find your hash.</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb17-1" data-line-number="1"><span class="kw">def</span> crack_hash(target_hash):</a>
+<a class="sourceLine" id="cb17-2" data-line-number="2">    end_to_start_matching <span class="op">=</span> <span class="co">#load pickle</span></a>
+<a class="sourceLine" id="cb17-3" data-line-number="3">    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(NUM_REDUCTIONS<span class="dv">-1</span>, <span class="dv">-1</span>, <span class="dv">-1</span>):</a>
+<a class="sourceLine" id="cb17-4" data-line-number="4">        <span class="co"># try from all starting columns, starting from the end</span></a>
+<a class="sourceLine" id="cb17-5" data-line-number="5">        <span class="co"># (so i = N-1, N-2, N-3,...,0)</span></a>
+<a class="sourceLine" id="cb17-6" data-line-number="6">        h <span class="op">=</span> target_hash</a>
+<a class="sourceLine" id="cb17-7" data-line-number="7">        <span class="cf">for</span> j <span class="kw">in</span> <span class="bu">range</span>(i, NUM_REDUCTIONS):</a>
+<a class="sourceLine" id="cb17-8" data-line-number="8">            <span class="co"># range j between i, i+1, i+2,...,N</span></a>
+<a class="sourceLine" id="cb17-9" data-line-number="9">            plaintext <span class="op">=</span> reduction(h, j)</a>
+<a class="sourceLine" id="cb17-10" data-line-number="10">            h <span class="op">=</span> hashing(plaintext)</a>
+<a class="sourceLine" id="cb17-11" data-line-number="11">        <span class="cf">if</span> plaintext <span class="kw">in</span> end_to_start_matching:</a>
+<a class="sourceLine" id="cb17-12" data-line-number="12">            <span class="co"># you found a match: go to phase 2, recompute the whole row</span></a>
+<a class="sourceLine" id="cb17-13" data-line-number="13">            <span class="co"># may be a false alarm.</span></a>
+<a class="sourceLine" id="cb17-14" data-line-number="14">            preimage <span class="op">=</span> find_preimage(target_hash,</a>
+<a class="sourceLine" id="cb17-15" data-line-number="15">                                    end_to_start_matching[plaintext])</a>
+<a class="sourceLine" id="cb17-16" data-line-number="16">            <span class="cf">if</span> preimage <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</a>
+<a class="sourceLine" id="cb17-17" data-line-number="17">                <span class="co"># if not a false alarm, return it.</span></a>
+<a class="sourceLine" id="cb17-18" data-line-number="18">                <span class="cf">return</span> target_hash, preimage</a>
+<a class="sourceLine" id="cb17-19" data-line-number="19"></a>
+<a class="sourceLine" id="cb17-20" data-line-number="20"><span class="kw">def</span> find_preimage(target_hash: <span class="bu">str</span>, start_text: <span class="bu">str</span>):</a>
+<a class="sourceLine" id="cb17-21" data-line-number="21">    <span class="co"># phase 2: recompute the whole row until you find your target hash</span></a>
+<a class="sourceLine" id="cb17-22" data-line-number="22">    <span class="co"># (or the end of the row, false alarm)</span></a>
+<a class="sourceLine" id="cb17-23" data-line-number="23">    plaintext <span class="op">=</span> start_text</a>
+<a class="sourceLine" id="cb17-24" data-line-number="24">    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(NUM_REDUCTIONS):</a>
+<a class="sourceLine" id="cb17-25" data-line-number="25">        h <span class="op">=</span> hashing(plaintext)</a>
+<a class="sourceLine" id="cb17-26" data-line-number="26">        <span class="cf">if</span> h <span class="op">==</span> target_hash:</a>
+<a class="sourceLine" id="cb17-27" data-line-number="27">            <span class="cf">return</span> plaintext</a>
+<a class="sourceLine" id="cb17-28" data-line-number="28">        plaintext <span class="op">=</span> reduction(h, i)</a>
+<a class="sourceLine" id="cb17-29" data-line-number="29">    <span class="co">#if hash not found in chain, return</span></a>
+<a class="sourceLine" id="cb17-30" data-line-number="30">    <span class="cf">return</span> <span class="va">None</span></a></code></pre></div>
+<p>Simply wrap that around a for loop to crack a list of hashes.</p>
+<h2 id="parallelization">Parallelization</h2>
+<p>Building a table is usually rather costly. Attacking a hash is rather fast (though depends on the shape of the table), but attacking multiple becomes long. Fortunately, each row of the table can computed independently, and each hash can be attacked independently. For these reasons, we rely on parallelism to accelerate the process. We won’t detail the code here, as it goes beyond the scope of the exercise, but you are encouraged to read and understand the alternate version of the sample solution, which uses Python’s <a href="https://docs.python.org/3/library/multiprocessing.html">multiprocessing</a> library to handle multiple threads and speed up the process. The idea is always the same: create a function that takes part of 1 “unit” (one row or one hash), then make use of the library to handle its execution through different threads. Using a pool of workers and <code>imap_unordered</code> (as we do not usually care for the order of rows or hashes) makes the implementation a lot faster.</p>
+<p>You can find a different version of the solution, parallelized, in <a href="./ex2_parallel.py">ex2_parallel.py</a>.</p>
+<h2 id="matching-passwords">Matching passwords</h2>
+<p>You can find them in <a href="./dump_matches.txt">this file</a></p>
+<h2 id="theoretical-questions">Theoretical questions</h2>
+<ol type="1">
+<li>Q: <em>How do you compute the success rate of your table?</em><br>A: Either empirically or theoretically. Empirically, look at the fraction of hashes you managed to reverse. Theoretically, consider the size of the passwords space (36<sup>8</sup> in our case), and the <em>maximum</em> number of passwords covered (#rows x #columns). Though, this supposes no or little colliding branches, which is not always the case. Bigger tables lead to more overlaps, and a higher chance of duplicates. This also supposes everything is uniformly distributed, which usually isn’t.<br><sub>A finer success rate can be found in the appendix of the <a href="https://link.springer.com/content/pdf/10.1007%2F978-3-540-45146-4_36.pdf">original paper</a></sub></li>
+<li>Q: <em>What are the advantages of making the table “fatter” (more columns)? And “taller” (more rows)?</em><br>A: The advantage of a “fat” table is that it takes less space. Because you “discard” the values in-between, you’ll have to store less. But in turn, looking up a hash becomes costly. At the extreme, you only have one row, arbitrarily long. You then only store 2 plaintexts, but now have to recompute everything at each lookup. On the other hand, a “tall” table makes lookup faster, but you have to store more. Looking again at the extreme, you’d have a table where you only apply 1 hashing and 1 reduction. Lookup becomes extremely fast (you only have to do one reduction and look it up), but then you’ve basically built a (bad) lookup-table. Ultimately, it is necessary to carefully consider the trade-off between memory and speed, also based on the target and the available resources.</li>
+<li>Q: <em>How does height and width relate the the size (on disk) of the table, and the lookup time?</em><br>A: The lookup time is <em>t(t-1)/2</em> for a table with <em>t</em> columns. This is because you first try to compute one reduction and one hash, then two reduction and two hash, then 3 reductions and 3 hash,… thus the result. The size on disk is directly proportional to <em>m</em> (the number of rows): You will keep <em>2m</em> elements from the passwords space.</li>
+<li>Q: <em>The state-of-the-art cracking uses multiple tables. What is the point?</em><br>A: Even though rainbow tables are more efficient than Hellman’s tables, with a drastically reduced number of collisions, it may still happen. Suppose you have a table of size <em>m x t</em>, that you want to expand by a factor <em>l</em>. Making a table of size <em>m x lt</em>, your lookup will skyrocket roughly (<em>lt</em>)<sup>2</sup>, compared to <em>lt</em><sup>2</sup> for <em>l</em> distinct tables. If we made it taller (<em>lm x t</em>), the risk of collision would increase.</li>
+<li>Q: <em>What would be the (estimated) size of a table to have a &gt;95% success rate on this passwords space?</em><br>A: Following the fine grain analysis of the original paper, and after some numerical computations, we find that a table of size <code>60B x 90K</code> would have a rate of ~95.5%. We included a utility in the solution Python file, to compute the success rate according to some parameters.</li>
+<li>Q: <em>Can you parallelize the processes of creating the table and hacking?</em><br>A: Yes, parallelization is indeed possible, and actually crucial because of the usually high computational cost of the process. As explained above, each row can be computed independently, so does each hash. If longs were to be particularly long, we could even parallelize the cracking <em>within</em> one hash.</li>
+<li>Q: <em>How would you modify the reduction functions to match exactly the Zürich Insurance requirements? How would that affect your success rate?</em><br>A: The first character would be taken from a different space (a-zA-Z), and all others would have the same (larger) charset. This would create a passwords space of 52 x 62<sup>7</sup> ≃ 1.83 x 10<sup>14</sup>. If we used the same table size as above (<code>60B x 90x</code>), the success rate would drop to 0.27%.</li>
+</ol>
+</body>
+</html>

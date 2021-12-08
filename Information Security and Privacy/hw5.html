@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang xml:lang>
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>hw5</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <style type="text/css">
+html {
+font-size: 100%;
+overflow-y: scroll;
+-webkit-text-size-adjust: 100%;
+-ms-text-size-adjust: 100%;
+}
+body {
+color: #000;
+font-family: Georgia, Palatino, 'Palatino Linotype', Times, 'Times New Roman', serif;
+font-size: 12px;
+line-height: 1.7;
+padding: 1em;
+margin: auto;
+max-width: 42em;
+background: #fefefe;
+}
+a {
+color: #0645ad;
+text-decoration: none;
+}
+a:visited {
+color: #0b0080;
+}
+a:hover {
+color: #06e;
+}
+a:active {
+color: #faa700;
+}
+a:focus {
+outline: thin dotted;
+}
+*::-moz-selection {
+background: rgba(255, 255, 0, 0.3);
+color: #000;
+}
+*::selection {
+background: rgba(255, 255, 0, 0.3);
+color: #000;
+}
+a::-moz-selection {
+background: rgba(255, 255, 0, 0.3);
+color: #0645ad;
+}
+a::selection {
+background: rgba(255, 255, 0, 0.3);
+color: #0645ad;
+}
+p {
+margin: 1em 0;
+}
+img {
+max-width: 100%;
+}
+h1, h2, h3, h4, h5, h6 {
+color: #111;
+line-height: 125%;
+margin-top: 2em;
+font-weight: normal;
+}
+h4, h5, h6 {
+font-weight: bold;
+}
+h1 {
+font-size: 2.5em;
+}
+h2 {
+font-size: 2em;
+}
+h3 {
+font-size: 1.5em;
+}
+h4 {
+font-size: 1.2em;
+}
+h5 {
+font-size: 1em;
+}
+h6 {
+font-size: 0.9em;
+}
+blockquote {
+color: #666666;
+margin: 0;
+padding-left: 3em;
+border-left: 0.5em #EEE solid;
+}
+hr {
+display: block;
+height: 2px;
+border: 0;
+border-top: 1px solid #aaa;
+border-bottom: 1px solid #eee;
+margin: 1em 0;
+padding: 0;
+}
+pre, code, kbd, samp {
+color: #000;
+font-family: monospace, monospace;
+_font-family: 'courier new', monospace;
+font-size: 0.98em;
+background-color: #eee;
+padding-left: 5px;
+padding-right: 5px;
+}
+pre {
+white-space: pre;
+white-space: pre-wrap;
+word-wrap: break-word;
+}
+b, strong {
+font-weight: bold;
+}
+dfn {
+font-style: italic;
+}
+ins {
+background: #ff9;
+color: #000;
+text-decoration: none;
+}
+mark {
+background: #ff0;
+color: #000;
+font-style: italic;
+font-weight: bold;
+}
+sub, sup {
+font-size: 75%;
+line-height: 0;
+position: relative;
+vertical-align: baseline;
+}
+sup {
+top: -0.5em;
+}
+sub {
+bottom: -0.25em;
+}
+ul, ol {
+margin: 1em 0;
+padding: 0 0 0 2em;
+}
+li p:last-child {
+margin-bottom: 0;
+}
+ul ul, ol ol {
+margin: .3em 0;
+}
+dl {
+margin-bottom: 1em;
+}
+dt {
+font-weight: bold;
+margin-bottom: .8em;
+}
+dd {
+margin: 0 0 .8em 2em;
+}
+dd:last-child {
+margin-bottom: 0;
+}
+img {
+border: 0;
+-ms-interpolation-mode: bicubic;
+vertical-align: middle;
+}
+figure {
+display: block;
+text-align: center;
+margin: 1em 0;
+}
+figure img {
+border: none;
+margin: 0 auto;
+}
+figcaption {
+font-size: 0.8em;
+font-style: italic;
+margin: 0 0 .8em;
+}
+table {
+margin-bottom: 2em;
+border-bottom: 1px solid #ddd;
+border-right: 1px solid #ddd;
+border-spacing: 0;
+border-collapse: collapse;
+}
+table th {
+padding: .2em 1em;
+background-color: #eee;
+border-top: 1px solid #ddd;
+border-left: 1px solid #ddd;
+}
+table td {
+padding: .2em 1em;
+border-top: 1px solid #ddd;
+border-left: 1px solid #ddd;
+vertical-align: top;
+}
+.author {
+font-size: 1.2em;
+text-align: center;
+}
+@media only screen and (min-width: 480px) {
+body {
+font-size: 14px;
+}
+}
+@media only screen and (min-width: 768px) {
+body {
+font-size: 16px;
+}
+}
+@media print {
+* {
+background: transparent !important;
+color: black !important;
+filter: none !important;
+-ms-filter: none !important;
+}
+body {
+font-size: 12pt;
+max-width: 100%;
+}
+a, a:visited {
+text-decoration: underline;
+}
+hr {
+height: 1px;
+border: 0;
+border-bottom: 1px solid black;
+}
+a[href]:after {
+content: " (" attr(href) ")";
+}
+abbr[title]:after {
+content: " (" attr(title) ")";
+}
+.ir a:after, a[href^="javascript:"]:after, a[href^="#"]:after {
+content: "";
+}
+pre, blockquote {
+border: 1px solid #999;
+padding-right: 1em;
+page-break-inside: avoid;
+}
+tr, img {
+page-break-inside: avoid;
+}
+img {
+max-width: 100% !important;
+}
+@page :left {
+margin: 15mm 20mm 15mm 10mm;
+}
+@page :right {
+margin: 15mm 10mm 15mm 20mm;
+}
+p, h2, h3 {
+orphans: 3;
+widows: 3;
+}
+h2, h3 {
+page-break-after: avoid;
+}
+}</style>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<h1 id="homework-5">Homework 5</h1>
+<ul>
+<li><a href="#homework-5">Homework 5</a>
+<ul>
+<li><a href="#exercise-1-attack-p0wn-it">Exercise 1: [attack] P0wn it</a>
+<ul>
+<li><a href="#setup">Setup</a></li>
+<li><a href="#exercise-11">Exercise 1.1</a></li>
+<li><a href="#exercise-12">Exercise 1.2</a></li>
+</ul></li>
+<li><a href="#exercise-2-defense-no-sql-injection">Exercise 2: [defense] No SQL Injection!</a></li>
+</ul></li>
+</ul>
+<p><strong>Never use your actual GASPAR password on COM-402 exercises (if the login form is not Tequila).</strong></p>
+<p><strong>As you might notice, the solutions are available inside the docker. The goal is of course to solve the exercises without looking at the solutions.</strong></p>
+<h2 id="exercise-1-attack-p0wn-it">Exercise 1: [attack] P0wn it</h2>
+<p>You can’t imagine the number of bad developers out there. We just found one and we’d like you to hack his website!</p>
+<h3 id="setup">Setup</h3>
+<p>You must first download the docker image containing the website alongside with the database. If you remember the lecture, you should know that having the website and database on the same server is already a sign of trouble…</p>
+<p>Run the web server using the following command: <code>docker run --rm -it -p 5001:5001 --name hw5ex1 com402/hw5ex1</code></p>
+<p>Check that you can access the website through your navigator. Its IP address is given when running the previous command. Since the website is super rudimentary, here are the three URLs that you can try:</p>
+<ul>
+<li><code>http://&lt;ip&gt;/</code></li>
+<li><code>http://&lt;ip&gt;/messages</code></li>
+<li><code>http://&lt;ip&gt;/users</code></li>
+</ul>
+<p>By playing around with the website you might notice that it might be vulnerable to SQL injections…</p>
+<p>To provide you with a somehow realistic setting, we did not give you access to the webserver’s code. However, for your convenience, we have provided the credentials to the webserver’s <em>mysql</em> databases<sup>1</sup>:</p>
+<ul>
+<li>Access the container directly with <code>docker exec -it hw5ex1 /bin/bash</code></li>
+<li>Access the database with <code>mysql -u &lt;username&gt; -p</code> and enter your password</li>
+<li>The credentials are stored in the <code>/root/credentials.cfg</code> file.</li>
+</ul>
+<p>The solutions to the exercises can be trivially found in the database, however the point of the exercise is to write scripts that perform SQL injection attacks on the webserver to retrieve the information.</p>
+<p><sup>1</sup>This is clearly unrealistic, however webserver databases usually contain similar table structures and column names…</p>
+<h3 id="exercise-1.1">Exercise 1.1</h3>
+<p>As you might have already noticed, the website lets visitors post messages that can be then viewed on the <code>/messages</code> page. However, a secret agent with the email address <em>james@bond.mi5</em> has posted a secret message on the webserver, which for security reasons has been hidden from visitors. As you are carrying out an investigation on the activities of the government, your goal in this exercise is to find that secret message.</p>
+<p>You must write a <em>python3</em> script that connects to the IP address of the docker in your machine and outputs the secret message in <em>stdout</em>. Your script should only use the libraries <code>requests</code> and <code>BeautifulSoup</code>. The former is a library that allows you to send organic, grass-fed HTTP/1.1 requests, without the need for manual labor. the latter is a HTML parsing library enabling you to quickly find the right information in a HTML file.</p>
+<p>To install them :</p>
+<ul>
+<li><code>pip3 install requests</code></li>
+<li><code>pip3 install beautifulsoup4</code></li>
+</ul>
+<p><em>Note</em> : you do not need to install them if you run your script in the docker container.</p>
+<p>To verify your solution compare the result with : <code>/root/solutions/secret_message.txt</code></p>
+<p><em>Hint</em> : you don’t always need a form for SQL injections…</p>
+<h3 id="exercise-1.2">Exercise 1.2</h3>
+<p>As the secret message did not contain enough information for your investigation, you searched the <code>/users</code> page and found out that a famous police inspector, <em>Inspector Derrick</em>, is registered on the website. You know that the inspector has access to criminal records that could be useful for your investigation and suspect that he used the same password to register on the vulnerable website…</p>
+<p>Your goal is to write another script that connects to the website to retrieve his password from the database. Remember to login with the correct credentials, different from exercise 1.1.</p>
+<p>To verify that you retrieved the correct password, compare the result with: <code>/root/solutions/password.txt</code></p>
+<h2 id="exercise-2-defense-no-sql-injection">Exercise 2: [defense] No SQL Injection!</h2>
+<p>You’re being asked to build a super minimal website using some data stored in a MySQL database. Of course, you’re starting to worry about the security nightmare this project might have.</p>
+<p>Well not really, because so many libraries do the job for us now.</p>
+<p>Pull and run the Docker image:</p>
+<p><code>docker run -it -p 80:80 --rm --name hw5ex2 com402/hw5ex2 bash</code></p>
+<p>You will find inside the skeleton script <code>site.py</code> where you have to fill in two endpoints <code>/messages</code> and <code>/users</code>. All information needed is included in <code>site.py</code>. The goal is to make sure your script is not susceptible to SQL injection attacks. In order to modify the file <code>site.py</code>, you have to copy it to your computer, modify it and copy it back to the docker. The copy from the docker can be done with: <code>docker cp hw5ex2:site.py site.py</code>. The same command can be used to copy the file back to the docker.</p>
+<p>Hint: check MySQL cursor.</p>
+<p>Afterwards, execute the modified script:</p>
+<pre><code>chmod +x site.py
+./site.py</code></pre>
+<p>To verify your solution, run the verify script in another bash shell inside the container:</p>
+<p><code>docker exec -it hw5ex2 /bin/bash</code></p>
+<p>to open a new bash shell and then:</p>
+<p><code>./verif.py randomseed</code></p>
+<p>If it runs and displays <code>GOOD</code>, you are done, congrats !</p>
+</body>
+</html>

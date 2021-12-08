@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang xml:lang>
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>hw2_sol</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <style type="text/css">
+html {
+font-size: 100%;
+overflow-y: scroll;
+-webkit-text-size-adjust: 100%;
+-ms-text-size-adjust: 100%;
+}
+body {
+color: #000;
+font-family: Georgia, Palatino, 'Palatino Linotype', Times, 'Times New Roman', serif;
+font-size: 12px;
+line-height: 1.7;
+padding: 1em;
+margin: auto;
+max-width: 42em;
+background: #fefefe;
+}
+a {
+color: #0645ad;
+text-decoration: none;
+}
+a:visited {
+color: #0b0080;
+}
+a:hover {
+color: #06e;
+}
+a:active {
+color: #faa700;
+}
+a:focus {
+outline: thin dotted;
+}
+*::-moz-selection {
+background: rgba(255, 255, 0, 0.3);
+color: #000;
+}
+*::selection {
+background: rgba(255, 255, 0, 0.3);
+color: #000;
+}
+a::-moz-selection {
+background: rgba(255, 255, 0, 0.3);
+color: #0645ad;
+}
+a::selection {
+background: rgba(255, 255, 0, 0.3);
+color: #0645ad;
+}
+p {
+margin: 1em 0;
+}
+img {
+max-width: 100%;
+}
+h1, h2, h3, h4, h5, h6 {
+color: #111;
+line-height: 125%;
+margin-top: 2em;
+font-weight: normal;
+}
+h4, h5, h6 {
+font-weight: bold;
+}
+h1 {
+font-size: 2.5em;
+}
+h2 {
+font-size: 2em;
+}
+h3 {
+font-size: 1.5em;
+}
+h4 {
+font-size: 1.2em;
+}
+h5 {
+font-size: 1em;
+}
+h6 {
+font-size: 0.9em;
+}
+blockquote {
+color: #666666;
+margin: 0;
+padding-left: 3em;
+border-left: 0.5em #EEE solid;
+}
+hr {
+display: block;
+height: 2px;
+border: 0;
+border-top: 1px solid #aaa;
+border-bottom: 1px solid #eee;
+margin: 1em 0;
+padding: 0;
+}
+pre, code, kbd, samp {
+color: #000;
+font-family: monospace, monospace;
+_font-family: 'courier new', monospace;
+font-size: 0.98em;
+background-color: #eee;
+padding-left: 5px;
+padding-right: 5px;
+}
+pre {
+white-space: pre;
+white-space: pre-wrap;
+word-wrap: break-word;
+}
+b, strong {
+font-weight: bold;
+}
+dfn {
+font-style: italic;
+}
+ins {
+background: #ff9;
+color: #000;
+text-decoration: none;
+}
+mark {
+background: #ff0;
+color: #000;
+font-style: italic;
+font-weight: bold;
+}
+sub, sup {
+font-size: 75%;
+line-height: 0;
+position: relative;
+vertical-align: baseline;
+}
+sup {
+top: -0.5em;
+}
+sub {
+bottom: -0.25em;
+}
+ul, ol {
+margin: 1em 0;
+padding: 0 0 0 2em;
+}
+li p:last-child {
+margin-bottom: 0;
+}
+ul ul, ol ol {
+margin: .3em 0;
+}
+dl {
+margin-bottom: 1em;
+}
+dt {
+font-weight: bold;
+margin-bottom: .8em;
+}
+dd {
+margin: 0 0 .8em 2em;
+}
+dd:last-child {
+margin-bottom: 0;
+}
+img {
+border: 0;
+-ms-interpolation-mode: bicubic;
+vertical-align: middle;
+}
+figure {
+display: block;
+text-align: center;
+margin: 1em 0;
+}
+figure img {
+border: none;
+margin: 0 auto;
+}
+figcaption {
+font-size: 0.8em;
+font-style: italic;
+margin: 0 0 .8em;
+}
+table {
+margin-bottom: 2em;
+border-bottom: 1px solid #ddd;
+border-right: 1px solid #ddd;
+border-spacing: 0;
+border-collapse: collapse;
+}
+table th {
+padding: .2em 1em;
+background-color: #eee;
+border-top: 1px solid #ddd;
+border-left: 1px solid #ddd;
+}
+table td {
+padding: .2em 1em;
+border-top: 1px solid #ddd;
+border-left: 1px solid #ddd;
+vertical-align: top;
+}
+.author {
+font-size: 1.2em;
+text-align: center;
+}
+@media only screen and (min-width: 480px) {
+body {
+font-size: 14px;
+}
+}
+@media only screen and (min-width: 768px) {
+body {
+font-size: 16px;
+}
+}
+@media print {
+* {
+background: transparent !important;
+color: black !important;
+filter: none !important;
+-ms-filter: none !important;
+}
+body {
+font-size: 12pt;
+max-width: 100%;
+}
+a, a:visited {
+text-decoration: underline;
+}
+hr {
+height: 1px;
+border: 0;
+border-bottom: 1px solid black;
+}
+a[href]:after {
+content: " (" attr(href) ")";
+}
+abbr[title]:after {
+content: " (" attr(title) ")";
+}
+.ir a:after, a[href^="javascript:"]:after, a[href^="#"]:after {
+content: "";
+}
+pre, blockquote {
+border: 1px solid #999;
+padding-right: 1em;
+page-break-inside: avoid;
+}
+tr, img {
+page-break-inside: avoid;
+}
+img {
+max-width: 100% !important;
+}
+@page :left {
+margin: 15mm 20mm 15mm 10mm;
+}
+@page :right {
+margin: 15mm 10mm 15mm 20mm;
+}
+p, h2, h3 {
+orphans: 3;
+widows: 3;
+}
+h2, h3 {
+page-break-after: avoid;
+}
+}</style>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<h1 id="com-402-homework-2-solution">COM-402 Homework 2 Solution</h1>
+<ul>
+<li><a href="#com-402-homework-2-solution">COM-402 Homework 2 Solution</a>
+<ul>
+<li><a href="#exercise-1-cookie-tempering">Exercise 1: Cookie tempering</a>
+<ul>
+<li><a href="#the-initial-problem">The initial problem</a></li>
+<li><a href="#so-where-are-the-cookies">So, where are the cookies?</a></li>
+<li><a href="#decode-and-understand-the-cookie">Decode and understand the cookie</a></li>
+<li><a href="#haxxxing-the-cookie">Haxxxing the cookie</a></li>
+</ul></li>
+<li><a href="#exercise-2-hmac-for-cookies">Exercise 2: HMAC for cookies</a>
+<ul>
+<li><a href="#hmac-">HMAC ?</a></li>
+<li><a href="#create-the-cookie">Create the cookie</a></li>
+<li><a href="#login-the-user">Login the user</a></li>
+<li><a href="#checking-a-cookie">Checking a cookie</a></li>
+<li><a href="#authenticating-the-user">Authenticating the user</a></li>
+</ul></li>
+<li><a href="#exercise-3-client-side-password-verification">Exercise 3: Client-Side Password Verification</a>
+<ul>
+<li><a href="#understanding-the-setup">Understanding the setup</a></li>
+<li><a href="#ew-javascript">Ew, Javascript</a></li>
+<li><a href="#some-explanations">Some explanations</a></li>
+<li><a href="#hacking">Hacking</a></li>
+</ul></li>
+<li><a href="#exercise-4-pake-implementation">Exercise 4: PAKE implementation</a>
+<ul>
+<li><a href="#the-structure">The structure</a></li>
+<li><a href="#breaking-down-the-process">Breaking down the process</a></li>
+</ul></li>
+</ul></li>
+</ul>
+<p>The goal of the exercises is to understand the basics of networks security, such as cookies, client-side, HMAC,…</p>
+<h2 id="exercise-1-cookie-tempering">Exercise 1: Cookie tempering</h2>
+<h3 id="the-initial-problem">The initial problem</h3>
+<p>The title already gives a lot of information on how you should proceed. Have a look at your <a href="https://www.wikihow.com/View-Cookies">cookies</a> for now. Despite the possible <code>*.epfl.ch</code> generic cookies, there is nothing of interest here (to check that, you can open the URL in a private navigation window, that starts clean of cookies). Nothing to tamper with yet…</p>
+<p>Open your browser console (right-click -&gt; inspect is a good way), and open the <em>Network</em> tab. When clicking on the “Hack &amp; Spy” buttons, you see a request made to <code>api/hw2/ex1/list</code>. The request headers don’t contain something of interest. The response is a <code>403 Forbidden</code>.</p>
+<p>[Optional] You can also inspect the HTML of the page, and notice, at the very bottom a <code>&lt;script&gt;</code> tag, that contains the code that binds the button to HTTP requests to <code>api/hw2/ex1/list</code>, with an empty payload, and that deals with the result of the request (display the success or mock you when you fail).</p>
+<h3 id="so-where-are-the-cookies">So, where are the cookies?</h3>
+<p>When you arrive on the webpage, the first things to spot is the possible interactions. Obviously, the “Hack &amp; Spy” buttons, but also the hyperlink on the word <em>administrators</em>, which leads you to <code>/hw2/ex1/login.html</code>, and a nice login form. That’s nice!</p>
+<p>Enter some credentials (can be any dummy value, like <code>myusername</code> and <code>mypassword</code>). You’re now back to the homepage, and still can’t <em>hack &amp; spy</em> :( But, going back to your cookies, you now have a cookie!</p>
+<table>
+<thead>
+<tr class="header">
+<th>name</th>
+<th style="text-align: center;">value</th>
+<th>domain</th>
+<th>Expires</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>LoginCookie</td>
+<td style="text-align: center;"><code>bXl1c2VybmFtZS...</code></td>
+<td>com402.epfl.ch</td>
+<td>Session</td>
+</tr>
+</tbody>
+</table>
+<h3 id="decode-and-understand-the-cookie">Decode and understand the cookie</h3>
+<p>The value (that will vary for you) is quite gibberish though… But as a trained IT security expert, you immediately recognize base64! If you don’t, here are a few tips: * A long string of alphanumerical characters is most likely base64 * If it ends by one or several <code>=</code> characters, it also is. * base64 is <a href="https://en.wikipedia.org/wiki/Base64#URL_applications">very common</a> on the web and in cookies, to encode arbitrary text or content. * There are <a href="https://www.webatic.com/encoding-explorer">tools</a> online to help with that</p>
+<p><a href="https://base64decode.org">base64decode.org</a> may be the best online tool for encoding/decoding base64 strings. Input the above value, and you’ll obtain something along the lines of <code>myusername,1594232326,com402,hw2,ex1,user</code>. You can try multiple times (go to the login page, and enter credentials again), and you will notice that: * The first value (<code>myusername</code>) is always your username * The second value changes each time, but slightly (this is a good indicator of a <a href="https://www.unixtimestamp.com/">timestamp</a>) * The next 3 values never ever change.</p>
+<p>The interesting thing about base64 is that it is completely and deterministically reversible. This means that you can change anything in that string, and re-encode it at will.</p>
+<p>Try again to <em>Hack &amp; Spy</em>, nothing changes. But now, you see in the request headers that the cookie is sent along. This means, your login information also is. Maybe we can <strong>temper</strong> with that. The last (decoded) value of the cookie is <code>user</code>. Maybe we can try to change it?</p>
+<h3 id="haxxxing-the-cookie">Haxxxing the cookie</h3>
+<p>Copy-paste the decoded string to <a href="https://base64encode.org">base64encode.org</a>, and modify the characters you are interested in. At this point, you don’t know the “roles” in the page, except <code>user</code>. There are many keywords you can try, such as <code>root</code>, <code>editor</code>, <code>owner</code>, <code>administrator</code>, <code>admin</code>,… We’ll settle for the latter! Change <code>user</code> by <code>admin</code>, (to obtain something like <code>myusername,1594232326,com402,hw2,ex1,admin</code>), and encode.</p>
+<p>Now go to your browser again, modify your cookie with the newly encoded string, and now you can <em>Hack &amp; Spy</em>!</p>
+<h2 id="exercise-2-hmac-for-cookies">Exercise 2: HMAC for cookies</h2>
+<p>We are again having fun with cookies. It’s now time to be on the other side, and be smarter than Evil Corp.</p>
+<h3 id="hmac">HMAC ?</h3>
+<p>First of all, it’s important to remember what a <a href="https://en.wikipedia.org/wiki/HMAC">HMAC</a> is. Basically, you store on your server a <em>secret key</em> (some arbitrary string, only known to you, a <em>one-time pad</em>). Then, when you need to ensure integrity of a content, you xor the content with your key, hash it, and append it to the content. With that, if someone wants to tamper with the content, they must also modify the HMAC (which they can’t, because they don’t have the secret).</p>
+<h3 id="create-the-cookie">Create the cookie</h3>
+<p>First step, we need a function to create the cookie. As mentioned, we need the username and password to determine if a user is an admin, then we create the cookie, compute its HMAC and append it. Here is a snippet that does that:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="im">import</span> time <span class="co"># for the timestamp</span></a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="im">import</span> hmac <span class="co"># standard lib for the HMAC</span></a>
+<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="im">from</span> hashlib <span class="im">import</span> sha1 <span class="co"># hashing library to provide to hmac</span></a>
+<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="im">import</span> base64 <span class="co"># encode/decode base64 strings</span></a>
+<a class="sourceLine" id="cb1-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb1-6" data-line-number="6"><span class="co"># your secret key</span></a>
+<a class="sourceLine" id="cb1-7" data-line-number="7">SECRET_KEY_YOU_WILL_NEVER_FIND <span class="op">=</span> <span class="st">&quot;ducks&quot;</span>.encode()</a>
+<a class="sourceLine" id="cb1-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb1-9" data-line-number="9"><span class="kw">def</span> create_cookie(username, password):</a>
+<a class="sourceLine" id="cb1-10" data-line-number="10">    <span class="co"># the infos required for the cookie</span></a>
+<a class="sourceLine" id="cb1-11" data-line-number="11">    t <span class="op">=</span> <span class="bu">str</span>(<span class="bu">int</span>(time.time())) <span class="co"># create the timestamp</span></a>
+<a class="sourceLine" id="cb1-12" data-line-number="12">    domain <span class="op">=</span> <span class="st">&quot;com402&quot;</span></a>
+<a class="sourceLine" id="cb1-13" data-line-number="13">    hw <span class="op">=</span> <span class="st">&quot;hw2&quot;</span></a>
+<a class="sourceLine" id="cb1-14" data-line-number="14">    ex <span class="op">=</span> <span class="st">&quot;ex2&quot;</span></a>
+<a class="sourceLine" id="cb1-15" data-line-number="15"></a>
+<a class="sourceLine" id="cb1-16" data-line-number="16">    <span class="co"># decide the role based on the username/password</span></a>
+<a class="sourceLine" id="cb1-17" data-line-number="17">    <span class="cf">if</span> username <span class="op">==</span> <span class="st">&quot;admin&quot;</span> <span class="kw">and</span> password <span class="op">==</span> <span class="st">&quot;42&quot;</span>:</a>
+<a class="sourceLine" id="cb1-18" data-line-number="18">        role <span class="op">=</span> <span class="st">&quot;admin&quot;</span></a>
+<a class="sourceLine" id="cb1-19" data-line-number="19">    <span class="cf">else</span>:</a>
+<a class="sourceLine" id="cb1-20" data-line-number="20">        role <span class="op">=</span> <span class="st">&quot;user&quot;</span></a>
+<a class="sourceLine" id="cb1-21" data-line-number="21"></a>
+<a class="sourceLine" id="cb1-22" data-line-number="22">    <span class="co"># create the &quot;base&quot; cookie, that will be hashed</span></a>
+<a class="sourceLine" id="cb1-23" data-line-number="23">    base_cookie <span class="op">=</span> <span class="st">&quot;,&quot;</span>.join([username,t,domain,hw,ex,role])</a>
+<a class="sourceLine" id="cb1-24" data-line-number="24"></a>
+<a class="sourceLine" id="cb1-25" data-line-number="25">    <span class="co">#create the HMAC</span></a>
+<a class="sourceLine" id="cb1-26" data-line-number="26">    my_hmac <span class="op">=</span> hmac.new(SECRET_KEY_YOU_WILL_NEVER_FIND,</a>
+<a class="sourceLine" id="cb1-27" data-line-number="27">                   base_cookie.encode(), <span class="co">#message must be binary</span></a>
+<a class="sourceLine" id="cb1-28" data-line-number="28">                   sha1)</a>
+<a class="sourceLine" id="cb1-29" data-line-number="29">    final_cookie <span class="op">=</span> base_cookie <span class="op">+</span> <span class="st">&quot;,&quot;</span> <span class="op">+</span> my_hmac.hexdigest() <span class="co"># append digest</span></a>
+<a class="sourceLine" id="cb1-30" data-line-number="30">    <span class="co"># base64encode the cookie (with .encode() for binary format),</span></a>
+<a class="sourceLine" id="cb1-31" data-line-number="31">    <span class="co"># then back to utf-8 for a readable cookie</span></a>
+<a class="sourceLine" id="cb1-32" data-line-number="32">    <span class="cf">return</span> base64.b64encode(final_cookie.encode()).decode(<span class="st">'utf-8'</span>)</a></code></pre></div>
+<p>Note a few specialties there: * The <code>hmac</code> library works with binary values, this is why we have to use <code>.encode()</code> on the secret key and the base cookie, to change them from utf-8 strings to binary strings. * We used here sha1, which is a rather standard hashing algorithm, but other (md5, sha2,…) can be used. * base64 also works with binary values: we first encode <code>final_cookie</code> to binary, then change it to base64 (which yields a result in binary), then decode it again to utf-8 for a usable format. * The method used to authenticate the admins is absolutely terrible, never apply that in real life. This is purely a demonstration. * Same apply for the secret key, you should use a longer and more random one.</p>
+<h3 id="login-the-user">Login the user</h3>
+<p>Now that we have a way to create the cookie, we can login the user. We reuse the template that was provided, and complete the <code>/login</code> route.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="im">from</span> flask <span class="im">import</span> Flask, make_response, request</a>
+<a class="sourceLine" id="cb2-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="at">@app.route</span>(<span class="st">&quot;/login&quot;</span>, methods<span class="op">=</span>[<span class="st">&quot;POST&quot;</span>]) <span class="co"># only accept POST</span></a>
+<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="kw">def</span> login():</a>
+<a class="sourceLine" id="cb2-5" data-line-number="5">    <span class="co"># get the username/password from the payload</span></a>
+<a class="sourceLine" id="cb2-6" data-line-number="6">    username <span class="op">=</span> request.form.get(<span class="st">'username'</span>)</a>
+<a class="sourceLine" id="cb2-7" data-line-number="7">    password <span class="op">=</span> request.form.get(<span class="st">&quot;password&quot;</span>)</a>
+<a class="sourceLine" id="cb2-8" data-line-number="8">    <span class="co">####</span></a>
+<a class="sourceLine" id="cb2-9" data-line-number="9">    <span class="co"># [optional] here, you can perform sanity checks</span></a>
+<a class="sourceLine" id="cb2-10" data-line-number="10">    <span class="co"># (are they both non-null, etc.)</span></a>
+<a class="sourceLine" id="cb2-11" data-line-number="11">    <span class="co">####</span></a>
+<a class="sourceLine" id="cb2-12" data-line-number="12">    <span class="co"># create your cookie</span></a>
+<a class="sourceLine" id="cb2-13" data-line-number="13">    c <span class="op">=</span> create_cookie(username, password)</a>
+<a class="sourceLine" id="cb2-14" data-line-number="14">    <span class="co"># prepare your response (the text is useless)</span></a>
+<a class="sourceLine" id="cb2-15" data-line-number="15">    resp <span class="op">=</span> make_response(<span class="st">&quot;Logged in&quot;</span>)</a>
+<a class="sourceLine" id="cb2-16" data-line-number="16">    <span class="co"># set the cookie with the correct cookie name</span></a>
+<a class="sourceLine" id="cb2-17" data-line-number="17">    resp.set_cookie(cookie_name, c)</a>
+<a class="sourceLine" id="cb2-18" data-line-number="18">    <span class="co"># return your response</span></a>
+<a class="sourceLine" id="cb2-19" data-line-number="19">    <span class="cf">return</span> resp</a></code></pre></div>
+<p>Nothing too crazy here: get the values from the POST request, create your cookie, prepare a response, set the cookie and send it.</p>
+<p>You can already test that in your lab. Do a POST request, and then check the session cookies. You should see the cookie, with the base64-encoded value (that you can decode as in ex1, to ensure it’s correct)</p>
+<h3 id="checking-a-cookie">Checking a cookie</h3>
+<p>Now that the user has a cookie, we must build a function that, provided the cookie, will answer if the cookie is legit. We will first take the cookie, base64decode it, put aside the HMAC, re-compute it, and compare them.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw">def</span> cookie_validate(cookie):</a>
+<a class="sourceLine" id="cb3-2" data-line-number="2">    <span class="cf">try</span>: <span class="co"># optional: try to decode, but don't trust too much</span></a>
+<a class="sourceLine" id="cb3-3" data-line-number="3">        decoded <span class="op">=</span> base64.b64decode(cookie.encode()).decode(<span class="st">&quot;utf-8&quot;</span>)</a>
+<a class="sourceLine" id="cb3-4" data-line-number="4">    <span class="cf">except</span>:</a>
+<a class="sourceLine" id="cb3-5" data-line-number="5">        <span class="co"># The cookie isn't even a base64 encoding anymore,</span></a>
+<a class="sourceLine" id="cb3-6" data-line-number="6">        <span class="co"># it definitely has been tempered with...</span></a>
+<a class="sourceLine" id="cb3-7" data-line-number="7">        <span class="cf">return</span> <span class="va">False</span></a>
+<a class="sourceLine" id="cb3-8" data-line-number="8">    <span class="co"># separate base cookie from hmac</span></a>
+<a class="sourceLine" id="cb3-9" data-line-number="9">    base_cookie, cookie_hmac <span class="op">=</span> decoded.rsplit(<span class="st">&quot;,&quot;</span>, <span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb3-10" data-line-number="10">    <span class="co"># re-compute the hmac from the base cookie</span></a>
+<a class="sourceLine" id="cb3-11" data-line-number="11">    reference_hmac <span class="op">=</span> hmac.new(SECRET_KEY_YOU_WILL_NEVER_FIND,</a>
+<a class="sourceLine" id="cb3-12" data-line-number="12">                     base_cookie.encode(),</a>
+<a class="sourceLine" id="cb3-13" data-line-number="13">                     sha1).hexdigest()</a>
+<a class="sourceLine" id="cb3-14" data-line-number="14"></a>
+<a class="sourceLine" id="cb3-15" data-line-number="15">    <span class="co"># return whether or not they are equal</span></a>
+<a class="sourceLine" id="cb3-16" data-line-number="16">    <span class="cf">return</span> cookie_hmac <span class="op">==</span> reference_hmac</a></code></pre></div>
+<h3 id="authenticating-the-user">Authenticating the user</h3>
+<p>Now that we can ensure the cookie is valid, we can do the complete authentication step.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="at">@app.route</span>(<span class="st">&quot;/auth&quot;</span>,methods<span class="op">=</span>[<span class="st">'GET'</span>])</a>
+<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="kw">def</span> auth():    </a>
+<a class="sourceLine" id="cb4-3" data-line-number="3">    <span class="co"># get the LoginCookie from the cookie jar</span></a>
+<a class="sourceLine" id="cb4-4" data-line-number="4">    cookie <span class="op">=</span> request.cookies.get(cookie_name)</a>
+<a class="sourceLine" id="cb4-5" data-line-number="5">    <span class="cf">if</span> cookie <span class="kw">is</span> <span class="va">None</span> <span class="kw">or</span> <span class="kw">not</span> cookie_validate(cookie):</a>
+<a class="sourceLine" id="cb4-6" data-line-number="6">        <span class="co"># no cookie found, or not valid</span></a>
+<a class="sourceLine" id="cb4-7" data-line-number="7">        <span class="cf">return</span> <span class="st">&quot;Naughty, naughty, naughty...&quot;</span>, <span class="dv">403</span></a>
+<a class="sourceLine" id="cb4-8" data-line-number="8">    <span class="co"># decode the cookie</span></a>
+<a class="sourceLine" id="cb4-9" data-line-number="9">    decoded <span class="op">=</span> base64.b64decode(cookie.encode()).decode(<span class="st">&quot;utf-8&quot;</span>)</a>
+<a class="sourceLine" id="cb4-10" data-line-number="10">    <span class="co"># get the role</span></a>
+<a class="sourceLine" id="cb4-11" data-line-number="11">    role <span class="op">=</span> decoded.split(<span class="st">&quot;,&quot;</span>)[<span class="dv">5</span>]</a>
+<a class="sourceLine" id="cb4-12" data-line-number="12">    <span class="co"># compare and return the correct code</span></a>
+<a class="sourceLine" id="cb4-13" data-line-number="13">    <span class="cf">if</span> role <span class="op">==</span> <span class="st">&quot;admin&quot;</span>:</a>
+<a class="sourceLine" id="cb4-14" data-line-number="14">        <span class="cf">return</span> <span class="st">&quot;My lord...&quot;</span>, <span class="dv">200</span></a>
+<a class="sourceLine" id="cb4-15" data-line-number="15">    <span class="cf">return</span> <span class="st">&quot;User&quot;</span>, <span class="dv">201</span></a></code></pre></div>
+<h2 id="exercise-3-client-side-password-verification">Exercise 3: Client-Side Password Verification</h2>
+<p>As you may suspect, this exercise will focus on the verification of a password without actually sending the password to the server, and letting the user do the work.</p>
+<h3 id="understanding-the-setup">Understanding the setup</h3>
+<p>When you arrive on the login screen, first thing first, open the browser console, on the Network tab. Then fill in any dummy data, and login. Strangely, no request was made to the server. Interesting! It looks like <em>client-side password verification</em>. So where does the error message come from ? Surely from some javascript method.</p>
+<h3 id="ew-javascript">Ew, Javascript</h3>
+<p>Now, before you pull out the debugger and understand the process, have a look at the HTML. At the very bottom, as previously, you have a <code>&lt;script&gt;</code> tag that contains all the interesting code. Here is a copy, for convenience:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw">function</span> <span class="at">ascii</span> (a) <span class="op">{</span> <span class="cf">return</span> <span class="va">a</span>.<span class="at">charCodeAt</span>(<span class="dv">0</span>)<span class="op">;</span> <span class="op">}</span></a>
+<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="kw">function</span> <span class="at">toChar</span>(i) <span class="op">{</span> <span class="cf">return</span> <span class="va">String</span>.<span class="at">fromCharCode</span>(i)<span class="op">;</span> <span class="op">}</span></a>
+<a class="sourceLine" id="cb5-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="kw">function</span> <span class="at">hash</span>(msg<span class="op">,</span>key) <span class="op">{</span></a>
+<a class="sourceLine" id="cb5-5" data-line-number="5">    <span class="cf">if</span> (<span class="va">key</span>.<span class="at">length</span> <span class="op">&lt;</span> <span class="va">msg</span>.<span class="at">length</span>) <span class="op">{</span></a>
+<a class="sourceLine" id="cb5-6" data-line-number="6">        <span class="kw">var</span> diff <span class="op">=</span> <span class="va">msg</span>.<span class="at">length</span> <span class="op">-</span> <span class="va">key</span>.<span class="at">length</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb5-7" data-line-number="7">        key <span class="op">+=</span> <span class="va">key</span>.<span class="at">substring</span>(<span class="dv">0</span><span class="op">,</span>diff)<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-8" data-line-number="8">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb5-9" data-line-number="9"></a>
+<a class="sourceLine" id="cb5-10" data-line-number="10">    <span class="kw">var</span> amsg <span class="op">=</span> <span class="va">msg</span>.<span class="at">split</span>(<span class="st">&quot;&quot;</span>).<span class="at">map</span>(ascii)<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-11" data-line-number="11">    <span class="kw">var</span> akey <span class="op">=</span> <span class="va">key</span>.<span class="at">substring</span>(<span class="dv">0</span><span class="op">,</span><span class="va">msg</span>.<span class="at">length</span>).<span class="at">split</span>(<span class="st">&quot;&quot;</span>).<span class="at">map</span>(ascii)<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-12" data-line-number="12">    <span class="cf">return</span> <span class="at">btoa</span>(<span class="va">amsg</span>.<span class="at">map</span>(<span class="kw">function</span>(v<span class="op">,</span>i) <span class="op">{</span></a>
+<a class="sourceLine" id="cb5-13" data-line-number="13">        <span class="cf">return</span> v <span class="op">^</span> akey[i]<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-14" data-line-number="14">    <span class="op">}</span>).<span class="at">map</span>(toChar).<span class="at">join</span>(<span class="st">&quot;&quot;</span>))<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-15" data-line-number="15"><span class="op">}</span></a>
+<a class="sourceLine" id="cb5-16" data-line-number="16"></a>
+<a class="sourceLine" id="cb5-17" data-line-number="17"><span class="at">$</span>(<span class="st">'#loginForm'</span>).<span class="at">submit</span>(<span class="kw">function</span>(e) <span class="op">{</span></a>
+<a class="sourceLine" id="cb5-18" data-line-number="18">    <span class="va">e</span>.<span class="at">preventDefault</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-19" data-line-number="19">    <span class="kw">var</span> mySecureOneTimePad <span class="op">=</span> <span class="st">&quot;Never send a human to do a machine's job&quot;</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb5-20" data-line-number="20">    <span class="kw">var</span> username <span class="op">=</span> <span class="at">$</span>(<span class="st">'#username'</span>).<span class="at">val</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-21" data-line-number="21">    <span class="kw">var</span> password <span class="op">=</span> <span class="at">$</span>(<span class="st">'#password'</span>).<span class="at">val</span>()<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-22" data-line-number="22"></a>
+<a class="sourceLine" id="cb5-23" data-line-number="23">    <span class="cf">if</span> (<span class="va">username</span>.<span class="at">length</span> <span class="op">&gt;</span> <span class="dv">100</span>) <span class="op">{</span></a>
+<a class="sourceLine" id="cb5-24" data-line-number="24">        <span class="at">alert</span>(<span class="st">&quot;There's a difference between knowing the path and walking the path.&quot;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-25" data-line-number="25">        <span class="cf">return</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb5-26" data-line-number="26">    <span class="op">}</span> <span class="cf">else</span> <span class="cf">if</span> (<span class="va">password</span>.<span class="at">length</span> <span class="op">&gt;</span> <span class="dv">100</span>) <span class="op">{</span></a>
+<a class="sourceLine" id="cb5-27" data-line-number="27">        <span class="at">alert</span>(<span class="st">&quot;The best answer to anger is silence.&quot;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-28" data-line-number="28">        <span class="cf">return</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb5-29" data-line-number="29">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb5-30" data-line-number="30">    <span class="cf">if</span> (password <span class="op">!=</span> <span class="at">hash</span>(username<span class="op">,</span>mySecureOneTimePad)) <span class="op">{</span></a>
+<a class="sourceLine" id="cb5-31" data-line-number="31">        <span class="at">alert</span>(<span class="st">&quot;I didn't say it would be easy, Neo. I just said it would be the truth.&quot;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-32" data-line-number="32">        <span class="cf">return</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb5-33" data-line-number="33">    <span class="op">}</span></a>
+<a class="sourceLine" id="cb5-34" data-line-number="34">    postJSON <span class="op">=</span> <span class="kw">function</span>(url<span class="op">,</span>data)<span class="op">{</span></a>
+<a class="sourceLine" id="cb5-35" data-line-number="35">        <span class="cf">return</span> <span class="va">$</span>.<span class="at">ajax</span>(<span class="op">{</span><span class="dt">url</span><span class="op">:</span>url<span class="op">,</span> <span class="dt">data</span><span class="op">:</span><span class="va">JSON</span>.<span class="at">stringify</span>(data)<span class="op">,</span> <span class="dt">type</span><span class="op">:</span><span class="st">'POST'</span><span class="op">,</span> <span class="dt">contentType</span><span class="op">:</span><span class="st">'application/json'</span><span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-36" data-line-number="36">    <span class="op">};</span></a>
+<a class="sourceLine" id="cb5-37" data-line-number="37">    <span class="at">postJSON</span>(<span class="st">&quot;/api/hw2/ex3&quot;</span><span class="op">,{</span><span class="st">&quot;username&quot;</span><span class="op">:</span>username<span class="op">,</span><span class="st">&quot;password&quot;</span><span class="op">:</span>password<span class="op">}</span>)</a>
+<a class="sourceLine" id="cb5-38" data-line-number="38">        .<span class="at">done</span>(<span class="kw">function</span>(data) <span class="op">{</span></a>
+<a class="sourceLine" id="cb5-39" data-line-number="39">        <span class="co">//if you get a 200 OK status, that means you successfully</span></a>
+<a class="sourceLine" id="cb5-40" data-line-number="40">        <span class="co">// completed the challenge.</span></a>
+<a class="sourceLine" id="cb5-41" data-line-number="41">        <span class="va">document</span>.<span class="at">write</span>(<span class="st">&quot;Sucess! Token: &quot;</span> <span class="op">+</span> data)<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-42" data-line-number="42">    <span class="op">}</span>).<span class="at">fail</span>(<span class="kw">function</span>(resp<span class="op">,</span>status) <span class="op">{</span></a>
+<a class="sourceLine" id="cb5-43" data-line-number="43">        <span class="at">alert</span>(<span class="st">&quot;Pain is temporary. Quitting lasts forever.&quot;</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-44" data-line-number="44">    <span class="op">}</span>)<span class="op">;</span></a>
+<a class="sourceLine" id="cb5-45" data-line-number="45"><span class="op">}</span>)<span class="op">;</span></a></code></pre></div>
+<h3 id="some-explanations">Some explanations</h3>
+<p>We won’t go into too much details there, because not everything is relevant. But the interesting parts to notice are the following: * There is a function <code>hash</code> that takes a message and a key, and apparently returns some hash, * The submit action of the submit button is intercepted and replaced by the big block, * This block defines a OTP, and retrieves the username/password from the form, * It checks the length of both of them, * Then compare the password to the resulting hash of the username and the OTP, * Then, if it matches, it sends the username and password to the server for a second check.</p>
+<p>The second check is necessary to ensure we don’t bypass the function entirely and simply send the username/password ourselves. So it’s either the exact same mechanism (but server-side), or a different one.</p>
+<h3 id="hacking">Hacking</h3>
+<p>The weakness of this client-side verification, is that it relies on a HMAC but gives out the OTP, that is supposed to be secret. It then simple to guess a password: input any username and the OTP into the hash function (both kindly provided), and use the output as a password!</p>
+<p>You don’t even need to understand how the hash function works. Simply use it as a blackbox. Go to the javascript console (the <em>console</em> tab of your browser console), then copy the OTP, and input it with some username to the hash function (already defined):</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode javascript"><code class="sourceCode javascript"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="op">&gt;</span> <span class="kw">let</span> otp <span class="op">=</span> <span class="st">&quot;Never send a human to do a machine's job&quot;</span><span class="op">;</span></a>
+<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="op">&gt;</span> <span class="at">hash</span>(<span class="st">&quot;myusername&quot;</span><span class="op">,</span> otp)</a>
+<a class="sourceLine" id="cb6-3" data-line-number="3"><span class="st">&quot;IxwDFhdSHQQDAQ==&quot;</span></a></code></pre></div>
+<p>Go now to the form, and input <code>myusername</code> and <code>IxwDFhdSHQQDAQ==</code>, granting you access!</p>
+<h2 id="exercise-4-pake-implementation">Exercise 4: PAKE implementation</h2>
+<p>This exercise is a bit more complex than the previous ones. You really only have one procedure to implement, but the juggling with types, and the wrestling with websockets make it more challenging. Let’s start from the beginning.</p>
+<h3 id="the-structure">The structure</h3>
+<p>As we are working with asynchronous websockets, we can’t just put everything as a script and run it. We must tell python that we expect asynchronous outputs. For that, we will use the following skeleton:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="im">import</span> websockets</a>
+<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="im">import</span> asyncio</a>
+<a class="sourceLine" id="cb7-3" data-line-number="3"><span class="im">import</span> ...</a>
+<a class="sourceLine" id="cb7-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb7-5" data-line-number="5"><span class="co"># CONSTANTS, as provided</span></a>
+<a class="sourceLine" id="cb7-6" data-line-number="6">EMAIL <span class="op">=</span> <span class="st">&quot;your.email@epfl.ch&quot;</span></a>
+<a class="sourceLine" id="cb7-7" data-line-number="7">PASSWORD <span class="op">=</span> <span class="st">&quot;correct horse battery staple&quot;</span></a>
+<a class="sourceLine" id="cb7-8" data-line-number="8">N <span class="op">=</span> <span class="bu">int</span>(<span class="st">&quot;EEAF0AB9ADB38DD69C33F80AFA8FC5E86072618775FF3C0B9EA2314C9C256576D674DF7496EA81D3383B4813D692C6E0E0D5D8E250B98BE48E495C1D6089DAD15DC7D7B46154D6B6CE8EF4AD69B15D4982559B297BCF1885C529F566660E57EC68EDBC3C05726CC02FD4CBF4976EAA9AFD5138FE8376435B9FC61D2FC0EB06E3&quot;</span>,<span class="dv">16</span>)</a>
+<a class="sourceLine" id="cb7-9" data-line-number="9">g <span class="op">=</span> <span class="dv">2</span></a>
+<a class="sourceLine" id="cb7-10" data-line-number="10">NUMBER_LENGTH <span class="op">=</span> <span class="dv">32</span></a>
+<a class="sourceLine" id="cb7-11" data-line-number="11"></a>
+<a class="sourceLine" id="cb7-12" data-line-number="12"><span class="kw">def</span> some_standard_function():</a>
+<a class="sourceLine" id="cb7-13" data-line-number="13">  <span class="co">#normal functions</span></a>
+<a class="sourceLine" id="cb7-14" data-line-number="14"></a>
+<a class="sourceLine" id="cb7-15" data-line-number="15"><span class="cf">async</span> <span class="kw">def</span> websocket_function(websocket, param):</a>
+<a class="sourceLine" id="cb7-16" data-line-number="16">  <span class="co"># asynchronous functions that interact with the websocket</span></a>
+<a class="sourceLine" id="cb7-17" data-line-number="17"></a>
+<a class="sourceLine" id="cb7-18" data-line-number="18"><span class="cf">async</span> <span class="kw">def</span> srp():</a>
+<a class="sourceLine" id="cb7-19" data-line-number="19">  <span class="co"># the core of the procedure</span></a>
+<a class="sourceLine" id="cb7-20" data-line-number="20"></a>
+<a class="sourceLine" id="cb7-21" data-line-number="21"></a>
+<a class="sourceLine" id="cb7-22" data-line-number="22">asyncio.get_event_loop().run_until_complete(srp())</a></code></pre></div>
+<h3 id="breaking-down-the-process">Breaking down the process</h3>
+<p>As you can guess, we can break down our core procedure in a bunch of <em>send</em> and <em>receive</em>. Everything will be done within one opening of a websocket. We can then start our procedure with the following:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb8-1" data-line-number="1">uri <span class="op">=</span> <span class="st">&quot;ws://127.0.0.1:5000&quot;</span></a>
+<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="cf">async</span> <span class="cf">with</span> websockets.<span class="ex">connect</span>(uri) <span class="im">as</span> websocket:</a>
+<a class="sourceLine" id="cb8-3" data-line-number="3">    <span class="co"># then work here</span></a></code></pre></div>
+<hr />
+<p>The first step of the protocol is to send the email. This one isn’t too hard:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="cf">await</span> websocket.send(EMAIL)</a></code></pre></div>
+<hr />
+<p>Then, you need to receive the salt. It arrives in hexadecimal form, and you want to convert it,</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb10-1" data-line-number="1">salt_hex <span class="op">=</span> <span class="cf">await</span> websocket.recv()</a>
+<a class="sourceLine" id="cb10-2" data-line-number="2">salt_int <span class="op">=</span> <span class="bu">int</span>(salt_hex, <span class="dv">16</span>)</a>
+<a class="sourceLine" id="cb10-3" data-line-number="3">salt_bin <span class="op">=</span> <span class="bu">format</span>(salt_int, <span class="st">&quot;x&quot;</span>).encode()</a>
+<a class="sourceLine" id="cb10-4" data-line-number="4"><span class="co"># alternatively: salt_bin = salt_hex.encode()</span></a></code></pre></div>
+<hr />
+<p>Next you want to generate a random <code>a</code>, then compute <code>A</code> using <code>g, a, N</code>.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="im">import</span> os</a>
+<a class="sourceLine" id="cb11-2" data-line-number="2">a <span class="op">=</span> <span class="bu">int</span>.from_bytes(os.urandom(NUMBER_LENGTH), <span class="st">&quot;big&quot;</span>)</a>
+<a class="sourceLine" id="cb11-3" data-line-number="3">A <span class="op">=</span> <span class="bu">pow</span>(g, a, N)</a>
+<a class="sourceLine" id="cb11-4" data-line-number="4">A_hex <span class="op">=</span> <span class="bu">format</span>(A, <span class="st">&quot;x&quot;</span>).encode()</a>
+<a class="sourceLine" id="cb11-5" data-line-number="5"><span class="cf">await</span> websocket.send(A_hex)</a></code></pre></div>
+<p>Note that the <code>os</code> library can create random bytes, encoded in big-endian, and we need to convert it tho int, thus the <code>int.from_bytes(..., &quot;big&quot;)</code></p>
+<hr />
+<p>Then, we await the <code>B</code>, quite straightforward:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb12-1" data-line-number="1">B_hex <span class="op">=</span> <span class="cf">await</span> websocket.recv()</a>
+<a class="sourceLine" id="cb12-2" data-line-number="2">B <span class="op">=</span> <span class="bu">int</span>(B_hex, <span class="dv">16</span>)</a></code></pre></div>
+<hr />
+<p>We get to the hashing library. This one requires to use, as mentioned, binary-encoded hexadecimal representations of the numbers. Note that we could use any binary-encoded representation (bytes, int, hex,…); it doesn’t matter as long as we are consistent with ourselves and the server.</p>
+<p>We create an empty hash, hash A and B, and retrieve the result (<em>digest</em>):</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="im">import</span> hashlib</a>
+<a class="sourceLine" id="cb13-2" data-line-number="2">h <span class="op">=</span> hashlib.sha256()</a>
+<a class="sourceLine" id="cb13-3" data-line-number="3">h.update(<span class="bu">format</span>(A, <span class="st">&quot;x&quot;</span>).encode)</a>
+<a class="sourceLine" id="cb13-4" data-line-number="4">h.update(<span class="bu">format</span>(B, <span class="st">&quot;x&quot;</span>).encode)</a>
+<a class="sourceLine" id="cb13-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb13-6" data-line-number="6">u_hex <span class="op">=</span> h.hexdigest()</a>
+<a class="sourceLine" id="cb13-7" data-line-number="7">u <span class="op">=</span> <span class="bu">int</span>(u_hex, <span class="dv">16</span>)</a></code></pre></div>
+<hr />
+<p>Now, we have a nested hash. We could compute it in one go, but it’s simpler to consider this as an <em>inner</em> hash, and an <em>outer</em> hash. We first compute the inner.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="co"># H(U || &quot;:&quot; || PASSWORD)</span></a>
+<a class="sourceLine" id="cb14-2" data-line-number="2">inner <span class="op">=</span> hashlib.sha256()</a>
+<a class="sourceLine" id="cb14-3" data-line-number="3">inner.update(EMAIL.encode())</a>
+<a class="sourceLine" id="cb14-4" data-line-number="4">inner.update(b<span class="st">&quot;:&quot;</span>)</a>
+<a class="sourceLine" id="cb14-5" data-line-number="5">inner.update(PASSWORD.encode())</a></code></pre></div>
+<p>And the outer hash, that requires the inner digest; you then get <code>x</code> as the digest of the outer hash:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb15-1" data-line-number="1">outer <span class="op">=</span> hashlib.sha256()</a>
+<a class="sourceLine" id="cb15-2" data-line-number="2">outer.update(salt_bin)</a>
+<a class="sourceLine" id="cb15-3" data-line-number="3">outer.update(inner.hexdigest().encode())</a>
+<a class="sourceLine" id="cb15-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb15-5" data-line-number="5">x <span class="op">=</span> <span class="bu">int</span>(outer.hexdigest(), <span class="dv">16</span>)</a></code></pre></div>
+<hr />
+<p>Some math now: we now have <code>g,x,N,a,u</code>, we can then compute the secret!</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb16-1" data-line-number="1"><span class="co">#S = (B - g^x)^(a + u * x) % N</span></a>
+<a class="sourceLine" id="cb16-2" data-line-number="2">S <span class="op">=</span> <span class="bu">pow</span>(B <span class="op">-</span> <span class="bu">pow</span>(g, x, N), (a <span class="op">+</span> u <span class="op">*</span> x), N)</a></code></pre></div>
+<p>Note that we can’t compute <code>g^x</code> directly, at the risk of an overflow. We can simply modulo it to <code>N</code>, as the result is identical (hence the <code>pow(g,x,N)</code>). And we now have the shared secret!</p>
+<hr />
+<p>Last step (necessary for verification purpose, but optional for a real-life scenario) is to verify we have the same secret as the server. For that, we have to compute <code>H(A || B || S)</code>, and send it. This is straightforward, and very similar as what we did before:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb17-1" data-line-number="1"><span class="co"># create the hash</span></a>
+<a class="sourceLine" id="cb17-2" data-line-number="2">h <span class="op">=</span> hashlib.sha256()</a>
+<a class="sourceLine" id="cb17-3" data-line-number="3">h.update(itob(A))</a>
+<a class="sourceLine" id="cb17-4" data-line-number="4">h.update(itob(B))</a>
+<a class="sourceLine" id="cb17-5" data-line-number="5">h.update(itob(S))</a>
+<a class="sourceLine" id="cb17-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb17-7" data-line-number="7"><span class="co"># send the hex digest</span></a>
+<a class="sourceLine" id="cb17-8" data-line-number="8"><span class="cf">await</span> websocket.send(h.hexdigest().encode())</a>
+<a class="sourceLine" id="cb17-9" data-line-number="9"></a>
+<a class="sourceLine" id="cb17-10" data-line-number="10"><span class="co"># receive confirmation (or not) that the secret is the same.</span></a>
+<a class="sourceLine" id="cb17-11" data-line-number="11">resp <span class="op">=</span> <span class="cf">await</span> websocket.recv()</a>
+<a class="sourceLine" id="cb17-12" data-line-number="12"><span class="bu">print</span>(<span class="st">&quot;Response: </span><span class="sc">{}</span><span class="st">&quot;</span>.<span class="bu">format</span>(resp))</a></code></pre></div>
+</body>
+</html>

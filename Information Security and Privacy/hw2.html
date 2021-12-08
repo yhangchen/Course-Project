@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang xml:lang>
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>hw2</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <style type="text/css">
+html {
+font-size: 100%;
+overflow-y: scroll;
+-webkit-text-size-adjust: 100%;
+-ms-text-size-adjust: 100%;
+}
+body {
+color: #000;
+font-family: Georgia, Palatino, 'Palatino Linotype', Times, 'Times New Roman', serif;
+font-size: 12px;
+line-height: 1.7;
+padding: 1em;
+margin: auto;
+max-width: 42em;
+background: #fefefe;
+}
+a {
+color: #0645ad;
+text-decoration: none;
+}
+a:visited {
+color: #0b0080;
+}
+a:hover {
+color: #06e;
+}
+a:active {
+color: #faa700;
+}
+a:focus {
+outline: thin dotted;
+}
+*::-moz-selection {
+background: rgba(255, 255, 0, 0.3);
+color: #000;
+}
+*::selection {
+background: rgba(255, 255, 0, 0.3);
+color: #000;
+}
+a::-moz-selection {
+background: rgba(255, 255, 0, 0.3);
+color: #0645ad;
+}
+a::selection {
+background: rgba(255, 255, 0, 0.3);
+color: #0645ad;
+}
+p {
+margin: 1em 0;
+}
+img {
+max-width: 100%;
+}
+h1, h2, h3, h4, h5, h6 {
+color: #111;
+line-height: 125%;
+margin-top: 2em;
+font-weight: normal;
+}
+h4, h5, h6 {
+font-weight: bold;
+}
+h1 {
+font-size: 2.5em;
+}
+h2 {
+font-size: 2em;
+}
+h3 {
+font-size: 1.5em;
+}
+h4 {
+font-size: 1.2em;
+}
+h5 {
+font-size: 1em;
+}
+h6 {
+font-size: 0.9em;
+}
+blockquote {
+color: #666666;
+margin: 0;
+padding-left: 3em;
+border-left: 0.5em #EEE solid;
+}
+hr {
+display: block;
+height: 2px;
+border: 0;
+border-top: 1px solid #aaa;
+border-bottom: 1px solid #eee;
+margin: 1em 0;
+padding: 0;
+}
+pre, code, kbd, samp {
+color: #000;
+font-family: monospace, monospace;
+_font-family: 'courier new', monospace;
+font-size: 0.98em;
+background-color: #eee;
+padding-left: 5px;
+padding-right: 5px;
+}
+pre {
+white-space: pre;
+white-space: pre-wrap;
+word-wrap: break-word;
+}
+b, strong {
+font-weight: bold;
+}
+dfn {
+font-style: italic;
+}
+ins {
+background: #ff9;
+color: #000;
+text-decoration: none;
+}
+mark {
+background: #ff0;
+color: #000;
+font-style: italic;
+font-weight: bold;
+}
+sub, sup {
+font-size: 75%;
+line-height: 0;
+position: relative;
+vertical-align: baseline;
+}
+sup {
+top: -0.5em;
+}
+sub {
+bottom: -0.25em;
+}
+ul, ol {
+margin: 1em 0;
+padding: 0 0 0 2em;
+}
+li p:last-child {
+margin-bottom: 0;
+}
+ul ul, ol ol {
+margin: .3em 0;
+}
+dl {
+margin-bottom: 1em;
+}
+dt {
+font-weight: bold;
+margin-bottom: .8em;
+}
+dd {
+margin: 0 0 .8em 2em;
+}
+dd:last-child {
+margin-bottom: 0;
+}
+img {
+border: 0;
+-ms-interpolation-mode: bicubic;
+vertical-align: middle;
+}
+figure {
+display: block;
+text-align: center;
+margin: 1em 0;
+}
+figure img {
+border: none;
+margin: 0 auto;
+}
+figcaption {
+font-size: 0.8em;
+font-style: italic;
+margin: 0 0 .8em;
+}
+table {
+margin-bottom: 2em;
+border-bottom: 1px solid #ddd;
+border-right: 1px solid #ddd;
+border-spacing: 0;
+border-collapse: collapse;
+}
+table th {
+padding: .2em 1em;
+background-color: #eee;
+border-top: 1px solid #ddd;
+border-left: 1px solid #ddd;
+}
+table td {
+padding: .2em 1em;
+border-top: 1px solid #ddd;
+border-left: 1px solid #ddd;
+vertical-align: top;
+}
+.author {
+font-size: 1.2em;
+text-align: center;
+}
+@media only screen and (min-width: 480px) {
+body {
+font-size: 14px;
+}
+}
+@media only screen and (min-width: 768px) {
+body {
+font-size: 16px;
+}
+}
+@media print {
+* {
+background: transparent !important;
+color: black !important;
+filter: none !important;
+-ms-filter: none !important;
+}
+body {
+font-size: 12pt;
+max-width: 100%;
+}
+a, a:visited {
+text-decoration: underline;
+}
+hr {
+height: 1px;
+border: 0;
+border-bottom: 1px solid black;
+}
+a[href]:after {
+content: " (" attr(href) ")";
+}
+abbr[title]:after {
+content: " (" attr(title) ")";
+}
+.ir a:after, a[href^="javascript:"]:after, a[href^="#"]:after {
+content: "";
+}
+pre, blockquote {
+border: 1px solid #999;
+padding-right: 1em;
+page-break-inside: avoid;
+}
+tr, img {
+page-break-inside: avoid;
+}
+img {
+max-width: 100% !important;
+}
+@page :left {
+margin: 15mm 20mm 15mm 10mm;
+}
+@page :right {
+margin: 15mm 10mm 15mm 20mm;
+}
+p, h2, h3 {
+orphans: 3;
+widows: 3;
+}
+h2, h3 {
+page-break-after: avoid;
+}
+}</style>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<h1 id="homework-2">Homework 2</h1>
+<ul>
+<li><a href="#homework-2">Homework 2</a>
+<ul>
+<li><a href="#exercise-1-attack-cookie-tampering">Exercise 1: [attack] Cookie tampering</a></li>
+<li><a href="#exercise-2-defense-hmac-for-cookies">Exercise 2: [defense] HMAC for cookies</a>
+<ul>
+<li><a href="#implementation">Implementation</a>
+<ul>
+<li><a href="#cookie">Cookie</a></li>
+</ul></li>
+<li><a href="#testing-your-solution">Testing your solution</a></li>
+<li><a href="#workbench-lab">Workbench lab</a>
+<ul>
+<li><a href="#server-side">Server side</a></li>
+<li><a href="#client-side">Client side</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#exercise-3-attack-client-side-password-verification">Exercise 3: [attack] Client-side password verification</a></li>
+<li><a href="#exercise-4-defense-pake-implementation">Exercise 4: [defense] PAKE implementation</a>
+<ul>
+<li><a href="#protocol">Protocol</a></li>
+<li><a href="#implementation-1">Implementation</a></li>
+<li><a href="#network">Network</a></li>
+<li><a href="#encoding">Encoding</a></li>
+<li><a href="#hashing">Hashing</a></li>
+<li><a href="#exponentiations">Exponentiations</a></li>
+<li><a href="#randomness-generation">Randomness generation</a></li>
+<li><a href="#constants">Constants</a></li>
+</ul></li>
+</ul></li>
+</ul>
+<p><strong>Never use your actual GASPAR password on COM-402 exercises (if the login form is not Tequila).</strong></p>
+<h2 id="exercise-1-attack-cookie-tampering">Exercise 1: [attack] Cookie tampering</h2>
+<p>Hello, Elliot. The Evil Corp is back with their evil plans; rumors say they can hack and spy on anyone. Fortunately for our cause, it seems that the authentication mechanism they use for identifying their admins is severely broken. Can you bypass their login page and defeat them?</p>
+<p>The web server of Evil Corp is located at <a href="http://com402.epfl.ch/hw2/ex1" class="uri">http://com402.epfl.ch/hw2/ex1</a>. Your goal is to login as an administrator and “Spy &amp; Hack” on someone.</p>
+<p>Hint: hover over “administrators”.</p>
+<h2 id="exercise-2-defense-hmac-for-cookies">Exercise 2: [defense] HMAC for cookies</h2>
+<p>In this exercise, you are asked to create a web-server that serves cookies to clients based on whether they are simple users or administrators of the system. However, as you have seen in the previous exercise, malicious users can easily tamper with cookies.</p>
+<p>To protect their integrity and ensure only you can produce a valid cookie, you will add a Keyed-Hash Message Authentication Code (HMAC) as an additional field.</p>
+<h3 id="implementation">Implementation</h3>
+<p>Implement your solution using Python 3 and a Flask server.</p>
+<p>Your server should accept a <code>POST</code> login request of the form:</p>
+<p><code>{&quot;username&quot;: user,&quot;password&quot;: password}</code></p>
+<p>on the URL <code>/login</code>. The response must contain a cookie (defined below).</p>
+<p>Your server should have a second endpoint: it should accept <code>GET</code> requests on <code>/auth</code>. It can return a blank page, but the status codes should be:</p>
+<ul>
+<li>code 403 if no cookie is present</li>
+<li>code 200 if the user is the administrator</li>
+<li>code 201 if the user is a simple user</li>
+<li>code 403 if the cookie has been tampered</li>
+</ul>
+<h4 id="cookie">Cookie</h4>
+<p>The cookie should have the same fields as in Exercise 1 with an additional field containing the HMAC.</p>
+<p>Example of admin cookie: <code>admin,1489662453,com402,hw2,ex2,admin,HMAC</code></p>
+<p>Example of user cookie: <code>Yoda,1563905697,com402,hw2,ex2,user,HMAC</code></p>
+<p>It must be an administrator cookie if the username is <code>admin</code> and the password is <code>42</code>. Otherwise, it must be a regular (user) cookie. The name of the cookie is <code>LoginCookie</code>.</p>
+<h3 id="testing-your-solution">Testing your solution</h3>
+<p>Code your solution in a file named <code>server.py</code>. Here’s a template:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="im">from</span> flask <span class="im">import</span> Flask</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb1-3" data-line-number="3">app <span class="op">=</span> Flask(<span class="va">__name__</span>)</a>
+<a class="sourceLine" id="cb1-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb1-5" data-line-number="5">cookie_name <span class="op">=</span> <span class="st">&quot;LoginCookie&quot;</span></a>
+<a class="sourceLine" id="cb1-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb1-7" data-line-number="7"><span class="at">@app.route</span>(<span class="st">&quot;/login&quot;</span>,methods<span class="op">=</span>[<span class="st">'POST'</span>])</a>
+<a class="sourceLine" id="cb1-8" data-line-number="8"><span class="kw">def</span> login():</a>
+<a class="sourceLine" id="cb1-9" data-line-number="9">    <span class="co"># implement here</span></a>
+<a class="sourceLine" id="cb1-10" data-line-number="10"></a>
+<a class="sourceLine" id="cb1-11" data-line-number="11"><span class="at">@app.route</span>(<span class="st">&quot;/auth&quot;</span>,methods<span class="op">=</span>[<span class="st">'GET'</span>])</a>
+<a class="sourceLine" id="cb1-12" data-line-number="12"><span class="kw">def</span> auth():</a>
+<a class="sourceLine" id="cb1-13" data-line-number="13">    <span class="co"># implement here</span></a>
+<a class="sourceLine" id="cb1-14" data-line-number="14"></a>
+<a class="sourceLine" id="cb1-15" data-line-number="15"><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">'__main__'</span>:</a>
+<a class="sourceLine" id="cb1-16" data-line-number="16">    app.run()</a></code></pre></div>
+<p>To test your server, use the following command in the same folder as <code>server.py</code>:</p>
+<p><code>docker run --read-only -v $(pwd):/app/student com402/hw2ex2</code></p>
+<p><strong>Note:</strong> for scalability reasons, we send you the verification script in a Docker. With a bit of work, you can have access to the verification script; <strong>looking at the verification script is not the intended way of doing exercises in Com402</strong>. In practice, imagine that this docker is running somewhere else, i.e., you cannot read the verification script.</p>
+<h3 id="workbench-lab">Workbench lab</h3>
+<h4 id="server-side">Server side</h4>
+<h5 id="if-you-do-not-have-flask-installed-on-your-machine">If you do not have Flask installed on your machine</h5>
+<p>You can run this one-liner in your terminal, in the same folder as your server.py script and it will start a docker container executing a Flask application based on your server.py file.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="ex">docker</span> run --rm -v <span class="va">$(</span><span class="bu">pwd</span><span class="va">)</span>:/app/student -p 5000:5000 -e FLASK_APP=server.py -e FLASK_DEBUG=1 -it com402/hw2ex2 sh -c <span class="st">&quot;cd student &amp;&amp; flask run --host 0.0.0.0&quot;</span></a></code></pre></div>
+<p>Let’s review the parameters for educational purpose. You can skip this if you do not want to better use Docker.</p>
+<ul>
+<li><code>--rm</code> will ask Docker to remove the container of the graveyard of container when you will stop it. Used for clean management.</li>
+<li><code>-v $(pwd):/app/student</code> will create a Docker volume between the folder you currently in and the <em>/app/student</em> folder inside the Docker container. This will make available the server.py script to Flask</li>
+<li><code>-p 5000:5000</code> will map the port 5000 of the container to the port 5000 of your host. 5000 is the default port used by Flask</li>
+<li><code>-e</code> allows to define some environment variable in the container. For this purpose, we need to set the entry script for the Flask server as well as setting the debug mode for Flask. This allows to reload automatically Flask when you change the server.py file.</li>
+<li><code>-it</code> tells Docker we want to execute a command which is located just after the name of the image we want to create a container from. The command <code>sh -c &quot;cd student &amp;&amp; flask run --host 0.0.0.0&quot;</code> will create a shell and execute <code>cd student &amp;&amp; flask run --host 0.0.0.0</code>. We will move in the <em>student</em> folder (corresponding to the <em>/app/student</em> folder we mapped in the volume) and start Flask. The <code>--host</code> param of Flask will make it answer to every requests coming from anyone (required to query the application from our host).</li>
+</ul>
+<p>When you do not need the server, you can <code>CTRL+C</code> to leave the program. The container will be killed and removed. Nice and clean.</p>
+<h5 id="if-you-have-flask-installed-on-your-machine">If you have Flask installed on your machine</h5>
+<p>Testing it is also very simple! We provide a way for you to test the final code, but debugging simple mistakes will be painstakingly long if you have to invoke a docker instance for every test. Here are a few tips to make your life easier.</p>
+<p>First of all, using a terminal, go to the location of your <code>server.py</code> file, and launch these two commands:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="bu">export</span> <span class="va">FLASK_APP=</span>server.py <span class="co"># file of your server</span></a>
+<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="bu">export</span> <span class="va">FLASK_ENV=</span>development <span class="co"># say it's for dev purpose</span></a></code></pre></div>
+<p>Note that these will last in the current terminal, and you will have to re-launch them every time you open a new one. Then, type the following:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="ex">flask</span> run</a></code></pre></div>
+<p>This will launch a flask server, in <em>debug</em> mode. Each time you make a modification in the python file, the server will automatically restart to take into account the changes!</p>
+<h4 id="client-side">Client side</h4>
+<p>Now, to easily query the server, open a new terminal, and open a python interpreter (command: <code>python3</code>). You’ll be using <code>requests</code>, a fairly standard wrapper for HTTP requests. requests’ <em>sessions</em> are very useful to conduct a sequence of operations (<code>GET</code>, <code>POST</code>,…) while keeping cookies (among others). Here are a few useful commands:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="im">import</span> requests</a>
+<a class="sourceLine" id="cb5-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="co"># create a session</span></a>
+<a class="sourceLine" id="cb5-4" data-line-number="4">session <span class="op">=</span> requests.session()</a>
+<a class="sourceLine" id="cb5-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb5-6" data-line-number="6"><span class="co"># perform a GET</span></a>
+<a class="sourceLine" id="cb5-7" data-line-number="7">session.get(<span class="st">&quot;http://url_or_ip_address:port&quot;</span>)</a>
+<a class="sourceLine" id="cb5-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb5-9" data-line-number="9"><span class="co"># perform a POST with a payload</span></a>
+<a class="sourceLine" id="cb5-10" data-line-number="10">session.post(<span class="st">&quot;http://url_or_ip_address:port/some/path&quot;</span>,</a>
+<a class="sourceLine" id="cb5-11" data-line-number="11">             data<span class="op">=</span>{<span class="st">&quot;field1&quot;</span>: <span class="st">&quot;value1&quot;</span>, <span class="st">&quot;field2&quot;</span>: <span class="st">&quot;value2&quot;</span>})</a>
+<a class="sourceLine" id="cb5-12" data-line-number="12"></a>
+<a class="sourceLine" id="cb5-13" data-line-number="13"><span class="co"># inspect your cookies</span></a>
+<a class="sourceLine" id="cb5-14" data-line-number="14"><span class="bu">print</span>(session.cookies)</a>
+<a class="sourceLine" id="cb5-15" data-line-number="15"></a>
+<a class="sourceLine" id="cb5-16" data-line-number="16"><span class="co"># modify your cookies</span></a>
+<a class="sourceLine" id="cb5-17" data-line-number="17">session.cookies.update({<span class="st">&quot;name1&quot;</span>: <span class="st">&quot;value1&quot;</span>})</a></code></pre></div>
+<p>With a server in debug mode, and this interpreter ready, you can simply do modifications to the server, save, go to the interpreter, and launch a test command. And the window in which you launched the server will inform you of any python errors, with the adequate stacktrace.</p>
+<h2 id="exercise-3-attack-client-side-password-verification">Exercise 3: [attack] Client-side password verification</h2>
+<p>You need to bypass the authentication on the Very Secure™ login page <a href="http://com402.epfl.ch/hw2/ex3/" class="uri">http://com402.epfl.ch/hw2/ex3/</a>.</p>
+<h2 id="exercise-4-defense-pake-implementation">Exercise 4: [defense] PAKE implementation</h2>
+<p><strong>Important disclaimer:</strong> In this exercise, we ask you to implement a cryptographic protocol. This is a challenging and interesting task, notably to get a good understanding of what is going on. However, in real life, implementing your own cryptographic primitives is generally a <strong>bad idea</strong>. Read more about this <a href="https://motherboard.vice.com/en_us/article/wnx8nq/why-you-dont-roll-your-own-crypto">here</a> or <a href="https://security.stackexchange.com/questions/18197/why-shouldnt-we-roll-our-own">here</a>.</p>
+<p>This exercise is about implementing a password-authenticated key agreement protocol, <a href="https://en.wikipedia.org/wiki/Password-authenticated_key_agreement">PAKE</a>. PAKE serves two main purposes: derivation of a cryptographically secure shared key from a low entropy password and proving the knowledge of a secret password to each other without actual transmission of this password. This is useful for a lot of applications. For example, ProtonMail is an end-to-end encrypted email service provider which uses a PAKE protocol named Secure Remote Password protocol (<a href="https://en.wikipedia.org/wiki/Secure_Remote_Password_protocol">SRP</a>).</p>
+<p>You have to implement the client part of the SRP protocol that interacts with our server using websockets.</p>
+<h3 id="protocol">Protocol</h3>
+<p>The web server implements a simplified version of the SRP protocol described in the RFC.</p>
+<pre><code>Client                                       Server
+-------                                      --------
+
+U = email (string)
+sends U (UTF-8 encoded string)
+                --------- &gt;
+                                            salt = randomInt(32)
+                                            sends salt (UTF-8 encoded Hexadecimal String)
+                           &lt; ---------
+a = randomInt(32)
+A = g^a % N
+sends A (UTF-8 encoded Hexadecimal String)
+                           ----------&gt;
+                                            x= H(salt || H(U || &quot;:&quot; || PASSWORD))
+                                            v = g^x % N
+                                            b = randomInt(32)
+                                            B = (v + g^b) % N
+                                            sends B (UTF-8 Encoded Hexadecimal String)
+                            &lt; ---------
+u = H(A || B)
+x = H(salt || H(U || &quot;:&quot; || PASSWORD))
+S = (B - g^x) ^ (a + u * x) % N
+                                            u = H(A || B)
+                                            S = (A * v^u) ^ b % N</code></pre>
+<p>At the end of the protocol, both parties should have the same shared secret <code>S</code>. To validate the exercise, send <code>H(A || B || S)</code> to the server at the end!</p>
+<p>You should be convinced that both sides get the same secret at the end, we encourage you to take a look at the RFC for more details.</p>
+<h3 id="implementation-1">Implementation</h3>
+<p>This exercise can in theory be solved using any programming language you want; however, we strongly recommend to use Python 3, for which you are given code snippets below.</p>
+<p>In Python &gt;= 3.5, you can use <a href="https://websockets.readthedocs.io/en/stable/">this library for websockets</a>; an example for creating a websocket is given <a href="https://websockets.readthedocs.io/en/stable/">here</a>.</p>
+<h3 id="network">Network</h3>
+<p>All communication happens through a websocket channel on port 5000. You can create this channel by connecting to <code>ws://127.0.0.1:5000/</code>.</p>
+<h3 id="encoding">Encoding</h3>
+<p><strong>String encoding</strong>: In Python3, all strings (<code>str</code>) are by default UTF-8 encoded. But some libraries (such as hashing) work with <code>bytes</code>. You can convert between the two easily: * <code>byte.decode() -&gt; str</code> * <code>str.encode() -&gt; byte</code></p>
+<p>You can specify arguments to <code>encode</code> and <code>decode</code> in order to decode to (or encode from) another encoding (say, ASCII for example), but that likely won’t be needed there.</p>
+<p><strong>Number encoding</strong>: All numbers (A, B, salt) follow the same procedure: * To use in mathematical functions (pow, mod,…), keep as integers * Otherwise, first encode them to an UTF-8 hexadecimal string, then encode them to a bytes string (see above). Used for hashing or sending to the websocket.</p>
+<p>Note that sending a string as bytes or utf-8 through a websocket is similar, the <code>websocket</code> library will decode the message to a <code>utf-8</code> string upon arrival.</p>
+<p>Numbers you receive from the websocket (from our server) are encoded the same way (hexadecimal utf-8)</p>
+<p>Here’s a sample code in Python 3:</p>
+<p>Encoding:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb7-1" data-line-number="1">utf8_hex <span class="op">=</span> <span class="bu">format</span>(<span class="dv">12345</span>, <span class="st">&quot;x&quot;</span>).encode()</a>
+<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="cf">await</span> websocket.send(utf8_hex)</a>
+<a class="sourceLine" id="cb7-3" data-line-number="3"><span class="bu">hash</span>.update(utf8_hex)</a></code></pre></div>
+<p>Decoding:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="co"># Number is received as UTF-8 encoded hexadecimal String</span></a>
+<a class="sourceLine" id="cb8-2" data-line-number="2">utf8_hex_message <span class="op">=</span>  <span class="cf">await</span> websocket.recv()</a>
+<a class="sourceLine" id="cb8-3" data-line-number="3"><span class="co"># Hexadecimal string is converted back to an integer</span></a>
+<a class="sourceLine" id="cb8-4" data-line-number="4">integer_message <span class="op">=</span> <span class="bu">int</span>(utf8_hex_message, <span class="dv">16</span>)</a></code></pre></div>
+<h3 id="hashing">Hashing</h3>
+<p>In this exercise, you have to hash (a mix of) strings and numbers. The encoding is consistent with what is described above; always use bytes-encoded hexadecimal strings.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="im">import</span> hashlib</a>
+<a class="sourceLine" id="cb9-2" data-line-number="2">h <span class="op">=</span> hashlib.sha256()</a>
+<a class="sourceLine" id="cb9-3" data-line-number="3">h.update(<span class="bu">format</span>(<span class="dv">12345</span>, <span class="st">&quot;x&quot;</span>).encode())</a>
+<a class="sourceLine" id="cb9-4" data-line-number="4">h.update(some_other_bytes_hex_string)</a>
+<a class="sourceLine" id="cb9-5" data-line-number="5"><span class="co"># h.hexdigest() returns an hexadecimal representation of the hash</span></a>
+<a class="sourceLine" id="cb9-6" data-line-number="6">utf8_hex_result <span class="op">=</span> h.hexdigest()</a></code></pre></div>
+<h3 id="exponentiations">Exponentiations</h3>
+<p>In the second message sent by the client, you’re supposed to compute <code>A = g^a % N</code>. Note that the python expression <code>g**a % N</code> will <em>not</em> work ! Due to the priority of <code>**</code>, this would first compute <code>g**a</code>, then apply <code>mod N</code> (think about the size of <code>a</code> in bits). However, this expression can be efficiently computed as <code>pow(g,a,N)</code>, which uses standard modular exponentiation techniques (such as computing <code>a mod \phi(N)</code> first, then applying the mod at every multiplication).</p>
+<h3 id="randomness-generation">Randomness generation</h3>
+<p>The function <code>randomInt(32)</code> should generate a <strong>number</strong> from 32 random bytes. Look into <code>os.urandom</code> and <code>int.from_bytes</code></p>
+<h3 id="constants">Constants</h3>
+<div class="sourceCode" id="cb10"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb10-1" data-line-number="1">EMAIL <span class="op">=</span> <span class="st">&quot;your.email@epfl.ch&quot;</span></a>
+<a class="sourceLine" id="cb10-2" data-line-number="2">PASSWORD <span class="op">=</span> <span class="st">&quot;correct horse battery staple&quot;</span></a>
+<a class="sourceLine" id="cb10-3" data-line-number="3">H <span class="op">=</span> sha256</a>
+<a class="sourceLine" id="cb10-4" data-line-number="4">N <span class="op">=</span> EEAF0AB9ADB38DD69C33F80AFA8FC5E86072618775FF3C0B9EA2314C9C256576D674DF7496EA81D3383B4813D692C6E0E0D5D8E250B98BE48E495C1D6089DAD15DC7D7B46154D6B6CE8EF4AD69B15D4982559B297BCF1885C529F566660E57EC68EDBC3C05726CC02FD4CBF4976EAA9AFD5138FE8376435B9FC61D2FC0EB06E3</a>
+<a class="sourceLine" id="cb10-5" data-line-number="5">g <span class="op">=</span> <span class="dv">2</span></a></code></pre></div>
+<p><strong>Note:</strong> The modulus N is given here in hexadecimal form, make sure you transform it into an integer before using it.</p>
+<p>To test your client, use the following command in the same folder as <code>client.py</code>:</p>
+<p><code>docker run --read-only -v $(pwd):/app/student com402/hw2ex4</code></p>
+</body>
+</html>

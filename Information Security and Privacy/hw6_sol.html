@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang xml:lang>
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>hw6_sol</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <style type="text/css">
+html {
+font-size: 100%;
+overflow-y: scroll;
+-webkit-text-size-adjust: 100%;
+-ms-text-size-adjust: 100%;
+}
+body {
+color: #000;
+font-family: Georgia, Palatino, 'Palatino Linotype', Times, 'Times New Roman', serif;
+font-size: 12px;
+line-height: 1.7;
+padding: 1em;
+margin: auto;
+max-width: 42em;
+background: #fefefe;
+}
+a {
+color: #0645ad;
+text-decoration: none;
+}
+a:visited {
+color: #0b0080;
+}
+a:hover {
+color: #06e;
+}
+a:active {
+color: #faa700;
+}
+a:focus {
+outline: thin dotted;
+}
+*::-moz-selection {
+background: rgba(255, 255, 0, 0.3);
+color: #000;
+}
+*::selection {
+background: rgba(255, 255, 0, 0.3);
+color: #000;
+}
+a::-moz-selection {
+background: rgba(255, 255, 0, 0.3);
+color: #0645ad;
+}
+a::selection {
+background: rgba(255, 255, 0, 0.3);
+color: #0645ad;
+}
+p {
+margin: 1em 0;
+}
+img {
+max-width: 100%;
+}
+h1, h2, h3, h4, h5, h6 {
+color: #111;
+line-height: 125%;
+margin-top: 2em;
+font-weight: normal;
+}
+h4, h5, h6 {
+font-weight: bold;
+}
+h1 {
+font-size: 2.5em;
+}
+h2 {
+font-size: 2em;
+}
+h3 {
+font-size: 1.5em;
+}
+h4 {
+font-size: 1.2em;
+}
+h5 {
+font-size: 1em;
+}
+h6 {
+font-size: 0.9em;
+}
+blockquote {
+color: #666666;
+margin: 0;
+padding-left: 3em;
+border-left: 0.5em #EEE solid;
+}
+hr {
+display: block;
+height: 2px;
+border: 0;
+border-top: 1px solid #aaa;
+border-bottom: 1px solid #eee;
+margin: 1em 0;
+padding: 0;
+}
+pre, code, kbd, samp {
+color: #000;
+font-family: monospace, monospace;
+_font-family: 'courier new', monospace;
+font-size: 0.98em;
+background-color: #eee;
+padding-left: 5px;
+padding-right: 5px;
+}
+pre {
+white-space: pre;
+white-space: pre-wrap;
+word-wrap: break-word;
+}
+b, strong {
+font-weight: bold;
+}
+dfn {
+font-style: italic;
+}
+ins {
+background: #ff9;
+color: #000;
+text-decoration: none;
+}
+mark {
+background: #ff0;
+color: #000;
+font-style: italic;
+font-weight: bold;
+}
+sub, sup {
+font-size: 75%;
+line-height: 0;
+position: relative;
+vertical-align: baseline;
+}
+sup {
+top: -0.5em;
+}
+sub {
+bottom: -0.25em;
+}
+ul, ol {
+margin: 1em 0;
+padding: 0 0 0 2em;
+}
+li p:last-child {
+margin-bottom: 0;
+}
+ul ul, ol ol {
+margin: .3em 0;
+}
+dl {
+margin-bottom: 1em;
+}
+dt {
+font-weight: bold;
+margin-bottom: .8em;
+}
+dd {
+margin: 0 0 .8em 2em;
+}
+dd:last-child {
+margin-bottom: 0;
+}
+img {
+border: 0;
+-ms-interpolation-mode: bicubic;
+vertical-align: middle;
+}
+figure {
+display: block;
+text-align: center;
+margin: 1em 0;
+}
+figure img {
+border: none;
+margin: 0 auto;
+}
+figcaption {
+font-size: 0.8em;
+font-style: italic;
+margin: 0 0 .8em;
+}
+table {
+margin-bottom: 2em;
+border-bottom: 1px solid #ddd;
+border-right: 1px solid #ddd;
+border-spacing: 0;
+border-collapse: collapse;
+}
+table th {
+padding: .2em 1em;
+background-color: #eee;
+border-top: 1px solid #ddd;
+border-left: 1px solid #ddd;
+}
+table td {
+padding: .2em 1em;
+border-top: 1px solid #ddd;
+border-left: 1px solid #ddd;
+vertical-align: top;
+}
+.author {
+font-size: 1.2em;
+text-align: center;
+}
+@media only screen and (min-width: 480px) {
+body {
+font-size: 14px;
+}
+}
+@media only screen and (min-width: 768px) {
+body {
+font-size: 16px;
+}
+}
+@media print {
+* {
+background: transparent !important;
+color: black !important;
+filter: none !important;
+-ms-filter: none !important;
+}
+body {
+font-size: 12pt;
+max-width: 100%;
+}
+a, a:visited {
+text-decoration: underline;
+}
+hr {
+height: 1px;
+border: 0;
+border-bottom: 1px solid black;
+}
+a[href]:after {
+content: " (" attr(href) ")";
+}
+abbr[title]:after {
+content: " (" attr(title) ")";
+}
+.ir a:after, a[href^="javascript:"]:after, a[href^="#"]:after {
+content: "";
+}
+pre, blockquote {
+border: 1px solid #999;
+padding-right: 1em;
+page-break-inside: avoid;
+}
+tr, img {
+page-break-inside: avoid;
+}
+img {
+max-width: 100% !important;
+}
+@page :left {
+margin: 15mm 20mm 15mm 10mm;
+}
+@page :right {
+margin: 15mm 10mm 15mm 20mm;
+}
+p, h2, h3 {
+orphans: 3;
+widows: 3;
+}
+h2, h3 {
+page-break-after: avoid;
+}
+}</style>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<h1 id="com-402-homework-6-solution">COM-402 Homework 6 Solution</h1>
+<ul>
+<li><a href="#exercise-1-attack-just-in-time">Exercise 1: [attack] Just In Time</a>
+<ul>
+<li><a href="#understanding-the-vulnerability">Understanding the vulnerability</a></li>
+<li><a href="#attacking-the-vulnerability">Attacking the vulnerability</a>
+<ul>
+<li><a href="#the-lazy-way">The lazy way</a>
+<ul>
+<li><a href="#timing-issue">Timing issue</a></li>
+</ul></li>
+<li><a href="#the-smart-way">The smart way</a></li>
+</ul></li>
+</ul></li>
+</ul>
+<h1 id="exercise-1-attack-just-in-time">Exercise 1: [attack] Just In Time</h1>
+<h3 id="understanding-the-vulnerability">Understanding the vulnerability</h3>
+<p>The handout already gives solid hints at the possible vulnerability. It seems the password we send is checked character by character and behaves differently on correct and incorrect characters: &gt; […] a modified function to compare strings that express some very specific timing behavior for each valid character in the submitted token…</p>
+<p>We don’t know the actual characters’ space, so we’ll try simple: number and lowercase ASCII. If it doesn’t work, we’ll expand.</p>
+<p>After poking a bit at the server, we understand we must send a token of exactly 12 characters (any different numbers yields an error 500 with content <code>wrong length, 4 vs 12</code>).</p>
+<p>To understand what the <em>timing behaviour</em> is, we send different passwords and check the timing for each of them. Also, because sending a POST request and time the response will be so frequent, we create a routine for it:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="im">import</span> requests</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="im">import</span> time</a>
+<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw">def</span> post(token):</a>
+<a class="sourceLine" id="cb1-4" data-line-number="4">    before <span class="op">=</span> time.time()</a>
+<a class="sourceLine" id="cb1-5" data-line-number="5">    resp <span class="op">=</span> requests.post(<span class="st">&quot;http://0.0.0.0:8080/hw6/ex1&quot;</span>,</a>
+<a class="sourceLine" id="cb1-6" data-line-number="6">                         json <span class="op">=</span> {<span class="st">&quot;token&quot;</span>: token})</a>
+<a class="sourceLine" id="cb1-7" data-line-number="7">    after <span class="op">=</span> time.time()</a>
+<a class="sourceLine" id="cb1-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb1-9" data-line-number="9">    time_diff <span class="op">=</span> after<span class="op">-</span>before</a>
+<a class="sourceLine" id="cb1-10" data-line-number="10">    <span class="co"># print(&quot;Token {}, request took {:.3f}&quot;</span></a>
+<a class="sourceLine" id="cb1-11" data-line-number="11">    <span class="co">#       .format(token, time_diff)) # useful for debugging</span></a>
+<a class="sourceLine" id="cb1-12" data-line-number="12">    <span class="co"># print(&quot;response is {}&quot;.format(resp.text))  # often useless</span></a>
+<a class="sourceLine" id="cb1-13" data-line-number="13">    <span class="cf">return</span> time_diff</a></code></pre></div>
+<p>Simply post the token to the specified URL, with the specified JSON body, measure the time, and return it. Print some information for debugging.</p>
+<p>So now we use that routine to try several tokens:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="im">import</span> string</a>
+<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="im">import</span> time</a>
+<a class="sourceLine" id="cb2-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb2-4" data-line-number="4">TOKEN_LENGTH <span class="op">=</span> <span class="dv">12</span></a>
+<a class="sourceLine" id="cb2-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb2-6" data-line-number="6">charset <span class="op">=</span> string.digits <span class="op">+</span> string.ascii_lowercase</a>
+<a class="sourceLine" id="cb2-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb2-8" data-line-number="8"><span class="cf">for</span> start_char <span class="kw">in</span> charset:</a>
+<a class="sourceLine" id="cb2-9" data-line-number="9">    token <span class="op">=</span> start_char <span class="op">+</span> (TOKEN_LENGTH<span class="dv">-1</span>) <span class="op">*</span> <span class="st">&quot;_&quot;</span></a>
+<a class="sourceLine" id="cb2-10" data-line-number="10">    tdiff <span class="op">=</span> post(token)</a>
+<a class="sourceLine" id="cb2-11" data-line-number="11">    <span class="bu">print</span>(<span class="st">&quot;Token </span><span class="sc">{}</span><span class="st">, request took </span><span class="sc">{:.3f}</span><span class="st">&quot;</span></a>
+<a class="sourceLine" id="cb2-12" data-line-number="12">          .<span class="bu">format</span>(token, tdiff))</a></code></pre></div>
+<p>This will post one character followed by 11 <code>_</code>. The result from this code is the following:</p>
+<pre><code>Token 0___________, request took 0.004
+Token 1___________, request took 0.003
+Token 2___________, request took 0.003
+Token 3___________, request took 0.003
+Token 4___________, request took 0.004
+Token 5___________, request took 0.005
+Token 6___________, request took 0.005
+Token 7___________, request took 0.004
+Token 8___________, request took 0.005
+Token 9___________, request took 0.005
+Token a___________, request took 0.005
+Token b___________, request took 0.063
+Token c___________, request took 0.005
+Token d___________, request took 0.005
+Token e___________, request took 0.005
+Token f___________, request took 0.006
+Token g___________, request took 0.005
+Token h___________, request took 0.006
+Token i___________, request took 0.005
+Token j___________, request took 0.004
+Token k___________, request took 0.006
+Token l___________, request took 0.004
+Token m___________, request took 0.004
+Token n___________, request took 0.004
+Token o___________, request took 0.005
+Token p___________, request took 0.006
+Token q___________, request took 0.006
+Token r___________, request took 0.004
+Token s___________, request took 0.006
+Token t___________, request took 0.004
+Token u___________, request took 0.006
+Token v___________, request took 0.006
+Token w___________, request took 0.004
+Token x___________, request took 0.004
+Token y___________, request took 0.006
+Token z___________, request took 0.005</code></pre>
+<p>If you observe attentively, you’ll see that the one starting by <code>b</code> is about 10 times slower (or 0.06s slower). Interesting, let’s try to narrow that down:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw">def</span> avg(elements: <span class="bu">list</span>):</a>
+<a class="sourceLine" id="cb4-2" data-line-number="2">    <span class="cf">return</span> <span class="bu">sum</span>(elements)<span class="op">/</span><span class="bu">len</span>(elements)</a>
+<a class="sourceLine" id="cb4-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb4-4" data-line-number="4"><span class="cf">for</span> start_char <span class="kw">in</span> charset:</a>
+<a class="sourceLine" id="cb4-5" data-line-number="5">    token <span class="op">=</span> start_char <span class="op">+</span> (TOKEN_LENGTH<span class="dv">-1</span>) <span class="op">*</span> <span class="st">&quot;_&quot;</span></a>
+<a class="sourceLine" id="cb4-6" data-line-number="6">    timings <span class="op">=</span> []</a>
+<a class="sourceLine" id="cb4-7" data-line-number="7">    <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">100</span>):</a>
+<a class="sourceLine" id="cb4-8" data-line-number="8">        timings.append(post(token))</a>
+<a class="sourceLine" id="cb4-9" data-line-number="9">    <span class="bu">print</span>(<span class="st">&quot;Token </span><span class="sc">{}</span><span class="st">, request took in avg </span><span class="sc">{:.3f}</span><span class="st">&quot;</span>.<span class="bu">format</span>(token, avg(timings)))</a></code></pre></div>
+<p>Each token will be posted 100 times, and we measure the average timing. If you run this, you will notice it’s a lot slower than before. And at <code>b</code>, it’s noticeably different. The resulting means are:</p>
+<pre><code>Token 0___________, request took in avg 0.005
+Token 1___________, request took in avg 0.005
+Token 2___________, request took in avg 0.005
+...
+Token a___________, request took in avg 0.005
+Token b___________, request took in avg 0.055
+Token c___________, request took in avg 0.005
+...
+Token x___________, request took in avg 0.005
+Token y___________, request took in avg 0.006
+Token z___________, request took in avg 0.006</code></pre>
+<p>It becomes clear that a request takes ~0.005 seconds for incorrect characters, and adds about 0.05 seconds if the first character is correct. Let’s try to understand, by checking the second character:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="cf">for</span> test_char <span class="kw">in</span> charset:</a>
+<a class="sourceLine" id="cb6-2" data-line-number="2">    token <span class="op">=</span> <span class="st">&quot;_&quot;</span> <span class="op">+</span> test_char <span class="op">+</span> (TOKEN_LENGTH<span class="dv">-2</span>) <span class="op">*</span> <span class="st">&quot;_&quot;</span></a>
+<a class="sourceLine" id="cb6-3" data-line-number="3">    timings <span class="op">=</span> []</a>
+<a class="sourceLine" id="cb6-4" data-line-number="4">    <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">100</span>):</a>
+<a class="sourceLine" id="cb6-5" data-line-number="5">        timings.append(post(token))</a>
+<a class="sourceLine" id="cb6-6" data-line-number="6">    <span class="bu">print</span>(<span class="st">&quot;Token </span><span class="sc">{}</span><span class="st">, request took in avg </span><span class="sc">{:.3f}</span><span class="st">&quot;</span>.<span class="bu">format</span>(token, avg(timings)))</a></code></pre></div>
+<p>Now we put the first character as <code>_</code>, then modify the second one at every iteration, and fill with <code>_</code> after.</p>
+<pre><code>Token _0__________, request took in avg 0.005
+Token _1__________, request took in avg 0.005
+Token _2__________, request took in avg 0.005
+Token _3__________, request took in avg 0.005
+Token _4__________, request took in avg 0.005
+Token _5__________, request took in avg 0.004
+Token _6__________, request took in avg 0.005
+...
+Token _x__________, request took in avg 0.005
+Token _y__________, request took in avg 0.005
+Token _z__________, request took in avg 0.005</code></pre>
+<p>Interesting: no character seems to stand out. This means that there is indeed a char-by-char verification and that if the character if incorrect, the check stops. So the second one is never evaluated.</p>
+<p>Let’s try again but with <code>b</code> as a first character (which seemed different previously):</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="cf">for</span> test_char <span class="kw">in</span> charset:</a>
+<a class="sourceLine" id="cb8-2" data-line-number="2">    token <span class="op">=</span> <span class="st">'b'</span> <span class="op">+</span> test_char <span class="op">+</span> (TOKEN_LENGTH<span class="dv">-2</span>) <span class="op">*</span> <span class="st">&quot;_&quot;</span></a>
+<a class="sourceLine" id="cb8-3" data-line-number="3">    timings <span class="op">=</span> []</a>
+<a class="sourceLine" id="cb8-4" data-line-number="4">    <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">100</span>):</a>
+<a class="sourceLine" id="cb8-5" data-line-number="5">        timings.append(post(token))</a>
+<a class="sourceLine" id="cb8-6" data-line-number="6">    <span class="bu">print</span>(<span class="st">&quot;Token </span><span class="sc">{}</span><span class="st">, request took in avg </span><span class="sc">{:.3f}</span><span class="st">&quot;</span>.<span class="bu">format</span>(token, avg(timings)))</a></code></pre></div>
+<pre><code>Token b0__________, request took in avg 0.056
+Token b1__________, request took in avg 0.056
+Token b2__________, request took in avg 0.055
+Token b3__________, request took in avg 0.056
+Token b4__________, request took in avg 0.108
+Token b5__________, request took in avg 0.058
+Token b6__________, request took in avg 0.057
+...
+Token bx__________, request took in avg 0.054
+Token by__________, request took in avg 0.055
+Token bz__________, request took in avg 0.055</code></pre>
+<p>Just as we expected: every token took about 0.055 seconds, except for <code>b4...</code> that took 0.05s longer.</p>
+<p>From that, we can deduct the following: the server checks char by char. At each correct character, it “waits” (maybe does something else, but for us, it translates to sleeping) for ~0.05 seconds (on avg). If the character is wrong, it stops immediately.</p>
+<h2 id="attacking-the-vulnerability">Attacking the vulnerability</h2>
+<p>While we could repeat the process above for each character, it would quickly become cumbersome. Much better to let Python do it for us!</p>
+<p>We have 2 ways of attacking it. The lazy way and the smart way.</p>
+<h3 id="the-lazy-way">The lazy way</h3>
+<p>What we notice is that the last correct character will take noticeable more time than the other incorrect characters. So one way is to simply measure (across multiple runs) the time for each character. Then we take the one that took the most time and decide it’s the correct character. Then we “restart” with a new base token.</p>
+<p>The code could look like that (in addition to previous imports and defined functions):</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="kw">def</span> guess(token_start):</a>
+<a class="sourceLine" id="cb10-2" data-line-number="2">    <span class="cf">if</span> <span class="bu">len</span>(token_start) <span class="op">==</span> TOKEN_LENGTH:</a>
+<a class="sourceLine" id="cb10-3" data-line-number="3">        <span class="bu">print</span>(<span class="st">&quot;Token: </span><span class="sc">{}</span><span class="st">&quot;</span>.<span class="bu">format</span>(token_start))</a>
+<a class="sourceLine" id="cb10-4" data-line-number="4">        <span class="cf">return</span> token_start</a>
+<a class="sourceLine" id="cb10-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb10-6" data-line-number="6">    times <span class="op">=</span> []</a>
+<a class="sourceLine" id="cb10-7" data-line-number="7">    <span class="cf">for</span> char <span class="kw">in</span> charset:</a>
+<a class="sourceLine" id="cb10-8" data-line-number="8">        <span class="bu">print</span>(token_start<span class="op">+</span>char, end<span class="op">=</span><span class="st">&quot;</span><span class="ch">\r</span><span class="st">&quot;</span>)</a>
+<a class="sourceLine" id="cb10-9" data-line-number="9"></a>
+<a class="sourceLine" id="cb10-10" data-line-number="10">        char_times <span class="op">=</span> []</a>
+<a class="sourceLine" id="cb10-11" data-line-number="11">        tentative_token <span class="op">=</span> token_start <span class="op">+</span> char <span class="op">+</span> <span class="op">\</span></a>
+<a class="sourceLine" id="cb10-12" data-line-number="12">            (TOKEN_LENGTH <span class="op">-</span> <span class="bu">len</span>(token_start) <span class="op">-</span> <span class="dv">1</span>)<span class="op">*</span><span class="st">'_'</span></a>
+<a class="sourceLine" id="cb10-13" data-line-number="13">        <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">3</span>): <span class="co"># let's do that 3 times to be more robuse.</span></a>
+<a class="sourceLine" id="cb10-14" data-line-number="14">            char_times.append(post(tentative_token))</a>
+<a class="sourceLine" id="cb10-15" data-line-number="15">        times.append((char, <span class="bu">sum</span>(char_times))) <span class="co"># compare sums of means, no difference</span></a>
+<a class="sourceLine" id="cb10-16" data-line-number="16">    max_char <span class="op">=</span> <span class="bu">max</span>(times, key<span class="op">=</span><span class="kw">lambda</span> x: x[<span class="dv">1</span>])[<span class="dv">0</span>]  <span class="co"># char with longest time</span></a>
+<a class="sourceLine" id="cb10-17" data-line-number="17">    guess(token_start<span class="op">+</span>max_char)</a>
+<a class="sourceLine" id="cb10-18" data-line-number="18"></a>
+<a class="sourceLine" id="cb10-19" data-line-number="19">guess(<span class="st">&quot;&quot;</span>)</a></code></pre></div>
+<p>This is a recursive function. It’s not always a good idea (python doesn’t do <a href="https://neopythonic.blogspot.com/2009/04/tail-recursion-elimination.html">Tail Recursion Optimization</a>; it allows for 1k recursions but isn’t as nicely optimized as others like Scala). But in our case, because we only have 12 recursions, we should be OK.</p>
+<h4 id="timing-issue">Timing issue</h4>
+<p>Now, that ain’t the prettiest method out there, but it does the job. Its main flaw is the time it will take to complete. Let’s do an analysis. Let’s suppose each request takes 0.05 seconds, and that each valid character takes 0.05 more seconds. Arguably, both times are random, but this is a good enough estimation. Remember that each character is tested 3 times, to account for some possible randomness and that our characters set has 36 characters</p>
+<ul>
+<li>Finding the first character:
+<ul>
+<li>Each of the 35 wrong characters will take 3x0.05 = 0.15 seconds</li>
+<li>The correct character will take 3x(0.05 + 0.05) = 0.30 seconds</li>
+<li>We then need 35x0.15 + 1x0.30 = 5.55 seconds. Not too bad.</li>
+</ul></li>
+<li>Finding the second character:
+<ul>
+<li>Remember now each wrong second character must be preceded by the first correct character.</li>
+<li>Each of the 35 wrong characters will take 3x (0.05 + 0.05) = 0.3 seconds. The first “0.05” is to pass the correct char, and the second is for the request.</li>
+<li>The correct char will take 3x (0.05 + 0.05 + 0.05) = 0.45 seconds. The 3 “0.05” are for passing the first and second character, and one for the request.</li>
+<li>We now have a total of 35x0.3 + 1x0.45 = 10.95 seconds. Almost doubled. And the total cracking time will need that, plus the time for all previous chars (so to crack a password of length 2, we need about 16 seconds now).</li>
+</ul></li>
+</ul>
+<p>Clearly, we can see a pattern now. Testing the last character for <em>one</em> password of length L (for which the previous L-1 chars are correct) takes Lx0.05 if the last character is wrong, and (L+1)x0.05 if it’s correct. Let’s suppose: * We do <code>T</code> trials (for randomness, here 3) * We consider a characters space of <code>C</code> characters (here 36) * We know the password has exactly length <code>L</code> (here 12)</p>
+<p>A quick analysis leads us to the following formula <img src="data:image/png;base64,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" alt="Analytical time" /> Now grab your calculator, plug the numbers: 423 seconds, so about 7 minutes.</p>
+<p>Even though it took longer to do that analysis than to crack the whole password, we’d still prefer to do that faster.</p>
+<h3 id="the-smart-way">The smart way</h3>
+<p><small>Note: we won’t provide a full explanation and code, but give you the general idea.</small></p>
+<p>When you run the code, you usually can tell the correct character without waiting until the end. Obviously, the correct character will take significantly more time. If you do it 3 times, it becomes even more obvious. So what we have to do is to teach our program to “detect” these differences.</p>
+<p>You again have 2 (smart) ways to do it: * The first one consists in supposing/guessing/finding the time a correct or wrong request <em>should</em> take. In our case, we deduced about 0.05s + 0.05s per correct characters. From that, we can do the request, and check if the required time has reached that expected threshold. This needs some tuning. What we want to do is to check whether we are epsilon-close to the expected value. But as the additional time required by correct characters is probably random, the time for the correct Nth char may not be that different. Tune the epsilon, maybe sum the time for multiple requests, and you should be fine. * The second one consists in finding the different one. Once you’ve passed the correct character, you can already deduce which is the one that took “clearly longer”. Measure the time for a few characters, then look for one that clearly deviates. If none, try different characters until one’s time clearly deviates. This method also requires some tuning, because “different” is not so obvious. But again, playing with the epsilon, you should find a good algorithm.</p>
+</body>
+</html>
