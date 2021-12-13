@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang xml:lang>
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>hw7_sol</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <style type="text/css">
+html {
+font-size: 100%;
+overflow-y: scroll;
+-webkit-text-size-adjust: 100%;
+-ms-text-size-adjust: 100%;
+}
+body {
+color: #000;
+font-family: Georgia, Palatino, 'Palatino Linotype', Times, 'Times New Roman', serif;
+font-size: 12px;
+line-height: 1.7;
+padding: 1em;
+margin: auto;
+max-width: 42em;
+background: #fefefe;
+}
+a {
+color: #0645ad;
+text-decoration: none;
+}
+a:visited {
+color: #0b0080;
+}
+a:hover {
+color: #06e;
+}
+a:active {
+color: #faa700;
+}
+a:focus {
+outline: thin dotted;
+}
+*::-moz-selection {
+background: rgba(255, 255, 0, 0.3);
+color: #000;
+}
+*::selection {
+background: rgba(255, 255, 0, 0.3);
+color: #000;
+}
+a::-moz-selection {
+background: rgba(255, 255, 0, 0.3);
+color: #0645ad;
+}
+a::selection {
+background: rgba(255, 255, 0, 0.3);
+color: #0645ad;
+}
+p {
+margin: 1em 0;
+}
+img {
+max-width: 100%;
+}
+h1, h2, h3, h4, h5, h6 {
+color: #111;
+line-height: 125%;
+margin-top: 2em;
+font-weight: normal;
+}
+h4, h5, h6 {
+font-weight: bold;
+}
+h1 {
+font-size: 2.5em;
+}
+h2 {
+font-size: 2em;
+}
+h3 {
+font-size: 1.5em;
+}
+h4 {
+font-size: 1.2em;
+}
+h5 {
+font-size: 1em;
+}
+h6 {
+font-size: 0.9em;
+}
+blockquote {
+color: #666666;
+margin: 0;
+padding-left: 3em;
+border-left: 0.5em #EEE solid;
+}
+hr {
+display: block;
+height: 2px;
+border: 0;
+border-top: 1px solid #aaa;
+border-bottom: 1px solid #eee;
+margin: 1em 0;
+padding: 0;
+}
+pre, code, kbd, samp {
+color: #000;
+font-family: monospace, monospace;
+_font-family: 'courier new', monospace;
+font-size: 0.98em;
+background-color: #eee;
+padding-left: 5px;
+padding-right: 5px;
+}
+pre {
+white-space: pre;
+white-space: pre-wrap;
+word-wrap: break-word;
+}
+b, strong {
+font-weight: bold;
+}
+dfn {
+font-style: italic;
+}
+ins {
+background: #ff9;
+color: #000;
+text-decoration: none;
+}
+mark {
+background: #ff0;
+color: #000;
+font-style: italic;
+font-weight: bold;
+}
+sub, sup {
+font-size: 75%;
+line-height: 0;
+position: relative;
+vertical-align: baseline;
+}
+sup {
+top: -0.5em;
+}
+sub {
+bottom: -0.25em;
+}
+ul, ol {
+margin: 1em 0;
+padding: 0 0 0 2em;
+}
+li p:last-child {
+margin-bottom: 0;
+}
+ul ul, ol ol {
+margin: .3em 0;
+}
+dl {
+margin-bottom: 1em;
+}
+dt {
+font-weight: bold;
+margin-bottom: .8em;
+}
+dd {
+margin: 0 0 .8em 2em;
+}
+dd:last-child {
+margin-bottom: 0;
+}
+img {
+border: 0;
+-ms-interpolation-mode: bicubic;
+vertical-align: middle;
+}
+figure {
+display: block;
+text-align: center;
+margin: 1em 0;
+}
+figure img {
+border: none;
+margin: 0 auto;
+}
+figcaption {
+font-size: 0.8em;
+font-style: italic;
+margin: 0 0 .8em;
+}
+table {
+margin-bottom: 2em;
+border-bottom: 1px solid #ddd;
+border-right: 1px solid #ddd;
+border-spacing: 0;
+border-collapse: collapse;
+}
+table th {
+padding: .2em 1em;
+background-color: #eee;
+border-top: 1px solid #ddd;
+border-left: 1px solid #ddd;
+}
+table td {
+padding: .2em 1em;
+border-top: 1px solid #ddd;
+border-left: 1px solid #ddd;
+vertical-align: top;
+}
+.author {
+font-size: 1.2em;
+text-align: center;
+}
+@media only screen and (min-width: 480px) {
+body {
+font-size: 14px;
+}
+}
+@media only screen and (min-width: 768px) {
+body {
+font-size: 16px;
+}
+}
+@media print {
+* {
+background: transparent !important;
+color: black !important;
+filter: none !important;
+-ms-filter: none !important;
+}
+body {
+font-size: 12pt;
+max-width: 100%;
+}
+a, a:visited {
+text-decoration: underline;
+}
+hr {
+height: 1px;
+border: 0;
+border-bottom: 1px solid black;
+}
+a[href]:after {
+content: " (" attr(href) ")";
+}
+abbr[title]:after {
+content: " (" attr(title) ")";
+}
+.ir a:after, a[href^="javascript:"]:after, a[href^="#"]:after {
+content: "";
+}
+pre, blockquote {
+border: 1px solid #999;
+padding-right: 1em;
+page-break-inside: avoid;
+}
+tr, img {
+page-break-inside: avoid;
+}
+img {
+max-width: 100% !important;
+}
+@page :left {
+margin: 15mm 20mm 15mm 10mm;
+}
+@page :right {
+margin: 15mm 10mm 15mm 20mm;
+}
+p, h2, h3 {
+orphans: 3;
+widows: 3;
+}
+h2, h3 {
+page-break-after: avoid;
+}
+}</style>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<h1 id="com-402-homework-7-solution">COM-402 Homework 7 Solution</h1>
+<ul>
+<li><a href="#exercise-1-attack-what-are-donalds-favourite-movies">Exercise 1: [attack] What are Donald’s Favourite Movies?</a></li>
+<li><a href="#exercise-2-defense-differentially-private-queries">Exercise 2: [defense] Differentially Private Queries</a></li>
+</ul>
+<h1 id="exercise-1-attack-what-are-donalds-favourite-movies">Exercise 1: [attack] What are Donald’s Favourite Movies?</h1>
+<p>As established in the handout, our goal is to partially de-anonymize a database, to gain information on data that would be otherwise hard to access. In order to do this, we will use information disclosed in a publicly available database. Consequently, we won’t need to compute any hash here, but rather just match hashes with plaintexts based on the data we can gather from the IMDb database.</p>
+<h2 id="difficulty-level-easy">1.1: Difficulty level: easy</h2>
+<p>In this case, the IMDb dataset is a subset of our anonymized one. Given this configuration, a possible attack could consist of the following steps:</p>
+<ol type="1">
+<li>Start off by finding all the dates for which the victim has posted one or more reviews in the public database.</li>
+<li>Subsequently, use this information, along with the rating given, to retrieve the hash from the anonymized database.</li>
+<li>Finally, use the dates and stars of the reviews for the victim’s movies to retrieve the plaintext values of the movies from the public database.</li>
+</ol>
+<p>This method works and is fairly efficient. However, we can observe that, since the databases are not too big, it would not be too expensive to simply compute a cross-product between the entries of the anonymous and public databases. This gives us an interesting opportunity, as we would be able to store, for all matching dates and ratings: 1. All the users’ hashes for a given user plaintext 2. All the plaintext movie names for a given movie hash</p>
+<p>Once this is done, our first step would be to guess our victim’s hash: as the public database is not correctly anonymized, we will simply be able to get it as the most frequent one in our hashes list for the known plaintext. At this point, we are almost done: we can retrieve the hashes of all the movies that our victim has reviewed in the anonymous database, and use the same method (just, from hash to plaintext this time) to retrieve the plaintexts for all the movies.</p>
+<p>This method is also very versatile, as, once the table is ready, we would be able to easily retrieve the movies watched by any other user with little computation needed.</p>
+<h2 id="difficulty-level-normal">1.2: Difficulty level: normal</h2>
+<p>Now that the dates of the reviews vary between the two databases, there is no way for us to create that same beautiful table we had before, and the cross-product is useless. However, as we can read from the handout, there is a spark of hope: the frequency at which the movies appear in the anonymized and public databases is the same. Ultimately, this makes our job very easy.</p>
+<p>The first thing we need to do to mount our frequency attack is to sort the databases’ movies (in one case the plaintext, in the other the hash) by their frequency: this way, at each index we will have a match between a hash and its corresponding plaintext. We can therefore store our mapping in a dictionary so that we can retrieve a movie title from its hash in a very short time.</p>
+<p>If we had the hash of our victim’s email, the job would be done: we could just gather his movies from the anonymized db and use our table to get the equivalent plaintext. However, this is not the case: as a consequence, we will store all of the reviewed films for each user, then find out which of the movie lists belongs to the victim.</p>
+<p>Once again, this is made possible by the public database leaking a lot of information: as we will see, if we store in a set the hashes of all the movies reviewed by our victim in the public database, we can then notice that this is a subset only for a single one of the sets of movies reviewed a user in the anonymized database. As a consequence, we can easily infer that the only user that reviewed all the same movies as the victim (plus some more) is the victim himself. At this point, all we need to do is to use the table we built at the very beginning to retrieve the plaintexts for the missing movies.</p>
+<h2 id="difficulty-level-hard">1.3: Difficulty level: hard</h2>
+<p>As you will know from the handout, this exercise is not compulsory. However, if you are into challenges and love the satisfaction of beating a game in hard mode, get on board!</p>
+<p>Here the situation is very complicated. Not only the reviews are posted on different dates, but the frequency cannot help us anymore. The only information we have available is that the same reviews are posted on “close” dates on the two dbs, with a 14 days limit. In addition, we know that the probability distribution varies with the distance from the day the review was posted.</p>
+<p>As a consequence of the data we have at our disposal, it will be very complicated here to get all the information right. Instead, we will try and guess the movies by using convolution.</p>
+<h3 id="the-convolution-method">The convolution method</h3>
+<p>In order to figure out the probability distribution around a series of <code>interesting_dates</code>, a convolution operation is applied. To do this, at first dates are transformed through <a href="https://en.wikipedia.org/wiki/One-hot">One Hot Encoding</a>. Then, a probability is calculated for each day, through convolution with a kernel based on the given probability distribution. Subsequently, we can calculate the score for an <code>item</code> as the dot product between our convolution and the one-hot encoding of the dates at which the item occurs.</p>
+<p>Sounds confusing, right? Well, it kind of is. But here is an example to, hopefully, clear things up.</p>
+<p>Our first goal is to find the most likely hash for the victim’s email address. As a consequence, our <code>interesting_dates</code> are going to be those where the said user has posted a review in the public database. By applying a convolution between the OHE of those dates and our kernel, we can obtain a probability distribution: the values will be 0 in dates very far from the user’s reviews and get higher and higher as the 14-days radius is entered.</p>
+<p>At this point, we are ready to calculate the scores of our <code>items</code>, which in this case are hashes of the users: by one-hot encoding the dates at which said hashes occur, and calculating a dot product with the convolution obtained before, we can compute a score that will grow with the correlation between those two.</p>
+<p>Indeed, this does not give us absolute certainty that we will retrieve the correct values.</p>
+<h3 id="building-our-predictions">Building our predictions</h3>
+<p>Once we have predicted the user’s hash through convolution, we can easily use the same method to try and guess the movies they reviewed. This time, for each movie, the <code>interesting_dates</code> are going to be those at which the movie was reviewed in the anon database, while the <code>items</code> are going to be the plaintexts, associated with the review dates in the public database.</p>
+<p>Indeed, with the given database our method works once again, yielding us both the correct hash for the user and a matching set of movies!</p>
+<h1 id="exercise-2-defense-differentially-private-queries">Exercise 2: [defense] Differentially Private Queries</h1>
+<p>In this exercise, we are simply asked to use the Laplace mechanism to modulate the responses we give out to some researchers, concerning, once again, movies. As you learned from the lecture, replying truthfully to all queries would indeed be a problem, as this would disclose information regarding individual users: this goes beyond the purpose of research, and it is what we want to avoid.</p>
+<p>In order to do this, we define a privacy budget, which is separate for each researcher: for each query, an epsilon value can be specified, and the higher it is, the higher the accuracy of the response will be. As a consequence, a higher epsilon will drain the budget more, and vice versa, a lower epsilon will allow for more queries.</p>
+<h2 id="the-implementation">The implementation</h2>
+<p>In the exercise, you are mostly asked to implement the <code>get_count()</code> function. This is what the function should do, at a very high level:</p>
+<ul>
+<li>If the query has already been posted, just return the previous result</li>
+<li>In case of a new query, return the differentially private result if the epsilon is compatible with the budget, raise an exception otherwise</li>
+</ul>
+<p>Going deep into the implementation, we define a dictionary for <code>cached_responses</code> and a <code>spent_budget</code> variable in the initialization function.</p>
+<p>The <code>remaining_budget()</code> function can then simply be implemented as</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="cf">return</span> <span class="va">self</span>._privacy_budget` <span class="op">-</span> `self.spent_budget</a></code></pre></div>
+<p>This leaves us with the <code>get_count()</code> function. The idea, here, is to start by checking the dictionary, where we store <code>movie_name</code> and <code>rating_threshold</code> as keys, and the result as value: if the posted ones are already in the dict, we can simply return them. Of course, it would not make sense to deplete the privacy budget for a query that has already been asked, so we do not need to update any other parameter. Once this fast check is done, we get to the heart of the function: if <code>epsilon &lt; remaining_budget</code>, we raise a <code>BudgetDepletedError</code>. Otherwise, we proceed with the computation of the reply.</p>
+<p>First of all, we need to compute the real data, without any noise added. To do this, it is enough to iterate through <code>self._entries</code>, which has already been kindly provided to you and increase a counter for each of the entries that are selected by the query. This will therefore return the real number of entries that respect the conditions given in the query.</p>
+<p>Once this is out of the way, we add a Laplace noise as defined in the theory: to do this, we can use the function <code>np.random.laplace(loc=0, scale=1. / epsilon)</code>.</p>
+<p>At this point, all that is left to do is to cache the response, update our budget (<code>spent_budget += epsilon</code>) and return the noisy result.</p>
+</body>
+</html>

@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang xml:lang>
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>hw8_sol</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <style type="text/css">
+html {
+font-size: 100%;
+overflow-y: scroll;
+-webkit-text-size-adjust: 100%;
+-ms-text-size-adjust: 100%;
+}
+body {
+color: #000;
+font-family: Georgia, Palatino, 'Palatino Linotype', Times, 'Times New Roman', serif;
+font-size: 12px;
+line-height: 1.7;
+padding: 1em;
+margin: auto;
+max-width: 42em;
+background: #fefefe;
+}
+a {
+color: #0645ad;
+text-decoration: none;
+}
+a:visited {
+color: #0b0080;
+}
+a:hover {
+color: #06e;
+}
+a:active {
+color: #faa700;
+}
+a:focus {
+outline: thin dotted;
+}
+*::-moz-selection {
+background: rgba(255, 255, 0, 0.3);
+color: #000;
+}
+*::selection {
+background: rgba(255, 255, 0, 0.3);
+color: #000;
+}
+a::-moz-selection {
+background: rgba(255, 255, 0, 0.3);
+color: #0645ad;
+}
+a::selection {
+background: rgba(255, 255, 0, 0.3);
+color: #0645ad;
+}
+p {
+margin: 1em 0;
+}
+img {
+max-width: 100%;
+}
+h1, h2, h3, h4, h5, h6 {
+color: #111;
+line-height: 125%;
+margin-top: 2em;
+font-weight: normal;
+}
+h4, h5, h6 {
+font-weight: bold;
+}
+h1 {
+font-size: 2.5em;
+}
+h2 {
+font-size: 2em;
+}
+h3 {
+font-size: 1.5em;
+}
+h4 {
+font-size: 1.2em;
+}
+h5 {
+font-size: 1em;
+}
+h6 {
+font-size: 0.9em;
+}
+blockquote {
+color: #666666;
+margin: 0;
+padding-left: 3em;
+border-left: 0.5em #EEE solid;
+}
+hr {
+display: block;
+height: 2px;
+border: 0;
+border-top: 1px solid #aaa;
+border-bottom: 1px solid #eee;
+margin: 1em 0;
+padding: 0;
+}
+pre, code, kbd, samp {
+color: #000;
+font-family: monospace, monospace;
+_font-family: 'courier new', monospace;
+font-size: 0.98em;
+background-color: #eee;
+padding-left: 5px;
+padding-right: 5px;
+}
+pre {
+white-space: pre;
+white-space: pre-wrap;
+word-wrap: break-word;
+}
+b, strong {
+font-weight: bold;
+}
+dfn {
+font-style: italic;
+}
+ins {
+background: #ff9;
+color: #000;
+text-decoration: none;
+}
+mark {
+background: #ff0;
+color: #000;
+font-style: italic;
+font-weight: bold;
+}
+sub, sup {
+font-size: 75%;
+line-height: 0;
+position: relative;
+vertical-align: baseline;
+}
+sup {
+top: -0.5em;
+}
+sub {
+bottom: -0.25em;
+}
+ul, ol {
+margin: 1em 0;
+padding: 0 0 0 2em;
+}
+li p:last-child {
+margin-bottom: 0;
+}
+ul ul, ol ol {
+margin: .3em 0;
+}
+dl {
+margin-bottom: 1em;
+}
+dt {
+font-weight: bold;
+margin-bottom: .8em;
+}
+dd {
+margin: 0 0 .8em 2em;
+}
+dd:last-child {
+margin-bottom: 0;
+}
+img {
+border: 0;
+-ms-interpolation-mode: bicubic;
+vertical-align: middle;
+}
+figure {
+display: block;
+text-align: center;
+margin: 1em 0;
+}
+figure img {
+border: none;
+margin: 0 auto;
+}
+figcaption {
+font-size: 0.8em;
+font-style: italic;
+margin: 0 0 .8em;
+}
+table {
+margin-bottom: 2em;
+border-bottom: 1px solid #ddd;
+border-right: 1px solid #ddd;
+border-spacing: 0;
+border-collapse: collapse;
+}
+table th {
+padding: .2em 1em;
+background-color: #eee;
+border-top: 1px solid #ddd;
+border-left: 1px solid #ddd;
+}
+table td {
+padding: .2em 1em;
+border-top: 1px solid #ddd;
+border-left: 1px solid #ddd;
+vertical-align: top;
+}
+.author {
+font-size: 1.2em;
+text-align: center;
+}
+@media only screen and (min-width: 480px) {
+body {
+font-size: 14px;
+}
+}
+@media only screen and (min-width: 768px) {
+body {
+font-size: 16px;
+}
+}
+@media print {
+* {
+background: transparent !important;
+color: black !important;
+filter: none !important;
+-ms-filter: none !important;
+}
+body {
+font-size: 12pt;
+max-width: 100%;
+}
+a, a:visited {
+text-decoration: underline;
+}
+hr {
+height: 1px;
+border: 0;
+border-bottom: 1px solid black;
+}
+a[href]:after {
+content: " (" attr(href) ")";
+}
+abbr[title]:after {
+content: " (" attr(title) ")";
+}
+.ir a:after, a[href^="javascript:"]:after, a[href^="#"]:after {
+content: "";
+}
+pre, blockquote {
+border: 1px solid #999;
+padding-right: 1em;
+page-break-inside: avoid;
+}
+tr, img {
+page-break-inside: avoid;
+}
+img {
+max-width: 100% !important;
+}
+@page :left {
+margin: 15mm 20mm 15mm 10mm;
+}
+@page :right {
+margin: 15mm 10mm 15mm 20mm;
+}
+p, h2, h3 {
+orphans: 3;
+widows: 3;
+}
+h2, h3 {
+page-break-after: avoid;
+}
+}</style>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<h1 id="com-402-homework-8-solution">COM-402 Homework 8 Solution</h1>
+<ul>
+<li><a href="#exercise-1-pet-homomorphic-encryption-for-ml-model-inference">Exercise 1: [PET] Homomorphic Encryption for ML Model Inference</a></li>
+<li><a href="#exercise-2">Exercise 2</a></li>
+</ul>
+<h1 id="exercise-1-pet-homomorphic-encryption-for-ml-model-inference">Exercise 1: [PET] Homomorphic Encryption for ML Model Inference</h1>
+<h2 id="mathematical-computation">Mathematical computation</h2>
+<p>Let’s have a quick look at how things work. As you saw in the lectures,</p>
+<p><span class="math inline"><em>e</em><em>n</em><em>c</em>(<em>m</em><sub>1</sub>) * <em>e</em><em>n</em><em>c</em>(<em>m</em><sub>2</sub>) = <em>e</em><em>n</em><em>c</em>(<em>m</em><sub>1</sub> + <em>m</em><sub>2</sub>)</span></p>
+<p>But if you go to the wikipedia page, you’ll see a bunch of other fun properties (mildly simplified for ease of reading): * <span class="math inline"><em>d</em><em>e</em><em>c</em>(<em>e</em><em>n</em><em>c</em>(<em>m</em><sub>1</sub>) ⋅ <em>g</em><sup><em>m</em><sub>2</sub></sup>) = <em>m</em><sub>1</sub> + <em>m</em><sub>2</sub></span>, a.k.a you can add another plaintext without need to encrypt it * <span class="math inline"><em>d</em><em>e</em><em>c</em>(<em>e</em><em>n</em><em>c</em>(<em>m</em><sub>1</sub>)<sup><em>m</em><sub>2</sub></sup>) = <em>m</em><sub>1</sub> ⋅ <em>m</em><sub>2</sub></span>, a.k.a same as above, but for multiplication</p>
+<p>This is exactly what is used on the server. It holds plaintext weights and bias, that they want to multiply/add to your encrypted vector. To add and multiply by integers, they can do so only using the public key.</p>
+<h2 id="phe-implementation-of-precision"><code>phe</code> implementation of precision</h2>
+<p>As mentioned in the handout, you need to perform the computations on integers. The library <code>phe</code> deals with it in the following manner: multiply it by a constant in base 16 (the size of which will affect the precision and runtime), then do your computation, and then divide again by a constant in base 16. <em>The choice of these constants are the core of this exercise, and will be explained later.</em></p>
+<h2 id="outline">Outline</h2>
+<p>The big idea here is not too hard: 1. Generate your public/secret keys 2. Using the public key, encrypt your vector (as per the desired <a href="#phe-implementation-of-precision">precision</a>) 3. Send that 4. Receive your encrypted result 5. Decrypt it</p>
+<p>As a true software engineer, you would want to add tons of checks and features, but we are kinda lazy, and thus will focus on getting things to work.</p>
+<h2 id="the-code">The code</h2>
+<p>Everything will happen in a function called <code>query_pred</code>, with the following signature:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">def</span> query_pred(vector: <span class="bu">list</span>, keys: <span class="bu">tuple</span> <span class="op">=</span> <span class="va">None</span>):</a></code></pre></div>
+<p>The vector is obvious. The keys is either a tuple <code>(public_key, private_key)</code> if already generated, or <code>None</code>, in which case we generate our own keys. The form situation will prove useful in exercise 2.</p>
+<p>We also do some imports: <code>phe</code> for Paillier, <code>requests</code> to query the server.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="im">from</span> phe <span class="im">import</span> paillier</a>
+<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="im">import</span> requests</a></code></pre></div>
+<p>And our final goal is to compare the obtained value to our reference:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb3-1" data-line-number="1">refx <span class="op">=</span> [<span class="fl">0.48555949</span>, <span class="fl">0.29289251</span>, <span class="fl">0.63463107</span>, <span class="fl">0.41933057</span>, <span class="fl">0.78672205</span>,</a>
+<a class="sourceLine" id="cb3-2" data-line-number="2">        <span class="fl">0.58910837</span>, <span class="fl">0.00739207</span>, <span class="dv">0</span>.<span class="fl">313908020.37037496</span>, <span class="fl">0.3375726</span> ]</a>
+<a class="sourceLine" id="cb3-3" data-line-number="3">refy <span class="op">=</span> <span class="fl">0.44812144746653826</span></a>
+<a class="sourceLine" id="cb3-4" data-line-number="4"><span class="cf">assert</span> <span class="dv">2</span><span class="op">**</span>(<span class="op">-</span><span class="dv">16</span>) <span class="op">&gt;</span> <span class="bu">abs</span>(query_pred(refx) <span class="op">-</span> refy)</a></code></pre></div>
+<h3 id="part-1-generating-the-keys">Part 1: Generating the keys</h3>
+<p>As mentioned above, we only generate keys if they are not already provided.</p>
+<pre><code>if keys is None:
+        pubkey, privkey = paillier.generate_paillier_keypair()
+    else:
+        pubkey, privkey = keys</code></pre>
+<p>We could specify here the length of 2048 bits for the key, but it is <a href="https://python-paillier.readthedocs.io/en/develop/phe.html#phe.paillier.generate_paillier_keypair">already the default</a>, and so is <code>g</code>.</p>
+<h3 id="part-2-encrypt-your-vector">Part 2: Encrypt your vector</h3>
+<p>We cannot encrypt a vector at once, we must encrypt each value separately.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb5-1" data-line-number="1">PRECISION <span class="op">=</span> <span class="dv">2</span><span class="op">**</span>(<span class="op">-</span><span class="dv">16</span>) <span class="co"># as indicated</span></a>
+<a class="sourceLine" id="cb5-2" data-line-number="2">enc_vector <span class="op">=</span> [pubkey.encrypt(x, precision<span class="op">=</span>PRECISION)</a>
+<a class="sourceLine" id="cb5-3" data-line-number="3">              .ciphertext()</a>
+<a class="sourceLine" id="cb5-4" data-line-number="4">              <span class="cf">for</span> x <span class="kw">in</span> vector]</a></code></pre></div>
+<h3 id="part-3-send-that">Part 3: Send that</h3>
+<p>A simple <code>requests</code> POST:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb6-1" data-line-number="1">r <span class="op">=</span> requests.post(<span class="st">&quot;http://localhost:8000/prediction&quot;</span>,</a>
+<a class="sourceLine" id="cb6-2" data-line-number="2">                  json<span class="op">=</span>{<span class="st">&quot;pub_key_n&quot;</span>: pubkey.n,</a>
+<a class="sourceLine" id="cb6-3" data-line-number="3">                        <span class="st">&quot;enc_feature_vector&quot;</span>: enc_vector})</a></code></pre></div>
+<p>Note that we follow the specifications provided in the handout, for the form of the JSON. ### Part 4: Receive your encrypted result If everything is OK, we received a JSON with only one field, <code>enc_prediction</code>:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb7-1" data-line-number="1">f r.status_code <span class="op">!=</span> <span class="dv">200</span>:</a>
+<a class="sourceLine" id="cb7-2" data-line-number="2">        <span class="bu">print</span>(<span class="st">&quot;Error while requesting_ </span><span class="sc">{}</span><span class="st">&quot;</span>.<span class="bu">format</span>(r.status_code))</a>
+<a class="sourceLine" id="cb7-3" data-line-number="3">        <span class="cf">return</span> <span class="va">None</span></a>
+<a class="sourceLine" id="cb7-4" data-line-number="4">y_enc <span class="op">=</span> r.json()[<span class="st">'enc_prediction'</span>]</a></code></pre></div>
+<h3 id="part-5-decrypt-it">Part 5: Decrypt it</h3>
+<p>Now, to the fun part. <code>y_enc</code> is just an integer. We need to indicate to <code>phe</code> how to interpret it. Then, we decrypt it using our private key</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb8-1" data-line-number="1">encrypted <span class="op">=</span> paillier.EncryptedNumber(pubkey, y_enc, EXPONENT)</a>
+<a class="sourceLine" id="cb8-2" data-line-number="2">y <span class="op">=</span> privkey.decrypt(encrypted)</a>
+<a class="sourceLine" id="cb8-3" data-line-number="3"><span class="cf">return</span> y</a></code></pre></div>
+<h2 id="is-it-over">Is it over?</h2>
+<p>Nope. If you followed closely, we omitted the core of the exercise: the constant <code>EXPONENT</code>. This exponent, a power to a <a href="https://python-paillier.readthedocs.io/en/develop/phe.html#phe.paillier.EncodedNumber.BASE">base 16</a>, indicates with which precision the number was encoded/encrypted. You may be tempted to say &quot;<em>Well, we wanted a precision of <span class="math inline">2<sup> − 16</sup></span>, which is equal to <span class="math inline">16<sup> − 4</sup></span> so we select EXPONENT=-4</em>.</p>
+<h3 id="down-the-paillier-rabbit-hole">Down the <del>Paillier</del> rabbit hole</h3>
+<p>This is very naive of you. Things are not so simple. See, what is supposed to be computed on the server is the following:</p>
+<p><span class="math inline"><em>x</em><sub>1</sub><em>w</em><sub>1</sub> + <em>x</em><sub>2</sub><em>w</em><sub>2</sub> + … + <em>x</em><sub><em>n</em></sub><em>w</em><sub><em>n</em></sub> + <em>b</em></span></p>
+<p>But the <span class="math inline"><em>x</em><sub><em>i</em></sub></span> are encrypted. So it works “<em>in the Paillier domain</em>”. Thanks to properties seen <a href="#mathematical-computation">earlier</a>:</p>
+<p><span class="math inline"><em>e</em><em>n</em><em>c</em>(<em>x</em><sub>1</sub>)<sup><em>w</em><sub>1</sub></sup> ⋅ <em>e</em><em>n</em><em>c</em>(<em>x</em><sub>2</sub>)<sup><em>w</em><sub>2</sub></sup> ⋅ … ⋅ <em>e</em><em>n</em><em>c</em>(<em>x</em><sub><em>n</em></sub>)<sup><em>w</em><sub><em>n</em></sub></sup> ⋅ <em>b</em></span></p>
+<p>Now, suppose each <span class="math inline"><em>x</em><sub><em>i</em></sub></span>, <span class="math inline"><em>w</em><sub><em>i</em></sub></span> and <span class="math inline"><em>b</em></span> are floats. To work with them in a fixed precision, we multiply each of them by a constant, let’s call it <span class="math inline"><em>k</em></span>. It is defined using our chosen precision (but we don’t really care about its actual value). What happens when we do</p>
+<p><span class="math inline"><em>e</em><em>n</em><em>c</em>(<em>x</em><sub>1</sub>) ⋅ <em>e</em><em>n</em><em>c</em>(<em>x</em><sub>2</sub>) ∼ <em>e</em><em>n</em><em>c</em>(<em>k</em><em>x</em><sub>1</sub>) ⋅ <em>e</em><em>n</em><em>c</em>(<em>k</em><em>x</em><sub>2</sub>)</span></p>
+<p>You saw during the lecture that this is equivalent to</p>
+<p><span class="math inline"><em>e</em><em>n</em><em>c</em>(<em>k</em><em>x</em><sub>1</sub> + <em>k</em><em>x</em><sub>2</sub>) = <em>e</em><em>n</em><em>c</em>(<em>k</em>(<em>x</em><sub>1</sub> + <em>x</em><sub>2</sub>))</span></p>
+<p>Nothing too fancy here. If we simply added the <span class="math inline"><em>x</em><sub><em>i</em></sub></span>, we could apply your suggestion, and keep the same exponent.</p>
+<p>But behold: what happens for</p>
+<p><span class="math inline"><em>e</em><em>n</em><em>c</em>(<em>x</em><sub><em>i</em></sub>)<sup><em>w</em><sub><em>i</em></sub></sup> ∼ <em>e</em><em>n</em><em>c</em>(<em>k</em><em>x</em><sub><em>i</em></sub>)<sup><em>k</em><em>w</em><sub><em>i</em></sub></sup></span></p>
+<p>Some more math:</p>
+<p><span class="math inline"><em>e</em><em>n</em><em>c</em>(<em>k</em><em>x</em><sub><em>i</em></sub>)<sup><em>k</em><em>w</em><sub><em>i</em></sub></sup> ≡ ((1 + <em>n</em>)<sup><em>k</em><em>x</em><sub><em>i</em></sub></sup><em>r</em><sub><em>i</em></sub><sup><em>n</em></sup>)<sup><em>k</em><em>w</em><sub><em>i</em></sub></sup>mod <em>n</em><sup>2</sup> ≡ (1 + <em>n</em>)<sup><em>k</em><em>x</em><sub><em>i</em></sub> ⋅ <em>k</em><em>w</em><sub><em>i</em></sub></sup><em>r</em><sub><em>i</em></sub><sup><em>n</em> ⋅ <em>k</em><em>w</em><sub><em>i</em></sub></sup>mod <em>n</em><sup>2</sup></span></p>
+<p>We have 2 parts here. On the right</p>
+<p><span class="math inline"><em>r</em><sub><em>i</em></sub><sup><em>n</em> ⋅ <em>k</em><em>w</em><sub><em>i</em></sub></sup>mod <em>n</em><sup>2</sup> ≃ <em>r</em><sub><em>j</em></sub><sup><em>n</em></sup></span></p>
+<p>Because it will simply create another random value, which does not change the scheme. And on the left:</p>
+<p><span class="math inline">(1 + <em>n</em>)<sup><em>k</em><em>x</em><sub><em>i</em></sub> ⋅ <em>k</em><em>w</em><sub><em>i</em></sub></sup> = (1 + <em>n</em>)<sup><em>k</em><sup>2</sup><em>x</em><sub><em>i</em></sub><em>w</em><sub><em>i</em></sub></sup></span></p>
+<p>This represents a new number, that is now scaled by a constant <span class="math inline"><em>k</em><sup>2</sup></span>. Hence, we need to provide an exponent that is the <em>square</em> of the previous one, in order for things to scale accordingly. Remember, also, we provided the <em>precision</em> earlier as a floating value (<span class="math inline">2<sup> − 16</sup></span>), but now we need to provide an <em>exponent</em> of a base 16. Which means, we need to find <span class="math inline"><em>x</em></span> such that <span class="math inline">(2<sup> − 16</sup>)<sup>2</sup> = 16<sup><em>x</em></sup></span>. Some quick maths later, we find <span class="math inline"><em>x</em> =  − 8</span>.</p>
+<h1 id="exercise-2-attack-prediction-as-a-service-model-stealing">Exercise 2: [attack] Prediction-as-a-Service Model Stealing</h1>
+<p>We have (at least) two ways of attacking the model. Either by going weight by weight, or solving a linear equation. ## How to ### Weight-by-weight approach The idea is simple. If we discard the concept of encryption, the model simply is</p>
+<p><span class="math inline"><em>y</em> = <em>x</em><sub>1</sub> ⋅ <em>w</em><sub>1</sub> + <em>x</em><sub>2</sub> ⋅ <em>w</em><sub>2</sub> + … + <em>x</em><sub><em>n</em></sub> ⋅ <em>w</em><sub><em>n</em></sub> + <em>b</em></span></p>
+<p>If we suppose there is no “noise” (voluntary or not), we can simply do the following: * Provide the vector <span class="math inline">[0, 0, 0, ..., 0]</span>. We will receive <span class="math inline"><em>y</em> = 0 ⋅ <em>w</em><sub>1</sub> + ... + 0 ⋅ <em>w</em><sub><em>n</em></sub> + <em>b</em> = <em>b</em></span>. Cool, we have the bias * Then, once we have it, we send unitary vectors: <span class="math inline">[1, 0, 0, 0, .., 0]</span>, then <span class="math inline">[0, 1, 0, 0, ..., 0]</span>, then <span class="math inline">[0, 0, 1, 0, 0, .., 0]</span>. You get the idea. * We will receive, in return, the value <span class="math inline">1 ⋅ <em>w</em><sub>1</sub> + 0 ⋅ <em>w</em><sub>2</sub> + ... + 0 ⋅ <em>w</em><sub><em>n</em></sub> + <em>b</em> = <em>w</em><sub>1</sub> + <em>b</em></span> * From that, we simply deduct the bias we obtained earlier, which yields the value <span class="math inline"><em>w</em><sub>1</sub></span> (or others, according to which vector we sent).</p>
+<p>So we only need to send one query for the vector, then one query by weight. Cool!</p>
+<p>The method above is easy, but <em>could</em> be detected. In fact, the <em>very basic protection</em> the handout speaks about, ensure there are at least 3 different ciphers. So you couldn’t encrypt a 1, encrypt a 0, and send the cipher for the 0 multiple times. But lucky us, Paillier helps us here. Because encrypting includes a random value <code>r</code>, by encrypting the same value multiple times, we won’t encounter (a lot of) duplicates. So we’re safe here.</p>
+<h3 id="linear-equation">Linear equation</h3>
+<p>Another cool method is by solving a linear equation. After all, this is what is used to compute the result, so why not use it to decompose the model?</p>
+<p>We have, in vectors form,</p>
+<p><span class="math inline">$\mathbf{x} \cdot \mathbf{w}^\top + b = y \simeq \tilde{\mathbf{x}}\cdot \tilde{\mathbf{w}}^\top = y$</span></p>
+<p>Where <span class="math inline">$\tilde{\mathbf{x}}$</span> is <span class="math inline"><strong>x</strong></span> with an additional <span class="math inline">1</span> and <span class="math inline">$\tilde{ \mathbf{w}}$</span> is the weight vector, with one more component being the bias.</p>
+<p>If we did one query, and had one result, we have an equation with 11 unknown. But as <span class="math inline">$\tilde{\mathbf{w}}$</span> is fixed, we can simply make 11 different queries, and solve it!</p>
+<p>That’s basically it. We do 11 queries, get 11 values in return. Then we have a matrix 11x11 (remember the additional column of <span class="math inline">1</span>s for the bias), so we can solve it easily with any math library.</p>
+<h2 id="lets-code">Let’s code!</h2>
+<p>In both solutions below, we will use the method <code>query_pred</code> we coded earlier. We input a vector, a pair of keys, and we get a deciphered <span class="math inline"><em>y</em></span> in return.</p>
+<h3 id="weight-by-weight">Weight-by-weight</h3>
+<p>The code is relatively straightforward.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="co"># only create keys once</span></a>
+<a class="sourceLine" id="cb9-2" data-line-number="2">keys <span class="op">=</span> paillier.generate_paillier_keypair()</a>
+<a class="sourceLine" id="cb9-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb9-4" data-line-number="4"><span class="bu">print</span>(<span class="st">&quot;Attacking bias&quot;</span>) <span class="co"># pass only 0s</span></a>
+<a class="sourceLine" id="cb9-5" data-line-number="5">bias <span class="op">=</span> query_pred([<span class="dv">0</span>]<span class="op">*</span><span class="dv">10</span>, keys)</a>
+<a class="sourceLine" id="cb9-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb9-7" data-line-number="7">weights <span class="op">=</span> []</a>
+<a class="sourceLine" id="cb9-8" data-line-number="8"><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>):</a>
+<a class="sourceLine" id="cb9-9" data-line-number="9">    <span class="bu">print</span>(<span class="st">&quot;Attacking weight </span><span class="sc">{}</span><span class="st">&quot;</span>.<span class="bu">format</span>(i), end<span class="op">=</span><span class="st">&quot;</span><span class="ch">\r</span><span class="st">&quot;</span>)</a>
+<a class="sourceLine" id="cb9-10" data-line-number="10">    <span class="co"># create vector [0,0,..,1,..,0,0]</span></a>
+<a class="sourceLine" id="cb9-11" data-line-number="11">    vector <span class="op">=</span> np.zeros(<span class="dv">10</span>)</a>
+<a class="sourceLine" id="cb9-12" data-line-number="12">    vector[i] <span class="op">=</span> <span class="dv">1</span></a>
+<a class="sourceLine" id="cb9-13" data-line-number="13">    <span class="co"># receive w_1 + b, deduce bias</span></a>
+<a class="sourceLine" id="cb9-14" data-line-number="14">    y <span class="op">=</span> query_pred(vector, keys) <span class="op">-</span> bias</a>
+<a class="sourceLine" id="cb9-15" data-line-number="15">    weights.append(y) <span class="co"># save the bias</span></a>
+<a class="sourceLine" id="cb9-16" data-line-number="16"><span class="co"># tada, you have the bias and weights!</span></a>
+<a class="sourceLine" id="cb9-17" data-line-number="17"><span class="bu">print</span>(<span class="st">&quot;</span><span class="ch">\n</span><span class="st">Weights: </span><span class="sc">{}</span><span class="ch">\n</span><span class="st">bias: </span><span class="sc">{}</span><span class="st">&quot;</span>.<span class="bu">format</span>(weights, bias))</a></code></pre></div>
+<h3 id="linear-equation-1">Linear equation</h3>
+<p>This one needs to use numpy:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode py"><code class="sourceCode python"><a class="sourceLine" id="cb10-1" data-line-number="1">keys <span class="op">=</span> paillier.generate_paillier_keypair()</a>
+<a class="sourceLine" id="cb10-2" data-line-number="2">X, y <span class="op">=</span> [], []</a>
+<a class="sourceLine" id="cb10-3" data-line-number="3"><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">11</span>):</a>
+<a class="sourceLine" id="cb10-4" data-line-number="4">    <span class="bu">print</span>(<span class="st">&quot;Iteration&quot;</span>, i)</a>
+<a class="sourceLine" id="cb10-5" data-line-number="5">    <span class="co"># random vector of size 10</span></a>
+<a class="sourceLine" id="cb10-6" data-line-number="6">    vector <span class="op">=</span> np.random.random_sample(<span class="dv">10</span>)</a>
+<a class="sourceLine" id="cb10-7" data-line-number="7">    y.append(query_pred(vector, keys))</a>
+<a class="sourceLine" id="cb10-8" data-line-number="8">    <span class="co"># save it as [x1, x2,x3,...,xn, 1], for the bias</span></a>
+<a class="sourceLine" id="cb10-9" data-line-number="9">    X.append(np.append(vector, <span class="dv">1</span>))</a>
+<a class="sourceLine" id="cb10-10" data-line-number="10"><span class="co">#numpy-ize the results</span></a>
+<a class="sourceLine" id="cb10-11" data-line-number="11">X <span class="op">=</span> np.array(X)</a>
+<a class="sourceLine" id="cb10-12" data-line-number="12">y <span class="op">=</span> np.array(y)</a>
+<a class="sourceLine" id="cb10-13" data-line-number="13"><span class="co">#solve it</span></a>
+<a class="sourceLine" id="cb10-14" data-line-number="14">sol <span class="op">=</span> np.linalg.solve(X, y)</a>
+<a class="sourceLine" id="cb10-15" data-line-number="15"><span class="co">#weights are the first N terms, bias is the last one</span></a>
+<a class="sourceLine" id="cb10-16" data-line-number="16">weights <span class="op">=</span> sol[:<span class="op">-</span><span class="dv">1</span>], bias <span class="op">=</span> sol[<span class="op">-</span><span class="dv">1</span>]</a>
+<a class="sourceLine" id="cb10-17" data-line-number="17"><span class="bu">print</span>(<span class="st">&quot;</span><span class="ch">\n</span><span class="st">Weights: </span><span class="sc">{}</span><span class="ch">\n</span><span class="st">bias: </span><span class="sc">{}</span><span class="st">&quot;</span>.<span class="bu">format</span>(weights, bias))</a></code></pre></div>
+</body>
+</html>
