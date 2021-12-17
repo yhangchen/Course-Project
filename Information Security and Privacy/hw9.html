@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang xml:lang>
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>hw9</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <style type="text/css">
+html {
+font-size: 100%;
+overflow-y: scroll;
+-webkit-text-size-adjust: 100%;
+-ms-text-size-adjust: 100%;
+}
+body {
+color: #000;
+font-family: Georgia, Palatino, 'Palatino Linotype', Times, 'Times New Roman', serif;
+font-size: 12px;
+line-height: 1.7;
+padding: 1em;
+margin: auto;
+max-width: 42em;
+background: #fefefe;
+}
+a {
+color: #0645ad;
+text-decoration: none;
+}
+a:visited {
+color: #0b0080;
+}
+a:hover {
+color: #06e;
+}
+a:active {
+color: #faa700;
+}
+a:focus {
+outline: thin dotted;
+}
+*::-moz-selection {
+background: rgba(255, 255, 0, 0.3);
+color: #000;
+}
+*::selection {
+background: rgba(255, 255, 0, 0.3);
+color: #000;
+}
+a::-moz-selection {
+background: rgba(255, 255, 0, 0.3);
+color: #0645ad;
+}
+a::selection {
+background: rgba(255, 255, 0, 0.3);
+color: #0645ad;
+}
+p {
+margin: 1em 0;
+}
+img {
+max-width: 100%;
+}
+h1, h2, h3, h4, h5, h6 {
+color: #111;
+line-height: 125%;
+margin-top: 2em;
+font-weight: normal;
+}
+h4, h5, h6 {
+font-weight: bold;
+}
+h1 {
+font-size: 2.5em;
+}
+h2 {
+font-size: 2em;
+}
+h3 {
+font-size: 1.5em;
+}
+h4 {
+font-size: 1.2em;
+}
+h5 {
+font-size: 1em;
+}
+h6 {
+font-size: 0.9em;
+}
+blockquote {
+color: #666666;
+margin: 0;
+padding-left: 3em;
+border-left: 0.5em #EEE solid;
+}
+hr {
+display: block;
+height: 2px;
+border: 0;
+border-top: 1px solid #aaa;
+border-bottom: 1px solid #eee;
+margin: 1em 0;
+padding: 0;
+}
+pre, code, kbd, samp {
+color: #000;
+font-family: monospace, monospace;
+_font-family: 'courier new', monospace;
+font-size: 0.98em;
+background-color: #eee;
+padding-left: 5px;
+padding-right: 5px;
+}
+pre {
+white-space: pre;
+white-space: pre-wrap;
+word-wrap: break-word;
+}
+b, strong {
+font-weight: bold;
+}
+dfn {
+font-style: italic;
+}
+ins {
+background: #ff9;
+color: #000;
+text-decoration: none;
+}
+mark {
+background: #ff0;
+color: #000;
+font-style: italic;
+font-weight: bold;
+}
+sub, sup {
+font-size: 75%;
+line-height: 0;
+position: relative;
+vertical-align: baseline;
+}
+sup {
+top: -0.5em;
+}
+sub {
+bottom: -0.25em;
+}
+ul, ol {
+margin: 1em 0;
+padding: 0 0 0 2em;
+}
+li p:last-child {
+margin-bottom: 0;
+}
+ul ul, ol ol {
+margin: .3em 0;
+}
+dl {
+margin-bottom: 1em;
+}
+dt {
+font-weight: bold;
+margin-bottom: .8em;
+}
+dd {
+margin: 0 0 .8em 2em;
+}
+dd:last-child {
+margin-bottom: 0;
+}
+img {
+border: 0;
+-ms-interpolation-mode: bicubic;
+vertical-align: middle;
+}
+figure {
+display: block;
+text-align: center;
+margin: 1em 0;
+}
+figure img {
+border: none;
+margin: 0 auto;
+}
+figcaption {
+font-size: 0.8em;
+font-style: italic;
+margin: 0 0 .8em;
+}
+table {
+margin-bottom: 2em;
+border-bottom: 1px solid #ddd;
+border-right: 1px solid #ddd;
+border-spacing: 0;
+border-collapse: collapse;
+}
+table th {
+padding: .2em 1em;
+background-color: #eee;
+border-top: 1px solid #ddd;
+border-left: 1px solid #ddd;
+}
+table td {
+padding: .2em 1em;
+border-top: 1px solid #ddd;
+border-left: 1px solid #ddd;
+vertical-align: top;
+}
+.author {
+font-size: 1.2em;
+text-align: center;
+}
+@media only screen and (min-width: 480px) {
+body {
+font-size: 14px;
+}
+}
+@media only screen and (min-width: 768px) {
+body {
+font-size: 16px;
+}
+}
+@media print {
+* {
+background: transparent !important;
+color: black !important;
+filter: none !important;
+-ms-filter: none !important;
+}
+body {
+font-size: 12pt;
+max-width: 100%;
+}
+a, a:visited {
+text-decoration: underline;
+}
+hr {
+height: 1px;
+border: 0;
+border-bottom: 1px solid black;
+}
+a[href]:after {
+content: " (" attr(href) ")";
+}
+abbr[title]:after {
+content: " (" attr(title) ")";
+}
+.ir a:after, a[href^="javascript:"]:after, a[href^="#"]:after {
+content: "";
+}
+pre, blockquote {
+border: 1px solid #999;
+padding-right: 1em;
+page-break-inside: avoid;
+}
+tr, img {
+page-break-inside: avoid;
+}
+img {
+max-width: 100% !important;
+}
+@page :left {
+margin: 15mm 20mm 15mm 10mm;
+}
+@page :right {
+margin: 15mm 10mm 15mm 20mm;
+}
+p, h2, h3 {
+orphans: 3;
+widows: 3;
+}
+h2, h3 {
+page-break-after: avoid;
+}
+}</style>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<ul>
+<li><a href="#homework-9-a-tiny-blockchain-in-python">Homework 9: A Tiny Blockchain in Python</a>
+<ul>
+<li><a href="#setup">Setup</a></li>
+<li><a href="#the-blocks">The blocks</a></li>
+<li><a href="#the-chain">The chain</a></li>
+<li><a href="#the-miner">The miner</a></li>
+<li><a href="#concurrency">Concurrency</a></li>
+<li><a href="#consensus">Consensus</a></li>
+<li><a href="#proof-of-work">Proof of Work</a></li>
+<li><a href="#optional-more-testing">(Optional) More Testing</a></li>
+</ul></li>
+</ul>
+<h1 id="homework-9-a-tiny-blockchain-in-python">Homework 9: A Tiny Blockchain in Python</h1>
+<p>In this homework, you will write a simple miner on a permissionless blockchain using Proof-of-Work. This handout will guide you through the implementation steps, but feel free to diverge from the suggested design. As the final task of this homework, you will run your miner against an existing implementation that we provide. Hence, you must follow the specification for the messaging and the format of the blockchain.</p>
+<p>NOTE: using the HTML version of this handout might be preferable for copy-pasting the code snippets.</p>
+<h2 id="setup">Setup</h2>
+<p>You will use Python 3 to implement the miner. Start by creating a new directory for the project. We assume it is called <code>hw9</code>, and that it is your working directory. Inside this folder, create a directory named <code>miner</code>, where you will implement your python miner. Also create an empty file <code>miner/__init__.py</code>, in order to be able to import <code>.py</code> files inside the <code>miner</code> directory.</p>
+<h2 id="the-blocks">The blocks</h2>
+<p>The basic data structure you will need is the block, so you should create a class for that. Create a new file <code>miner/block.py</code> containing the following template code:</p>
+<pre><code>class Block:
+    def __init__(self, data, previous):
+        self.data = data
+        self.previous_hash = previous
+        # TODO
+
+    def hash(self):
+        # TODO
+
+    def encode(self):
+        # TODO
+
+    @staticmethod
+    def decode(b):
+        # TODO</code></pre>
+<p>This class has two class variables <code>data</code> and <code>previous_hash</code>, holding the payload data of the block, and the hash of the previous block in the chain. The following invariant should hold for the class variables:</p>
+<ul>
+<li><code>data</code> is a <code>bytes</code> object and can be of length 0 to 4096</li>
+<li><code>previous_hash</code> is a <code>bytes</code> object of length 32.</li>
+</ul>
+<p>Your first task is to implement the missing methods. The <code>hash</code> method must return a <code>bytes</code> object containing the hash of the block. The hash must be computed as <code>SHA-256(self.data||self.previous_hash)</code> where <code>||</code> denotes the bytes concatenation. The <code>encode</code> method must return a <code>bytes</code> object containing a UTF-8 encoded JSON object with the following fields:</p>
+<ul>
+<li><code>data</code>: a base64-string representation of the <code>self.data</code> variable</li>
+<li><code>previous</code>: the <code>self.previous_hash</code> as a hexadecimal string</li>
+</ul>
+<p>The <code>decode</code> method must be a static method accepting a <code>bytes</code> object and returning a decoded <code>Block</code> instance according to the structure defined by the <code>encode</code> method.</p>
+<h2 id="the-chain">The chain</h2>
+<p>The second data structure that we need is storage for the blocks. Create a new file <code>miner/blockchain.py</code>, that contains the following template code:</p>
+<pre><code>class BlockChain:
+
+    def __init__(self, genesis_block):
+        self.root = genesis_block
+        # TODO
+
+    def append(self, new_block):
+        # TODO
+</code></pre>
+<p>The <code>BlockChain</code> class is initialized with the genesis block. Such block can have any valid payload and has null bytes as <code>previous_hash</code>. It keeps a collection of blocks in a data structure that is left for you to define. Only those blocks having a <code>previous_hash</code> path leading to the <code>self.root</code> block shall be stored in the collection.</p>
+<p>You must implement the <code>append</code> method, which takes a <code>Block</code> object as an argument, and appends it to the blockchain, if possible. The <code>append</code> method must return the newly appended block if it was appended to the chain, or <code>None</code> if it wasn’t.</p>
+<p>You should test your model carefully before proceeding to the main program implementation. You may find the <a href="https://github.com/clemtoy/pptree">pptree</a> useful for printing your chain.</p>
+<h2 id="the-miner">The miner</h2>
+<p>The next step is to implement the miner program. For that, create a new file <code>miner/miner.py</code> that contains the following template code:</p>
+<pre><code>import sys
+
+class Miner:
+
+    def __init__(self, host, port, miners, genesis):
+        pass # TODO
+
+    def broadcast(self, block):
+        pass # TODO
+
+    def run(self):
+        pass # TODO
+
+
+if __name__ == '__main__':
+    if len(sys.argv) &lt; 3:
+        print(&quot;Usage: python3 miner.py [addr] [others] [genesis]&quot;)
+        print(&quot;\taddr:\t\taddress of the miner in the format &quot; \
+             &quot;host:port&quot;)
+        print(&quot;\tothers:\t\tcomma-separated list of the other &quot; \
+              &quot;miners' addresses \n\t\t\tin the format host:port,&quot; \
+              &quot;host:port,...&quot;)
+        print(&quot;\tgenesis:\toptional, \&quot;genesis\&quot; if the miner must &quot; \
+                &quot;generate\n\t\t\tthe genesis block&quot;)
+        sys.exit(0)
+    # TODO</code></pre>
+<p>Run this program using <code>python3 miner/miner.py</code> to see what command-line arguments your implementation must support. As you can see, we simplify the implementation for this homework by assuming that a miner is responsible for generating the genesis block, and that the set of miners is fixed. Again, your task is to implement the class methods.</p>
+<p>The <code>broadcast</code> method takes a <code>Block</code> object as an argument and sends it to all other miners through the UDP socket.</p>
+<p>The <code>run</code> method is the main program loop. As a first test implementation, the genesis miner must send some blocks to other miners (without yet listening for block), who should update their chain accordingly. You can test this by starting several of your miner programs in different terminals. Thus, before proceeding, you should have a miner program that can either produce <strong>or</strong> receive blocks.</p>
+<h2 id="concurrency">Concurrency</h2>
+<p>Naturally, the miners should be able to produce <strong>and</strong> receive blocks, so a little bit of concurrency will be required to implement both sending and listening routine. Feel free to implement your routines in your own way, but here are some advice:</p>
+<ul>
+<li>The <a href="https://docs.python.org/3/library/multiprocessing.html">multiprocessing</a> package proposes various primitives for concurrent python programs. The <code>multiprocessing.Process</code> class can be used directly or extended to implement the sending and listening loops.</li>
+<li>Unless you want to make your <code>Blockchain</code> objects thread-safe, only <strong>one</strong> process should be updating the chain.</li>
+<li>As new blocks can be produced and received, this is <em>multiple producers, single receiver</em> situation where the <code>multiprocessing.Queue</code> primitive can be used as a convenient and elegant solution. You should investigate how you can solve this whole concurrency problem with a single <code>Queue</code> object.</li>
+</ul>
+<p>Test your implementation by having each miner periodically (e.g., each second) producing new blocks on its own <em>fork</em> of the chain. This will test that your implementation of the various routine is correct before proceeding: Indeed, you eventually want the miners to agree on a single version of the history, i.e., to produce blocks on the same chain.</p>
+<h2 id="consensus">Consensus</h2>
+<p>In blockchain systems, the consensus is achieved by accepting the longest chain as the current state. This introduces an incentive for miners to base their new blocks on the longest chain and ensures the progression of the system. Hence, you must change your miner to implement this behavior, and test that the miners can make the longest chain progress.</p>
+<p>At this point, assuming reliable communication and honest miners, you have a working blockchain.</p>
+<p>Unfortunately, the miners can misbehave. More specifically, a miner willing to impose its own version of the history can try to produce many blocks to make its own chain the longest.</p>
+<p>To ensure that miners cannot create too many blocks in a short time, you will implement a Proof-of-Work mechanism.</p>
+<h2 id="proof-of-work">Proof of Work</h2>
+<p>To publish a new block on the blockchain, the miners will need to solve a cryptographic puzzle. Hence, the difficulty of this puzzle enforces the global rate limit for new blocks. This puzzle consists in finding blocks for which the bytes of the hash value, when interpreted as an unsigned integer in the big-endian representation, is smaller or equal to the <code>TARGET</code> value. For the purpose of this exercise <code>TARGET</code> can be a constant in your program.</p>
+<p>Augment your <code>Block</code> class with a <code>p_o_w</code> class variable, which must be an 8 bytes array. The hash of a block must now be computed as</p>
+<pre><code>SHA-256(block.data||block.previous_hash||block.p_o_w)</code></pre>
+<p>You must also augment the JSON encoding with a <code>p_o_w</code> field, that must contain the Proof-of-Work bytes as a hexadecimal string.</p>
+<p>Test again your program, and think about what strategy should your miner use if they want to maximize the number of blocks they published on the longest chain.</p>
+<h2 id="optional-more-testing">(Optional) More Testing</h2>
+<p>In order to test your miner against another implementation, we provide a dockerized miner. This task is optional, as we have noticed that Docker does not handle parallel CPU-intensive tasks on some systems. It is nevertheless recommended to attempt it, as it can point out implementation mistakes, and test cases where other miners do not behave exactly as you would expect. You will use <a href="https://docs.docker.com/compose/">docker-compose</a> to start a small system with 3 miners, one of which will be your own. You have to copy the following <code>docker-compose.yml</code> file at the same level as your <code>miner</code> folder.</p>
+<pre><code>version: '3.3'
+
+services:
+  miner_1:
+    image: com402/hw9_miner
+    container_name: miner-1
+    hostname: miner.1
+    command: &quot;miner.1 miner.2,miner.s genesis&quot;
+    networks:
+      bc_network:
+        aliases:
+        - miner.1
+    logging:
+      driver: none
+  miner_2:
+    image: com402/hw9_miner
+    container_name: miner-2
+    hostname: miner.2
+    command: &quot;miner.2 miner.1,miner.s&quot;
+    networks:
+      bc_network:
+        aliases:
+          - miner.2
+    logging:
+      driver: none
+  miner_s:
+    hostname: miner.s
+    container_name: miner-s
+    build: .
+    command: &quot;miner.s miner.1,miner.2&quot;
+    networks:
+      bc_network:
+        aliases:
+          - miner.s
+    logging:
+      driver: json-file
+
+networks:
+  bc_network:
+    driver: bridge</code></pre>
+<p>In order for docker-compose to start your miner, it needs to be dockerized. Add the following <a href="https://docs.docker.com/engine/reference/builder/">Dockerfile</a> to your working directory, at the same level as the <code>miner</code> folder.</p>
+<pre><code>FROM python:3.7-alpine
+
+RUN pip3 install pptree
+
+ADD miner /miner/
+WORKDIR /miner
+
+ENTRYPOINT [&quot;python3&quot;, &quot;miner.py&quot;]</code></pre>
+<p>Don’t forget to add <code>RUN pip3 install [lib]</code> lines to include all the additional requirements for your implementation in the docker container. For this test, the <code>TARGET</code> variable is <code>2**235</code>. Once everything is set, you can start the test by running:</p>
+<pre><code>docker-compose up --force-recreate --build</code></pre>
+<p>This will start the three miners and display the output of your implementation (you can ignore the warnings at the beginning). Two of these miners (miner-1 and miner-2) are our own; they may, sometimes, behave in a slightly malicious way. We don’t display their output, but you can look at it if you want (change the <code>driver</code> settings; set the one you want to observe to <code>json-file</code>, the others to <code>none</code>). The last miner (miner-s) is your implementation.</p>
+<p>Again, try to optimize the strategy of your miner so that it produces as many blocks on the longest chain as possible. Also, try to make these strategies as resilient as possible against malicious nodes that could send invalid or <em>uninteresting</em> blocks. Indeed, these strategies should be realistic: they should not rely on the fact that you are running all the nodes on your own computer!</p>
+</body>
+</html>

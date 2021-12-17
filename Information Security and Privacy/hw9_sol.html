@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang xml:lang>
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>hw9_sol</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <style type="text/css">
+html {
+font-size: 100%;
+overflow-y: scroll;
+-webkit-text-size-adjust: 100%;
+-ms-text-size-adjust: 100%;
+}
+body {
+color: #000;
+font-family: Georgia, Palatino, 'Palatino Linotype', Times, 'Times New Roman', serif;
+font-size: 12px;
+line-height: 1.7;
+padding: 1em;
+margin: auto;
+max-width: 42em;
+background: #fefefe;
+}
+a {
+color: #0645ad;
+text-decoration: none;
+}
+a:visited {
+color: #0b0080;
+}
+a:hover {
+color: #06e;
+}
+a:active {
+color: #faa700;
+}
+a:focus {
+outline: thin dotted;
+}
+*::-moz-selection {
+background: rgba(255, 255, 0, 0.3);
+color: #000;
+}
+*::selection {
+background: rgba(255, 255, 0, 0.3);
+color: #000;
+}
+a::-moz-selection {
+background: rgba(255, 255, 0, 0.3);
+color: #0645ad;
+}
+a::selection {
+background: rgba(255, 255, 0, 0.3);
+color: #0645ad;
+}
+p {
+margin: 1em 0;
+}
+img {
+max-width: 100%;
+}
+h1, h2, h3, h4, h5, h6 {
+color: #111;
+line-height: 125%;
+margin-top: 2em;
+font-weight: normal;
+}
+h4, h5, h6 {
+font-weight: bold;
+}
+h1 {
+font-size: 2.5em;
+}
+h2 {
+font-size: 2em;
+}
+h3 {
+font-size: 1.5em;
+}
+h4 {
+font-size: 1.2em;
+}
+h5 {
+font-size: 1em;
+}
+h6 {
+font-size: 0.9em;
+}
+blockquote {
+color: #666666;
+margin: 0;
+padding-left: 3em;
+border-left: 0.5em #EEE solid;
+}
+hr {
+display: block;
+height: 2px;
+border: 0;
+border-top: 1px solid #aaa;
+border-bottom: 1px solid #eee;
+margin: 1em 0;
+padding: 0;
+}
+pre, code, kbd, samp {
+color: #000;
+font-family: monospace, monospace;
+_font-family: 'courier new', monospace;
+font-size: 0.98em;
+background-color: #eee;
+padding-left: 5px;
+padding-right: 5px;
+}
+pre {
+white-space: pre;
+white-space: pre-wrap;
+word-wrap: break-word;
+}
+b, strong {
+font-weight: bold;
+}
+dfn {
+font-style: italic;
+}
+ins {
+background: #ff9;
+color: #000;
+text-decoration: none;
+}
+mark {
+background: #ff0;
+color: #000;
+font-style: italic;
+font-weight: bold;
+}
+sub, sup {
+font-size: 75%;
+line-height: 0;
+position: relative;
+vertical-align: baseline;
+}
+sup {
+top: -0.5em;
+}
+sub {
+bottom: -0.25em;
+}
+ul, ol {
+margin: 1em 0;
+padding: 0 0 0 2em;
+}
+li p:last-child {
+margin-bottom: 0;
+}
+ul ul, ol ol {
+margin: .3em 0;
+}
+dl {
+margin-bottom: 1em;
+}
+dt {
+font-weight: bold;
+margin-bottom: .8em;
+}
+dd {
+margin: 0 0 .8em 2em;
+}
+dd:last-child {
+margin-bottom: 0;
+}
+img {
+border: 0;
+-ms-interpolation-mode: bicubic;
+vertical-align: middle;
+}
+figure {
+display: block;
+text-align: center;
+margin: 1em 0;
+}
+figure img {
+border: none;
+margin: 0 auto;
+}
+figcaption {
+font-size: 0.8em;
+font-style: italic;
+margin: 0 0 .8em;
+}
+table {
+margin-bottom: 2em;
+border-bottom: 1px solid #ddd;
+border-right: 1px solid #ddd;
+border-spacing: 0;
+border-collapse: collapse;
+}
+table th {
+padding: .2em 1em;
+background-color: #eee;
+border-top: 1px solid #ddd;
+border-left: 1px solid #ddd;
+}
+table td {
+padding: .2em 1em;
+border-top: 1px solid #ddd;
+border-left: 1px solid #ddd;
+vertical-align: top;
+}
+.author {
+font-size: 1.2em;
+text-align: center;
+}
+@media only screen and (min-width: 480px) {
+body {
+font-size: 14px;
+}
+}
+@media only screen and (min-width: 768px) {
+body {
+font-size: 16px;
+}
+}
+@media print {
+* {
+background: transparent !important;
+color: black !important;
+filter: none !important;
+-ms-filter: none !important;
+}
+body {
+font-size: 12pt;
+max-width: 100%;
+}
+a, a:visited {
+text-decoration: underline;
+}
+hr {
+height: 1px;
+border: 0;
+border-bottom: 1px solid black;
+}
+a[href]:after {
+content: " (" attr(href) ")";
+}
+abbr[title]:after {
+content: " (" attr(title) ")";
+}
+.ir a:after, a[href^="javascript:"]:after, a[href^="#"]:after {
+content: "";
+}
+pre, blockquote {
+border: 1px solid #999;
+padding-right: 1em;
+page-break-inside: avoid;
+}
+tr, img {
+page-break-inside: avoid;
+}
+img {
+max-width: 100% !important;
+}
+@page :left {
+margin: 15mm 20mm 15mm 10mm;
+}
+@page :right {
+margin: 15mm 10mm 15mm 20mm;
+}
+p, h2, h3 {
+orphans: 3;
+widows: 3;
+}
+h2, h3 {
+page-break-after: avoid;
+}
+}</style>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<h1 id="com-402-homework-9-solution">COM-402 Homework 9 Solution</h1>
+<ul>
+<li><a href="#forewords">Forewords</a></li>
+<li><a href="#the-blocks">The blocks</a>
+<ul>
+<li><a href="#block-init">Block-&gt;init</a></li>
+<li><a href="#block-hash">Block-&gt;hash</a></li>
+<li><a href="#block-encode">Block-&gt;encode</a></li>
+<li><a href="#block-decode">Block-&gt;decode</a></li>
+</ul></li>
+<li><a href="#the-chain">The chain</a>
+<ul>
+<li><a href="#blockchain-init">BlockChain-&gt;init</a></li>
+<li><a href="#blockchain-append">BlockChain-&gt;append</a></li>
+</ul></li>
+<li><a href="#genesis-block">Genesis block</a>
+<ul>
+<li><a href="#block-init-v2">Block-&gt;init v2</a></li>
+</ul></li>
+<li><a href="#first-debug">First debug</a>
+<ul>
+<li><a href="#a-skeleton">A skeleton</a></li>
+<li><a href="#blockchain-__str__">BlockChain-&gt;<code>__str__</code></a></li>
+<li><a href="#block-__str__">Block-&gt;<code>__str__</code></a></li>
+</ul></li>
+<li><a href="#miner">Miner</a>
+<ul>
+<li><a href="#parsing">Parsing</a></li>
+<li><a href="#miner-__init__">Miner-&gt;<code>__init__</code></a></li>
+<li><a href="#miner-broadcast">Miner-&gt;broadcast</a></li>
+<li><a href="#miner-run">Miner-&gt;run</a>
+<ul>
+<li><a href="#the-listener">The listener</a></li>
+<li><a href="#the-miner">The miner</a></li>
+<li><a href="#testing-again">Testing again</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#concurrency">Concurrency</a>
+<ul>
+<li><a href="#queue">Queue</a></li>
+<li><a href="#genesis-block-1">Genesis block</a></li>
+<li><a href="#main-process-miner-run">Main process (Miner-&gt;run)</a></li>
+<li><a href="#consensus">Consensus</a></li>
+<li><a href="#printing-the-chain">Printing the chain</a>
+<ul>
+<li><a href="#block-__init__"><code>Block-&gt;__init__</code></a></li>
+<li><a href="#blockchain-append-1"><code>Blockchain-&gt;append</code></a></li>
+<li><a href="#miner-run-1"><code>Miner-&gt;run</code></a></li>
+</ul></li>
+</ul></li>
+<li><a href="#proof-of-work">Proof of Work</a>
+<ul>
+<li><a href="#block">Block</a></li>
+<li><a href="#minerclass-run">MinerClass-&gt;run</a></li>
+<li><a href="#blockchain-append-2">Blockchain-&gt;append</a></li>
+</ul></li>
+<li><a href="#conclusion">Conclusion</a></li>
+</ul>
+<h1 id="forewords">Forewords</h1>
+<p>As this homework makes use of multiple files that interconnect, we can easily lose track of the types and signatures. To make things easier to read and have some nice help from the IDE, the solution uses <a href="https://docs.python.org/3.8/library/typing.html"><em>type hints</em></a>. This was introduced in Python3.5, and is supported by most modern IDEs. If you encounter problems, you can simply remove them (or upgrade to a more recent python version or IDE). This is optional, and is only a helper for the developer. You don’t need to specifically worry about it.</p>
+<p>Also, we will regularly go back and forth between files/classes. This is because the process is iterative. When it’s not obvious, to indicate which file/method we are talking about, we will use the notation <code>class-&gt;method</code>. For example: <code>Block-&gt;__init__</code> refers to the <code>__init__</code> method of the Block class. When it is clear, we won’t do that.</p>
+<h1 id="the-blocks">The blocks</h1>
+<h2 id="block-init">Block-&gt;init</h2>
+<p>What defines a block?</p>
+<p><img src="data:image/png;base64,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" alt="block" /> * Its data * Its pointer to the previous block (if not Genesis) * And the hash of the previous block (if not Genesis)</p>
+<p>The hash has no need to be particularly stored, we can simply dynamically compute it whenever needed. Also, we now only focus on a non-genesis block. For more robustness, we allow for <code>data</code> to be either bytes or a string (in which case we encode ourselves); also, previous can be either a block, or a block’s hash (also for robustness) So the init is give or take the one of the skeleton:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="im">from</span> typing <span class="im">import</span> Union</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>,</a>
+<a class="sourceLine" id="cb1-4" data-line-number="4">             data: Union[<span class="bu">bytes</span>, <span class="bu">str</span>],</a>
+<a class="sourceLine" id="cb1-5" data-line-number="5">             previous: Union[<span class="bu">bytes</span>, <span class="st">&quot;Block&quot;</span>]) <span class="op">-&gt;</span> <span class="va">None</span>:</a>
+<a class="sourceLine" id="cb1-6" data-line-number="6">        <span class="co"># robust &quot;data&quot; assignment</span></a>
+<a class="sourceLine" id="cb1-7" data-line-number="7">        <span class="cf">if</span> <span class="bu">isinstance</span>(data, <span class="bu">str</span>):</a>
+<a class="sourceLine" id="cb1-8" data-line-number="8">            <span class="va">self</span>.data <span class="op">=</span> data.encode()</a>
+<a class="sourceLine" id="cb1-9" data-line-number="9">        <span class="cf">elif</span> <span class="bu">isinstance</span>(data, <span class="bu">bytes</span>):</a>
+<a class="sourceLine" id="cb1-10" data-line-number="10">            <span class="va">self</span>.data <span class="op">=</span> <span class="bu">bytes</span>(data)</a>
+<a class="sourceLine" id="cb1-11" data-line-number="11">        <span class="cf">else</span>:</a>
+<a class="sourceLine" id="cb1-12" data-line-number="12">            <span class="cf">raise</span> <span class="pp">NotImplementedError</span>()</a>
+<a class="sourceLine" id="cb1-13" data-line-number="13"></a>
+<a class="sourceLine" id="cb1-14" data-line-number="14">        <span class="co"># robust &quot;previous_hash&quot; assignment</span></a>
+<a class="sourceLine" id="cb1-15" data-line-number="15">        <span class="va">self</span>.previous_hash: <span class="bu">bytes</span> <span class="op">=</span> GENESIS_PREVIOUS_HASH</a>
+<a class="sourceLine" id="cb1-16" data-line-number="16">        <span class="cf">if</span> <span class="bu">isinstance</span>(previous, Block):</a>
+<a class="sourceLine" id="cb1-17" data-line-number="17">            <span class="va">self</span>.previous_hash <span class="op">=</span> previous.<span class="bu">hash</span>()</a>
+<a class="sourceLine" id="cb1-18" data-line-number="18">        <span class="cf">elif</span> <span class="bu">isinstance</span>(previous, <span class="bu">bytes</span>):</a>
+<a class="sourceLine" id="cb1-19" data-line-number="19">            <span class="va">self</span>.previous_hash <span class="op">=</span> previous</a></code></pre></div>
+<h2 id="block-hash">Block-&gt;hash</h2>
+<p>This one is also relatively straightforward. We don’t need anything in particular, and simply hash the pointer and the data:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="im">from</span> hashlib <span class="im">import</span> sha256</a>
+<a class="sourceLine" id="cb2-2" data-line-number="2">...</a>
+<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="kw">def</span> <span class="bu">hash</span>(<span class="va">self</span>) <span class="op">-&gt;</span> <span class="bu">bytes</span>:</a>
+<a class="sourceLine" id="cb2-4" data-line-number="4">    h <span class="op">=</span> sha256()</a>
+<a class="sourceLine" id="cb2-5" data-line-number="5">    h.update(<span class="va">self</span>.data)</a>
+<a class="sourceLine" id="cb2-6" data-line-number="6">    h.update(<span class="va">self</span>.previous_hash)</a>
+<a class="sourceLine" id="cb2-7" data-line-number="7">    <span class="cf">return</span> h.digest()</a></code></pre></div>
+<h2 id="block-encode">Block-&gt;encode</h2>
+<p>Here again, relatively simple:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="im">import</span> json</a>
+<a class="sourceLine" id="cb3-2" data-line-number="2">...</a>
+<a class="sourceLine" id="cb3-3" data-line-number="3"><span class="kw">def</span> encode(<span class="va">self</span>) <span class="op">-&gt;</span> <span class="bu">bytes</span>:</a>
+<a class="sourceLine" id="cb3-4" data-line-number="4">    data_b64 <span class="op">=</span> b64encode(<span class="va">self</span>.data).decode()</a>
+<a class="sourceLine" id="cb3-5" data-line-number="5">    prev_hash <span class="op">=</span> <span class="va">self</span>.previous_hash.<span class="bu">hex</span>()</a>
+<a class="sourceLine" id="cb3-6" data-line-number="6">    <span class="cf">return</span> json.dumps({<span class="st">&quot;data&quot;</span>: data_b64,</a>
+<a class="sourceLine" id="cb3-7" data-line-number="7">                        <span class="st">&quot;previous_hash&quot;</span>: prev_hash</a>
+<a class="sourceLine" id="cb3-8" data-line-number="8">                      }).encode()</a></code></pre></div>
+<p>Simply encode the data in base64, take the hex representation of the previous hash, and dump it to a json representation.</p>
+<h2 id="block-decode">Block-&gt;decode</h2>
+<p>Some Python magic here. When we define a class and its methods, the methods are usually called as a method on the <em>instance</em>. In our case, for example, the <code>Block-&gt;encode</code> method is called on an instance of the block, and will behave differently depending on the instance (obviously). But sometime we want generic method that don’t depend on the instance. These are the static methods. Simply by calling <code>Blocks.decode(somebytes)</code>, it will decode the bytes, as wished. Note there is no “self” argument, as it’s independent from the instance (and thus we can’t use instance methods/members such as <code>self.data</code>). We could also define this helper method somewhere else; but as it returns a Block, it makes sense to define it as a static method.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="at">@staticmethod</span></a>
+<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="kw">def</span> decode(b: <span class="bu">bytes</span>):</a>
+<a class="sourceLine" id="cb4-3" data-line-number="3">    js <span class="op">=</span> json.loads(b) <span class="co"># js becomes a kind of dictionary</span></a>
+<a class="sourceLine" id="cb4-4" data-line-number="4">    previous <span class="op">=</span> <span class="bu">bytes</span>.fromhex(js[<span class="st">&quot;previous_hash&quot;</span>])</a>
+<a class="sourceLine" id="cb4-5" data-line-number="5">    data <span class="op">=</span> b64decode(js[<span class="st">&quot;data&quot;</span>])</a>
+<a class="sourceLine" id="cb4-6" data-line-number="6">    <span class="cf">return</span> Block(data<span class="op">=</span>data,</a>
+<a class="sourceLine" id="cb4-7" data-line-number="7">                 previous<span class="op">=</span>previous)</a></code></pre></div>
+<h1 id="the-chain">The chain</h1>
+<p>Now that the basics of a block were implemented, we focus on a chain. You will need to import the <code>Block</code> class. For that: <code>from miner.block import Block</code>.</p>
+<h2 id="blockchain-init">BlockChain-&gt;init</h2>
+<p>A chain, at minimum, is defined by its root and its head. We also obviously need to store somewhere the blocks in themselves. To make things a bit simpler, we also keep a dictionary of all blocks in the chain, identified by their hash. This will allow for easy access and traversal.</p>
+<p>We make use of a new class member <code>number</code> that indicates the position of a block within the chain. We will adapt later the <code>Block</code> class to have a default (null) number. This is not necessary, but makes things easier within the IDE.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, genesis_block: Block):</a>
+<a class="sourceLine" id="cb5-2" data-line-number="2">    <span class="co"># create the &quot;chain&quot;: a dict of all blocks referenced by their hash</span></a>
+<a class="sourceLine" id="cb5-3" data-line-number="3">    <span class="va">self</span>.blocks: Dict[<span class="bu">bytes</span>, Block] <span class="op">=</span> <span class="bu">dict</span>()</a>
+<a class="sourceLine" id="cb5-4" data-line-number="4">    <span class="co"># add the genesis to the chain, initiate its number</span></a>
+<a class="sourceLine" id="cb5-5" data-line-number="5">    gen_hash <span class="op">=</span> genesis_block.<span class="bu">hash</span>()</a>
+<a class="sourceLine" id="cb5-6" data-line-number="6">    <span class="va">self</span>.blocks[gen_hash] <span class="op">=</span> genesis_block</a>
+<a class="sourceLine" id="cb5-7" data-line-number="7">    <span class="va">self</span>.blocks[gen_hash].number <span class="op">=</span> <span class="dv">0</span></a>
+<a class="sourceLine" id="cb5-8" data-line-number="8">    <span class="co"># set root and head as genesis</span></a>
+<a class="sourceLine" id="cb5-9" data-line-number="9">    <span class="va">self</span>.root: Block <span class="op">=</span> genesis_block</a>
+<a class="sourceLine" id="cb5-10" data-line-number="10">    <span class="va">self</span>.head: Block <span class="op">=</span> genesis_block</a></code></pre></div>
+<h2 id="blockchain-append">BlockChain-&gt;append</h2>
+<p>Now we’re getting to the real code. Appending a new block requires a few verifications, and some potentials pitfalls. We need to: 1. Ensure the previous block, pointed in the new block, belongs in our chain 2. Store it in our chain 3. Adapt the head (accordingly). We’ll come back to that in a second.</p>
+<p>Our code for <code>append</code> looks like that:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw">def</span> append(<span class="va">self</span>, new_block):</a>
+<a class="sourceLine" id="cb6-2" data-line-number="2">    <span class="co"># step 1: ensure the new's previous belongs in our chain</span></a>
+<a class="sourceLine" id="cb6-3" data-line-number="3">    previous_block <span class="op">=</span> <span class="va">self</span>.blocks.get(new_block.previous_hash)</a>
+<a class="sourceLine" id="cb6-4" data-line-number="4">    <span class="cf">if</span> <span class="kw">not</span> previous_block:</a>
+<a class="sourceLine" id="cb6-5" data-line-number="5">        <span class="bu">print</span>(<span class="st">&quot;no such previous block&quot;</span>, new_block.previous_hash.<span class="bu">hex</span>())</a>
+<a class="sourceLine" id="cb6-6" data-line-number="6">        <span class="cf">return</span> <span class="va">None</span></a>
+<a class="sourceLine" id="cb6-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb6-8" data-line-number="8">    <span class="co"># step 2: store it in our chain</span></a>
+<a class="sourceLine" id="cb6-9" data-line-number="9">    new_block_num <span class="op">=</span> previous_block.number <span class="op">+</span> <span class="dv">1</span></a>
+<a class="sourceLine" id="cb6-10" data-line-number="10">    <span class="va">self</span>.blocks[new_block.<span class="bu">hash</span>()] <span class="op">=</span> new_block</a>
+<a class="sourceLine" id="cb6-11" data-line-number="11">    <span class="va">self</span>.blocks[new_block.<span class="bu">hash</span>()].number <span class="op">=</span> new_block_num</a>
+<a class="sourceLine" id="cb6-12" data-line-number="12"></a>
+<a class="sourceLine" id="cb6-13" data-line-number="13">    <span class="co"># step 3: adapt the head</span></a>
+<a class="sourceLine" id="cb6-14" data-line-number="14">    <span class="va">self</span>.head <span class="op">=</span> new_block</a>
+<a class="sourceLine" id="cb6-15" data-line-number="15"></a>
+<a class="sourceLine" id="cb6-16" data-line-number="16">    <span class="cf">return</span> new_block</a></code></pre></div>
+<h1 id="genesis-block">Genesis block</h1>
+<p>Since the beginning, we’ve eluded a special case: the genesis block. If the argument is <strong>True</strong>, the chain is started with a genesis block. As defined in the handout:</p>
+<blockquote>
+<p>[…] the genesis block […] can have any valid payload and has null bytes as <code>previous_hash</code></p>
+</blockquote>
+<p>Thus we need to adapt some functions in <code>Block</code> to account for that.</p>
+<h2 id="block-init-v2">Block-&gt;init v2</h2>
+<p>We need to account for a null previous hash. So instead of always assigning the <code>previous_hash</code>, we suppose it <em>can</em> be null. This changes the type hinting and the content:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="im">from</span> typing <span class="im">import</span> Optional</a>
+<a class="sourceLine" id="cb7-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb7-3" data-line-number="3"><span class="co"># 32-bytes null hash</span></a>
+<a class="sourceLine" id="cb7-4" data-line-number="4">GENESIS_PREVIOUS_HASH <span class="op">=</span> (<span class="dv">0</span>).to_bytes(<span class="dv">32</span>, byteorder<span class="op">=</span><span class="st">&quot;big&quot;</span>)</a>
+<a class="sourceLine" id="cb7-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb7-6" data-line-number="6"><span class="co"># previous can be None -&gt; Optional</span></a>
+<a class="sourceLine" id="cb7-7" data-line-number="7"><span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, data: <span class="bu">bytes</span>, previous: Optional[<span class="bu">bytes</span>]) <span class="op">-&gt;</span> <span class="va">None</span>:</a>
+<a class="sourceLine" id="cb7-8" data-line-number="8">    <span class="va">self</span>.data: <span class="bu">bytes</span> <span class="op">=</span> data</a>
+<a class="sourceLine" id="cb7-9" data-line-number="9">    <span class="co"># if we have a previous_hash, we assign it</span></a>
+<a class="sourceLine" id="cb7-10" data-line-number="10">    <span class="co"># otherwise, null hash</span></a>
+<a class="sourceLine" id="cb7-11" data-line-number="11">    <span class="va">self</span>.number: <span class="bu">int</span> <span class="op">=</span> <span class="dv">-1</span> <span class="co"># as promised</span></a>
+<a class="sourceLine" id="cb7-12" data-line-number="12">    <span class="va">self</span>.previous_hash: <span class="bu">bytes</span> <span class="op">=</span> GENESIS_PREVIOUS_HASH</a>
+<a class="sourceLine" id="cb7-13" data-line-number="13">    <span class="cf">if</span> previous <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</a>
+<a class="sourceLine" id="cb7-14" data-line-number="14">        <span class="va">self</span>.previous_hash <span class="op">=</span> previous</a></code></pre></div>
+<h1 id="first-debug">First debug</h1>
+<p>At this point, it is suggested to stop and do some debug.</p>
+<h2 id="a-skeleton">A skeleton</h2>
+<p>Our first tentative looks like that:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="im">from</span> miner.blockchain <span class="im">import</span> BlockChain</a>
+<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="im">from</span> miner.block <span class="im">import</span> Block</a>
+<a class="sourceLine" id="cb8-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb8-4" data-line-number="4">gen_block <span class="op">=</span> Block((<span class="st">&quot;In the beginning God created the heavens and the earth. &quot;</span></a>
+<a class="sourceLine" id="cb8-5" data-line-number="5">                   <span class="st">&quot;The earth was without form, and void; and darkness was on &quot;</span></a>
+<a class="sourceLine" id="cb8-6" data-line-number="6">                   <span class="st">&quot;the face of the deep. And the Spirit of God was hovering &quot;</span></a>
+<a class="sourceLine" id="cb8-7" data-line-number="7">                   <span class="st">&quot;over the face of the waters.&quot;</span>).encode())</a>
+<a class="sourceLine" id="cb8-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb8-9" data-line-number="9">chain <span class="op">=</span> BlockChain(gen_block)</a>
+<a class="sourceLine" id="cb8-10" data-line-number="10"></a>
+<a class="sourceLine" id="cb8-11" data-line-number="11">block2 <span class="op">=</span> Block((<span class="st">&quot;Then God said, “Let there be light”; and there was light. &quot;</span></a>
+<a class="sourceLine" id="cb8-12" data-line-number="12">                <span class="st">&quot;And God saw the light, that it was good; &quot;</span></a>
+<a class="sourceLine" id="cb8-13" data-line-number="13">                <span class="st">&quot;and God divided the light from the darkness. God called the &quot;</span></a>
+<a class="sourceLine" id="cb8-14" data-line-number="14">                <span class="st">&quot;light Day, and the darkness He called Night. So the evening &quot;</span></a>
+<a class="sourceLine" id="cb8-15" data-line-number="15">                <span class="st">&quot;and the morning were the first day.&quot;</span>).encode(),</a>
+<a class="sourceLine" id="cb8-16" data-line-number="16">               gen_block.<span class="bu">hash</span>())</a>
+<a class="sourceLine" id="cb8-17" data-line-number="17"></a>
+<a class="sourceLine" id="cb8-18" data-line-number="18">head <span class="op">=</span> chain.append(block2)</a>
+<a class="sourceLine" id="cb8-19" data-line-number="19"></a>
+<a class="sourceLine" id="cb8-20" data-line-number="20">block3 <span class="op">=</span> Block((<span class="st">&quot;Then God said, “Let there be a firmament in the midst of the&quot;</span></a>
+<a class="sourceLine" id="cb8-21" data-line-number="21">                <span class="st">&quot; waters, and let it divide the waters from the waters.” &quot;</span></a>
+<a class="sourceLine" id="cb8-22" data-line-number="22">                <span class="st">&quot;Thus God made the firmament, and divided the waters which &quot;</span></a>
+<a class="sourceLine" id="cb8-23" data-line-number="23">                <span class="st">&quot;were under the firmament from the waters which were above the&quot;</span></a>
+<a class="sourceLine" id="cb8-24" data-line-number="24">                <span class="st">&quot; firmament; and it was so. 8 And God called the firmament&quot;</span></a>
+<a class="sourceLine" id="cb8-25" data-line-number="25">                <span class="st">&quot; Heaven. So the evening and the morning &quot;</span></a>
+<a class="sourceLine" id="cb8-26" data-line-number="26">                <span class="st">&quot;were the second day.&quot;</span>).encode(),</a>
+<a class="sourceLine" id="cb8-27" data-line-number="27">               head.<span class="bu">hash</span>())</a>
+<a class="sourceLine" id="cb8-28" data-line-number="28">chain.append(block3)</a>
+<a class="sourceLine" id="cb8-29" data-line-number="29"><span class="bu">print</span>(chain)</a></code></pre></div>
+<p>You can save it in a file, for instance <code>test.py</code>.</p>
+<p>Roughly: 1. We create a genesis block 2. We create a chain using that block 3. We create a new block, pointing to the genesis block 4. We append it to the chain (and retrieve the head) 5. We create yet another block, that points to the head. 6. We print the chain.</p>
+<p>Now, printing the chain won’t be a pretty sight. Simply because Python doesn’t know what it means to print a <code>BlockChain</code>. That’s why we add a new (“magic”) method to both the chain and the block: <code>__str__</code> (4 underscore, 2 before and 2 after). This method is automatically called when something tries to cast our object as a string (like printing).</p>
+<h2 id="blockchain-__str__">BlockChain-&gt;<code>__str__</code></h2>
+<p>To display a chain, we use the following method:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw">def</span> <span class="fu">__str__</span>(<span class="va">self</span>):</a>
+<a class="sourceLine" id="cb9-2" data-line-number="2">    ret <span class="op">=</span> <span class="st">&quot;(HEAD)&quot;</span></a>
+<a class="sourceLine" id="cb9-3" data-line-number="3">    b: Block <span class="op">=</span> <span class="va">self</span>.head</a>
+<a class="sourceLine" id="cb9-4" data-line-number="4">    <span class="cf">while</span> b.<span class="bu">hash</span>() <span class="op">!=</span> <span class="va">self</span>.root.<span class="bu">hash</span>():</a>
+<a class="sourceLine" id="cb9-5" data-line-number="5">        ret <span class="op">=</span> <span class="st">&quot;</span><span class="ch">\n</span><span class="st">---</span><span class="ch">\n</span><span class="st">&quot;</span> <span class="op">+</span> <span class="bu">str</span>(b) <span class="op">+</span> ret</a>
+<a class="sourceLine" id="cb9-6" data-line-number="6">        b <span class="op">=</span> <span class="va">self</span>.blocks[b.previous_hash]</a>
+<a class="sourceLine" id="cb9-7" data-line-number="7">    ret <span class="op">=</span> <span class="st">&quot;(ROOT)&quot;</span> <span class="op">+</span> <span class="bu">str</span>(b) <span class="op">+</span> ret</a>
+<a class="sourceLine" id="cb9-8" data-line-number="8">    <span class="cf">return</span> ret</a></code></pre></div>
+<p>This prints the head, then goes backward and appends blocks one after the other but at the beginning of the string. It will look like that</p>
+<pre><code>(ROOT) &lt;genesis&gt;
+---
+&lt;block1&gt;
+---
+&lt;block2&gt;
+---
+......
+---
+&lt;head&gt; (HEAD)</code></pre>
+<p>Simple, but enough for us to debug. We still need to decide how we “print” a block.</p>
+<h2 id="block-__str__">Block-&gt;<code>__str__</code></h2>
+<p>There are countless smart ways to display a block. To keep things simple, we only display its data (decoded) and the beginning of the hash.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="kw">def</span> <span class="fu">__str__</span>(<span class="va">self</span>):</a>
+<a class="sourceLine" id="cb11-2" data-line-number="2">    <span class="cf">return</span> <span class="st">&quot;</span><span class="sc">{}</span><span class="st"> (</span><span class="sc">{}</span><span class="st">)&quot;</span>.<span class="bu">format</span>(<span class="va">self</span>.data.decode(), <span class="va">self</span>.<span class="bu">hash</span>().<span class="bu">hex</span>()[:<span class="dv">5</span>])</a></code></pre></div>
+<p>At this point, launching the debug code will display a nice blockchain, with a root and 2 blocks!</p>
+<h1 id="miner">Miner</h1>
+<p>Now that the “server” is in place, time to create the “client”. We start from the provided template. As suggested, we run it once to see the required arguments. They are as follow:</p>
+<pre><code>Usage: python3 miner.py [addr] [others] [genesis]</code></pre>
+<p>With * <code>addr</code>: address of the miner in the format host:port * <code>others</code>: comma-separated list of the other miners’ addresses in the format host:port,host:port,… * <code>genesis</code>: optional, “genesis” if the miner must generate the genesis block</p>
+<p>Also as suggested, we first do an implementation that can either listen or send blocks. We will worry about concurrency later.</p>
+<h2 id="parsing">Parsing</h2>
+<p>When the program is started, we receive all arguments in <code>sys.argv</code>. We must parse them in a usable format first. Remember that <code>sys.argv</code> is a list, with in its first position the name of the file. Real arguments are space-separated, and start at the second position of the list.</p>
+<p>As we are expecting to parse multiple addresses (format: <code>host:port</code>) we write a simple method to parse it. This helper method can also accept the format <code>host:</code> and will default to port 5000. Then the host and port (as an int) will be returned.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="kw">def</span> parse_addresses(hostport: <span class="bu">str</span>):</a>
+<a class="sourceLine" id="cb13-2" data-line-number="2">    hostport <span class="op">=</span> hostport.split(<span class="st">&quot;:&quot;</span>)</a>
+<a class="sourceLine" id="cb13-3" data-line-number="3">    port <span class="op">=</span> <span class="dv">5000</span> <span class="cf">if</span> <span class="bu">len</span>(hostport) <span class="op">==</span> <span class="dv">1</span> <span class="cf">else</span> <span class="bu">int</span>(hostport[<span class="dv">1</span>])</a>
+<a class="sourceLine" id="cb13-4" data-line-number="4">    <span class="cf">return</span> hostport[<span class="dv">0</span>], port</a></code></pre></div>
+<p>From here, we simply read the arguments, parse them, and create a miner:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">'__main__'</span>:</a>
+<a class="sourceLine" id="cb14-2" data-line-number="2">    <span class="cf">if</span> <span class="bu">len</span>(sys.argv) <span class="op">&lt;</span> <span class="dv">3</span>:</a>
+<a class="sourceLine" id="cb14-3" data-line-number="3">        ...</a>
+<a class="sourceLine" id="cb14-4" data-line-number="4">    <span class="co"># retrieve arguments</span></a>
+<a class="sourceLine" id="cb14-5" data-line-number="5">    self_host_port <span class="op">=</span> sys.argv[<span class="dv">1</span>]</a>
+<a class="sourceLine" id="cb14-6" data-line-number="6">    others_hosts_ports <span class="op">=</span> sys.argv[<span class="dv">2</span>].split(<span class="st">&quot;,&quot;</span>)</a>
+<a class="sourceLine" id="cb14-7" data-line-number="7">    <span class="co"># parse &quot;genesis&quot;</span></a>
+<a class="sourceLine" id="cb14-8" data-line-number="8">    gen_genesis <span class="op">=</span> <span class="bu">len</span>(sys.argv) <span class="op">&gt;=</span> <span class="dv">4</span> <span class="kw">and</span> sys.argv[<span class="dv">3</span>] <span class="op">==</span> <span class="st">&quot;genesis&quot;</span></a>
+<a class="sourceLine" id="cb14-9" data-line-number="9"></a>
+<a class="sourceLine" id="cb14-10" data-line-number="10">    <span class="co">#parse &quot;addr&quot;</span></a>
+<a class="sourceLine" id="cb14-11" data-line-number="11">    host, port <span class="op">=</span> parse_addresses(self_host_port)</a>
+<a class="sourceLine" id="cb14-12" data-line-number="12">    <span class="co"># parse &quot;others&quot;</span></a>
+<a class="sourceLine" id="cb14-13" data-line-number="13">    miners <span class="op">=</span> [parse_addresses(x) <span class="cf">for</span> x <span class="kw">in</span> others_hosts_ports]</a>
+<a class="sourceLine" id="cb14-14" data-line-number="14"></a>
+<a class="sourceLine" id="cb14-15" data-line-number="15">    miner <span class="op">=</span> Miner(host, port, miners, gen_genesis)</a>
+<a class="sourceLine" id="cb14-16" data-line-number="16">    <span class="cf">try</span>:</a>
+<a class="sourceLine" id="cb14-17" data-line-number="17">        miner.run()</a>
+<a class="sourceLine" id="cb14-18" data-line-number="18">    <span class="cf">except</span> <span class="pp">KeyboardInterrupt</span>:</a>
+<a class="sourceLine" id="cb14-19" data-line-number="19">        <span class="co"># makes exit graceful</span></a>
+<a class="sourceLine" id="cb14-20" data-line-number="20">        <span class="bu">print</span>(<span class="st">&quot;stopping...&quot;</span>)</a></code></pre></div>
+<h2 id="miner-__init__">Miner-&gt;<code>__init__</code></h2>
+<p>As usual in an init method, we mostly store everything for later use. Also, we create a <a href="https://docs.python.org/3/library/socket.html">socket</a>. If you already took the TCP/IP course you’re probably familiar with this library. If not no worries, we won’t dive too deep.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb15-1" data-line-number="1"><span class="im">import</span> socket</a>
+<a class="sourceLine" id="cb15-2" data-line-number="2">...</a>
+<a class="sourceLine" id="cb15-3" data-line-number="3"><span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, host: <span class="bu">str</span>, port: <span class="bu">int</span>, miners: <span class="bu">list</span>, genesis: <span class="bu">bool</span>):</a>
+<a class="sourceLine" id="cb15-4" data-line-number="4">    <span class="co"># store everything in convenient formats</span></a>
+<a class="sourceLine" id="cb15-5" data-line-number="5">    <span class="va">self</span>.host: <span class="bu">str</span> <span class="op">=</span> host</a>
+<a class="sourceLine" id="cb15-6" data-line-number="6">    <span class="va">self</span>.port: <span class="bu">int</span> <span class="op">=</span> port</a>
+<a class="sourceLine" id="cb15-7" data-line-number="7">    <span class="va">self</span>.miner_name: <span class="bu">str</span> <span class="op">=</span> <span class="st">&quot;</span><span class="sc">%s</span><span class="st">:</span><span class="sc">%i</span><span class="st">&quot;</span> <span class="op">%</span> (host, port)</a>
+<a class="sourceLine" id="cb15-8" data-line-number="8">    <span class="va">self</span>.miner_address: Tuple[<span class="bu">str</span>, <span class="bu">int</span>] <span class="op">=</span> (host, port)</a>
+<a class="sourceLine" id="cb15-9" data-line-number="9">    <span class="va">self</span>.miners: <span class="bu">list</span> <span class="op">=</span> miners</a>
+<a class="sourceLine" id="cb15-10" data-line-number="10">    <span class="va">self</span>.mine_genesis: <span class="bu">bool</span> <span class="op">=</span> genesis</a>
+<a class="sourceLine" id="cb15-11" data-line-number="11"></a>
+<a class="sourceLine" id="cb15-12" data-line-number="12">    <span class="co"># prepare a socket</span></a>
+<a class="sourceLine" id="cb15-13" data-line-number="13">    <span class="co"># AF_INET == IPv4, SOCK_DGRAM == UDP</span></a>
+<a class="sourceLine" id="cb15-14" data-line-number="14">    <span class="va">self</span>.sock <span class="op">=</span> socket.socket(socket.AF_INET, socket.SOCK_DGRAM)</a></code></pre></div>
+<h2 id="miner-broadcast">Miner-&gt;broadcast</h2>
+<p>A quite simple method, to send a block to all (other) miners:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb16-1" data-line-number="1"><span class="kw">def</span> broadcast(<span class="va">self</span>, block: <span class="st">&quot;Block&quot;</span>):</a>
+<a class="sourceLine" id="cb16-2" data-line-number="2">    <span class="cf">for</span> miner <span class="kw">in</span> <span class="va">self</span>.miners:</a>
+<a class="sourceLine" id="cb16-3" data-line-number="3">        <span class="cf">if</span> miner <span class="op">!=</span> <span class="va">self</span>.miner_address:</a>
+<a class="sourceLine" id="cb16-4" data-line-number="4">            <span class="va">self</span>.sock.sendto(block.encode(), miner)</a></code></pre></div>
+<p>Not much to explain here. We iterate through all different miners than self. Then we send them the block (byte-encoded).</p>
+<h2 id="miner-run">Miner-&gt;run</h2>
+<p>This one is more interesting. We first consider the simplest case: only 2 miners; one that mines, one that listens. Obviously, this means that the one that mines must start the genesis block. We don’t specifically enforce it, but keep it in mind for testing. To begin with, we will decide which miner mines and which listens based on their port: even port mines, odd port listens (we will use ports 5000 and 5001). Our structure thus looks like the following:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb17-1" data-line-number="1"><span class="kw">class</span> Miner:</a>
+<a class="sourceLine" id="cb17-2" data-line-number="2">    ...</a>
+<a class="sourceLine" id="cb17-3" data-line-number="3">    <span class="kw">def</span> run(<span class="va">self</span>):</a>
+<a class="sourceLine" id="cb17-4" data-line-number="4">        <span class="cf">if</span> <span class="va">self</span>.port <span class="op">%</span> <span class="dv">2</span> <span class="op">==</span> <span class="dv">0</span>:</a>
+<a class="sourceLine" id="cb17-5" data-line-number="5">            <span class="co"># mine and send</span></a>
+<a class="sourceLine" id="cb17-6" data-line-number="6">        <span class="cf">else</span>:</a>
+<a class="sourceLine" id="cb17-7" data-line-number="7">            <span class="co"># listen and update</span></a></code></pre></div>
+<p>But first thing first: ### The listener We just need to infinitely listen on the socket, and when we receive a block, append it to the chain.</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb18-1" data-line-number="1">...</a>
+<a class="sourceLine" id="cb18-2" data-line-number="2"><span class="cf">else</span>:</a>
+<a class="sourceLine" id="cb18-3" data-line-number="3">    <span class="co"># listen and update</span></a>
+<a class="sourceLine" id="cb18-4" data-line-number="4">    chain <span class="op">=</span> <span class="va">None</span></a>
+<a class="sourceLine" id="cb18-5" data-line-number="5">    <span class="cf">while</span> <span class="va">True</span>:</a>
+<a class="sourceLine" id="cb18-6" data-line-number="6">        data, addr <span class="op">=</span> <span class="va">self</span>.sock.rec(<span class="dv">65507</span>)</a>
+<a class="sourceLine" id="cb18-7" data-line-number="7">        new_block <span class="op">=</span> Block.decode(data)</a>
+<a class="sourceLine" id="cb18-8" data-line-number="8">        <span class="cf">if</span> chain <span class="kw">is</span> <span class="va">None</span>:</a>
+<a class="sourceLine" id="cb18-9" data-line-number="9">            chain <span class="op">=</span> BlockChain(new_block)</a>
+<a class="sourceLine" id="cb18-10" data-line-number="10">        <span class="cf">else</span>:</a>
+<a class="sourceLine" id="cb18-11" data-line-number="11">            chain.append(new_block)</a>
+<a class="sourceLine" id="cb18-12" data-line-number="12">        <span class="bu">print</span>(chain)</a></code></pre></div>
+<p>As per the counterpart: ### The miner Similarly: infinitely, generate a new block, add it to your local chain, and broadcast it.</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb19-1" data-line-number="1"><span class="im">import</span> random</a>
+<a class="sourceLine" id="cb19-2" data-line-number="2"><span class="im">import</span> time</a>
+<a class="sourceLine" id="cb19-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb19-4" data-line-number="4"><span class="cf">if</span> <span class="va">self</span>.port <span class="op">%</span> <span class="dv">2</span> <span class="op">==</span> <span class="dv">0</span>:</a>
+<a class="sourceLine" id="cb19-5" data-line-number="5">    chain <span class="op">=</span> <span class="va">None</span></a>
+<a class="sourceLine" id="cb19-6" data-line-number="6">    previous <span class="op">=</span> <span class="va">None</span></a>
+<a class="sourceLine" id="cb19-7" data-line-number="7">    <span class="cf">while</span> <span class="va">True</span>:</a>
+<a class="sourceLine" id="cb19-8" data-line-number="8">        <span class="co">#### Mock block generation</span></a>
+<a class="sourceLine" id="cb19-9" data-line-number="9">        time.sleep(random.randint(<span class="dv">5</span>, <span class="dv">10</span>))</a>
+<a class="sourceLine" id="cb19-10" data-line-number="10">        block <span class="op">=</span> Block((<span class="st">&quot;This is some random mumbo jumbo, </span><span class="sc">{}</span><span class="st">&quot;</span></a>
+<a class="sourceLine" id="cb19-11" data-line-number="11">                        .<span class="bu">format</span>(random.randint(<span class="dv">0</span>, <span class="dv">100</span>)).encode()),</a>
+<a class="sourceLine" id="cb19-12" data-line-number="12">                        previous)</a>
+<a class="sourceLine" id="cb19-13" data-line-number="13">        <span class="co">### End of mock block generation</span></a>
+<a class="sourceLine" id="cb19-14" data-line-number="14">        <span class="va">self</span>.broadcast(block)</a>
+<a class="sourceLine" id="cb19-15" data-line-number="15">        <span class="cf">if</span> chain <span class="kw">is</span> <span class="va">None</span>:</a>
+<a class="sourceLine" id="cb19-16" data-line-number="16">            chain <span class="op">=</span> BlockChain(block)</a>
+<a class="sourceLine" id="cb19-17" data-line-number="17">            previous <span class="op">=</span> block</a>
+<a class="sourceLine" id="cb19-18" data-line-number="18">        <span class="cf">else</span>:</a>
+<a class="sourceLine" id="cb19-19" data-line-number="19">            previous <span class="op">=</span> chain.append(block)</a>
+<a class="sourceLine" id="cb19-20" data-line-number="20">        <span class="bu">print</span>(chain, end<span class="op">=</span><span class="st">&quot;</span><span class="ch">\r</span><span class="st">&quot;</span>)</a></code></pre></div>
+<p>First thing to notice here: the block generation. Normally, the content would make sense (i.e. smart contracts, bitcoin transactions,…), and would require some work to achieve. As we don’t have any meaningful content, we just add some random data. Finally, as we haven’t implemented the Proof-of-Work yet, we simply wait for a random time. This will change later.</p>
+<h3 id="testing-again">Testing again</h3>
+<p>We can now test things! Each time a block is sent/received, the chain is printed. Thus, we can run the process twice, and see the chain being updated in real time.</p>
+<p>You may want to check out <a href="https://github.com/tmux/tmux">tmux</a>. It allows you to split your terminal, and see multiple things at once. The same can be achieved with the terminal emulator Tilix. Very handy!</p>
+<p>By running the following commands, in two separate terminals:</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb20-1" data-line-number="1"><span class="ex">python</span> miner/miner.py 127.0.0.1:5001 127.0.0.1:5000</a>
+<a class="sourceLine" id="cb20-2" data-line-number="2"><span class="ex">python</span> miner/miner.py 127.0.0.1:5000 127.0.0.1:5001 genesis</a></code></pre></div>
+<p>They will start to communicate. You should now see the chain growing every 5 or so seconds.</p>
+<h1 id="concurrency">Concurrency</h1>
+<p>To have concurrency, we need to set up a few things. The most important is the <em>processes</em> that will do the job. Namely, the <code>MineTask</code> and the <code>ListenTask</code>. Both of those can put an object in a shared queue. Then the main process constantly tries to get an item from the queue. Once it can get one, it will try to update the chain. According to the situation (was the block ours? was it valid?) we may take various actions (terminating and starting a new mining task, broadcast the block,…).</p>
+<p>So we need to have these two additional processes in the background. Let’s define them:</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb21-1" data-line-number="1"><span class="im">from</span> multiprocessing <span class="im">import</span> Process, Queue</a>
+<a class="sourceLine" id="cb21-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb21-3" data-line-number="3"><span class="kw">class</span> MineTask(Process):</a>
+<a class="sourceLine" id="cb21-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb21-5" data-line-number="5">    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, miner: <span class="st">&quot;Miner&quot;</span>,</a>
+<a class="sourceLine" id="cb21-6" data-line-number="6">                 block: <span class="st">&quot;Block&quot;</span>,</a>
+<a class="sourceLine" id="cb21-7" data-line-number="7">                 data: Union[<span class="bu">bytes</span>, <span class="bu">str</span>]):</a>
+<a class="sourceLine" id="cb21-8" data-line-number="8">        <span class="bu">super</span>(Process, <span class="va">self</span>).<span class="fu">__init__</span>()</a>
+<a class="sourceLine" id="cb21-9" data-line-number="9">        <span class="va">self</span>.miner: Miner <span class="op">=</span> miner</a>
+<a class="sourceLine" id="cb21-10" data-line-number="10">        <span class="va">self</span>.block: Block <span class="op">=</span> block</a>
+<a class="sourceLine" id="cb21-11" data-line-number="11">        <span class="va">self</span>.data: Union[<span class="bu">bytes</span>, <span class="bu">str</span>] <span class="op">=</span> data</a>
+<a class="sourceLine" id="cb21-12" data-line-number="12"></a>
+<a class="sourceLine" id="cb21-13" data-line-number="13">    <span class="kw">def</span> run(<span class="va">self</span>):</a>
+<a class="sourceLine" id="cb21-14" data-line-number="14">        <span class="cf">try</span>:</a>
+<a class="sourceLine" id="cb21-15" data-line-number="15">            time.sleep(random.randint(<span class="dv">5</span>, <span class="dv">8</span>))</a>
+<a class="sourceLine" id="cb21-16" data-line-number="16">            next_block <span class="op">=</span> Block(<span class="va">self</span>.data, previous<span class="op">=</span><span class="va">self</span>.block)</a>
+<a class="sourceLine" id="cb21-17" data-line-number="17">            next_block.miner <span class="op">=</span> <span class="va">self</span>.miner.miner_name</a>
+<a class="sourceLine" id="cb21-18" data-line-number="18">            <span class="va">self</span>.miner.blockQueue.put(next_block)</a>
+<a class="sourceLine" id="cb21-19" data-line-number="19">        <span class="cf">except</span> <span class="pp">KeyboardInterrupt</span>:</a>
+<a class="sourceLine" id="cb21-20" data-line-number="20">            <span class="co"># for graceful exit</span></a>
+<a class="sourceLine" id="cb21-21" data-line-number="21">            <span class="cf">return</span></a>
+<a class="sourceLine" id="cb21-22" data-line-number="22"></a>
+<a class="sourceLine" id="cb21-23" data-line-number="23"></a>
+<a class="sourceLine" id="cb21-24" data-line-number="24"><span class="kw">class</span> ListenTask(Process):</a>
+<a class="sourceLine" id="cb21-25" data-line-number="25">    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, blockQueue: Queue, sock: socket.socket):</a>
+<a class="sourceLine" id="cb21-26" data-line-number="26">        <span class="bu">super</span>(Process, <span class="va">self</span>).<span class="fu">__init__</span>()</a>
+<a class="sourceLine" id="cb21-27" data-line-number="27">        <span class="va">self</span>.blockQueue: Queue <span class="op">=</span> blockQueue</a>
+<a class="sourceLine" id="cb21-28" data-line-number="28">        <span class="va">self</span>.sock: socket.socket <span class="op">=</span> sock</a>
+<a class="sourceLine" id="cb21-29" data-line-number="29"></a>
+<a class="sourceLine" id="cb21-30" data-line-number="30">    <span class="kw">def</span> run(<span class="va">self</span>):</a>
+<a class="sourceLine" id="cb21-31" data-line-number="31">        <span class="cf">try</span>:</a>
+<a class="sourceLine" id="cb21-32" data-line-number="32">            <span class="cf">while</span> <span class="va">True</span>:</a>
+<a class="sourceLine" id="cb21-33" data-line-number="33">                data, addr <span class="op">=</span> <span class="va">self</span>.sock.recvfrom(<span class="dv">65507</span>)</a>
+<a class="sourceLine" id="cb21-34" data-line-number="34">                new_block <span class="op">=</span> Block.decode(data)</a>
+<a class="sourceLine" id="cb21-35" data-line-number="35">                new_block.miner <span class="op">=</span> <span class="st">&quot;</span><span class="sc">{}</span><span class="st">:</span><span class="sc">{}</span><span class="st">&quot;</span>.<span class="bu">format</span>(addr[<span class="dv">0</span>], addr[<span class="dv">1</span>])</a>
+<a class="sourceLine" id="cb21-36" data-line-number="36">                <span class="va">self</span>.blockQueue.put(new_block)</a>
+<a class="sourceLine" id="cb21-37" data-line-number="37">        <span class="cf">except</span> <span class="pp">KeyboardInterrupt</span>:</a>
+<a class="sourceLine" id="cb21-38" data-line-number="38">            <span class="co"># for graceful exit</span></a>
+<a class="sourceLine" id="cb21-39" data-line-number="39">            <span class="cf">return</span></a></code></pre></div>
+<h2 id="queue">Queue</h2>
+<p>These rely on a <code>self.miner.blockQueue</code> that isn’t defined yet. We will define it in the <code>Miner</code> class, as we only need to have one per miner.</p>
+<p>It’s important you convince yourself only one queue is necessary, and that the implementation works. Here are some tips: * As explained before, the main process constantly tries to read from the queue (sole consumer) * The background processes both try to add elements to the queue * Once the main processes gets one block from the queue, there are 2 possibilities: * It’s from an other miner: -&gt; try to add it to your chain; interrupt the miner; start a new mining process (with a new “previous” block); keep listening * It’s your block: -&gt; try to add it to your chain; broadcast it; start a new mining process; keep listening. * Note that you first need to ensure the block is valid before stopping anything (the chain accepts it)</p>
+<h2 id="genesis-block-1">Genesis block</h2>
+<p>We also need to take care of the special genesis block. Here, we will do the following artificial setup: we manually decide which miner does the genesis block; meanwhile, they all wait for it to come. Once it’s done, no more friends, and may the fastest win!</p>
+<h2 id="main-process-miner-run">Main process (Miner-&gt;run)</h2>
+<p>Now we can attack the main process. The big picture is the following: 1. Prepare the socket 2. “Get” the genesis block (by mining or waiting) 3. For genesis-creator: broadcast the genesis and start listening 4. Create the chain using the genesis block 5. Start to mine the next block 6. Infinitely: 1. Wait for a block 2. Try to add to chain. If success: 3. Share (if applicable), interrupt the mining (if applicable), start a new mining task</p>
+<p>This translates in this way:</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb22-1" data-line-number="1"><span class="kw">def</span> run(<span class="va">self</span>):</a>
+<a class="sourceLine" id="cb22-2" data-line-number="2">        <span class="co"># prepare the socket</span></a>
+<a class="sourceLine" id="cb22-3" data-line-number="3">        <span class="va">self</span>.sock.bind((<span class="va">self</span>.host, <span class="va">self</span>.port))</a>
+<a class="sourceLine" id="cb22-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb22-5" data-line-number="5">        <span class="co"># mine or wait for genesis</span></a>
+<a class="sourceLine" id="cb22-6" data-line-number="6">        <span class="cf">if</span> <span class="va">self</span>.mine_genesis:</a>
+<a class="sourceLine" id="cb22-7" data-line-number="7">            MineTask(<span class="va">self</span>, <span class="va">None</span>, <span class="st">&quot;Genesis&quot;</span>).start()</a>
+<a class="sourceLine" id="cb22-8" data-line-number="8">        <span class="cf">else</span>:</a>
+<a class="sourceLine" id="cb22-9" data-line-number="9">            <span class="va">self</span>.listen_task.start()</a>
+<a class="sourceLine" id="cb22-10" data-line-number="10">        genesis: Block <span class="op">=</span> <span class="va">self</span>.blockQueue.get()</a>
+<a class="sourceLine" id="cb22-11" data-line-number="11">        <span class="bu">print</span>(<span class="st">&quot;Genesis generated/received:&quot;</span>, genesis)</a>
+<a class="sourceLine" id="cb22-12" data-line-number="12"></a>
+<a class="sourceLine" id="cb22-13" data-line-number="13">        <span class="co"># create chain</span></a>
+<a class="sourceLine" id="cb22-14" data-line-number="14">        <span class="va">self</span>.chain: BlockChain <span class="op">=</span> BlockChain(genesis)</a>
+<a class="sourceLine" id="cb22-15" data-line-number="15"></a>
+<a class="sourceLine" id="cb22-16" data-line-number="16">        <span class="co"># genesis-creator must start to listen and broadcast genesis</span></a>
+<a class="sourceLine" id="cb22-17" data-line-number="17">        <span class="cf">if</span> <span class="va">self</span>.mine_genesis:</a>
+<a class="sourceLine" id="cb22-18" data-line-number="18">            <span class="va">self</span>.listen_task.start()</a>
+<a class="sourceLine" id="cb22-19" data-line-number="19">            <span class="va">self</span>.broadcast(genesis)</a>
+<a class="sourceLine" id="cb22-20" data-line-number="20"></a>
+<a class="sourceLine" id="cb22-21" data-line-number="21">        i <span class="op">=</span> <span class="dv">0</span> <span class="co"># keep track of how many block each miner created (opt)</span></a>
+<a class="sourceLine" id="cb22-22" data-line-number="22">        mined_block: Block <span class="op">=</span> genesis</a>
+<a class="sourceLine" id="cb22-23" data-line-number="23"></a>
+<a class="sourceLine" id="cb22-24" data-line-number="24">        <span class="co"># start to mine the next block</span></a>
+<a class="sourceLine" id="cb22-25" data-line-number="25">        <span class="va">self</span>.mine_task <span class="op">=</span> MineTask(<span class="va">self</span>, genesis,</a>
+<a class="sourceLine" id="cb22-26" data-line-number="26">                                  (<span class="st">&quot;</span><span class="sc">{}</span><span class="st">:</span><span class="sc">{}</span><span class="st">&quot;</span>.<span class="bu">format</span>(<span class="va">self</span>.miner_name, i)))</a>
+<a class="sourceLine" id="cb22-27" data-line-number="27">        <span class="va">self</span>.mine_task.start()</a>
+<a class="sourceLine" id="cb22-28" data-line-number="28"></a>
+<a class="sourceLine" id="cb22-29" data-line-number="29">        <span class="co"># infinitely:</span></a>
+<a class="sourceLine" id="cb22-30" data-line-number="30">        <span class="cf">while</span> <span class="va">True</span>:</a>
+<a class="sourceLine" id="cb22-31" data-line-number="31">            <span class="co"># wait for a new block</span></a>
+<a class="sourceLine" id="cb22-32" data-line-number="32">            new_block <span class="op">=</span> <span class="va">self</span>.blockQueue.get()</a>
+<a class="sourceLine" id="cb22-33" data-line-number="33">            <span class="co"># try to append to chain</span></a>
+<a class="sourceLine" id="cb22-34" data-line-number="34">            <span class="cf">if</span> <span class="va">self</span>.chain.append(new_block):</a>
+<a class="sourceLine" id="cb22-35" data-line-number="35">                <span class="co">#if success:</span></a>
+<a class="sourceLine" id="cb22-36" data-line-number="36">                <span class="cf">if</span> new_block.miner <span class="op">==</span> <span class="va">self</span>.miner_name:</a>
+<a class="sourceLine" id="cb22-37" data-line-number="37">                    <span class="co"># if mine, increment i and broadcast</span></a>
+<a class="sourceLine" id="cb22-38" data-line-number="38">                    <span class="bu">print</span>(<span class="st">&quot;My block! Broadcasting&quot;</span>)</a>
+<a class="sourceLine" id="cb22-39" data-line-number="39">                    i <span class="op">+=</span> <span class="dv">1</span></a>
+<a class="sourceLine" id="cb22-40" data-line-number="40">                    <span class="va">self</span>.broadcast(new_block)</a>
+<a class="sourceLine" id="cb22-41" data-line-number="41">                <span class="cf">else</span>:</a>
+<a class="sourceLine" id="cb22-42" data-line-number="42">                    <span class="co"># if someone else's, interrupt the task</span></a>
+<a class="sourceLine" id="cb22-43" data-line-number="43">                    <span class="va">self</span>.mine_task.terminate()</a>
+<a class="sourceLine" id="cb22-44" data-line-number="44">                    <span class="bu">print</span>(<span class="st">&quot;Dang, someone got me...&quot;</span>)</a>
+<a class="sourceLine" id="cb22-45" data-line-number="45">                <span class="cf">if</span> mined_block <span class="op">!=</span> <span class="va">self</span>.chain.head:</a>
+<a class="sourceLine" id="cb22-46" data-line-number="46">                    <span class="co"># get head, if not done</span></a>
+<a class="sourceLine" id="cb22-47" data-line-number="47">                    mined_block <span class="op">=</span> <span class="va">self</span>.chain.head</a>
+<a class="sourceLine" id="cb22-48" data-line-number="48">                    <span class="co"># start new mining, based on current head</span></a>
+<a class="sourceLine" id="cb22-49" data-line-number="49">                    <span class="va">self</span>.mine_task <span class="op">=</span> MineTask(<span class="va">self</span>,</a>
+<a class="sourceLine" id="cb22-50" data-line-number="50">                                              mined_block,</a>
+<a class="sourceLine" id="cb22-51" data-line-number="51">                                              <span class="st">&quot;</span><span class="sc">{}</span><span class="st">:</span><span class="sc">{}</span><span class="st">&quot;</span>.<span class="bu">format</span>(<span class="va">self</span>.miner_name,</a>
+<a class="sourceLine" id="cb22-52" data-line-number="52">                                                             i))</a>
+<a class="sourceLine" id="cb22-53" data-line-number="53">                    <span class="va">self</span>.mine_task.start()</a>
+<a class="sourceLine" id="cb22-54" data-line-number="54">                <span class="bu">print</span>(<span class="va">self</span>.chain)</a>
+<a class="sourceLine" id="cb22-55" data-line-number="55">            <span class="cf">else</span>:</a>
+<a class="sourceLine" id="cb22-56" data-line-number="56">                <span class="bu">print</span>(<span class="st">&quot;rejected block from&quot;</span>, new_block.miner)</a>
+<a class="sourceLine" id="cb22-57" data-line-number="57">            <span class="bu">print</span>(<span class="st">&quot;######################################&quot;</span>)</a></code></pre></div>
+<h2 id="consensus">Consensus</h2>
+<p>Up until now, when a block is valid, we append it to the chain, and mark it as the new head. As a reminder, an extract from <code>Blockchain-&gt;append</code>: <code>self.head = new_block</code> and that’s it. But what happens if we have two blocks that arrive roughly at the same time? Or if a malicious miner decides to send a second “block 2” (for which the previous is the genesis)? Our current code will accept it as is, and set it as the new head. No good…</p>
+<p>This is the point of the consensus. The head is the block with the highest number (remember, the number is not defined by the miners but by the chain). For that, the head is defined according to the highest block number. If two two blocks have the same number, then it will be decided randomly between those two.</p>
+<p>The new <code>Blockchain-&gt;append</code>:</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb23-1" data-line-number="1">...</a>
+<a class="sourceLine" id="cb23-2" data-line-number="2"><span class="co"># Determine new head</span></a>
+<a class="sourceLine" id="cb23-3" data-line-number="3"><span class="cf">if</span> <span class="va">self</span>.head.number <span class="op">&lt;</span> new_block_num:</a>
+<a class="sourceLine" id="cb23-4" data-line-number="4">    <span class="co"># if new head is newer, change head</span></a>
+<a class="sourceLine" id="cb23-5" data-line-number="5">    <span class="va">self</span>.head <span class="op">=</span> new_block</a>
+<a class="sourceLine" id="cb23-6" data-line-number="6"><span class="cf">elif</span> <span class="va">self</span>.head.number <span class="op">==</span> new_block_num:</a>
+<a class="sourceLine" id="cb23-7" data-line-number="7">    <span class="co"># if new head same number, decide randomly (1/2)</span></a>
+<a class="sourceLine" id="cb23-8" data-line-number="8">    <span class="va">self</span>.head <span class="op">=</span> new_block <span class="cf">if</span> <span class="bu">bool</span>(random.getrandbits(<span class="dv">1</span>)) <span class="cf">else</span> <span class="va">self</span>.head</a></code></pre></div>
+<p>With this solution, the head will be decided. But we keep all the valid blocks we receive. And if a new block doesn’t point to the current head, but has a larger number, it will become the new head. That way, miners can create new blocks, that will be kept, but only one head (and thus chain) will exist.</p>
+<h2 id="printing-the-chain">Printing the chain</h2>
+<p>Now that we may have multiple potential heads, and forks, our old printing method is not sufficient enough. We turn ourselves to the <code>pptree</code> library. Small problem: by printing a node, we will only print its predecessors. At the moment, we have no knowledge of diverging branches, from a block. The easiest way to solve that, is to keep (for each block) a list of its “children”: the blocks that point to it. When a block is added to the chain, the predecessor is informed and will keep it.</p>
+<h3 id="block-__init__"><code>Block-&gt;__init__</code></h3>
+<p>Add a member: <code>self.children: Set[Block] = set()</code></p>
+<h3 id="blockchain-append-1"><code>Blockchain-&gt;append</code></h3>
+<p>Inform the predecessor: <code>self.blocks[previous_block.hash()].children.add(new_block)</code></p>
+<h3 id="miner-run-1"><code>Miner-&gt;run</code></h3>
+<p>Print the genesis instead of the chain:</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb24-1" data-line-number="1"><span class="im">from</span> pptree <span class="im">import</span> print_tree</a>
+<a class="sourceLine" id="cb24-2" data-line-number="2">...</a>
+<a class="sourceLine" id="cb24-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb24-4" data-line-number="4"><span class="co"># print(self.chain)</span></a>
+<a class="sourceLine" id="cb24-5" data-line-number="5">print_tree(<span class="va">self</span>.chain.root, <span class="st">&quot;children&quot;</span>, horizontal<span class="op">=</span><span class="va">False</span>)</a></code></pre></div>
+<p>If you run your clients, you will see the chain growing. And if you reduce the random interval (say, a blocked is mined every 1-5 seconds), conflicts will appear. But everyone will agree on the longest chain, and the tree will be identical for everyone.</p>
+<h1 id="proof-of-work">Proof of Work</h1>
+<p>For the moment, a block is mined randomly at certain intervals. But that is up to the client (in a sense), because the block contains no verification whatsoever (except that the previous block exists).</p>
+<p>As explained in the handout, we need to make sure miners don’t spam with their own, malicious block. In our case we are using dummy block data, but if it were bitcoin transactions, everyone damn hope that the blocks are legitimate!</p>
+<p>Our proof of work will be located in the Block class. It is equivalent to the <code>nonce</code> you saw in class. The actual mining is exactly that: finding the correct <code>nonce</code> (proof-of-work) that matches a certain criterion.</p>
+<p>Our criterion: the hash of the block (<code>SHA-256(block.data||block.previous_hash||block.p_o_w)</code>), once interpreted as an integer, must be smaller than a certain TARGET. So instead of counting the number of leading 0’s (as other blockchain do), we impose a maximum value. At the limits: the maximum target would be <code>int(&quot;0xffffff..ff&quot;)</code> (any hash works), and the minimum would be <code>int(&quot;0x0000..000&quot;)</code> (extremely hard to find a pow).</p>
+<p>Some numbers: the maximum integer representable with 64 base-16 characters, is 0xffff…ff and is 115792089237316195423570985008687907853269984665640564039457584007913129639935, or 2^256, or 1.15e77, or 115 quattuorvigintillion. As the hashes are uniformly distributed, finding a valid hash (at random) has probability <span class="math inline">$\frac{TARGET}{int(0xffff...ff)}$</span>.</p>
+<p>In the case of cryptocurrencies, we want to have a (relatively) constant rate of blocks. Bitcoin aims for <a href="https://en.bitcoin.it/wiki/Help:FAQ#Why_do_I_have_to_wait_10_minutes_before_I_can_spend_money_I_received.3F">10 minutes per block</a>. There are a lot of other factors at play here, but roughly the target is adapted to keep that number steady. With more miners, you need to lower the target, with less miners you can higher it.</p>
+<h2 id="block">Block</h2>
+<p>In our case, we will go with 2^235 (totally arbitrary). We add that as a constant (<code>TARGET = 2**235</code>)</p>
+<p>Then, we move the mining to the block, as a additional method.</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb25-1" data-line-number="1"><span class="kw">def</span> mine(<span class="va">self</span>, target):</a>
+<a class="sourceLine" id="cb25-2" data-line-number="2">    <span class="co"># prepare the hash</span></a>
+<a class="sourceLine" id="cb25-3" data-line-number="3">    h <span class="op">=</span> sha256()</a>
+<a class="sourceLine" id="cb25-4" data-line-number="4">    h.update(<span class="va">self</span>.data)</a>
+<a class="sourceLine" id="cb25-5" data-line-number="5">    h.update(<span class="va">self</span>.previous_hash)</a>
+<a class="sourceLine" id="cb25-6" data-line-number="6">    <span class="co"># start with nonce=0</span></a>
+<a class="sourceLine" id="cb25-7" data-line-number="7">    inc <span class="op">=</span> <span class="dv">0</span></a>
+<a class="sourceLine" id="cb25-8" data-line-number="8">    hp <span class="op">=</span> h.copy()</a>
+<a class="sourceLine" id="cb25-9" data-line-number="9">    <span class="co"># as long as the hash is too big, retry</span></a>
+<a class="sourceLine" id="cb25-10" data-line-number="10">    <span class="cf">while</span> inc <span class="op">==</span> <span class="dv">0</span> <span class="kw">or</span> <span class="bu">int</span>.from_bytes(hp.digest(), signed<span class="op">=</span><span class="va">False</span>, byteorder<span class="op">=</span><span class="st">&quot;big&quot;</span>) <span class="op">&gt;</span> target:</a>
+<a class="sourceLine" id="cb25-11" data-line-number="11">        hp <span class="op">=</span> h.copy()</a>
+<a class="sourceLine" id="cb25-12" data-line-number="12">        inc <span class="op">+=</span> <span class="dv">1</span></a>
+<a class="sourceLine" id="cb25-13" data-line-number="13">        hp.update(inc.to_bytes(<span class="dv">8</span>, byteorder<span class="op">=</span><span class="st">&quot;big&quot;</span>))</a>
+<a class="sourceLine" id="cb25-14" data-line-number="14">    <span class="co"># not the inc is correct: save as pow</span></a>
+<a class="sourceLine" id="cb25-15" data-line-number="15">    <span class="va">self</span>.p_o_w <span class="op">=</span> inc.to_bytes(<span class="dv">8</span>, byteorder<span class="op">=</span><span class="st">&quot;big&quot;</span>)</a>
+<a class="sourceLine" id="cb25-16" data-line-number="16">    <span class="cf">return</span> <span class="va">self</span></a></code></pre></div>
+<p>And obviously prepare the member in <code>Block-&gt;__init__</code>: <code>self.p_o_w = None</code>.</p>
+<p>Next: adapt the hashing function of a block, to incorporate the pow:</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb26-1" data-line-number="1"><span class="kw">def</span> <span class="bu">hash</span>(<span class="va">self</span>) <span class="op">-&gt;</span> <span class="bu">bytes</span>:</a>
+<a class="sourceLine" id="cb26-2" data-line-number="2">        <span class="co">&quot;&quot;&quot;Return a bytes object containing the hash of the block.</span></a>
+<a class="sourceLine" id="cb26-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb26-4" data-line-number="4"><span class="co">        Returns:</span></a>
+<a class="sourceLine" id="cb26-5" data-line-number="5"><span class="co">            bytes: Hash digest of the block</span></a>
+<a class="sourceLine" id="cb26-6" data-line-number="6"><span class="co">        &quot;&quot;&quot;</span></a>
+<a class="sourceLine" id="cb26-7" data-line-number="7">        h <span class="op">=</span> sha256()</a>
+<a class="sourceLine" id="cb26-8" data-line-number="8">        h.update(<span class="va">self</span>.data)</a>
+<a class="sourceLine" id="cb26-9" data-line-number="9">        h.update(<span class="va">self</span>.previous_hash)</a>
+<a class="sourceLine" id="cb26-10" data-line-number="10">        h.update(<span class="va">self</span>.p_o_w) <span class="co"># &lt;-- add that</span></a>
+<a class="sourceLine" id="cb26-11" data-line-number="11">        <span class="cf">return</span> h.digest()</a></code></pre></div>
+<p>Very important: the encoding/decoding of a block must contain the pow:</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb27-1" data-line-number="1"><span class="kw">def</span> encode(<span class="va">self</span>) <span class="op">-&gt;</span> <span class="bu">bytes</span>:</a>
+<a class="sourceLine" id="cb27-2" data-line-number="2">        <span class="co">&quot;&quot;&quot;Return a bytes object containing a UTF-8 encoded JSON object.&quot;&quot;&quot;</span></a>
+<a class="sourceLine" id="cb27-3" data-line-number="3">        <span class="cf">return</span> json.dumps({<span class="st">&quot;data&quot;</span>: b64encode(<span class="va">self</span>.data).decode(),</a>
+<a class="sourceLine" id="cb27-4" data-line-number="4">                           <span class="st">&quot;previous_hash&quot;</span>: <span class="va">self</span>.previous_hash.<span class="bu">hex</span>(),</a>
+<a class="sourceLine" id="cb27-5" data-line-number="5">                           <span class="st">&quot;p_o_w&quot;</span>: <span class="va">self</span>.p_o_w.<span class="bu">hex</span>()</a>
+<a class="sourceLine" id="cb27-6" data-line-number="6">                           }).encode()</a>
+<a class="sourceLine" id="cb27-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb27-8" data-line-number="8">    <span class="at">@staticmethod</span></a>
+<a class="sourceLine" id="cb27-9" data-line-number="9">    <span class="kw">def</span> decode(b: <span class="bu">bytes</span>):</a>
+<a class="sourceLine" id="cb27-10" data-line-number="10">        js <span class="op">=</span> json.loads(b)</a>
+<a class="sourceLine" id="cb27-11" data-line-number="11">        previous <span class="op">=</span> <span class="bu">bytes</span>.fromhex(js[<span class="st">&quot;previous_hash&quot;</span>])</a>
+<a class="sourceLine" id="cb27-12" data-line-number="12">        data <span class="op">=</span> b64decode(js[<span class="st">&quot;data&quot;</span>])</a>
+<a class="sourceLine" id="cb27-13" data-line-number="13">        p_o_w <span class="op">=</span> <span class="bu">bytes</span>.fromhex(js[<span class="st">&quot;p_o_w&quot;</span>]) <span class="cf">if</span> <span class="st">&quot;p_o_w&quot;</span> <span class="kw">in</span> js <span class="cf">else</span> <span class="va">None</span></a>
+<a class="sourceLine" id="cb27-14" data-line-number="14">        <span class="cf">return</span> Block(data<span class="op">=</span>data,</a>
+<a class="sourceLine" id="cb27-15" data-line-number="15">                     previous<span class="op">=</span>previous,</a>
+<a class="sourceLine" id="cb27-16" data-line-number="16">                     p_o_w<span class="op">=</span>p_o_w)</a></code></pre></div>
+<p>And finally, when creating a block (e.g. after decoding), one must accept a pow:</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb28-1" data-line-number="1"><span class="kw">class</span> Block:</a>
+<a class="sourceLine" id="cb28-2" data-line-number="2">    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>,</a>
+<a class="sourceLine" id="cb28-3" data-line-number="3">                 data: Union[<span class="bu">bytes</span>, <span class="bu">str</span>],</a>
+<a class="sourceLine" id="cb28-4" data-line-number="4">                 previous: Optional[Union[<span class="bu">bytes</span>, <span class="st">'Block'</span>]] <span class="op">=</span> <span class="va">None</span>,</a>
+<a class="sourceLine" id="cb28-5" data-line-number="5">                 p_o_w: Optional[<span class="bu">bytes</span>] <span class="op">=</span> <span class="va">None</span>) <span class="op">-&gt;</span> <span class="va">None</span>:</a>
+<a class="sourceLine" id="cb28-6" data-line-number="6">        ...</a>
+<a class="sourceLine" id="cb28-7" data-line-number="7">        <span class="va">self</span>.p_o_w <span class="op">=</span> p_o_w <span class="cf">if</span> p_o_w <span class="cf">else</span> (<span class="dv">0</span>).to_bytes(<span class="dv">8</span>, byteorder<span class="op">=</span><span class="st">&quot;big&quot;</span>)</a>
+<a class="sourceLine" id="cb28-8" data-line-number="8">        ...</a></code></pre></div>
+<h2 id="minerclass-run">MinerClass-&gt;run</h2>
+<p>Now that we have a dedicated mining method, we need to replace the “wait for a random time” by the actual mining:</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb29-1" data-line-number="1"><span class="im">from</span> block <span class="im">import</span> TARGET</a>
+<a class="sourceLine" id="cb29-2" data-line-number="2">...</a>
+<a class="sourceLine" id="cb29-3" data-line-number="3">next_block <span class="op">=</span> Block(<span class="va">self</span>.data, previous<span class="op">=</span><span class="va">self</span>.block)</a>
+<a class="sourceLine" id="cb29-4" data-line-number="4"><span class="co">#time.sleep(random.randint(10,30)) # not anymore</span></a>
+<a class="sourceLine" id="cb29-5" data-line-number="5">next_block.mine(TARGET)</a></code></pre></div>
+<h2 id="blockchain-append-2">Blockchain-&gt;append</h2>
+<p>The last modification to do is the verification of a block. Now that a block has a proof of work, the chain must ensure it is also correct before accepting the block. The mechanism is the following:</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb30-1" data-line-number="1"><span class="cf">if</span> <span class="bu">int</span>.from_bytes(new_block.<span class="bu">hash</span>(), signed<span class="op">=</span><span class="va">False</span>, byteorder<span class="op">=</span><span class="st">&quot;big&quot;</span>) <span class="op">&gt;</span> <span class="va">self</span>.target:</a>
+<a class="sourceLine" id="cb30-2" data-line-number="2">    <span class="bu">print</span>(<span class="st">&quot;invalid block&quot;</span>, new_block.<span class="bu">hash</span>().<span class="bu">hex</span>())</a>
+<a class="sourceLine" id="cb30-3" data-line-number="3">    <span class="cf">return</span> <span class="va">None</span></a></code></pre></div>
+<h1 id="conclusion">Conclusion</h1>
+<p>This implementation is not complete. We are relatively robust to malicious workers, and can show that the blocks are all legitimate, thanks to the proof of work.</p>
+<p>There are still some real-life problems we didn’t consider. What do we do with incorrect paths? Sometimes a head was replaced, and is left hanging? We can implement a pruning system for that. After a decided amount of blocks, if a stub hasn’t made any progress, we could delete the block and save space.</p>
+<p>Also, our mining process is single-threaded. We could leverage some more computing power with more threads.</p>
+<p>And what about transactions? Where do they come from? We used dummy content, but crypto-currencies use transactions. We need to find a way to accept such transactions. And a whole system to sign transactions, and “identify” workers.</p>
+<p>If a new workers comes along, how do we know? Who send them the current chain?</p>
+<p>Finally, reward. Miners need an incentive to lend their computing power. We need to identify the worker(s) that mined the block, and give them a reward, in form of a transaction. And what about pools of workers?</p>
+</body>
+</html>
